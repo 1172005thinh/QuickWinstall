@@ -2,7 +2,7 @@
   "MainForm_Title": "QuickWinstall - Autounattend Generator",
   "MainForm_GeneralTab": "General",
   "MainForm_AccountsTab": "Accounts", 
-  "MainForm_BypassTab": "Windows 11 Bypass",
+  "MainForm_BypassTab": "Windows 11 Bypass Checks",
   "MainForm_PCName": "PC Name:",
   "MainForm_SystemLocale": "System Locale:",
   "MainForm_UserLocale": "User Locale:",
@@ -98,11 +98,13 @@
   "ValidationError_PasswordTooShort": "Password must be at least 8 characters",
   "SettingsForm_SaveButton": "Save",
   "SettingsForm_SelectFolder": "Select default folder for XML files:",
-  "AboutForm_ProjectTitle": "Project: QuickWinstall - Autounattend Generator",
+  "AboutForm_ProjectTitle": "QuickWinstall - Autounattend Generator",
   "AboutForm_DescriptionInfo": "For LAZYY~ Windows 11 Installation",
   "AboutForm_AuthorInfo": "Original author: 1172005thinh (QuickComp.)",
   "AboutForm_Contributors": "Contributors:",
+  "AboutForm_ContributorsContent": "updating...",
   "AboutForm_References": "References:",
   "AboutForm_License": "License:",
-  "AboutForm_LicenseContent": "     This is a free, open-source project."
+  "AboutForm_LicenseContent": "This is a free, open-source project.",
+  "Error_ValidationFailed": "Please fix the following errors before closing:"
 }

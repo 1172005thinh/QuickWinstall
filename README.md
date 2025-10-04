@@ -135,16 +135,39 @@ This project is free and open-source software
 
 ## 📜 Change Log
 
+### v0.2
+
+- Fixed UI scaling issues on RDC (Remote Desktop Connection)
+- Fixed UI glitch when deleting User Accounts
+- Improved validation for Product Key and PC Name
+- Improved language synchronization logic
+- Improved icon loading and caching mechanism
+- Added icons for UI elements, but not implemented icon selection yet
+
 ### v0.1 - Initial Release
 
 - Initial release with core features and basic UI
 
 ## 🐞 Known Issues
 
-- User Account managment section has UI bugs when removing not the last account. The field is red highlighted for no reason. Generation still works.
-- User Account managment section has UX bugs when renaming Account Name. The Account Display Name glitches and does not update properly.
+- Horizontal scrolling feature does not work properly. Details: Hold SHIFT and use mouse wheel to scroll horizontally, but both horizontal and vertical scrolling occurs.
 - Settings/Language does not show the current language on open. Currently it shows "English" always, although the language is switched.
-- About Window is too small for the content.
-- Vietnamese translation is incomplete and Google Translate-ish.
-- Some UI elements may not be properly aligned or sized, such as Account Manager bottom padding, Account Password field is too small.
-- Close button in Main Window does not trigger unsaved changes prompt if there are unsaved changes in dropdown lists.
+- About Window is too small for the content. (fix later)
+
+## 👌 Fixed Issues
+
+- UI scaling issues on RDC (Remote Desktop Connection)
+
+## 📢 Incoming Features
+
+1. Add Disk Configuration (WIP)
+2. More Windows editions
+3. More languages (e.g., Chinese, Spanish, French)
+4. More icons
+5. More themes (e.g., Dark Mode)
+6. Improve user interface with Windows 11 style
+7. Add more validation (e.g., Product Key format)
+8. Add more features (e.g., Network configuration, Windows Update settings)
+9. Add more account types (e.g., Microsoft Account)
+10. Add Personalization preferences (e.g., Wallpaper, Theme, Explorer settings)
+11. Add Quick Setup button (auto-fill common settings for quick setup)

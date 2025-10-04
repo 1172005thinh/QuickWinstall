@@ -12,8 +12,8 @@ namespace QuickWinstall
         private System.Windows.Forms.Panel panelControl;
         // Removed toolbar panel and expand/collapse buttons
         
-        // Settings Explorer (ScrollableContent panel)
-        private System.Windows.Forms.Panel scrollableContent;
+        // Settings Explorer (ScrollableContent panel with horizontal scrolling)
+        private HScrollPanel scrollableContent;
         
         // Control Area Buttons
         private System.Windows.Forms.Button btnSettings;
@@ -74,6 +74,29 @@ namespace QuickWinstall
         
         private System.Windows.Forms.ToolTip toolTip;
 
+        #region Global UI Constants
+        
+        // Font Constants
+        private static readonly System.Drawing.Font StandardFont = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+        private static readonly System.Drawing.Font BoldFont = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+        private static readonly System.Drawing.Font ItalicFont = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+        
+        // Layout Constants
+        private const int GlobalPadding = 10;
+        private const int GlobalSpacing = 8;
+        private const int GlobalLabelHeight = 23;
+        private const int GlobalControlHeight = 27;
+        private const int GlobalButtonWidth = 100;
+        private const int GlobalButtonHeight = 35;
+        
+        // Activity Area Constants
+        private const int ActivityPanelHeight = 70;
+        private const int MinimumContentWidth = 900; // Minimum width for horizontal scrolling
+        private const int MinimumContentHeight = 750; // Minimum height for content with bottom padding
+        private const int MinimumGroupBoxWidth = 840; // Fixed minimum width for groupboxes (reduced for scrollbar space)
+        
+        #endregion
+
         /// <summary>
         ///  Clean up any resources being used.
         /// </summary>
@@ -100,7 +123,7 @@ namespace QuickWinstall
             // Initialize main layout panels
             this.panelActivity = new System.Windows.Forms.Panel();
             this.panelControl = new System.Windows.Forms.Panel();
-            this.scrollableContent = new System.Windows.Forms.Panel();
+            this.scrollableContent = new HScrollPanel();
             
             // Initialize control buttons
             this.btnSettings = new System.Windows.Forms.Button();
@@ -174,8 +197,8 @@ namespace QuickWinstall
 
         private void SetupMainForm()
         {
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 600);
             this.MinimumSize = new System.Drawing.Size(600, 400);
@@ -192,24 +215,28 @@ namespace QuickWinstall
 
         private void SetupLayout()
         {
-            const int padding = 10;
-            const int controlHeight = 70; // Reduced height for better proportion
-            
             // Setup Control Panel (bottom)
             this.panelControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelControl.Height = controlHeight;
+            this.panelControl.Height = ActivityPanelHeight;
             this.panelControl.BackColor = System.Drawing.Color.White;
             // Remove padding to avoid conflicts with button positioning
             
-            // Setup Activity Panel (fill remaining space)
+            // Setup Activity Panel as container (fill remaining space)
             this.panelActivity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelActivity.BackColor = System.Drawing.Color.White;
-            this.panelActivity.Padding = new System.Windows.Forms.Padding(padding);
+            this.panelActivity.Padding = System.Windows.Forms.Padding.Empty; // No padding to prevent scrollbar cutoff
+            this.panelActivity.AutoScroll = false; // Let child handle scrolling
             
-            // Setup Scrollable Content Panel
+            // Setup Scrollable Content Panel with proper scrolling
             this.scrollableContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.scrollableContent.AutoScroll = true;
             this.scrollableContent.BackColor = System.Drawing.Color.White;
+            this.scrollableContent.Padding = new System.Windows.Forms.Padding(GlobalPadding); // Internal content padding
+            this.scrollableContent.AutoScrollMinSize = new System.Drawing.Size(MinimumContentWidth - GlobalPadding, MinimumContentHeight);
+            this.scrollableContent.HorizontalScroll.Enabled = true;
+            this.scrollableContent.HorizontalScroll.Visible = true;
+            this.scrollableContent.VerticalScroll.Enabled = true;
+            this.scrollableContent.VerticalScroll.Visible = true;
             
             // Add panels to form
             this.Controls.Add(this.panelActivity);
@@ -232,18 +259,15 @@ namespace QuickWinstall
 
         private void SetupControlButtons()
         {
-            const int buttonWidth = 100;
-            const int buttonHeight = 35;
-            const int padding = 15; // Increased padding for better spacing
-            const int spacing = 10;
+            const int padding = 15; // Control panel specific padding
             
             // Calculate positions - center vertically with proper margins
-            int centerY = (70 - buttonHeight) / 2; // Use fixed panel height
-            int rightEdge = this.panelControl.Width - padding; // Use Width instead of ClientSize
+            int centerY = (ActivityPanelHeight - GlobalButtonHeight) / 2;
+            int rightEdge = this.panelControl.Width - padding;
             
             // Cancel button (rightmost)
-            this.btnCancel.Size = new System.Drawing.Size(buttonWidth, buttonHeight);
-            this.btnCancel.Location = new System.Drawing.Point(rightEdge - buttonWidth, centerY);
+            this.btnCancel.Size = new System.Drawing.Size(GlobalButtonWidth, GlobalButtonHeight);
+            this.btnCancel.Location = new System.Drawing.Point(rightEdge - GlobalButtonWidth, centerY);
             this.btnCancel.Text = "Cancel";
             this.btnCancel.BackColor = System.Drawing.Color.White;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -252,8 +276,8 @@ namespace QuickWinstall
             this.btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
             
             // Generate button
-            this.btnGenerate.Size = new System.Drawing.Size(buttonWidth, buttonHeight);
-            this.btnGenerate.Location = new System.Drawing.Point(rightEdge - (buttonWidth * 2) - spacing, centerY);
+            this.btnGenerate.Size = new System.Drawing.Size(GlobalButtonWidth, GlobalButtonHeight);
+            this.btnGenerate.Location = new System.Drawing.Point(rightEdge - (GlobalButtonWidth * 2) - GlobalSpacing, centerY);
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.BackColor = System.Drawing.Color.White;
             this.btnGenerate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -262,8 +286,8 @@ namespace QuickWinstall
             this.btnGenerate.Cursor = System.Windows.Forms.Cursors.Hand;
             
             // Reset button (leftmost of right group)
-            this.btnReset.Size = new System.Drawing.Size(buttonWidth, buttonHeight);
-            this.btnReset.Location = new System.Drawing.Point(padding + buttonWidth + spacing, centerY);
+            this.btnReset.Size = new System.Drawing.Size(GlobalButtonWidth, GlobalButtonHeight);
+            this.btnReset.Location = new System.Drawing.Point(padding + GlobalButtonWidth + GlobalSpacing, centerY);
             this.btnReset.Text = "Reset";
             this.btnReset.BackColor = System.Drawing.Color.White;
             this.btnReset.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -272,7 +296,7 @@ namespace QuickWinstall
             this.btnReset.Cursor = System.Windows.Forms.Cursors.Hand;
             
             // Settings button (leftmost)
-            this.btnSettings.Size = new System.Drawing.Size(buttonWidth, buttonHeight);
+            this.btnSettings.Size = new System.Drawing.Size(GlobalButtonWidth, GlobalButtonHeight);
             this.btnSettings.Location = new System.Drawing.Point(padding, centerY);
             this.btnSettings.Text = "Settings";
             this.btnSettings.BackColor = System.Drawing.Color.White;
@@ -296,69 +320,64 @@ namespace QuickWinstall
 
         private void SetupGeneralSection()
         {
-            const int padding = 10;
-            const int labelHeight = 23;
-            const int controlHeight = 27;
-            const int spacing = 8;
-            
             // Group box setup
             this.groupGeneral.Text = "General";
-            this.groupGeneral.Location = new System.Drawing.Point(padding, padding);
-            this.groupGeneral.Size = new System.Drawing.Size(this.scrollableContent.Width - (padding * 2), 180);
+            this.groupGeneral.Location = new System.Drawing.Point(GlobalPadding, GlobalPadding);
+            this.groupGeneral.Size = new System.Drawing.Size(MinimumGroupBoxWidth, 180);
             this.groupGeneral.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             
             int yPos = 25;
             
             // PC Name
             this.lblPCName.Text = "PC Name:";
-            this.lblPCName.Location = new System.Drawing.Point(padding, yPos);
-            this.lblPCName.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblPCName.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblPCName.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.txtPCName.Location = new System.Drawing.Point(140, yPos - 2);
-            this.txtPCName.Size = new System.Drawing.Size(200, controlHeight);
+            this.txtPCName.Size = new System.Drawing.Size(200, GlobalControlHeight);
             this.txtPCName.Text = "PC";
             this.txtPCName.MaxLength = 15;
             this.toolTip.SetToolTip(this.txtPCName, "My computer name");
             
-            yPos += controlHeight + spacing;
+            yPos += GlobalControlHeight + GlobalSpacing;
             
             // Windows Edition
             this.lblWindowsEdition.Text = "Windows Edition:";
-            this.lblWindowsEdition.Location = new System.Drawing.Point(padding, yPos);
-            this.lblWindowsEdition.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblWindowsEdition.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblWindowsEdition.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.cmbWindowsEdition.Location = new System.Drawing.Point(140, yPos - 2);
-            this.cmbWindowsEdition.Size = new System.Drawing.Size(200, controlHeight);
+            this.cmbWindowsEdition.Size = new System.Drawing.Size(200, GlobalControlHeight);
             this.cmbWindowsEdition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbWindowsEdition.Items.AddRange(new string[] {
                 "Windows 11 Home", "Windows 11 Pro", "Windows 11 Enterprise", "Windows 11 Education"
             });
             this.cmbWindowsEdition.SelectedIndex = 1; // Windows 11 Pro default
             
-            yPos += controlHeight + spacing;
+            yPos += GlobalControlHeight + GlobalSpacing;
             
             // CPU Architecture
             this.lblCPUArchitecture.Text = "CPU Architecture:";
-            this.lblCPUArchitecture.Location = new System.Drawing.Point(padding, yPos);
-            this.lblCPUArchitecture.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblCPUArchitecture.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblCPUArchitecture.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.cmbCPUArchitecture.Location = new System.Drawing.Point(140, yPos - 2);
-            this.cmbCPUArchitecture.Size = new System.Drawing.Size(200, controlHeight);
+            this.cmbCPUArchitecture.Size = new System.Drawing.Size(200, GlobalControlHeight);
             this.cmbCPUArchitecture.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCPUArchitecture.Items.AddRange(new string[] {
                 "Intel/AMD 32-bit", "Intel/AMD 64-bit", "Windows ARM64"
             });
             this.cmbCPUArchitecture.SelectedIndex = 1; // Intel/AMD 64-bit default
             
-            yPos += controlHeight + spacing;
+            yPos += GlobalControlHeight + GlobalSpacing;
             
             // Product Key
             this.lblProductKey.Text = "Product Key:";
-            this.lblProductKey.Location = new System.Drawing.Point(padding, yPos);
-            this.lblProductKey.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblProductKey.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblProductKey.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.txtProductKey.Location = new System.Drawing.Point(140, yPos - 2);
-            this.txtProductKey.Size = new System.Drawing.Size(300, controlHeight);
+            this.txtProductKey.Size = new System.Drawing.Size(300, GlobalControlHeight);
             this.txtProductKey.MaxLength = 29;
             this.toolTip.SetToolTip(this.txtProductKey, "Windows 11 activation key");
             
@@ -377,68 +396,63 @@ namespace QuickWinstall
 
         private void SetupLanguageRegionSection()
         {
-            const int padding = 10;
-            const int labelHeight = 23;
-            const int controlHeight = 27;
-            const int spacing = 8;
-            
             // Group box setup
             this.groupLanguageRegion.Text = "Language and Region";
-            this.groupLanguageRegion.Location = new System.Drawing.Point(padding, this.groupGeneral.Bottom + padding);
-            this.groupLanguageRegion.Size = new System.Drawing.Size(this.scrollableContent.Width - (padding * 2), 150);
+            this.groupLanguageRegion.Location = new System.Drawing.Point(GlobalPadding, this.groupGeneral.Bottom + GlobalPadding);
+            this.groupLanguageRegion.Size = new System.Drawing.Size(MinimumGroupBoxWidth, 150);
             this.groupLanguageRegion.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             
             int yPos = 25;
             
             // System Locale
             this.lblSystemLocale.Text = "System Locale:";
-            this.lblSystemLocale.Location = new System.Drawing.Point(padding, yPos);
-            this.lblSystemLocale.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblSystemLocale.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblSystemLocale.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.cmbSystemLocale.Location = new System.Drawing.Point(140, yPos - 2);
-            this.cmbSystemLocale.Size = new System.Drawing.Size(150, controlHeight);
+            this.cmbSystemLocale.Size = new System.Drawing.Size(150, GlobalControlHeight);
             this.cmbSystemLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSystemLocale.Items.AddRange(new string[] { "en-US", "vi-VN" });
             this.cmbSystemLocale.SelectedIndex = 0;
             
-            yPos += controlHeight + spacing;
+            yPos += GlobalControlHeight + GlobalSpacing;
             
             // User Locale
             this.lblUserLocale.Text = "User Locale:";
-            this.lblUserLocale.Location = new System.Drawing.Point(padding, yPos);
-            this.lblUserLocale.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblUserLocale.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblUserLocale.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.cmbUserLocale.Location = new System.Drawing.Point(140, yPos - 2);
-            this.cmbUserLocale.Size = new System.Drawing.Size(150, controlHeight);
+            this.cmbUserLocale.Size = new System.Drawing.Size(150, GlobalControlHeight);
             this.cmbUserLocale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbUserLocale.Items.AddRange(new string[] { "en-US", "vi-VN" });
             this.cmbUserLocale.SelectedIndex = 0;
             
             this.chkSameAsSystemLocale.Text = "Same as System Locale";
             this.chkSameAsSystemLocale.Location = new System.Drawing.Point(300, yPos);
-            this.chkSameAsSystemLocale.Size = new System.Drawing.Size(180, controlHeight);
+            this.chkSameAsSystemLocale.Size = new System.Drawing.Size(180, GlobalControlHeight);
             this.chkSameAsSystemLocale.Checked = true;
             
-            yPos += controlHeight + spacing;
+            yPos += GlobalControlHeight + GlobalSpacing;
             
             // UI Language
             this.lblUILanguage.Text = "UI Language:";
-            this.lblUILanguage.Location = new System.Drawing.Point(padding, yPos);
-            this.lblUILanguage.Size = new System.Drawing.Size(120, labelHeight);
+            this.lblUILanguage.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.lblUILanguage.Size = new System.Drawing.Size(120, GlobalLabelHeight);
             
             this.cmbUILanguage.Location = new System.Drawing.Point(140, yPos - 2);
-            this.cmbUILanguage.Size = new System.Drawing.Size(150, controlHeight);
+            this.cmbUILanguage.Size = new System.Drawing.Size(150, GlobalControlHeight);
             this.cmbUILanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUILanguage.Items.AddRange(new string[] { "en-US", "vi-VN" });
+            this.cmbUILanguage.Items.AddRange(new string[] { "English", "Tiếng Việt" });
             this.cmbUILanguage.SelectedIndex = 0;
             
             // Time Zone
             this.lblTimeZone.Text = "Time Zone:";
             this.lblTimeZone.Location = new System.Drawing.Point(300, yPos);
-            this.lblTimeZone.Size = new System.Drawing.Size(80, labelHeight);
+            this.lblTimeZone.Size = new System.Drawing.Size(80, GlobalLabelHeight);
             
             this.cmbTimeZone.Location = new System.Drawing.Point(390, yPos - 2);
-            this.cmbTimeZone.Size = new System.Drawing.Size(200, controlHeight);
+            this.cmbTimeZone.Size = new System.Drawing.Size(200, GlobalControlHeight);
             this.cmbTimeZone.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTimeZone.Items.AddRange(new string[] {
                 "Pacific Standard Time", "Mountain Standard Time", "SE Asia Standard Time"
@@ -461,26 +475,31 @@ namespace QuickWinstall
 
         private void SetupAccountSection()
         {
-            const int padding = 10;
-            const int controlHeight = 27;
-            const int spacing = 8;
             const int columnWidth = 120;
             
             // Group box setup
             this.groupAccount.Text = "Account Manager";
-            this.groupAccount.Location = new System.Drawing.Point(padding, this.groupLanguageRegion.Bottom + padding);
-            this.groupAccount.Size = new System.Drawing.Size(this.scrollableContent.Width - (padding * 2), 180);
+            this.groupAccount.Location = new System.Drawing.Point(GlobalPadding, this.groupLanguageRegion.Bottom + GlobalPadding);
+            this.groupAccount.Size = new System.Drawing.Size(MinimumGroupBoxWidth, 200);
+            this.groupAccount.Margin = new System.Windows.Forms.Padding(0, 0, 0, GlobalPadding); // Add bottom margin
             this.groupAccount.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             
             // Header labels
             var headerLabels = new string[] { "Account Name", "Display Name", "Password", "Group" };
+            var headerPositions = new int[] {
+                GlobalPadding,
+                GlobalPadding + columnWidth + 10,
+                GlobalPadding + (columnWidth + 10) * 2,
+                GlobalPadding + (columnWidth + 10) * 2 + (columnWidth * 2) + 10  // After doubled password field
+            };
+            
             for (int col = 0; col < headerLabels.Length; col++)
             {
                 var headerLabel = new System.Windows.Forms.Label();
                 headerLabel.Text = headerLabels[col];
-                headerLabel.Location = new System.Drawing.Point(padding + (col * (columnWidth + 10)), 25);
-                headerLabel.Size = new System.Drawing.Size(columnWidth, 20);
-                headerLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+                headerLabel.Location = new System.Drawing.Point(headerPositions[col], 25);
+                headerLabel.Size = new System.Drawing.Size(col == 2 ? columnWidth * 2 : columnWidth, 20); // Double width for password header
+                headerLabel.Font = BoldFont;
                 this.groupAccount.Controls.Add(headerLabel);
             }
             
@@ -491,32 +510,32 @@ namespace QuickWinstall
             // Create 4 rows of account controls
             for (int row = 0; row < 4; row++)
             {
-                int yPos = 50 + (row * (controlHeight + spacing));
+                int yPos = 50 + (row * (GlobalControlHeight + GlobalSpacing));
                 
                 // Account Name
                 this.txtAccountNames[row] = new System.Windows.Forms.TextBox();
-                this.txtAccountNames[row].Location = new System.Drawing.Point(padding, yPos);
-                this.txtAccountNames[row].Size = new System.Drawing.Size(columnWidth, controlHeight);
+                this.txtAccountNames[row].Location = new System.Drawing.Point(GlobalPadding, yPos);
+                this.txtAccountNames[row].Size = new System.Drawing.Size(columnWidth, GlobalControlHeight);
                 this.txtAccountNames[row].Text = accountDefaults[row];
                 this.txtAccountNames[row].MaxLength = 20;
                 
                 // Display Name
                 this.txtAccountDisplayNames[row] = new System.Windows.Forms.TextBox();
-                this.txtAccountDisplayNames[row].Location = new System.Drawing.Point(padding + columnWidth + 10, yPos);
-                this.txtAccountDisplayNames[row].Size = new System.Drawing.Size(columnWidth, controlHeight);
+                this.txtAccountDisplayNames[row].Location = new System.Drawing.Point(GlobalPadding + columnWidth + 10, yPos);
+                this.txtAccountDisplayNames[row].Size = new System.Drawing.Size(columnWidth, GlobalControlHeight);
                 this.txtAccountDisplayNames[row].Text = accountDefaults[row];
                 this.txtAccountDisplayNames[row].MaxLength = 256;
                 
                 // Password
                 this.txtAccountPasswords[row] = new System.Windows.Forms.TextBox();
-                this.txtAccountPasswords[row].Location = new System.Drawing.Point(padding + (columnWidth + 10) * 2, yPos);
-                this.txtAccountPasswords[row].Size = new System.Drawing.Size(columnWidth, controlHeight);
+                this.txtAccountPasswords[row].Location = new System.Drawing.Point(GlobalPadding + (columnWidth + 10) * 2, yPos);
+                this.txtAccountPasswords[row].Size = new System.Drawing.Size(columnWidth * 2, GlobalControlHeight); // Doubled width for better usability
                 this.txtAccountPasswords[row].UseSystemPasswordChar = false; // Plain text as specified
                 
                 // Group
                 this.cmbAccountGroups[row] = new System.Windows.Forms.ComboBox();
-                this.cmbAccountGroups[row].Location = new System.Drawing.Point(padding + (columnWidth + 10) * 3, yPos);
-                this.cmbAccountGroups[row].Size = new System.Drawing.Size(columnWidth, controlHeight);
+                this.cmbAccountGroups[row].Location = new System.Drawing.Point(GlobalPadding + (columnWidth + 10) * 2 + (columnWidth * 2) + 10, yPos); // After doubled password field
+                this.cmbAccountGroups[row].Size = new System.Drawing.Size(columnWidth, GlobalControlHeight);
                 this.cmbAccountGroups[row].DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
                 this.cmbAccountGroups[row].Items.AddRange(new string[] { "Administrators", "Users" });
                 this.cmbAccountGroups[row].SelectedItem = groupDefaults[row];
@@ -533,25 +552,21 @@ namespace QuickWinstall
 
         private void SetupBypassSection()
         {
-            const int padding = 10;
-            const int controlHeight = 27;
-            const int spacing = 8;
-            
             // Group box setup
             this.groupBypass.Text = "Bypass Windows 11 Check";
-            this.groupBypass.Location = new System.Drawing.Point(padding, this.groupAccount.Bottom + padding);
-            this.groupBypass.Size = new System.Drawing.Size(this.scrollableContent.Width - (padding * 2), 120);
+            this.groupBypass.Location = new System.Drawing.Point(GlobalPadding, this.groupAccount.Bottom + GlobalPadding);
+            this.groupBypass.Size = new System.Drawing.Size(MinimumGroupBoxWidth, 120);
             this.groupBypass.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             
             int yPos = 25;
             
             // Bypass All Check
             this.chkBypassAll.Text = "Bypass All Check";
-            this.chkBypassAll.Location = new System.Drawing.Point(padding, yPos);
-            this.chkBypassAll.Size = new System.Drawing.Size(150, controlHeight);
+            this.chkBypassAll.Location = new System.Drawing.Point(GlobalPadding, yPos);
+            this.chkBypassAll.Size = new System.Drawing.Size(150, GlobalControlHeight);
             this.chkBypassAll.Checked = true;
             
-            yPos += controlHeight + spacing;
+            yPos += GlobalControlHeight + GlobalSpacing;
             
             // Individual bypass options (2 columns)
             var bypassOptions = new System.Windows.Forms.CheckBox[] {
@@ -570,8 +585,8 @@ namespace QuickWinstall
                 int row = i / 3;
                 
                 bypassOptions[i].Text = bypassTexts[i];
-                bypassOptions[i].Location = new System.Drawing.Point(padding + 30 + (col * 200), yPos + (row * controlHeight));
-                bypassOptions[i].Size = new System.Drawing.Size(180, controlHeight);
+                bypassOptions[i].Location = new System.Drawing.Point(GlobalPadding + 30 + (col * 200), yPos + (row * GlobalControlHeight));
+                bypassOptions[i].Size = new System.Drawing.Size(180, GlobalControlHeight);
                 bypassOptions[i].Checked = true;
                 
                 this.groupBypass.Controls.Add(bypassOptions[i]);
@@ -583,19 +598,16 @@ namespace QuickWinstall
 
         private void SetupBitLockerSection()
         {
-            const int padding = 10;
-            const int controlHeight = 27;
-            
             // Group box setup
             this.groupBitLocker.Text = "BitLocker";
-            this.groupBitLocker.Location = new System.Drawing.Point(padding, this.groupBypass.Bottom + padding);
-            this.groupBitLocker.Size = new System.Drawing.Size(this.scrollableContent.Width - (padding * 2), 60);
+            this.groupBitLocker.Location = new System.Drawing.Point(GlobalPadding, this.groupBypass.Bottom + GlobalPadding);
+            this.groupBitLocker.Size = new System.Drawing.Size(MinimumGroupBoxWidth, 60);
             this.groupBitLocker.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             
             // Disable BitLocker
             this.chkDisableBitLocker.Text = "Disable BitLocker";
-            this.chkDisableBitLocker.Location = new System.Drawing.Point(padding, 25);
-            this.chkDisableBitLocker.Size = new System.Drawing.Size(150, controlHeight);
+            this.chkDisableBitLocker.Location = new System.Drawing.Point(GlobalPadding, 25);
+            this.chkDisableBitLocker.Size = new System.Drawing.Size(150, GlobalControlHeight);
             this.chkDisableBitLocker.Checked = true;
             
             this.groupBitLocker.Controls.Add(this.chkDisableBitLocker);
@@ -604,21 +616,20 @@ namespace QuickWinstall
 
         private void SetupDiskConfigurationSection()
         {
-            const int padding = 10;
-            
             // Group box setup (placeholder)
             this.groupDiskConfiguration.Text = "Disk Configuration";
-            this.groupDiskConfiguration.Location = new System.Drawing.Point(padding, this.groupBitLocker.Bottom + padding);
-            this.groupDiskConfiguration.Size = new System.Drawing.Size(this.scrollableContent.Width - (padding * 2), 60);
+            this.groupDiskConfiguration.Location = new System.Drawing.Point(GlobalPadding, this.groupBitLocker.Bottom + GlobalPadding);
+            this.groupDiskConfiguration.Size = new System.Drawing.Size(MinimumGroupBoxWidth, 60);
             this.groupDiskConfiguration.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.groupDiskConfiguration.Margin = new System.Windows.Forms.Padding(0, 0, 0, GlobalPadding * 3); // Extra bottom margin for scrollbar spacing
             
             // Placeholder label
             var placeholderLabel = new System.Windows.Forms.Label();
             placeholderLabel.Text = "(To be implemented)";
-            placeholderLabel.Location = new System.Drawing.Point(padding, 25);
+            placeholderLabel.Location = new System.Drawing.Point(GlobalPadding, 25);
             placeholderLabel.Size = new System.Drawing.Size(200, 23);
             placeholderLabel.ForeColor = System.Drawing.Color.Gray;
-            placeholderLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            placeholderLabel.Font = ItalicFont;
             
             this.groupDiskConfiguration.Controls.Add(placeholderLabel);
             this.scrollableContent.Controls.Add(this.groupDiskConfiguration);
@@ -652,6 +663,8 @@ namespace QuickWinstall
             // Checkbox events
             this.chkSameAsSystemLocale.CheckedChanged += ChkSameAsSystemLocale_CheckedChanged;
             this.chkBypassAll.CheckedChanged += ChkBypassAll_CheckedChanged;
+            
+            // Horizontal scrolling is now handled by HScrollPanel internally
         }
 
         #endregion

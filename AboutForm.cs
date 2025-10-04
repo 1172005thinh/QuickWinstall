@@ -26,6 +26,7 @@ namespace QuickWinstall
                 "Original author: 1172005thinh (QuickComp.)");
             
             lblContributors.Text = LanguageManager.Instance.GetString("AboutForm_Contributors", "Contributors:");
+            lblContributorsContent.Text = LanguageManager.Instance.GetString("AboutForm_ContributorsContent", "updating...");
             lblReferences.Text = LanguageManager.Instance.GetString("AboutForm_References", "References:");
             lblLicense.Text = LanguageManager.Instance.GetString("AboutForm_License", "License:");
             lblLicenseContent.Text = LanguageManager.Instance.GetString("AboutForm_LicenseContent", 

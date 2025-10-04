@@ -25,8 +25,8 @@ namespace QuickWinstall
         public bool Account1SameAsName { get; set; } = true;
         public string Account1Type { get; set; } = "Administrators";
 
-        public string Account2Name { get; set; } = "User";
-        public string Account2DisplayName { get; set; } = "User";
+        public string Account2Name { get; set; } = "";
+        public string Account2DisplayName { get; set; } = "";
         public bool Account2SameAsName { get; set; } = true;
         public string Account2Type { get; set; } = "Users";
 

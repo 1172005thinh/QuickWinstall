@@ -18,11 +18,35 @@ namespace QuickWinstall
         private AppSettings _settings;
         private AppSettings _currentSettings;
         private bool _hasUnsavedChanges = false;
+        private bool[] _displayNameManuallyEdited = new bool[4]; // Track if display name was manually edited
 
         public MainForm()
         {
             InitializeComponent();
             InitializeApplication();
+            
+            // Add RDP stability measures
+            SetupRDPStability();
+        }
+
+        private void SetupRDPStability()
+        {
+            // Force layout refresh on resize to handle RDP DPI changes
+            this.Resize += (s, e) => {
+                this.SuspendLayout();
+                this.PerformLayout();
+                this.ResumeLayout(true);
+            };
+            
+            // Handle session changes (RDP connect/disconnect)
+            Microsoft.Win32.SystemEvents.SessionSwitch += (s, e) => {
+                if (e.Reason == Microsoft.Win32.SessionSwitchReason.RemoteConnect ||
+                    e.Reason == Microsoft.Win32.SessionSwitchReason.RemoteDisconnect)
+                {
+                    this.Invalidate(true);
+                    this.PerformLayout();
+                }
+            };
         }
 
         private void InitializeApplication()
@@ -107,7 +131,7 @@ namespace QuickWinstall
             cmbSystemLocale.SelectedItem = _currentSettings.SystemLocale;
             cmbUserLocale.SelectedItem = _currentSettings.UserLocale;
             chkSameAsSystemLocale.Checked = _currentSettings.SameAsSystemLocale;
-            cmbUILanguage.SelectedItem = _currentSettings.UILanguage;
+            cmbUILanguage.SelectedItem = GetLanguageDisplayName(_currentSettings.UILanguage);
 
             // Account Section
             if (txtAccountNames.Length > 0)
@@ -166,6 +190,23 @@ namespace QuickWinstall
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Check for validation errors before closing
+            var validationErrors = ValidateRequiredFields();
+            if (validationErrors.Count > 0)
+            {
+                var errorMessage = GetLocalizedString("Error_ValidationFailed") ?? "Please fix the following errors before closing:";
+                errorMessage += "\n\n" + string.Join("\n", validationErrors);
+                
+                MessageDialogs.ShowDialog(
+                    errorMessage,
+                    MessageDialogs.DialogType.Error,
+                    MessageDialogs.DialogButtons.OK,
+                    GetLocalizedString("Error_Title") ?? "Validation Error");
+                
+                e.Cancel = true;
+                return;
+            }
+
             if (_hasUnsavedChanges)
             {
                 var result = MessageDialogs.ShowDialog(
@@ -308,6 +349,12 @@ namespace QuickWinstall
                 }
             }
             
+            // Reset manual edit tracking if account name is cleared
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                _displayNameManuallyEdited[index] = false;
+            }
+            
             ValidateAccountName(textBox, index);
             UpdateAccountDisplayName(index);
             UpdateAccountGroupState(index);
@@ -318,6 +365,7 @@ namespace QuickWinstall
         {
             var textBox = sender as TextBox;
             ValidateAccountDisplayName(textBox);
+            _displayNameManuallyEdited[index] = true; // Mark as manually edited
             _hasUnsavedChanges = true;
         }
 
@@ -343,6 +391,8 @@ namespace QuickWinstall
             UpdateBypassCheckboxes();
             _hasUnsavedChanges = true;
         }
+
+
 
         #endregion
 
@@ -392,14 +442,15 @@ namespace QuickWinstall
                 int accountsWithNames = 0;
                 for (int i = 0; i < txtAccountNames.Length; i++)
                 {
-                    if (!string.IsNullOrWhiteSpace(txtAccountNames[i]?.Text))
+                    // Skip the current field being cleared
+                    if (i != index && !string.IsNullOrWhiteSpace(txtAccountNames[i]?.Text))
                     {
                         accountsWithNames++;
                     }
                 }
 
-                // If this is the only account with a name, show warning
-                if (accountsWithNames <= 1)
+                // If there would be no accounts left, show warning
+                if (accountsWithNames == 0)
                 {
                     SetFieldError(textBox, GetLocalizedString("ValidationError_LastAccountCannotBeEmpty") ?? "At least one account must be configured");
                     return;
@@ -510,7 +561,8 @@ namespace QuickWinstall
                 var accountName = txtAccountNames[index].Text.Trim();
                 var displayName = txtAccountDisplayNames[index].Text.Trim();
 
-                if (!string.IsNullOrEmpty(accountName) && string.IsNullOrEmpty(displayName))
+                // Only auto-update if display name hasn't been manually edited
+                if (!string.IsNullOrEmpty(accountName) && !_displayNameManuallyEdited[index])
                 {
                     txtAccountDisplayNames[index].Text = accountName;
                 }
@@ -591,7 +643,7 @@ namespace QuickWinstall
                 // Language and Region Settings
                 {"{{SYSTEM_LOCALE}}", cmbSystemLocale.SelectedItem?.ToString() ?? ""},
                 {"{{USER_LOCALE}}", cmbUserLocale.SelectedItem?.ToString() ?? ""},
-                {"{{UI_LANGUAGE}}", cmbUILanguage.SelectedItem?.ToString() ?? ""},
+                {"{{UI_LANGUAGE}}", GetLanguageCode(cmbUILanguage.SelectedItem?.ToString() ?? "")},
                 {"{{TIME_ZONE}}", cmbTimeZone.SelectedItem?.ToString() ?? ""},
                 
                 // Windows 11 Bypass Options (1 = enabled, 0 = disabled)
@@ -684,7 +736,7 @@ namespace QuickWinstall
             _currentSettings.SystemLocale = cmbSystemLocale.SelectedItem?.ToString() ?? "";
             _currentSettings.UserLocale = cmbUserLocale.SelectedItem?.ToString() ?? "";
             _currentSettings.SameAsSystemLocale = chkSameAsSystemLocale.Checked;
-            _currentSettings.UILanguage = cmbUILanguage.SelectedItem?.ToString() ?? "";
+            _currentSettings.UILanguage = GetLanguageCode(cmbUILanguage.SelectedItem?.ToString() ?? "");
             
             if (txtAccountNames.Length > 0)
             {
@@ -714,6 +766,57 @@ namespace QuickWinstall
             _hasUnsavedChanges = false;
         }
 
+        private string GetLanguageCode(string displayName)
+        {
+            switch (displayName)
+            {
+                case "English": return "en-US";
+                case "Tiếng Việt": return "vi-VN";
+                default: return "en-US";
+            }
+        }
+
+        private string GetLanguageDisplayName(string code)
+        {
+            switch (code)
+            {
+                case "en-US": return "English";
+                case "vi-VN": return "Tiếng Việt";
+                default: return "English";
+            }
+        }
+
         #endregion
+
+        // Handle RDP and DPI change window messages
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_WTSSESSION_CHANGE = 0x02B1;
+            const int WM_DPICHANGED = 0x02E0;
+            const int WM_DISPLAYCHANGE = 0x007E;
+            
+            switch (m.Msg)
+            {
+                case WM_WTSSESSION_CHANGE:
+                    // Handle RDP session changes
+                    this.BeginInvoke(new MethodInvoker(() => {
+                        this.SuspendLayout();
+                        this.Invalidate(true);
+                        this.PerformLayout();
+                        this.ResumeLayout(true);
+                    }));
+                    break;
+                    
+                case WM_DPICHANGED:
+                case WM_DISPLAYCHANGE:
+                    // Handle DPI or display changes
+                    this.BeginInvoke(new MethodInvoker(() => {
+                        this.PerformLayout();
+                    }));
+                    break;
+            }
+            
+            base.WndProc(ref m);
+        }
     }
 }

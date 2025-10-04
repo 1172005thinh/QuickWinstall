@@ -91,7 +91,7 @@ namespace QuickWinstall
             int yPos = padding;
             
             // Project Title
-            this.lblProjectTitle.Text = "Project: QuickWinstall - Autounattend Generator";
+            this.lblProjectTitle.Text = "QuickWinstall - Autounattend Generator";
             this.lblProjectTitle.Location = new System.Drawing.Point(padding, yPos);
             this.lblProjectTitle.Size = new System.Drawing.Size(360, lineHeight);
             this.lblProjectTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -121,7 +121,7 @@ namespace QuickWinstall
             yPos += lineHeight + 5;
             
             // GitHub Link
-            this.lnkGitHub.Text = "     GitHub";
+            this.lnkGitHub.Text = "GitHub";
             this.lnkGitHub.Location = new System.Drawing.Point(padding, yPos);
             this.lnkGitHub.Size = new System.Drawing.Size(360, lineHeight);
             this.lnkGitHub.LinkColor = System.Drawing.Color.Blue;
@@ -131,7 +131,7 @@ namespace QuickWinstall
             yPos += lineHeight + 5;
             
             // Facebook Link
-            this.lnkFacebook.Text = "     Facebook";
+            this.lnkFacebook.Text = "Facebook";
             this.lnkFacebook.Location = new System.Drawing.Point(padding, yPos);
             this.lnkFacebook.Size = new System.Drawing.Size(360, lineHeight);
             this.lnkFacebook.LinkColor = System.Drawing.Color.Blue;
@@ -148,7 +148,7 @@ namespace QuickWinstall
             
             yPos += lineHeight + 5;
             
-            this.lblContributorsContent.Text = "     ";
+            this.lblContributorsContent.Text = "updating...";
             this.lblContributorsContent.Location = new System.Drawing.Point(padding, yPos);
             this.lblContributorsContent.Size = new System.Drawing.Size(360, lineHeight);
             
@@ -163,7 +163,7 @@ namespace QuickWinstall
             yPos += lineHeight + 5;
             
             // Schneegans Link
-            this.lnkSchneegans.Text = "     Schneegans Autounattend Generator";
+            this.lnkSchneegans.Text = "Schneegans Autounattend Generator";
             this.lnkSchneegans.Location = new System.Drawing.Point(padding, yPos);
             this.lnkSchneegans.Size = new System.Drawing.Size(360, lineHeight);
             this.lnkSchneegans.LinkColor = System.Drawing.Color.Blue;
@@ -180,7 +180,7 @@ namespace QuickWinstall
             
             yPos += lineHeight + 5;
             
-            this.lblLicenseContent.Text = "     This is a free, open-source project.";
+            this.lblLicenseContent.Text = "This is a free, open-source project.";
             this.lblLicenseContent.Location = new System.Drawing.Point(padding, yPos);
             this.lblLicenseContent.Size = new System.Drawing.Size(360, lineHeight);
             
