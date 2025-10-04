@@ -1,6 +1,6 @@
 # QuickWinstall - Autounattend Generator
 
-![Version](https://img.shields.io/badge/version-0.1-blue)
+![Version](https://img.shields.io/badge/version-0.2-blue)
 ![License](https://img.shields.io/badge/license-Free%20Open%20Source-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 
@@ -80,7 +80,7 @@ Language files are located in the `lang/` directory and can be easily extended f
 ## 📋 System Requirements
 
 - Windows 7 or later
-- .NET 8.0 Runtime (for compiled executable)
+- .NET 8.0 Runtime (for compiled executable), download from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 ## 🛠️ Development Setup
 
@@ -128,6 +128,8 @@ Press `F5` to build and run with debugging, or use `Ctrl+Shift+P` and run "Tasks
 
 - GitHub: [@1172005thinh](https://github.com/1172005thinh)
 - Facebook: [@quickcomp.hungthinhnguyen](https://www.facebook.com/quickcomp.hungthinhnguyen)
+
+Contributors are welcome! Feel free to open issues or submit pull requests.
 
 ## 📄 License
 
