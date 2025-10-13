@@ -1,0 +1,68 @@
+{
+    "GeneralConfig":
+    {
+        "Expanded": true,
+        "WindowsEdition": "",
+        "ProductKey": [ "" ],
+        "CPUArchitecture": ""
+    },
+    "LangRegionConfig":
+    {
+        "Expanded": true,
+        "SystemLocale": "",
+        "UserLocale": "",
+        "SameAsSystemLocale": false,
+        "WindowsUILanguage": "",
+        "KeyboardLayout": "",
+        "TimeZone": ""
+    },
+    "BypassConfig":
+    {
+        "Expanded": true,
+        "BypassESUCheck": false,
+        "BypassSecureBootCheck": false,
+        "BypassTPMCheck": false,
+        "BypassRAMCheck": false,
+        "BypassDiskSpaceCheck": false
+    },
+    "DiskConfig":
+    {
+        "Expanded": true,
+        "DiskNumber": 0,
+        "UseExistingPartitions": false,
+        "CustomPartitions": [ ]
+    },
+    "AccountConfig":
+    {
+        "Expanded": true,
+        "UseOnlineAccount": false,
+        "AutoLogin": false,
+        "AutoLoginDelay": 0,
+        "Accounts": [ ]
+    },
+    "BitLockerConfig":
+    {
+        "Expanded": true,
+        "DisableBitLocker": false
+    },
+    "OOBEConfig":
+    {
+        "Expanded": true,
+        "SkipAndHideAll": false,
+        "SkipEULAs": false,
+        "SkipLocalAccount": false,
+        "SkipOnlineAccount": false,
+        "SkipWirelessSetup": false,
+        "SkipMachineOOBE": false,
+        "SkipUserOOBE": false
+    },
+    "PersonalizeConfig":
+    {
+        "Expanded": true,
+        "ComputerName": ""
+    },
+    "AppConfig":
+    {
+        "Expanded": true
+    }
+}

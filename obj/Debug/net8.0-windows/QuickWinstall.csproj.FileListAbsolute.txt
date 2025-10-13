@@ -1,0 +1,5 @@
+D:\Users\HungThinh\Applications\VSCode\MyProject\QuickWInstall\obj\Debug\net8.0-windows\QuickWinstall.GeneratedMSBuildEditorConfig.editorconfig
+D:\Users\HungThinh\Applications\VSCode\MyProject\QuickWInstall\obj\Debug\net8.0-windows\QuickWinstall.AssemblyInfoInputs.cache
+D:\Users\HungThinh\Applications\VSCode\MyProject\QuickWInstall\obj\Debug\net8.0-windows\QuickWinstall.AssemblyInfo.cs
+D:\Users\HungThinh\Applications\VSCode\MyProject\QuickWInstall\obj\Debug\net8.0-windows\QuickWinstall.csproj.CoreCompileInputs.cache
+D:\Users\HungThinh\Applications\VSCode\MyProject\QuickWInstall\obj\Debug\net8.0-windows\QuickWinstall.sourcelink.json

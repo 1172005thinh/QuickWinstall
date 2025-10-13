@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+	<!--https://schneegans.de/windows/unattend-generator-->
+	<!--https://github.com/1172005thinh/QuickWinstall-->
+	<settings pass="windowsPE">
+		<component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<InputLocale>{{INPUT_LOCALE}}</InputLocale>
+            <SystemLocale>{{SYSTEM_LOCALE}}</SystemLocale>
+            <UILanguage>{{WIN_UI_LANGUAGE}}</UILanguage>
+            <UILanguageFallback>en-US</UILanguageFallback>
+            <UserLocale>{{USER_LOCALE}}</UserLocale>
+            <SetupUILanguage>
+                <UILanguage>en-US</UILanguage>
+            </SetupUILanguage>
+		</component>
+		<component name="Microsoft-Windows-Setup" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<ImageInstall>
+				<OSImage>
+					<InstallFrom>
+						<MetaData wcm:action="add">
+							<Key>/IMAGE/NAME</Key>
+							<Value>{{WINDOWS_EDITION}}</Value>
+						</MetaData>
+					</InstallFrom>
+					<InstallTo>
+						<DiskID>{{DISK_ID}}</DiskID>
+						<PartitionID>{{PARTITION_ID}}</PartitionID>
+					</InstallTo>
+					<WillShowUI>Never</WillShowUI>
+				</OSImage>
+			</ImageInstall>
+			<UserData>
+				<ProductKey>
+					<Key>{{PRODUCT_KEY}}</Key>
+					<WillShowUI>Never</WillShowUI>
+				</ProductKey>
+				<AcceptEula>true</AcceptEula>
+			</UserData>
+			<Diagnostics>
+                <OptIn>false</OptIn>
+            </Diagnostics>
+            <DynamicUpdate>
+                <Enable>false</Enable>
+                <WillShowUI>OnError</WillShowUI>
+            </DynamicUpdate>
+			{{DISK_CONFIGURATION}}
+			<UseConfigurationSet>false</UseConfigurationSet>
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassTPMCheck" /t REG_DWORD /d {{BYPASS_TPM}} /f</Path>
+                    <Description>Add BypassTPMCheck</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>2</Order>
+                    <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassRAMCheck" /t REG_DWORD /d {{BYPASS_RAM}} /f</Path>
+                    <Description>Add BypassRAMCheck</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassSecureBootCheck" /t REG_DWORD /d {{BYPASS_SECUREBOOT}} /f</Path>
+                    <Description>Add BypassSecureBootCheck</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>4</Order>
+                    <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassCPUCheck" /t REG_DWORD /d {{BYPASS_CPU}} /f</Path>
+                    <Description>Add BypassCPUCheck</Description>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>5</Order>
+                    <Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassStorageCheck" /t REG_DWORD /d {{BYPASS_STORAGE}} /f</Path>
+                    <Description>Add BypassStorageCheck</Description>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>6</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v BypassDiskCheck /t REG_DWORD /d {{BYPASS_DISK}} /f</Path>
+					<Description>Add BypassDiskCheck</Description>
+				</RunSynchronousCommand>
+			</RunSynchronous>
+		</component>
+	</settings>
+	<settings pass="generalize"></settings>
+	<settings pass="specialize">
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<ComputerName>{{PC_NAME}}</ComputerName>
+		</component>
+		<component name="Microsoft-Windows-Deployment" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <Path>net accounts /maxpwage:unlimited</Path>
+                    <WillReboot>Never</WillReboot>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>2</Order>
+                    <Path>net user User /active:Yes</Path>
+                    <WillReboot>Never</WillReboot>
+                </RunSynchronousCommand>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <Path>net user User /passwordreq:yes</Path>
+                    <WillReboot>Never</WillReboot>
+                </RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>powershell.exe -WindowStyle Normal -NoProfile -Command "$xml = [xml]::new(); $xml.Load('C:\Windows\Panther\unattend.xml'); $sb = [scriptblock]::Create( $xml.unattend.Extensions.ExtractScript ); Invoke-Command -ScriptBlock $sb -ArgumentList $xml;"</Path>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>5</Order>
+					<Path>powershell.exe -WindowStyle Normal -NoProfile -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\Specialize.ps1' -Raw | Invoke-Expression;"</Path>
+				</RunSynchronousCommand>
+			</RunSynchronous>
+		</component>
+		<component name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
+            xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SkipAutoActivation>true</SkipAutoActivation>
+        </component>
+        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"
+            xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <Identification>
+                <JoinWorkgroup>WORKGROUP</JoinWorkgroup>
+            </Identification>
+        </component>
+	</settings>
+	<settings pass="auditSystem"></settings>
+	<settings pass="auditUser"></settings>
+	<settings pass="oobeSystem">
+		<component name="Microsoft-Windows-International-Core" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<InputLocale>{{INPUT_LOCALE}}</InputLocale>
+            <SystemLocale>{{SYSTEM_LOCALE}}</SystemLocale>
+            <UILanguage>{{WIN_UI_LANGUAGE}}</UILanguage>
+            <UILanguageFallback>en-US</UILanguageFallback>
+            <UserLocale>{{USER_LOCALE}}</UserLocale>
+		</component>
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="{{CPU_ARCHITECTURE}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<TimeZone>{{TIME_ZONE}}</TimeZone>
+			{{ACCOUNT_CONFIGURATION}}			
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <CommandLine>reg add "HKLM\SYSTEM\CurrentControlSet\Control\BitLocker" /v "PreventDeviceEncryption" /t REG_DWORD /d {{BITLOCKER_DISABLED}} /f</CommandLine>
+                    <Description>Disable BitLocker automatic device encryption</Description>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+			<OOBE>
+				<HideEULAPage>{{HIDE_EULA_PAGE}}</HideEULAPage>
+				<HideLocalAccountScreen>{{HIDE_LOCAL_ACCOUNT_SCREEN}}</HideLocalAccountScreen>
+				<HideOnlineAccountScreens>{{HIDE_ONLINE_ACCOUNT_SCREENS}}</HideOnlineAccountScreens>
+				<HideWirelessSetupInOOBE>{{HIDE_WIRELESS_SETUP_IN_OOBE}}</HideWirelessSetupInOOBE>
+				<NetworkLocation>Home</NetworkLocation>
+				<ProtectYourPC>3</ProtectYourPC>
+				<SkipMachineOOBE>{{SKIP_MACHINE_OOBE}}</SkipMachineOOBE>
+				<SkipUserOOBE>{{SKIP_USER_OOBE}}</SkipUserOOBE>
+			</OOBE>
+		</component>
+	</settings>
+	<Extensions xmlns="https://schneegans.de/windows/unattend-generator/">
+		<ExtractScript>
+param(
+    [xml] $Document
+);
+
+foreach( $file in $Document.unattend.Extensions.File ) {
+    $path = [System.Environment]::ExpandEnvironmentVariables( $file.GetAttribute( 'path' ) );
+    mkdir -Path( $path | Split-Path -Parent ) -ErrorAction 'SilentlyContinue';
+    $encoding = switch( [System.IO.Path]::GetExtension( $path ) ) {
+        { $_ -in '.ps1', '.xml' } { [System.Text.Encoding]::UTF8; }
+        { $_ -in '.reg', '.vbs', '.js' } { [System.Text.UnicodeEncoding]::new( $false, $true ); }
+        default { [System.Text.Encoding]::Default; }
+    };
+    $bytes = $encoding.GetPreamble() + $encoding.GetBytes( $file.InnerText.Trim() );
+    [System.IO.File]::WriteAllBytes( $path, $bytes );
+}
+		</ExtractScript>
+		<File path="C:\Windows\Setup\Scripts\Specialize.ps1">
+$scripts = @(
+	{
+		reg.exe add "HKLM\SYSTEM\Setup\MoSetup" /v AllowUpgradesWithUnsupportedTPMOrCPU /t REG_DWORD /d 1 /f;
+	};
+);
+
+&amp; {
+  [float] $complete = 0;
+  [float] $increment = 100 / $scripts.Count;
+  foreach( $script in $scripts ) {
+    Write-Progress -Activity 'Running scripts to customize your Windows installation. Do not close this window.' -PercentComplete $complete;
+    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
+      $str = $script.ToString().Trim() -replace '\s+', ' ';
+      $max = 100;
+      if( $str.Length -le $max ) {
+        $str;
+      } else {
+        $str.Substring( 0, $max - 1 ) + '&#x2026;';
+      }
+    );
+    $start = [datetime]::Now;
+    &amp; $script;
+    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
+    "`r`n" * 3;
+    $complete += $increment;
+  }
+} *&gt;&amp;1 &gt;&gt; "C:\Windows\Setup\Scripts\Specialize.log";
+		</File>
+	</Extensions>
+</unattend>
