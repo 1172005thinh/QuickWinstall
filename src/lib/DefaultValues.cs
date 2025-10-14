@@ -83,6 +83,10 @@ namespace QuickWinstall
     public record AppConfigDefaults(
         bool        Expanded);
 
+    public record LangDefaults(
+        string Lang,
+        string[] LangsAvailable);
+
     public class Defaults
     {
         public GeneralConfigDefaults GeneralConfig { get; init; }
@@ -90,18 +94,22 @@ namespace QuickWinstall
         public BypassConfigDefaults BypassChecksConfig { get; init; }
         public DiskConfigDefaults DiskConfig { get; init; }
         public AccountConfigDefaults AccountConfig { get; init; }
+        public OOBEConfigDefaults OOBEConfig { get; init; }
         public BitLockerConfigDefaults BitLockerConfig { get; init; }
+        public PersonalizeConfigDefaults PersonalizeConfig { get; init; }
         public AppConfigDefaults AppConfig { get; init; }
+        public LangDefaults LangConfig { get; init; }
+
 
         public static Defaults Load(string path)
         {
             if (!File.Exists(path)) 
-                throw new FileNotFoundException(LangManager.GetString("DefaultsFileNotFound"));
+                throw new FileNotFoundException(LangManager.GetString("DefaultsFileNotFound", "Defaults file not found."), path);
             
             var json = File.ReadAllText(path);
             var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             return JsonSerializer.Deserialize<Defaults>(json, opts) 
-                ?? throw new InvalidOperationException(LangManager.GetString("FailedToParseDefaults"));
+                ?? throw new InvalidOperationException(LangManager.GetString("FailedToParseDefaults", "Failed to parse defaults."));
         }
 
         // Convenience: load from Application output directory (default.json must be copied to output)

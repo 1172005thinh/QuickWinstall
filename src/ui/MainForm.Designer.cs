@@ -44,7 +44,7 @@ namespace QuickWinstall
             this.MaximumSize = new Size(mainFormConfig.FormWidthMax, mainFormConfig.FormHeightMax);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.Sizable;
-            this.Icon = IconManager.SetFormIcon(this, IconManager.Icons.Preset);
+            IconManager.SetFormIcon(this, IconManager.Icons.Preset);
             #endregion
 
             #region Activity Panel
@@ -72,10 +72,10 @@ namespace QuickWinstall
                 Location = new Point(
                     mainFormConfig.Padding + mainFormConfig.ControlPanelButtonWidth / 2,
                     mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
-                Icon = IconManager.GetIcon(IconManager.Icons.Settings, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize)),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            settingsBtn.Click += SettingsBtn_Click;
+            IconManager.SetButtonIcon(settingsBtn, true, IconManager.Icons.Settings, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
+            settingsBtn.Click += settingsBtn_Click;
 
             // Clear Button
             clearBtn = new Button
@@ -85,10 +85,10 @@ namespace QuickWinstall
                 Location = new Point(
                     settingsBtn.Right + mainFormConfig.Spacing + mainFormConfig.ControlPanelButtonWidth / 2,
                     mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
-                Icon = IconManager.GetIcon(IconManager.Icons.Clear, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize)),
                 TextAlign = ContentAlignment.MiddleCenter
-            };
-            clearBtn.Click += ClearBtn_Click;
+            };            
+            IconManager.SetButtonIcon(clearBtn, true, IconManager.Icons.Clear, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
+            clearBtn.Click += clearBtn_Click;
 
             // Preset Button
             presetsBtn = new Button
@@ -98,10 +98,10 @@ namespace QuickWinstall
                 Location = new Point(
                     clearBtn.Right + mainFormConfig.Spacing + mainFormConfig.ControlPanelButtonWidth / 2,
                     mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
-                Icon = IconManager.GetIcon(IconManager.Icons.Preset, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize)),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            presetsBtn.Click += PresetsBtn_Click;
+            IconManager.SetButtonIcon(presetsBtn, true, IconManager.Icons.Preset, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
+            presetsBtn.Click += presetsBtn_Click;
 
             // Cancel Button
             cancelBtn = new Button
@@ -111,10 +111,11 @@ namespace QuickWinstall
                 Location = new Point(
                     controlPanel.Width - mainFormConfig.Padding - mainFormConfig.ControlPanelButtonWidth / 2,
                     mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
-                Icon = IconManager.GetIcon(IconManager.Icons.Cancel, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize)),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Enabled = false
             };
+            IconManager.SetButtonIcon(cancelBtn, true, IconManager.Icons.Cancel, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
+            cancelBtn.Click += cancelBtn_Click;
 
             // Generate Button
             genBtn = new Button
@@ -124,16 +125,16 @@ namespace QuickWinstall
                 Location = new Point(
                     cancelBtn.Left - mainFormConfig.Spacing - mainFormConfig.ControlPanelButtonWidth / 2,
                     mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
-                Icon = IconManager.GetIcon(IconManager.Icons.Generate, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize)),
                 TextAlign = ContentAlignment.MiddleCenter
             };
-            genBtn.Click += GenBtn_Click;
+            IconManager.SetButtonIcon(genBtn, true, IconManager.Icons.Generate, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
+            genBtn.Click += genBtn_Click;
 
             // Add buttons to control panel
             controlPanel.Controls.AddRange(new Control[] {
                 settingsBtn,
                 clearBtn,
-                presetBtn,
+                presetsBtn,
                 genBtn,
                 cancelBtn
             });

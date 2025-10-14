@@ -64,5 +64,11 @@
     "AppConfig":
     {
         "Expanded": true
+    },
+    "LangConfig":
+    {
+        "Lang": "en-US",
+        "LangsAvailable": [ "en-US",
+                            "vi-VN" ]
     }
 }

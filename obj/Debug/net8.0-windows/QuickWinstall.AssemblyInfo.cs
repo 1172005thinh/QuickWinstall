@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2025 QuickComp.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78145b87fb2a555029fea0a3d81c8a385cbeab2f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f5400320777fa07bea623b283af3e57e0032e07f")]
 [assembly: System.Reflection.AssemblyProductAttribute("QuickWinstall")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuickWinstall")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

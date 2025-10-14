@@ -512,12 +512,12 @@ namespace QuickWinstall
         public static Config Load(string path)
         {
             if (!File.Exists(path))
-                throw new FileNotFoundException($"Config file not found: {path}");
+                throw new FileNotFoundException(LangManager.GetString("DefaultsFileNotFound", "Defaults file not found."), path);
             
             var json = File.ReadAllText(path);
             var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             return JsonSerializer.Deserialize<Config>(json, opts)
-                ?? throw new InvalidOperationException("Failed to parse config.json");
+                ?? throw new InvalidOperationException(LangManager.GetString("FailedToParseDefaults", "Failed to parse defaults."));
         }
 
         // Convenience: load from application output directory (config.json must be copied to output)

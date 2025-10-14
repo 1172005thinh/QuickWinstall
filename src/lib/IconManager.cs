@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace QuickWinstall.Lib
 {
+    #region IconManager
     public static class IconManager
     {
         private static readonly string iconPath = Path.Combine(AppContext.BaseDirectory, "res", "icons");
@@ -180,12 +181,12 @@ namespace QuickWinstall.Lib
         #endregion
 
         #region GetAppIcon
-        public static Icon GetApp256Icon()
+        public static Icon SetApp256Icon()
         {
             return LoadIcon(Icons.App256) ?? SystemIcons.Application;
         }
 
-        public static Icon GetAppIcon()
+        public static Icon SetAppIcon()
         {
             return LoadIcon(Icons.App) ?? SystemIcons.Application;
         }
@@ -196,7 +197,7 @@ namespace QuickWinstall.Lib
         {
             try
             {
-                Icon icon = string.IsNullOrEmpty(iconName) ? GetAppIcon() : LoadIcon(iconName);
+                Icon icon = string.IsNullOrEmpty(iconName) ? SetAppIcon() : LoadIcon(iconName);
                 if (icon != null)
                 {
                     form.Icon = icon;
@@ -210,6 +211,43 @@ namespace QuickWinstall.Lib
                 System.Diagnostics.Debug.WriteLine($"Error setting form icon: {ex.Message}");
                 return false;
             }
+        }
+        #endregion
+
+        #region SetButtonIcon
+        public static bool SetButtonIcon(Button button, bool showText, string iconName, Size? size = null)
+        {
+            try
+            {
+                var bitmap = LoadIconAsBitmap(iconName, size);
+                if (bitmap == null) return false;
+
+                button.Image = bitmap;
+                if (showText)
+                {
+                    button.ImageAlign = ContentAlignment.MiddleLeft;
+                    button.TextAlign = ContentAlignment.MiddleRight;
+                }
+                else
+                {
+                    button.ImageAlign = ContentAlignment.MiddleCenter;
+                    button.Text = string.Empty;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error setting button icon {iconName}: {ex.Message}");
+                return false;
+            }
+        }
+        #endregion
+
+        #region SetIcon
+        public static Icon SetIcon(string iconName, Size? size = null)
+        {
+            return LoadIcon(iconName);
         }
         #endregion
 
@@ -354,4 +392,5 @@ namespace QuickWinstall.Lib
         }
         #endregion
     }
+    #endregion
 }

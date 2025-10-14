@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace QuickWinstall
 {
-    public partial class MainForm : Form, ILanguageRefreshable
+    public partial class MainForm : Form, ILangRefreshable
     {
         // Section controls
         private GeneralConfig generalConfig;
@@ -30,14 +30,14 @@ namespace QuickWinstall
 
         public MainForm()
         {
-            InitializaComponent();
+            InitializeComponent();
             InitializeConfigSections();
 
             LoadAllSectionSettings();
             UpdateStatusLabel(LangManager.GetString("MainForm_Status_InitializedSuccessfully", "Initialized successfully."));
 
             LangHelper.RegisterForm(this);
-            RefreshLanguage();
+            RefreshLang();
 
             ThemeManager.ApplyThemeToForm(this);
 
@@ -119,7 +119,7 @@ namespace QuickWinstall
                 }
                 else
                 {
-                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_UnsavedChanges"));
+                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_UnsavedChanges", "Has unsaved changes."));
                 }
             }
             finally
@@ -175,40 +175,40 @@ namespace QuickWinstall
             {
                 ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Normal);
             }
-            else if (status.Contains(LangManager.GetString("MainForm_Status_Error"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_error"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Invalid"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_invalid"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Failed"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_failed"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Unexpected"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_unexpected"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Critical"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_critical"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Empty"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_empty")))
+            else if (status.Contains(LangManager.GetString("MainForm_Status_Error", "Error"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_error", "error"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Invalid", "Invalid"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_invalid", "invalid"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Failed", "Failed"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_failed", "failed"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Unexpected", "Unexpected"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_unexpected", "unexpected"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Critical", "Critical"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_critical", "critical"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Empty", "Empty"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_empty", "empty")))
             {
                 ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Error);
             }
-            else if (status.Contains(LangManager.GetString("MainForm_Status_Warning"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_warning"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Unsaved"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_unsaved")))
+            else if (status.Contains(LangManager.GetString("MainForm_Status_Warning", "Warning"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_warning", "warning"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Unsaved", "Unsaved"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_unsaved", "unsaved")))
             {
                 ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Warning);
             }
-            else if (status.Contains(LangManager.GetString("MainForm_Status_Success"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_success"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Ready"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_ready"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Completed"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_completed"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Saved"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_saved"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Applied"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_applied"))
-                    || status.Contains(LangManager.GetString("MainForm_Status_Cleared")
-                    || status.Contains(LangManager.GetString("MainForm_Status_cleared")))
+            else if (status.Contains(LangManager.GetString("MainForm_Status_Success", "Success"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_success", "success"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Ready", "Ready"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_ready", "ready"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Completed", "Completed"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_completed", "completed"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Saved", "Saved"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_saved", "saved"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Applied", "Applied"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_applied", "applied"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_Cleared", "Cleared"))
+                    || status.Contains(LangManager.GetString("MainForm_Status_cleared", "cleared")))
             {
                 ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Success);
             }
@@ -234,17 +234,18 @@ namespace QuickWinstall
                     var result = settingsForm.ShowDialog(this);
                     if (result == DialogResult.OK)
                     {
-                        UpdateStatusLabel(LangManager.GetString("MainForm_Status_SettingsSaved"));
+                        UpdateStatusLabel(LangManager.GetString("MainForm_Status_SettingsSaved", "Settings saved."));
                     }
                 }
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToOpenSettings", "Failed to open settings."));
                 MessageBox.Show(
-                    string.Format(UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToOpenSettings"), ex.Message),
-                    LangManager.GetString("MainForm_Status_Error"),
+                    string.Format(LangManager.GetString("MainForm_Error_FailedToOpenSettings", "Failed to open settings: {0}"), ex.Message),
+                    LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
         }
@@ -264,7 +265,7 @@ namespace QuickWinstall
                     LangManager.GetString("MainForm_Warning_ClearAllSettings", "Clear all settings?"),
                     LangManager.GetString("MainForm_Warning_Title", "Warning"),
                     MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Warning, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Warning
                 );
 
                 if (confirmResult == DialogResult.OK)
@@ -281,16 +282,17 @@ namespace QuickWinstall
                     personalizeConfig.ResetToDefaults();
                     appConfig.ResetToDefaults();
                     _hasUnsavedChanges = false;
-                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_AllSettingsCleared"));
+                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_AllSettingsCleared", "All settings cleared."));
                 }
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToClearSettings", "Failed to clear settings."));
                 MessageBox.Show(
                     string.Format(UpdateStatusLabel(LangManager.GetString("MainForm_Error_FailedToClearSettings", "Failed to clear settings: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
         }
@@ -311,24 +313,25 @@ namespace QuickWinstall
                     var result = presetsForm.ShowDialog(this);
                     if (result == DialogResult.OK)
                     {
-                        UpdateStatusLabel(LangManager.GetString("MainForm_Status_PresetApplied"));
+                        UpdateStatusLabel(LangManager.GetString("MainForm_Status_PresetApplied", "Preset applied."));
                     }
                 }
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToOpenPreset", "Failed to open preset."));
                 MessageBox.Show(
-                    string.Format(UpdateStatusLabel(LangManager.GetString("MainForm_Error_FailedToOpenPreset", "Failed to open preset: {0}"), ex.Message),
+                    string.Format(LangManager.GetString("MainForm_Error_FailedToOpenPreset", "Failed to open preset: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
         }
         #endregion
 
         #region Generate Button Click
-        private void generateBtn_Click(object sender, EventArgs e)
+        private void genBtn_Click(object sender, EventArgs e)
         {
             var defaults = Defaults.LoadFromAppFolder();
             var config = Config.LoadFromAppFolder();
@@ -346,7 +349,7 @@ namespace QuickWinstall
                         string.Format(LangManager.GetString("MainForm_Warning_PleaseFixError", "Please fix error: {0}"), validationError),
                         LangManager.GetString("MainForm_Warning_Title", "Warning"),
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Warning, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                        MessageBoxIcon.Warning
                     );
                     return;
                 }
@@ -355,11 +358,12 @@ namespace QuickWinstall
                 var settings = SettingsManager.LoadSettings();
                 if (string.IsNullOrEmpty(settings.XmlSavePath))
                 {
+                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_NoSavePath", "No save path specified in settings."));
                     MessageBox.Show(
                         string.Format(LangManager.GetString("MainForm_Error_NoSavePath", "No save path specified in settings: {0}"), validationError),
                         LangManager.GetString("MainForm_Error_Title", "Error"),
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                        MessageBoxIcon.Error
                     );
                     return;
                 }
@@ -367,11 +371,12 @@ namespace QuickWinstall
                 // Check if save path exists
                 if (!Directory.Exists(settings.XmlSavePath))
                 {
+                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_SavePathNotExist", "The specified save path does not exist."));
                     MessageBox.Show(
                         string.Format(LangManager.GetString("MainForm_Error_SavePathNotExist", "The specified save path does not exist: {0}"), validationError),
                         LangManager.GetString("MainForm_Error_Title", "Error"),
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                        MessageBoxIcon.Error
                     );
                     return;
                 }
@@ -386,11 +391,12 @@ namespace QuickWinstall
                         LangManager.GetString("MainForm_Warning_OverwriteFile", "The file autounattend.xml already exists. Overwrite?"),
                         LangManager.GetString("MainForm_Warning_Title", "Warning"),
                         MessageBoxButtons.OKCancel,
-                        MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Warning, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                        MessageBoxIcon.Warning
                     );
 
                     if (result == DialogResult.Cancel)
                     {
+                        UpdateStatusLabel(LangManager.GetString("MainForm_Status_GenerationCancelled", "Generation cancelled."));
                         return;
                     }
                 }
@@ -415,19 +421,20 @@ namespace QuickWinstall
                 _hasUnsavedChanges = false;
                 UpdateStatusLabel(LangManager.GetString("MainForm_Status_GenerationCompleted", "Generation completed successfully."));
                 MessageBox.Show(
-                    string.Format(LangManager.GetString("MainForm_Success_FileSaved", "File saved successfully to: {0}"), savePath),
-                    LangManager.GetString("MainForm_Success_Title", "Success"),
+                    string.Format(LangManager.GetString("MainForm_Info_FileSaved", "File saved to: {0}"), savePath),
+                    LangManager.GetString("MainForm_Info_Title", "Success"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Success, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Information
                 );
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_GenerationFailed", "Generation failed."));
                 MessageBox.Show(
-                    string.Format(UpdateStatusLabel(LangManager.GetString("MainForm_Error_GenerationFailed", "Generation failed: {0}"), ex.Message),
+                    string.Format(LangManager.GetString("MainForm_Error_GenerationFailed", "Generation failed: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
         }
@@ -443,13 +450,18 @@ namespace QuickWinstall
         #region OnFormClosing
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            var defaults = Defaults.LoadFromAppFolder();
+            var config = Config.LoadFromAppFolder();
+            var globalConfig = config.Global;
+            var mainFormConfig = config.MainForm;
+            
             if (_hasUnsavedChanges)
             {
                 var result = MessageBox.Show(
                     LangManager.GetString("MainForm_Warning_UnsavedChanges", "Leave without saving?"),
                     LangManager.GetString("MainForm_Warning_Title", "Warning"),
                     MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Warning, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Warning
                 );
                 if (result == DialogResult.Cancel)
                 {
@@ -464,27 +476,33 @@ namespace QuickWinstall
         #region SaveAllSectionSettings
         private void SaveAllSectionSettings()
         {
+            var defaults = Defaults.LoadFromAppFolder();
+            var config = Config.LoadFromAppFolder();
+            var globalConfig = config.Global;
+            var mainFormConfig = config.MainForm;
+            
             try
             {
                 var settings = SettingsManager.LoadSettings();
-                settings.GeneralConfig = generalConfig.GetCurrentSettings(),
-                settings.LangRegionConfig = langRegionConfig.GetCurrentSettings(),
-                settings.BypassConfig = bypassConfig.GetCurrentSettings(),
-                settings.DiskConfig = diskConfig.GetCurrentSettings(),
-                settings.AccountConfig = accountConfig.GetCurrentSettings(),
-                settings.OOBEConfig = oobeConfig.GetCurrentSettings(),
-                settings.BitLockerConfig = bitLockerConfig.GetCurrentSettings(),
-                settings.PersonalizeConfig = personalizeConfig.GetCurrentSettings(),
-                settings.AppConfig = appConfig.GetCurrentSettings()
+                settings.GeneralConfig = generalConfig.GetCurrentSettings();
+                settings.LangRegionConfig = langRegionConfig.GetCurrentSettings();
+                settings.BypassConfig = bypassConfig.GetCurrentSettings();
+                settings.DiskConfig = diskConfig.GetCurrentSettings();
+                settings.AccountConfig = accountConfig.GetCurrentSettings();
+                settings.OOBEConfig = oobeConfig.GetCurrentSettings();
+                settings.BitLockerConfig = bitLockerConfig.GetCurrentSettings();
+                settings.PersonalizeConfig = personalizeConfig.GetCurrentSettings();
+                settings.AppConfig = appConfig.GetCurrentSettings();
                 SettingsManager.SaveSettings(settings);
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToSaveSettings", "Failed to save settings."));
                 MessageBox.Show(
                     string.Format(LangManager.GetString("MainForm_Error_FailedToSaveSettings", "Failed to save settings: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
         }
@@ -493,6 +511,11 @@ namespace QuickWinstall
         #region LoadAllSectionSettings
         private void LoadAllSectionSettings()
         {
+            var defaults = Defaults.LoadFromAppFolder();
+            var config = Config.LoadFromAppFolder();
+            var globalConfig = config.Global;
+            var mainFormConfig = config.MainForm;
+
             try
             {
                 var settings = SettingsManager.LoadSettings();
@@ -518,11 +541,12 @@ namespace QuickWinstall
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToLoadLastSettings", "Failed to load last settings."));
                 MessageBox.Show(
                     string.Format(LangManager.GetString("MainForm_Error_FailedToLoadLastSettings", "Failed to load last settings: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
         }
@@ -531,10 +555,15 @@ namespace QuickWinstall
         #region ApplyPreset
         private void ApplyPreset(PresetsManager.PresetData preset)
         {
+            var defaults = Defaults.LoadFromAppFolder();
+            var config = Config.LoadFromAppFolder();
+            var globalConfig = config.Global;
+            var mainFormConfig = config.MainForm;
+            var name = preset.Name ?? "/noname";
+
             try
             {
                 _isValidating = true;
-                var name = preset.Name ?? "/noname";
 
                 if (preset.GeneralConfig != null)
                     generalConfig.LoadSettings(preset.GeneralConfig);
@@ -559,11 +588,12 @@ namespace QuickWinstall
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(string.Format(LangManager.GetString("MainForm_Status_FailedToApplyPreset", "Failed to apply preset: {0}"), name));
                 MessageBox.Show(
-                    string.Format(LangManager.GetString("MainForm_Error_FailedToApplyPreset", "Failed to apply preset: {0}"), ex.Message),
+                    string.Format(LangManager.GetString("MainForm_Error_FailedToApplyPreset", "Failed to apply preset {0}: {1}"), name, ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
             finally
@@ -574,7 +604,7 @@ namespace QuickWinstall
         #endregion
 
         #region RefreshLang
-        public void RefreshLanguage()
+        public void RefreshLang()
         {
             try
             {
@@ -588,8 +618,8 @@ namespace QuickWinstall
                     clearBtn.Text = LangManager.GetString("MainForm_ClearButton", "Clear");
                 if (presetsBtn != null)
                     presetsBtn.Text = LangManager.GetString("MainForm_PresetsButton", "Preset");
-                if (generateBtn != null)
-                    generateBtn.Text = LangManager.GetString("MainForm_GenerateButton", "Generate");
+                if (genBtn != null)
+                    genBtn.Text = LangManager.GetString("MainForm_GenerateButton", "Generate");
                 if (cancelBtn != null)
                     cancelBtn.Text = LangManager.GetString("MainForm_CancelButton", "Cancel");
 
@@ -600,11 +630,12 @@ namespace QuickWinstall
             }
             catch (Exception ex)
             {
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToRefreshLanguage", "Failed to refresh language."));
                 MessageBox.Show(
                     string.Format(LangManager.GetString("MainForm_Error_FailedToRefreshLanguage", "Failed to refresh language: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.IconManager.GetIcon(IconManager.Icons.Error, new Size(mainFormConfig.IconSize * 2, mainFormConfig.IconSize * 2))
+                    MessageBoxIcon.Error
                 );
             }
             finally
@@ -621,9 +652,9 @@ namespace QuickWinstall
             {
                 foreach (Control control in activityPanel.Controls)
                 {
-                    if (control is ILanguageRefreshable refreshable)
+                    if (control is ILangRefreshable refreshable)
                     {
-                        refreshable.RefreshLanguage();
+                        refreshable.RefreshLang();
                     }
                 }
             }
