@@ -31,7 +31,8 @@ def find_usages(root: Path):
         for m in pattern.finditer(text):
             key = m.group('key')
             default = m.group('def')
-            usages.setdefault(key, default)
+            # Keep the last default seen for duplicated keys (later occurrences override earlier ones)
+            usages[key] = default
     return usages
 
 
@@ -56,6 +57,7 @@ def main():
     parser = argparse.ArgumentParser(description='Find and add missing language keys')
     parser.add_argument('--noadd', action='store_true', help="Don't modify language files, only print missing keys")
     parser.add_argument('--sort', action='store_true', help='Sort language files after adding')
+    parser.add_argument('--overwrite', action='store_true', help='Overwrite existing keys in language files with latest defaults')
     parser.add_argument('--root', type=Path, default=Path('.'), help='Repository root (default: .)')
     parser.add_argument('--langs', type=Path, default=Path('res/langs'), help='Languages folder')
     args = parser.parse_args()
@@ -73,6 +75,7 @@ def main():
     en_data = load_json(en)
     vi_data = load_json(vi)
 
+    # Determine missing keys (present in usages but not present in both language files)
     missing = {}
     for k, default in usages.items():
         in_en = k in en_data
@@ -92,11 +95,17 @@ def main():
     if args.noadd:
         return
 
-    # Add to both JSONs if missing
+    # Add missing keys to both JSONs
     for k, default in missing.items():
         if k not in en_data:
             en_data[k] = default
         if k not in vi_data:
+            vi_data[k] = default
+
+    # If overwrite flag is set, overwrite existing keys in language files
+    if args.overwrite:
+        for k, default in usages.items():
+            en_data[k] = default
             vi_data[k] = default
 
     # Write back

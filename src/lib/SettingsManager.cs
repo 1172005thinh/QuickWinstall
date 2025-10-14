@@ -61,6 +61,9 @@ namespace QuickWinstall.Lib
         #region GeneralConfigSettings
         public class GeneralConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
+
             [JsonPropertyName("windowsEdition")]
             public string WindowsEdition { get; set; } = "";
 
@@ -76,6 +79,9 @@ namespace QuickWinstall.Lib
         /// LangRegionConfig settings structure
         public class LangRegionConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
+
             [JsonPropertyName("systemLocale")]
             public string SystemLocale { get; set; } = "";
 
@@ -99,6 +105,8 @@ namespace QuickWinstall.Lib
         #region BypassConfigSettings
         public class BypassConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
             [JsonPropertyName("bypassAll")]
             public bool BypassAll { get; set; } = true;
 
@@ -125,6 +133,8 @@ namespace QuickWinstall.Lib
         #region DiskConfigSettings
         public class DiskConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
             [JsonPropertyName("enableDiskConfiguration")]
             public bool EnableDiskConfiguration { get; set; } = true;
 
@@ -137,6 +147,9 @@ namespace QuickWinstall.Lib
 
         public class PartitionData
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
+
             [JsonPropertyName("id")]
             public int ID { get; set; }
 
@@ -163,6 +176,8 @@ namespace QuickWinstall.Lib
         #region AccountConfigSettings
         public class AccountConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
             [JsonPropertyName("enableLocalAccountCreation")]
             public bool EnableLocalAccountCreation { get; set; } = true;
 
@@ -195,6 +210,8 @@ namespace QuickWinstall.Lib
         #region OOBEConfigSettings
         public class OOBEConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
             [JsonPropertyName("skipAndHideAll")]
             public bool SkipAndHideAll { get; set; } = true;
 
@@ -221,6 +238,8 @@ namespace QuickWinstall.Lib
         #region BitLockerConfigSettings
         public class BitLockerConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
             [JsonPropertyName("disableBitLocker")]
             public bool DisableBitLocker { get; set; } = false;
         }
@@ -229,6 +248,8 @@ namespace QuickWinstall.Lib
         #region PersonalizeConfigSettings
         public class PersonalizeConfigSettings
         {
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
             [JsonPropertyName("computerName")]
             public string ComputerName { get; set; } = "";
         }
@@ -237,7 +258,8 @@ namespace QuickWinstall.Lib
         #region AppConfigSettings
         public class AppConfigSettings
         {
-
+            [JsonPropertyName("expanded")]
+            public bool Expanded { get; set; } = true;
         }
         #endregion
 

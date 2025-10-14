@@ -50,6 +50,7 @@ namespace QuickWinstall
             #region Activity Panel
             activityPanel = new Panel
             {
+                Name = "activityPanel",
                 Dock = DockStyle.Fill,
                 AutoScroll = true,
                 Padding = new Padding(mainFormConfig.Padding),
@@ -59,6 +60,7 @@ namespace QuickWinstall
             #region Control Panel
             controlPanel = new Panel
             {
+                Name = "controlPanel",
                 Dock = DockStyle.Bottom,
                 Size = new Size(mainFormConfig.ControlPanelWidth, mainFormConfig.ControlPanelHeight),
                 Padding = new Padding(mainFormConfig.Padding),
@@ -67,66 +69,71 @@ namespace QuickWinstall
             // Settings Button
             settingsBtn = new Button
             {
+                Name = "settingsBtn",
                 Text = LangManager.GetString("MainForm_SettingsButton", "Settings"),
                 Size = new Size(mainFormConfig.ControlPanelButtonWidth, mainFormConfig.ControlPanelButtonHeight),
-                Location = new Point(
-                    mainFormConfig.Padding + mainFormConfig.ControlPanelButtonWidth / 2,
-                    mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
+                Location = new Point(mainFormConfig.Padding, mainFormConfig.Padding),
                 TextAlign = ContentAlignment.MiddleCenter
             };
+            ThemeManager.SetButtonStyle(settingsBtn);
+            ToolTipManager.SetToolTip(settingsBtn, LangManager.GetString("MainForm_SettingsButton_Tooltip", "Open application settings."));
             IconManager.SetButtonIcon(settingsBtn, true, IconManager.Icons.Settings, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
             settingsBtn.Click += settingsBtn_Click;
 
             // Clear Button
             clearBtn = new Button
             {
+                Name = "clearBtn",
                 Text = LangManager.GetString("MainForm_ClearButton", "Clear"),
                 Size = new Size(mainFormConfig.ControlPanelButtonWidth, mainFormConfig.ControlPanelButtonHeight),
-                Location = new Point(
-                    settingsBtn.Right + mainFormConfig.Spacing + mainFormConfig.ControlPanelButtonWidth / 2,
-                    mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
+                Location = new Point(settingsBtn.Right + mainFormConfig.Spacing, mainFormConfig.Padding),
                 TextAlign = ContentAlignment.MiddleCenter
-            };            
+            };
+            ThemeManager.SetButtonStyle(clearBtn);
+            ToolTipManager.SetToolTip(clearBtn, LangManager.GetString("MainForm_ClearButton_Tooltip", "Clear all configurations."));
             IconManager.SetButtonIcon(clearBtn, true, IconManager.Icons.Clear, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
             clearBtn.Click += clearBtn_Click;
 
             // Preset Button
             presetsBtn = new Button
             {
+                Name = "presetsBtn",
                 Text = LangManager.GetString("MainForm_PresetsButton", "Preset"),
                 Size = new Size(mainFormConfig.ControlPanelButtonWidth, mainFormConfig.ControlPanelButtonHeight),
-                Location = new Point(
-                    clearBtn.Right + mainFormConfig.Spacing + mainFormConfig.ControlPanelButtonWidth / 2,
-                    mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
+                Location = new Point(clearBtn.Right + mainFormConfig.Spacing, mainFormConfig.Padding),
                 TextAlign = ContentAlignment.MiddleCenter
             };
+            ThemeManager.SetButtonStyle(presetsBtn);
+            ToolTipManager.SetToolTip(presetsBtn, LangManager.GetString("MainForm_PresetsButton_Tooltip", "Load recommended settings."));
             IconManager.SetButtonIcon(presetsBtn, true, IconManager.Icons.Preset, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
             presetsBtn.Click += presetsBtn_Click;
 
             // Cancel Button
             cancelBtn = new Button
             {
+                Name = "cancelBtn",
                 Text = LangManager.GetString("MainForm_CancelButton", "Cancel"),
                 Size = new Size(mainFormConfig.ControlPanelButtonWidth, mainFormConfig.ControlPanelButtonHeight),
-                Location = new Point(
-                    controlPanel.Width - mainFormConfig.Padding - mainFormConfig.ControlPanelButtonWidth / 2,
-                    mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
+                Location = new Point(controlPanel.Width - mainFormConfig.Padding, mainFormConfig.Padding),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Enabled = false
             };
+            ThemeManager.SetButtonStyle(cancelBtn);
+            ToolTipManager.SetToolTip(cancelBtn, LangManager.GetString("MainForm_CancelButton_Tooltip", "Exit the application without saving."));
             IconManager.SetButtonIcon(cancelBtn, true, IconManager.Icons.Cancel, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
             cancelBtn.Click += cancelBtn_Click;
 
             // Generate Button
             genBtn = new Button
             {
+                Name = "genBtn",
                 Text = LangManager.GetString("MainForm_GenerateButton", "Generate"),
                 Size = new Size(mainFormConfig.ControlPanelButtonWidth, mainFormConfig.ControlPanelButtonHeight),
-                Location = new Point(
-                    cancelBtn.Left - mainFormConfig.Spacing - mainFormConfig.ControlPanelButtonWidth / 2,
-                    mainFormConfig.Padding + mainFormConfig.ControlPanelButtonHeight / 2),
+                Location = new Point(cancelBtn.Left - mainFormConfig.Spacing, mainFormConfig.Padding),
                 TextAlign = ContentAlignment.MiddleCenter
             };
+            ThemeManager.SetButtonStyle(genBtn);
+            ToolTipManager.SetToolTip(genBtn, LangManager.GetString("MainForm_GenerateButton_Tooltip", "Generate the autounattend.xml file."));
             IconManager.SetButtonIcon(genBtn, true, IconManager.Icons.Generate, new Size(mainFormConfig.IconSize, mainFormConfig.IconSize));
             genBtn.Click += genBtn_Click;
 
@@ -143,6 +150,7 @@ namespace QuickWinstall
             #region Status Strip
             statusStrip = new StatusStrip
             {
+                Name = "statusStrip",
                 Dock = DockStyle.Bottom,
                 Size = new Size(mainFormConfig.StatusStripWidth, mainFormConfig.StatusStripHeight),
             };
@@ -150,6 +158,7 @@ namespace QuickWinstall
             // Status Prefix Label
             statusPrefixLabel = new ToolStripStatusLabel
             {
+                Name = "statusPrefixLabel",
                 Text = LangManager.GetString("MainForm_StatusPrefixLabel", "Status:"),
                 Size = new Size(mainFormConfig.StatusStripWidth * 20 / 100, mainFormConfig.StatusStripHeight),
                 Spring = false,
@@ -159,6 +168,7 @@ namespace QuickWinstall
             // Status Label
             statusLabel = new ToolStripStatusLabel
             {
+                Name = "statusLabel",
                 Text = LangManager.GetString("MainForm_StatusLabel_Ready", "Language packages are missing or corrupted."),
                 Size = new Size(mainFormConfig.StatusStripWidth * 80 / 100, mainFormConfig.StatusStripHeight),
                 Spring = true,

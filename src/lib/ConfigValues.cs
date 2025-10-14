@@ -6,6 +6,7 @@ using QuickWinstall.Lib;
 namespace QuickWinstall
 {
     public record GlobalConfig(
+        int AutoPopDelay,
         int BorderRadius,
         int BorderSize,
         int ButtonBox,
@@ -22,6 +23,7 @@ namespace QuickWinstall
         int ControlPanelButtonWidth,
         int ControlPanelHeight,
         int ControlPanelWidth,
+        int ExpandCollapseButtonBox,
         int FormHeight,
         int FormHeightMax,
         int FormHeightMin,
@@ -32,6 +34,7 @@ namespace QuickWinstall
         int IconSizeLarge,
         int InfoWarningLabelHeight,
         int InfoWarningLabelWidth,
+        int InitialDelay,
         int LabelHeight,
         int LabelWidth,
         int Margin,
@@ -44,6 +47,7 @@ namespace QuickWinstall
         int PaddingLeft,
         int PaddingRight,
         int PaddingTop,
+        int ReshowDelay,
         int RowHeight,
         int SectionBorderWidth,
         int SectionHeaderHeight,
@@ -62,6 +66,7 @@ namespace QuickWinstall
         int SectionPaddingRight,
         int SectionPaddingTop,
         int SectionWidth,
+        bool ShowAlways,
         int Spacing,
         int SpacingBottom,
         int SpacingLeft,
@@ -87,6 +92,7 @@ namespace QuickWinstall
         int TextboxWidth);
 
     public record MainFormConfig(
+        int AutoPopDelay,
         int BorderRadius,
         int BorderSize,
         int ButtonBox,
@@ -103,6 +109,7 @@ namespace QuickWinstall
         int ControlPanelButtonWidth,
         int ControlPanelHeight,
         int ControlPanelWidth,
+        int ExpandCollapseButtonBox,
         int FormHeight,
         int FormHeightMax,
         int FormHeightMin,
@@ -113,6 +120,7 @@ namespace QuickWinstall
         int IconSizeLarge,
         int InfoWarningLabelHeight,
         int InfoWarningLabelWidth,
+        int InitialDelay,
         int LabelHeight,
         int LabelWidth,
         int Margin,
@@ -125,6 +133,7 @@ namespace QuickWinstall
         int PaddingLeft,
         int PaddingRight,
         int PaddingTop,
+        int ReshowDelay,
         int RowHeight,
         int SectionBorderWidth,
         int SectionHeaderHeight,
@@ -152,6 +161,7 @@ namespace QuickWinstall
         int SectionPaddingRight,
         int SectionPaddingTop,
         int SectionWidth,
+        bool ShowAlways,
         int Spacing,
         int SpacingBottom,
         int SpacingLeft,
@@ -177,6 +187,7 @@ namespace QuickWinstall
         int TextboxWidth);
     
     public record SettingsFormConfig(
+        int AutoPopDelay,
         int BorderRadius,
         int BorderSize,
         int ButtonBox,
@@ -193,6 +204,7 @@ namespace QuickWinstall
         int ControlPanelButtonWidth,
         int ControlPanelHeight,
         int ControlPanelWidth,
+        int ExpandCollapseButtonBox,
         int FormHeight,
         int FormHeightMax,
         int FormHeightMin,
@@ -203,6 +215,7 @@ namespace QuickWinstall
         int IconSizeLarge,
         int InfoWarningLabelHeight,
         int InfoWarningLabelWidth,
+        int InitialDelay,
         int LabelHeight,
         int LabelWidth,
         int Margin,
@@ -215,6 +228,7 @@ namespace QuickWinstall
         int PaddingLeft,
         int PaddingRight,
         int PaddingTop,
+        int ReshowDelay,
         int RowHeight,
         int SectionBorderWidth,
         int SectionHeaderHeight,
@@ -233,6 +247,7 @@ namespace QuickWinstall
         int SectionPaddingRight,
         int SectionPaddingTop,
         int SectionWidth,
+        bool ShowAlways,
         int Spacing,
         int SpacingBottom,
         int SpacingLeft,
@@ -258,6 +273,7 @@ namespace QuickWinstall
         int TextboxWidth);
 
     public record PresetsFormConfig(
+        int AutoPopDelay,
         int BorderRadius,
         int BorderSize,
         int ButtonBox,
@@ -274,6 +290,7 @@ namespace QuickWinstall
         int ControlPanelButtonWidth,
         int ControlPanelHeight,
         int ControlPanelWidth,
+        int ExpandCollapseButtonBox,
         int FormHeight,
         int FormHeightMax,
         int FormHeightMin,
@@ -284,6 +301,7 @@ namespace QuickWinstall
         int IconSizeLarge,
         int InfoWarningLabelHeight,
         int InfoWarningLabelWidth,
+        int InitialDelay,
         int LabelHeight,
         int LabelWidth,
         int Margin,
@@ -296,6 +314,7 @@ namespace QuickWinstall
         int PaddingLeft,
         int PaddingRight,
         int PaddingTop,
+        int ReshowDelay,
         int RowHeight,
         int SectionBorderWidth,
         int SectionHeaderHeight,
@@ -314,6 +333,7 @@ namespace QuickWinstall
         int SectionPaddingRight,
         int SectionPaddingTop,
         int SectionWidth,
+        bool ShowAlways,
         int Spacing,
         int SpacingBottom,
         int SpacingLeft,
@@ -339,6 +359,7 @@ namespace QuickWinstall
         int TextboxWidth);        
 
     public record AboutFormConfig(
+        int AutoPopDelay,
         int BorderRadius,
         int BorderSize,
         int ButtonBox,
@@ -355,6 +376,7 @@ namespace QuickWinstall
         int ControlPanelButtonWidth,
         int ControlPanelHeight,
         int ControlPanelWidth,
+        int ExpandCollapseButtonBox,
         int FormHeight,
         int FormHeightMax,
         int FormHeightMin,
@@ -365,6 +387,7 @@ namespace QuickWinstall
         int IconSizeLarge,
         int InfoWarningLabelHeight,
         int InfoWarningLabelWidth,
+        int InitialDelay,
         int LabelHeight,
         int LabelWidth,
         int Margin,
@@ -377,6 +400,7 @@ namespace QuickWinstall
         int PaddingLeft,
         int PaddingRight,
         int PaddingTop,
+        int ReshowDelay,
         int RowHeight,
         int SectionBorderWidth,
         int SectionHeaderHeight,
@@ -395,6 +419,7 @@ namespace QuickWinstall
         int SectionPaddingRight,
         int SectionPaddingTop,
         int SectionWidth,
+        bool ShowAlways,
         int Spacing,
         int SpacingBottom,
         int SpacingLeft,
@@ -420,6 +445,7 @@ namespace QuickWinstall
         int TextboxWidth);
 
     public record HelpFormConfig(
+        int AutoPopDelay,
         int BorderRadius,
         int BorderSize,
         int ButtonBox,
@@ -436,6 +462,7 @@ namespace QuickWinstall
         int ControlPanelButtonWidth,
         int ControlPanelHeight,
         int ControlPanelWidth,
+        int ExpandCollapseButtonBox,
         int FormHeight,
         int FormHeightMax,
         int FormHeightMin,
@@ -446,6 +473,7 @@ namespace QuickWinstall
         int IconSizeLarge,
         int InfoWarningLabelHeight,
         int InfoWarningLabelWidth,
+        int InitialDelay,
         int LabelHeight,
         int LabelWidth,
         int Margin,
@@ -458,6 +486,7 @@ namespace QuickWinstall
         int PaddingLeft,
         int PaddingRight,
         int PaddingTop,
+        int ReshowDelay,
         int RowHeight,
         int SectionBorderWidth,
         int SectionHeaderHeight,
@@ -476,6 +505,7 @@ namespace QuickWinstall
         int SectionPaddingRight,
         int SectionPaddingTop,
         int SectionWidth,
+        bool ShowAlways,
         int Spacing,
         int SpacingBottom,
         int SpacingLeft,

@@ -65,8 +65,8 @@ namespace QuickWinstall.Lib
         {
             RefreshComboBoxItems(comboBox, new string[]
             {
-                "ThemeLight",
-                "ThemeDark"
+                "Settings_ThemeLight",
+                "Settings_ThemeDark"
             });
         }
         #endregion
@@ -77,22 +77,22 @@ namespace QuickWinstall.Lib
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "WindowsHome",
-                "WindowsPro",
-                "WindowsEducation",
-                "WindowsEnterprise"
+                "GeneralConfig_WindowsHome",
+                "GeneralConfig_WindowsPro",
+                "GeneralConfig_WindowsEducation",
+                "GeneralConfig_WindowsEnterprise"
             });
         }
         #endregion
 
         #region CPU Architecture ComboBox
-        public static void RefreshCpuArchitectureComboBox(ComboBox comboBox)
+        public static void RefreshCPUArchitectureComboBox(ComboBox comboBox)
         {
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "CPUIntelAMD",
-                "CPUARM64"
+                "GeneralConfig_CPUIntelAMD",
+                "GeneralConfig_CPUARM64"
             });
         }
         #endregion
@@ -103,8 +103,8 @@ namespace QuickWinstall.Lib
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "SystemLocaleUnitedStates",
-                "SystemLocaleVietnam"
+                "LangRegionConfig_SystemLocaleUnitedStates",
+                "LangRegionConfig_SystemLocaleVietnam"
             });
         }
         #endregion
@@ -115,8 +115,8 @@ namespace QuickWinstall.Lib
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "UserLocaleUnitedStates",
-                "UserLocaleVietnam"
+                "LangRegionConfig_UserLocaleUnitedStates",
+                "LangRegionConfig_UserLocaleVietnam"
             });
         }
         #endregion
@@ -127,8 +127,8 @@ namespace QuickWinstall.Lib
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "WindowsUILangEnglishUnitedStates",
-                "WindowsUILangVietnameseVietnam"
+                "LangRegionConfig_WindowsUILangEnglishUnitedStates",
+                "LangRegionConfig_WindowsUILangVietnameseVietnam"
             });
         }
         #endregion
@@ -139,8 +139,8 @@ namespace QuickWinstall.Lib
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "KeyboardLayoutUS",
-                "KeyboardLayoutVietnamese"
+                "LangRegionConfig_KeyboardLayoutUS",
+                "LangRegionConfig_KeyboardLayoutVietnamese"
             });
         }
         #endregion
@@ -151,8 +151,8 @@ namespace QuickWinstall.Lib
             RefreshComboBoxItems(comboBox, new string[]
             {
                 "Select",
-                "TimeZonePacific",
-                "TimeZoneSEAsia"
+                "LangRegionConfig_TimeZonePacific",
+                "LangRegionConfig_TimeZoneSEAsia"
             });
         }
         #endregion

@@ -39,7 +39,7 @@ namespace QuickWinstall
             LangHelper.RegisterForm(this);
             RefreshLang();
 
-            ThemeManager.ApplyThemeToForm(this);
+            ThemeManager.SetForm(this);
 
             this.Shown += (s, e) =>
             {
@@ -69,35 +69,35 @@ namespace QuickWinstall
             appConfig = new AppConfig();
 
             generalConfig.ValueChanged += OnConfigValueChanged;
-            langRegionConfig.ValueChanged += OnConfigValueChanged;
-            bypassConfig.ValueChanged += OnConfigValueChanged;
-            diskConfig.ValueChanged += OnConfigValueChanged;
-            accountConfig.ValueChanged += OnConfigValueChanged;
-            oobeConfig.ValueChanged += OnConfigValueChanged;
-            bitLockerConfig.ValueChanged += OnConfigValueChanged;
-            personalizeConfig.ValueChanged += OnConfigValueChanged;
-            appConfig.ValueChanged += OnConfigValueChanged;
+            //langRegionConfig.ValueChanged += OnConfigValueChanged;
+            //bypassConfig.ValueChanged += OnConfigValueChanged;
+            //diskConfig.ValueChanged += OnConfigValueChanged;
+            //accountConfig.ValueChanged += OnConfigValueChanged;
+            //oobeConfig.ValueChanged += OnConfigValueChanged;
+            //bitLockerConfig.ValueChanged += OnConfigValueChanged;
+            //personalizeConfig.ValueChanged += OnConfigValueChanged;
+            //appConfig.ValueChanged += OnConfigValueChanged;
 
             // Location and order of sections
-            appConfig.Dock = DockStyle.Top;
-            personalizeConfig.Dock = DockStyle.Top;
-            bitLockerConfig.Dock = DockStyle.Top;
-            oobeConfig.Dock = DockStyle.Top;
-            accountConfig.Dock = DockStyle.Top;
-            diskConfig.Dock = DockStyle.Top;
-            bypassConfig.Dock = DockStyle.Top;
-            langRegionConfig.Dock = DockStyle.Top;
+            //appConfig.Dock = DockStyle.Top;
+            //personalizeConfig.Dock = DockStyle.Top;
+            //bitLockerConfig.Dock = DockStyle.Top;
+            //oobeConfig.Dock = DockStyle.Top;
+            //accountConfig.Dock = DockStyle.Top;
+            //diskConfig.Dock = DockStyle.Top;
+            //bypassConfig.Dock = DockStyle.Top;
+            //langRegionConfig.Dock = DockStyle.Top;
             generalConfig.Dock = DockStyle.Top;
 
             // Add sections to activity panel
-            activityPanel.Controls.Add(appConfig);
-            activityPanel.Controls.Add(personalizeConfig);
-            activityPanel.Controls.Add(bitLockerConfig);
-            activityPanel.Controls.Add(oobeConfig);
-            activityPanel.Controls.Add(accountConfig);
-            activityPanel.Controls.Add(diskConfig);
-            activityPanel.Controls.Add(bypassConfig);
-            activityPanel.Controls.Add(langRegionConfig);
+            //activityPanel.Controls.Add(appConfig);
+            //activityPanel.Controls.Add(personalizeConfig);
+            //activityPanel.Controls.Add(bitLockerConfig);
+            //activityPanel.Controls.Add(oobeConfig);
+            //activityPanel.Controls.Add(accountConfig);
+            //activityPanel.Controls.Add(diskConfig);
+            //activityPanel.Controls.Add(bypassConfig);
+            //activityPanel.Controls.Add(langRegionConfig);
             activityPanel.Controls.Add(generalConfig);
         }
         #endregion
@@ -137,29 +137,29 @@ namespace QuickWinstall
             error = generalConfig.ValidateConfig();
             if (!string.IsNullOrEmpty(error)) return error;
 
-            error = langRegionConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = langRegionConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = bypassConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = bypassConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = diskConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = diskConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = accountConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = accountConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = oobeConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = oobeConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = bitLockerConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = bitLockerConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = personalizeConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = personalizeConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
-            error = appConfig.ValidateConfig();
-            if (!string.IsNullOrEmpty(error)) return error;
+            //error = appConfig.ValidateConfig();
+            //if (!string.IsNullOrEmpty(error)) return error;
 
             return null; // All sections are valid
         }
@@ -173,7 +173,7 @@ namespace QuickWinstall
             // Apply status label color based on content
             if (string.IsNullOrEmpty(status))
             {
-                ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Normal);
+                ThemeManager.SetStatusLabel(statusLabel, ThemeManager.Type.Normal);
             }
             else if (status.Contains(LangManager.GetString("MainForm_Status_Error", "Error"))
                     || status.Contains(LangManager.GetString("MainForm_Status_error", "error"))
@@ -188,14 +188,14 @@ namespace QuickWinstall
                     || status.Contains(LangManager.GetString("MainForm_Status_Empty", "Empty"))
                     || status.Contains(LangManager.GetString("MainForm_Status_empty", "empty")))
             {
-                ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Error);
+                ThemeManager.SetStatusLabel(statusLabel, ThemeManager.Type.Error);
             }
             else if (status.Contains(LangManager.GetString("MainForm_Status_Warning", "Warning"))
                     || status.Contains(LangManager.GetString("MainForm_Status_warning", "warning"))
                     || status.Contains(LangManager.GetString("MainForm_Status_Unsaved", "Unsaved"))
                     || status.Contains(LangManager.GetString("MainForm_Status_unsaved", "unsaved")))
             {
-                ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Warning);
+                ThemeManager.SetStatusLabel(statusLabel, ThemeManager.Type.Warning);
             }
             else if (status.Contains(LangManager.GetString("MainForm_Status_Success", "Success"))
                     || status.Contains(LangManager.GetString("MainForm_Status_success", "success"))
@@ -210,11 +210,11 @@ namespace QuickWinstall
                     || status.Contains(LangManager.GetString("MainForm_Status_Cleared", "Cleared"))
                     || status.Contains(LangManager.GetString("MainForm_Status_cleared", "cleared")))
             {
-                ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Success);
+                ThemeManager.SetStatusLabel(statusLabel, ThemeManager.Type.Success);
             }
             else
             {
-                ThemeManager.ApplyThemeToStatusLabel(statusLabel, ThemeManager.StatusLabelType.Normal);
+                ThemeManager.SetStatusLabel(statusLabel, ThemeManager.Type.Normal);
             }
         }
         #endregion
@@ -262,7 +262,7 @@ namespace QuickWinstall
             try
             {
                 var confirmResult = MessageBox.Show(
-                    LangManager.GetString("MainForm_Warning_ClearAllSettings", "Clear all settings?"),
+                    LangManager.GetString("MainForm_Warning_ClearAllConfigs", "Clear all configurations?"),
                     LangManager.GetString("MainForm_Warning_Title", "Warning"),
                     MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Warning
@@ -273,23 +273,23 @@ namespace QuickWinstall
                     _isValidating = true;
 
                     generalConfig.ResetToDefaults();
-                    langRegionConfig.ResetToDefaults();
-                    bypassConfig.ResetToDefaults();
-                    diskConfig.ResetToDefaults();
-                    accountConfig.ResetToDefaults();
-                    oobeConfig.ResetToDefaults();
-                    bitLockerConfig.ResetToDefaults();
-                    personalizeConfig.ResetToDefaults();
-                    appConfig.ResetToDefaults();
+                    //langRegionConfig.ResetToDefaults();
+                    //bypassConfig.ResetToDefaults();
+                    //diskConfig.ResetToDefaults();
+                    //accountConfig.ResetToDefaults();
+                    //oobeConfig.ResetToDefaults();
+                    //bitLockerConfig.ResetToDefaults();
+                    //personalizeConfig.ResetToDefaults();
+                    //appConfig.ResetToDefaults();
                     _hasUnsavedChanges = false;
-                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_AllSettingsCleared", "All settings cleared."));
+                    UpdateStatusLabel(LangManager.GetString("MainForm_Status_AllConfigsCleared", "All configurations cleared."));
                 }
             }
             catch (Exception ex)
             {
-                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToClearSettings", "Failed to clear settings."));
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToClearConfigs", "Failed to clear configurations."));
                 MessageBox.Show(
-                    string.Format(UpdateStatusLabel(LangManager.GetString("MainForm_Error_FailedToClearSettings", "Failed to clear settings: {0}"), ex.Message),
+                    string.Format(LangManager.GetString("MainForm_Error_FailedToClearConfigs", "Failed to clear configurations: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -402,7 +402,7 @@ namespace QuickWinstall
                 }
 
                 // Save current settings
-                SaveAllSectionSettings();
+                SaveAllSectionConfigs();
 
                 // Proceed with generation
                 XMLGenerator.Generate(
@@ -473,8 +473,8 @@ namespace QuickWinstall
         }
         #endregion
 
-        #region SaveAllSectionSettings
-        private void SaveAllSectionSettings()
+        #region SaveAllSectionConfigs
+        private void SaveAllSectionConfigs()
         {
             var defaults = Defaults.LoadFromAppFolder();
             var config = Config.LoadFromAppFolder();
@@ -484,22 +484,22 @@ namespace QuickWinstall
             try
             {
                 var settings = SettingsManager.LoadSettings();
-                settings.GeneralConfig = generalConfig.GetCurrentSettings();
-                settings.LangRegionConfig = langRegionConfig.GetCurrentSettings();
-                settings.BypassConfig = bypassConfig.GetCurrentSettings();
-                settings.DiskConfig = diskConfig.GetCurrentSettings();
-                settings.AccountConfig = accountConfig.GetCurrentSettings();
-                settings.OOBEConfig = oobeConfig.GetCurrentSettings();
-                settings.BitLockerConfig = bitLockerConfig.GetCurrentSettings();
-                settings.PersonalizeConfig = personalizeConfig.GetCurrentSettings();
-                settings.AppConfig = appConfig.GetCurrentSettings();
-                SettingsManager.SaveSettings(settings);
+                settings.GeneralConfig = generalConfig.GetCurrentConfigs();
+                //settings.LangRegionConfig = langRegionConfig.GetCurrentConfigs();
+                //settings.BypassConfig = bypassConfig.GetCurrentConfigs();
+                //settings.DiskConfig = diskConfig.GetCurrentConfigs();
+                //settings.AccountConfig = accountConfig.GetCurrentConfigs();
+                //settings.OOBEConfig = oobeConfig.GetCurrentConfigs();
+                //settings.BitLockerConfig = bitLockerConfig.GetCurrentConfigs();
+                //settings.PersonalizeConfig = personalizeConfig.GetCurrentConfigs();
+                //settings.AppConfig = appConfig.GetCurrentConfigs();
+                //SettingsManager.SaveSettings(settings);
             }
             catch (Exception ex)
             {
-                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToSaveSettings", "Failed to save settings."));
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToSaveConfigs", "Failed to save configurations."));
                 MessageBox.Show(
-                    string.Format(LangManager.GetString("MainForm_Error_FailedToSaveSettings", "Failed to save settings: {0}"), ex.Message),
+                    string.Format(LangManager.GetString("MainForm_Error_FailedToSaveConfigs", "Failed to save configurations: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -520,30 +520,30 @@ namespace QuickWinstall
             {
                 var settings = SettingsManager.LoadSettings();
                 if (settings.GeneralConfig != null)
-                    generalConfig.LoadSettings(settings.GeneralConfig);
-                if (settings.LangRegionConfig != null)
-                    langRegionConfig.LoadSettings(settings.LangRegionConfig);
-                if (settings.BypassConfig != null)
-                    bypassConfig.LoadSettings(settings.BypassConfig);
-                if (settings.DiskConfig != null)
-                    diskConfig.LoadSettings(settings.DiskConfig);
-                if (settings.AccountConfig != null)
-                    accountConfig.LoadSettings(settings.AccountConfig);
-                if (settings.OOBEConfig != null)
-                    oobeConfig.LoadSettings(settings.OOBEConfig);
-                if (settings.BitLockerConfig != null)
-                    bitLockerConfig.LoadSettings(settings.BitLockerConfig);
-                if (settings.PersonalizeConfig != null)
-                    personalizeConfig.LoadSettings(settings.PersonalizeConfig);
-                if (settings.AppConfig != null)
-                    appConfig.LoadSettings(settings.AppConfig);
+                    generalConfig.LoadConfigs(settings.GeneralConfig);
+                //if (settings.LangRegionConfig != null)
+                   //langRegionConfig.LoadConfigs(settings.LangRegionConfig);
+                //if (settings.BypassConfig != null)
+                    //bypassConfig.LoadConfigs(settings.BypassConfig);
+                //if (settings.DiskConfig != null)
+                    //diskConfig.LoadConfigs(settings.DiskConfig);
+                //if (settings.AccountConfig != null)
+                    //accountConfig.LoadConfigs(settings.AccountConfig);
+                //if (settings.OOBEConfig != null)
+                    //oobeConfig.LoadConfigs(settings.OOBEConfig);
+                //if (settings.BitLockerConfig != null)
+                    //bitLockerConfig.LoadConfigs(settings.BitLockerConfig);
+                //if (settings.PersonalizeConfig != null)
+                    //personalizeConfig.LoadConfigs(settings.PersonalizeConfig);
+                //if (settings.AppConfig != null)
+                    //appConfig.LoadConfigs(settings.AppConfig);
                 _hasUnsavedChanges = false;
             }
             catch (Exception ex)
             {
-                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToLoadLastSettings", "Failed to load last settings."));
+                UpdateStatusLabel(LangManager.GetString("MainForm_Status_FailedToLoadLastConfigs", "Failed to load last configurations."));
                 MessageBox.Show(
-                    string.Format(LangManager.GetString("MainForm_Error_FailedToLoadLastSettings", "Failed to load last settings: {0}"), ex.Message),
+                    string.Format(LangManager.GetString("MainForm_Error_FailedToLoadLastConfigs", "Failed to load last configurations: {0}"), ex.Message),
                     LangManager.GetString("MainForm_Error_Title", "Error"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
@@ -566,23 +566,23 @@ namespace QuickWinstall
                 _isValidating = true;
 
                 if (preset.GeneralConfig != null)
-                    generalConfig.LoadSettings(preset.GeneralConfig);
-                if (preset.LangRegionConfig != null)
-                    langRegionConfig.LoadSettings(preset.LangRegionConfig);
-                if (preset.BypassConfig != null)
-                    bypassConfig.LoadSettings(preset.BypassConfig);
-                if (preset.DiskConfig != null)
-                    diskConfig.LoadSettings(preset.DiskConfig);
-                if (preset.AccountConfig != null)
-                    accountConfig.LoadSettings(preset.AccountConfig);
-                if (preset.OOBEConfig != null)
-                    oobeConfig.LoadSettings(preset.OOBEConfig);
-                if (preset.BitLockerConfig != null)
-                    bitLockerConfig.LoadSettings(preset.BitLockerConfig);
-                if (preset.PersonalizeConfig != null)
-                    personalizeConfig.LoadSettings(preset.PersonalizeConfig);
-                if (preset.AppConfig != null)
-                    appConfig.LoadSettings(preset.AppConfig);
+                    generalConfig.LoadConfigs(preset.GeneralConfig);
+                //if (preset.LangRegionConfig != null)
+                    //langRegionConfig.LoadConfigs(preset.LangRegionConfig);
+                //if (preset.BypassConfig != null)
+                    //bypassConfig.LoadConfigs(preset.BypassConfig);
+                //if (preset.DiskConfig != null)
+                    //diskConfig.LoadConfigs(preset.DiskConfig);
+                //if (preset.AccountConfig != null)
+                    //accountConfig.LoadConfigs(preset.AccountConfig);
+                //if (preset.OOBEConfig != null)
+                    //oobeConfig.LoadConfigs(preset.OOBEConfig);
+                //if (preset.BitLockerConfig != null)
+                    //bitLockerConfig.LoadConfigs(preset.BitLockerConfig);
+                //if (preset.PersonalizeConfig != null)
+                    //personalizeConfig.LoadConfigs(preset.PersonalizeConfig);
+                //if (preset.AppConfig != null)
+                    //appConfig.LoadConfigs(preset.AppConfig);
                 _hasUnsavedChanges = true;
                 UpdateStatusLabel(string.Format(LangManager.GetString("MainForm_Status_PresetApplied", "Preset {0} applied.")), name);
             }
