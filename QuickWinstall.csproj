@@ -7,8 +7,8 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>disable</Nullable>
         <AssemblyTitle>QuickWinstall</AssemblyTitle>
-        <ApplicationIcon>res\icons\app512.ico\</ApplicationIcon>
-        <Win32Icon>res\icons\app512.ico\</Win32Icon>
+        <ApplicationIcon>res\icons\app256.ico\</ApplicationIcon>
+        <Win32Icon>res\icons\app256.ico\</Win32Icon>
         <AssemblyDescription>A free, open-source autounattend.xml generator tool for Windows 11 Installation.</AssemblyDescription>
         <AssemblyCompany>QuickComp.</AssemblyCompany>
         <AssemblyProduct>QuickWinstall</AssemblyProduct>

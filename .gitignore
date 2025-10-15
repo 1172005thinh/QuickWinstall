@@ -1,0 +1,61 @@
+# Ignore any .lnk shortcuts
+*.lnk
+
+# Ignore final XML output file
+autounattend.xml
+
+# Ignore local settings files
+src/main/settings.json
+Prompt.md
+*.png
+Backup.rar
+docs/ActivityPanel-Configuration.md
+docs/IMPLEMENTATION_STATUS.md
+docs/PRESET_IMPLEMENTATION.md
+docs/PRESET_QUICKREF.md
+
+# Ignore user-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build output directories
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache files
+*.VC.db
+*.VC.VC.opendb
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet Packages
+*.nupkg
+# NuGet Symbol Packages
+*.snupkg
+# The packages folder can be ignored because of Package Restore
+**/[Pp]ackages/*
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp

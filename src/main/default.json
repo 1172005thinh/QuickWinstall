@@ -65,10 +65,16 @@
     {
         "Expanded": true
     },
-    "LangConfig":
+    "LangSettings":
     {
         "Lang": "en-US",
         "LangsAvailable": [ "en-US",
                             "vi-VN" ]
+    },
+    "ThemeSettings":
+    {
+        "Theme": "Light",
+        "ThemesAvailable": [ "Light",
+                             "Dark" ]
     }
 }

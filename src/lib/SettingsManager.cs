@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Reflection;
+using System.Windows.Forms;
 
 namespace QuickWinstall.Lib
 {
@@ -17,249 +15,45 @@ namespace QuickWinstall.Lib
         #region AppSettings
         public class AppSettings
         {
-            // Basic settings
+            // App-level settings (unique to SettingsManager)
             [JsonPropertyName("lang")]
             public string Lang { get; set; } = "en-US";
 
             [JsonPropertyName("theme")]
             public string Theme { get; set; } = "Light";
 
-            [JsonPropertyName("xmlSavePath")]
-            public string XmlSavePath { get; set; } = "";
+            [JsonPropertyName("savePath")]
+            public string SavePath { get; set; } = "";
 
             [JsonPropertyName("lastModified")]
             public DateTime LastModified { get; set; } = DateTime.Now;
 
-            // GeneralConfig settings
             [JsonPropertyName("generalConfig")]
-            public GeneralConfigSettings GeneralConfig { get; set; } = new GeneralConfigSettings();
+            public GeneralConfigDefaults GeneralConfig { get; set; }
 
             [JsonPropertyName("langRegionConfig")]
-            public LangRegionConfigSettings LangRegionConfig { get; set; } = new LangRegionConfigSettings();
+            public LangRegionConfigDefaults LangRegionConfig { get; set; }
 
             [JsonPropertyName("bypassConfig")]
-            public BypassConfigSettings BypassConfig { get; set; } = new BypassConfigSettings();
+            public BypassConfigDefaults BypassConfig { get; set; }
 
             [JsonPropertyName("diskConfig")]
-            public DiskConfigSettings DiskConfig { get; set; } = new DiskConfigSettings();
+            public DiskConfigDefaults DiskConfig { get; set; }
 
             [JsonPropertyName("accountConfig")]
-            public AccountConfigSettings AccountConfig { get; set; } = new AccountConfigSettings();
+            public AccountConfigDefaults AccountConfig { get; set; }
 
             [JsonPropertyName("oobeConfig")]
-            public OOBEConfigSettings OOBEConfig { get; set; } = new OOBEConfigSettings();
+            public OOBEConfigDefaults OOBEConfig { get; set; }
 
             [JsonPropertyName("bitLockerConfig")]
-            public BitLockerConfigSettings BitLockerConfig { get; set; } = new BitLockerConfigSettings();
+            public BitLockerConfigDefaults BitLockerConfig { get; set; }
+
             [JsonPropertyName("personalizeConfig")]
-            public PersonalizeConfigSettings PersonalizeConfig { get; set; } = new PersonalizeConfigSettings();
+            public PersonalizeConfigDefaults PersonalizeConfig { get; set; }
+
             [JsonPropertyName("appConfig")]
-            public AppConfigSettings AppConfig { get; set; } = new AppConfigSettings();
-        }
-        #endregion
-
-        #region GeneralConfigSettings
-        public class GeneralConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-
-            [JsonPropertyName("windowsEdition")]
-            public string WindowsEdition { get; set; } = "";
-
-            [JsonPropertyName("productKey")]
-            public string[] ProductKey { get; set; } = new string[5] { "", "", "", "", "" };
-
-            [JsonPropertyName("cpuArchitecture")]
-            public string CPUArchitecture { get; set; } = "";
-        }
-        #endregion
-
-        #region LangRegionConfigSettings
-        /// LangRegionConfig settings structure
-        public class LangRegionConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-
-            [JsonPropertyName("systemLocale")]
-            public string SystemLocale { get; set; } = "";
-
-            [JsonPropertyName("userLocale")]
-            public string UserLocale { get; set; } = "";
-
-            [JsonPropertyName("sameAsSystemLocale")]
-            public bool SameAsSystemLocale { get; set; } = true;
-
-            [JsonPropertyName("windowsUILanguage")]
-            public string WindowsUILanguage { get; set; } = "";
-
-            [JsonPropertyName("keyboardLayout")]
-            public string KeyboardLayout { get; set; } = "";
-
-            [JsonPropertyName("timeZone")]
-            public string TimeZone { get; set; } = "";
-        }
-        #endregion
-
-        #region BypassConfigSettings
-        public class BypassConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-            [JsonPropertyName("bypassAll")]
-            public bool BypassAll { get; set; } = true;
-
-            [JsonPropertyName("bypassTPM")]
-            public bool BypassTPM { get; set; } = true;
-
-            [JsonPropertyName("bypassSecureBoot")]
-            public bool BypassSecureBoot { get; set; } = true;
-
-            [JsonPropertyName("bypassRAM")]
-            public bool BypassRAM { get; set; } = true;
-
-            [JsonPropertyName("bypassCPU")]
-            public bool BypassCPU { get; set; } = true;
-
-            [JsonPropertyName("bypassDiskSpace")]
-            public bool BypassDiskSpace { get; set; } = true;
-
-            [JsonPropertyName("bypassStorage")]
-            public bool BypassStorage { get; set; } = true;
-        }
-        #endregion
-
-        #region DiskConfigSettings
-        public class DiskConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-            [JsonPropertyName("enableDiskConfiguration")]
-            public bool EnableDiskConfiguration { get; set; } = true;
-
-            [JsonPropertyName("partitionLayout")]
-            public string PartitionLayout { get; set; } = "";
-
-            [JsonPropertyName("partitions")]
-            public List<PartitionData> Partitions { get; set; } = new List<PartitionData>();
-        }
-
-        public class PartitionData
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-
-            [JsonPropertyName("id")]
-            public int ID { get; set; }
-
-            [JsonPropertyName("type")]
-            public string Type { get; set; } = "";
-
-            [JsonPropertyName("name")]
-            public string Name { get; set; } = "";
-
-            [JsonPropertyName("sizeMB")]
-            public int SizeMB { get; set; }
-
-            [JsonPropertyName("active")]
-            public bool Active { get; set; }
-
-            [JsonPropertyName("format")]
-            public bool Format { get; set; }
-
-            [JsonPropertyName("letter")]
-            public string Letter { get; set; } = "";
-        }
-        #endregion
-
-        #region AccountConfigSettings
-        public class AccountConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-            [JsonPropertyName("enableLocalAccountCreation")]
-            public bool EnableLocalAccountCreation { get; set; } = true;
-
-            [JsonPropertyName("accounts")]
-            public List<AccountData> Accounts { get; set; } = new List<AccountData>();
-        }
-
-        public class AccountData
-        {
-            [JsonPropertyName("id")]
-            public int ID { get; set; }
-
-            [JsonPropertyName("type")]
-            public string Type { get; set; } = "";
-
-            [JsonPropertyName("username")]
-            public string Username { get; set; } = "";
-
-            [JsonPropertyName("displayName")]
-            public string DisplayName { get; set; } = "";
-
-            [JsonPropertyName("password")]
-            public string Password { get; set; } = "";
-
-            [JsonPropertyName("autoLogin")]
-            public bool AutoLogin { get; set; }
-        }
-        #endregion
-
-        #region OOBEConfigSettings
-        public class OOBEConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-            [JsonPropertyName("skipAndHideAll")]
-            public bool SkipAndHideAll { get; set; } = true;
-
-            [JsonPropertyName("skipEULAs")]
-            public bool SkipEULAs { get; set; } = true;
-
-            [JsonPropertyName("skipLocalAccount")]
-            public bool SkipLocalAccount { get; set; } = true;
-
-            [JsonPropertyName("skipOnlineAccount")]
-            public bool SkipOnlineAccount { get; set; } = true;
-
-            [JsonPropertyName("skipWirelessSetup")]
-            public bool SkipWirelessSetup { get; set; } = true;
-
-            [JsonPropertyName("skipMachineOOBE")]
-            public bool SkipMachineOOBE { get; set; } = true;
-
-            [JsonPropertyName("skipUserOOBE")]
-            public bool SkipUserOOBE { get; set; } = true;
-        }
-        #endregion
-
-        #region BitLockerConfigSettings
-        public class BitLockerConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-            [JsonPropertyName("disableBitLocker")]
-            public bool DisableBitLocker { get; set; } = false;
-        }
-        #endregion
-
-        #region PersonalizeConfigSettings
-        public class PersonalizeConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
-            [JsonPropertyName("computerName")]
-            public string ComputerName { get; set; } = "";
-        }
-        #endregion
-
-        #region AppConfigSettings
-        public class AppConfigSettings
-        {
-            [JsonPropertyName("expanded")]
-            public bool Expanded { get; set; } = true;
+            public AppConfigDefaults AppConfig { get; set; }
         }
         #endregion
 
@@ -280,11 +74,11 @@ namespace QuickWinstall.Lib
                         WriteIndented = true
                     });
 
-                    _cachedSettings = settings ?? CreateDefaultSettings();
+                    _cachedSettings = settings ?? CreateDefaultConfigs();
                 }
                 else
                 {
-                    _cachedSettings = CreateDefaultSettings();
+                    _cachedSettings = CreateDefaultConfigs();
                     SaveSettings(_cachedSettings);
                 }
                 System.Diagnostics.Debug.WriteLine($"SettingsManager: Loaded settings - Language: {_cachedSettings.Lang}, Theme: {_cachedSettings.Theme}");
@@ -293,7 +87,7 @@ namespace QuickWinstall.Lib
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"SettingsManager: Error loading settings: {ex.Message}");
-                _cachedSettings = CreateDefaultSettings();
+                _cachedSettings = CreateDefaultConfigs();
                 return _cachedSettings;
             }
         }
@@ -348,8 +142,8 @@ namespace QuickWinstall.Lib
                     case "theme":
                         settings.Theme = value?.ToString() ?? "Light";
                         break;
-                    case "xmlsavepath":
-                        settings.XmlSavePath = value?.ToString() ?? "";
+                    case "savepath":
+                        settings.SavePath = value?.ToString() ?? "";
                         break;
                     default:
                         System.Diagnostics.Debug.WriteLine($"SettingsManager: Unknown setting key: {key}");
@@ -377,7 +171,7 @@ namespace QuickWinstall.Lib
                 {
                     "lang" => settings.Lang,
                     "theme" => settings.Theme,
-                    "xmlsavepath" => settings.XmlSavePath,
+                    "savepath" => settings.SavePath,
                     _ => ""
                 };
             }
@@ -388,14 +182,76 @@ namespace QuickWinstall.Lib
         }
         #endregion
 
-        #region CreateDefaultSettings
-        private static AppSettings CreateDefaultSettings()
+        #region CreateDefaultConfigs
+        private static AppSettings CreateDefaultConfigs()
         {
             return new AppSettings
             {
                 Lang = "en-US",
                 Theme = "Light",
-                XmlSavePath = Application.StartupPath
+                SavePath = Application.StartupPath,
+                // Section configs with default values matching default.json
+                GeneralConfig = new GeneralConfigDefaults(
+                    Expanded: true,
+                    WindowsEdition: "",
+                    ProductKey: new[] { "" },
+                    CPUArchitecture: ""
+                ),
+                LangRegionConfig = new LangRegionConfigDefaults(
+                    Expanded: true,
+                    SystemLocale: "",
+                    UserLocale: "",
+                    SameAsSystemLocale: false,
+                    WindowsUILanguage: "",
+                    KeyboardLayout: "",
+                    TimeZone: ""
+                ),
+                BypassConfig = new BypassConfigDefaults(
+                    Expanded: true,
+                    BypassAllChecks: false,
+                    BypassTPMCheck: false,
+                    BypassSecureBootCheck: false,
+                    BypassCPUCheck: false,
+                    BypassRAMCheck: false,
+                    BypassDiskSpaceCheck: false,
+                    BypassStorageCheck: false
+                ),
+                DiskConfig = new DiskConfigDefaults(
+                    Expanded: true,
+                    MinEntries: 0,
+                    MaxEntries: 10,
+                    EnableDiskConfiguration: false,
+                    PartitionLayout: "",
+                    Partitions: Array.Empty<PartitionDefaults>()
+                ),
+                AccountConfig = new AccountConfigDefaults(
+                    Expanded: true,
+                    MinEntries: 0,
+                    MaxEntries: 10,
+                    EnableLocalAccountCreation: false,
+                    Accounts: Array.Empty<AccountDefaults>()
+                ),
+                OOBEConfig = new OOBEConfigDefaults(
+                    Expanded: true,
+                    SkipAndHideAll: false,
+                    SkipEULAs: false,
+                    SkipLocalAccount: false,
+                    SkipOnlineAccount: false,
+                    SkipWirelessSetup: false,
+                    SkipMachineOOBE: false,
+                    SkipUserOOBE: false
+                ),
+                BitLockerConfig = new BitLockerConfigDefaults(
+                    Expanded: true,
+                    DisableBitLocker: false
+                ),
+                PersonalizeConfig = new PersonalizeConfigDefaults(
+                    Expanded: true,
+                    ComputerName: ""
+                ),
+                AppConfig = new AppConfigDefaults(
+                    Expanded: true
+                )
             };
         }
         #endregion
@@ -404,6 +260,7 @@ namespace QuickWinstall.Lib
         public static void ClearCache()
         {
             _cachedSettings = null;
+            System.Diagnostics.Debug.WriteLine("SettingsManager: Cache cleared");
         }
         #endregion
 

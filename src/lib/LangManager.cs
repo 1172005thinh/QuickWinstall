@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text.Json;
 
 namespace QuickWinstall.Lib
@@ -44,6 +41,15 @@ namespace QuickWinstall.Lib
         };
         #endregion
 
+        #region LangItem
+        public class LangItem
+        {
+            public string Code { get; set; }
+            public string Name { get; set; }
+            public override string ToString() => Name;
+        }
+        #endregion
+
         #region Initialize
         public static void Initialize()
         {
@@ -60,7 +66,7 @@ namespace QuickWinstall.Lib
                 else
                 {
                     var defaults = Defaults.LoadFromAppFolder();
-                    _currentLang = defaults.LangConfig.Lang;
+                    _currentLang = defaults.LangSettings.Lang;
                 }
 
                 LoadLang(_currentLang);
@@ -204,16 +210,39 @@ namespace QuickWinstall.Lib
         #endregion
 
         #region GetAvailableLangs
-        public static string[] GetAvailableLangs()
+        public static LangItem[] GetAvailableLangs()
         {
             try
             {
                 var defaults = Defaults.LoadFromAppFolder();
-                return defaults.LangConfig.LangsAvailable;
+                var codes = defaults.LangSettings.LangsAvailable;
+                var items = new List<LangItem>();
+                
+                foreach (var code in codes)
+                {
+                    items.Add(new LangItem
+                    {
+                        Code = code,
+                        Name = GetLangDisplayName(code)
+                    });
+                }
+                return items.ToArray();
             }
             catch
             {
-                return new[] { Langs.English, Langs.Vietnamese };
+                return new[]
+                {
+                    new LangItem
+                    {
+                        Code = Langs.English,
+                        Name = GetLangDisplayName(Langs.English)
+                    },
+                    new LangItem
+                    {
+                        Code = Langs.Vietnamese,
+                        Name = GetLangDisplayName(Langs.Vietnamese)
+                    }
+                };
             }
         }
         #endregion

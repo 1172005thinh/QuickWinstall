@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using Microsoft.VisualBasic.ApplicationServices;
 using QuickWinstall.Lib;
 
 namespace QuickWinstall.Sections
@@ -110,7 +108,7 @@ namespace QuickWinstall.Sections
                 Text = LangManager.GetString("GeneralConfig_WindowsEditionLabel", "Windows Edition:"),
                 Size = new Size(globalConfig.LabelWidth, globalConfig.LabelHeight),
                 Location = new Point(globalConfig.Tab, globalConfig.RowHeight),
-                TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+                TextAlign = ContentAlignment.MiddleLeft
             };
             ThemeManager.SetLabelStyle(windowsEditionLabel, ThemeManager.Type.Normal);
             ToolTipManager.SetToolTip(windowsEditionLabel, LangManager.GetString("GeneralConfig_WindowsEdition_Tooltip", "Select the Windows edition to install."));
@@ -141,7 +139,7 @@ namespace QuickWinstall.Sections
                 Text = LangManager.GetString("GeneralConfig_ProductKeyLabel", "Product Key:"),
                 Size = new Size(globalConfig.LabelWidth, globalConfig.LabelHeight),
                 Location = new Point(globalConfig.Tab, windowsEditionLabel.Bottom + globalConfig.Spacing),
-                TextAlign = System.Drawing.ContentAlignment.MiddleLeft,
+                TextAlign = ContentAlignment.MiddleLeft,
             };
             ThemeManager.SetLabelStyle(productKeyLabel, ThemeManager.Type.Normal);
             ToolTipManager.SetToolTip(productKeyLabel, LangManager.GetString("GeneralConfig_ProductKey_Tooltip", "Leave blank to skip Activation.\n Leave blank to use your embedded OEM key if available."));
@@ -172,7 +170,7 @@ namespace QuickWinstall.Sections
                         Text = LangManager.GetString("GeneralConfig_ProductKey_Separator", "-"),
                         Size = new Size(globalConfig.Spacing, globalConfig.TextboxHeight),
                         Location = new Point(productKeyTextBoxes[i].Right, productKeyTextBoxes[i].Top),
-                        TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+                        TextAlign = ContentAlignment.MiddleCenter
                     };
                     ThemeManager.SetLabelStyle(productKeySeparators[i], ThemeManager.Type.Normal);
                 }
@@ -186,7 +184,7 @@ namespace QuickWinstall.Sections
                 Text = LangManager.GetString("GeneralConfig_CPUArchitectureLabel", "CPU Architecture:"),
                 Size = new Size(globalConfig.LabelWidth, globalConfig.LabelHeight),
                 Location = new Point(globalConfig.Tab, productKeyLabel.Bottom + globalConfig.Spacing),
-                TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+                TextAlign = ContentAlignment.MiddleLeft
             };
             ThemeManager.SetLabelStyle(cpuArchitectureLabel, ThemeManager.Type.Normal);
             ToolTipManager.SetToolTip(cpuArchitectureLabel, LangManager.GetString("GeneralConfig_CPUArchitecture_Tooltip", "Select the CPU architecture for installation.\n Windows 11 unfortunately does not support x86."));
@@ -430,50 +428,28 @@ namespace QuickWinstall.Sections
         #endregion
 
         #region GetCurrentConfigs
-        public SettingsManager.GeneralConfigSettings GetCurrentConfigs()
+        public GeneralConfigDefaults GetCurrentConfigs()
         {
-            return new SettingsManager.GeneralConfigSettings
-            {
-                WindowsEdition = windowsEditionCombo.SelectedIndex > 0 ? windowsEditionCombo.SelectedItem.ToString() : null,
-                ProductKey = productKeyTextBoxes.Select(tb => string.IsNullOrWhiteSpace(tb.Text) ? null : tb.Text).ToArray(),
-                CPUArchitecture = cpuArchitectureCombo.SelectedIndex > 0 ? cpuArchitectureCombo.SelectedItem.ToString() : null,
-                Expanded = isExpanded
-            };
+            string windowsEdition = windowsEditionCombo.SelectedIndex > 0 ? windowsEditionCombo.SelectedItem.ToString() : "";
+            string[] productKey = productKeyTextBoxes.Select(tb => string.IsNullOrWhiteSpace(tb.Text) ? "" : tb.Text).ToArray();
+            string cpuArchitecture = cpuArchitectureCombo.SelectedIndex > 0 ? cpuArchitectureCombo.SelectedItem.ToString() : "";
+
+            return new GeneralConfigDefaults(
+                Expanded: isExpanded,
+                WindowsEdition: windowsEdition,
+                ProductKey: productKey,
+                CPUArchitecture: cpuArchitecture
+            );
         }
         #endregion
 
         #region LoadConfigs
-        public void LoadConfigs(SettingsManager.GeneralConfigSettings settings)
+        public void LoadConfigs(GeneralConfigDefaults config)
         {
-            if (settings == null) return;
+            if (config == null) return;
 
-            windowsEditionCombo.SelectedItem = settings.WindowsEdition switch
-            {
-                "Windows 11 Home" => LangManager.GetString("GeneralConfig_WindowsHome", "Windows 11 Home"),
-                "Windows 11 Pro" => LangManager.GetString("GeneralConfig_WindowsPro", "Windows 11 Pro"),
-                "Windows 11 Education" => LangManager.GetString("GeneralConfig_WindowsEducation", "Windows 11 Education"),
-                "Windows 11 Enterprise" => LangManager.GetString("GeneralConfig_WindowsEnterprise", "Windows 11 Enterprise"),
-                _ => LangManager.GetString("Select", "Select"),
-            };
-
-            for (int i = 0; i < productKeyTextBoxes.Length; i++)
-            {
-                if (settings.ProductKey != null && i < settings.ProductKey.Length)
-                {
-                    productKeyTextBoxes[i].Text = settings.ProductKey[i] ?? "";
-                }
-                else
-                {
-                    productKeyTextBoxes[i].Text = "";
-                }
-            }
-
-            cpuArchitectureCombo.SelectedItem = settings.CPUArchitecture switch
-            {
-                "Intel/AMD (x64)" => LangManager.GetString("GeneralConfig_CPUIntelAMD", "Intel/AMD (x64)"),
-                "Windows ARM64" => LangManager.GetString("GeneralConfig_CPUARM64", "Windows ARM64"),
-                _ => LangManager.GetString("Select", "Select"),
-            };
+            // Apply the config using the same logic as ApplyDefaults
+            ApplyDefaults(config);
         }
         #endregion
 

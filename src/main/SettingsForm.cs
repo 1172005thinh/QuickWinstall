@@ -1,209 +1,181 @@
-using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.IO;
 using QuickWinstall.Lib;
 
 namespace QuickWinstall
 {
     public partial class SettingsForm : Form, ILangRefreshable
     {
+        // State variables
+        private bool _isRefreshingLang = false;
+
+        #region SettingsForm
         public SettingsForm()
         {
-            Initialize();
-            LoadCurrentSettings();
-            
-            // Register for automatic lang refresh
-            LangHelper.RegisterForm(this);
-            
-            // Apply current theme
-            ThemeManager.SetForm(this);
-        }
+            InitializeComponent();
 
+            LoadCurrentSettings();
+
+            LangHelper.RegisterForm(this);
+            RefreshLang();
+
+            ThemeManager.SetForm(this);
+        }        
+
+        #region LoadCurrentSettings
         private void LoadCurrentSettings()
         {
-            // Load current settings
+            // Load configurations
+            var config = Config.LoadFromAppFolder();
+            var defaults = Defaults.LoadFromAppFolder();
             var settings = SettingsManager.LoadSettings();
+            var globalConfig = config.Global;
+            var settingsFormConfig = config.SettingsForm;
+            var langSettings = defaults.LangSettings;
+            var themeSettings = defaults.ThemeSettings;
 
-            // Load lang options
+            // Load current lang
             langCombo.Items.Clear();
-            var availableLanguages = LangManager.GetAvailableLangs();
-            foreach (var lang in availableLanguages)
+            foreach (var lang in LangManager.GetAvailableLangs())
             {
-                langCombo.Items.Add(new LanguageItem(lang, LangManager.GetLangDisplayName(lang)));
+                langCombo.Items.Add(lang);
+                if (lang.Code == langSettings.Lang)
+                {
+                    langCombo.SelectedItem = lang;
+                }
             }
 
-            // Set current lang from settings
-            var currentLang = settings.Language;
+            // Set current land
             for (int i = 0; i < langCombo.Items.Count; i++)
             {
-                if (((LanguageItem)langCombo.Items[i]).Code == currentLang)
+                if (((LangManager.LangItem)langCombo.Items[i]).Code == langSettings.Lang)
                 {
                     langCombo.SelectedIndex = i;
                     break;
                 }
             }
 
-            // Load theme options
-            themeCombo.Items.AddRange(new string[] { 
-                LangManager.GetString("SettingsForm_ThemeLight"), 
-                LangManager.GetString("SettingsForm_ThemeDark")
-            });
-            
-            // Set current theme selection
-            string currentTheme = settings.Theme;
-            if (currentTheme == "Dark")
-                themeCombo.SelectedItem = LangManager.GetString("SettingsForm_ThemeDark");
-            else
-                themeCombo.SelectedItem = LangManager.GetString("SettingsForm_ThemeLight");
+            // Load current theme
+            themeCombo.Items.Clear();
+            foreach (var theme in ThemeManager.GetAvailableThemes())
+            {
+                themeCombo.Items.Add(theme);
+                if (theme.Name == themeSettings.Theme)
+                {
+                    themeCombo.SelectedItem = theme;
+                }
+            }
 
-            // Load XML save path from settings
-            defaultLocationTextBox.Text = !string.IsNullOrEmpty(settings.XmlSavePath) 
-                ? settings.XmlSavePath 
-                : Application.StartupPath;
+            // Set current theme
+            for (int i = 0; i < themeCombo.Items.Count; i++)
+            {
+                if (((ThemeManager.ThemeItem)themeCombo.Items[i]).Name == themeSettings.Theme)
+                {
+                    themeCombo.SelectedIndex = i;
+                    break;
+                }
+            }
+
+            // Load current save path
+            savePathTextBox.Text = !string.IsNullOrWhiteSpace(settings.SavePath) ? settings.SavePath : string.Empty;
         }
+        #endregion
 
+        #region Browse Button Click
         private void BrowseButton_Click(object sender, EventArgs e)
         {
-            using (var folderDialog = new FolderBrowserDialog())
+            using (var dialog = new FolderBrowserDialog())
             {
-                folderDialog.Description = LangManager.GetString("SettingsForm_BrowseFolderDialog_Description", "Select folder to save autounattend.xml");
-                folderDialog.SelectedPath = defaultLocationTextBox.Text;
-
-                if (folderDialog.ShowDialog() == DialogResult.OK)
+                dialog.Description = LangManager.GetString("SettingsForm_BrowseDialog_Description", "Select Folder to Save XML Files");
+                dialog.ShowNewFolderButton = true;
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    defaultLocationTextBox.Text = folderDialog.SelectedPath;
+                    savePathTextBox.Text = dialog.SelectedPath;
                 }
             }
         }
+        #endregion
 
-        private void AboutButton_Click(object sender, EventArgs e)
+        #region About Button Click
+        private void aboutBtn_Click(object sender, EventArgs e)
         {
-            using (var aboutForm = new AboutForm())
-            {
-                aboutForm.ShowDialog(this);
-            }
+
         }
+        #endregion
 
-        private void HelpButton_Click(object sender, EventArgs e)
+        #region Help Button Click
+        private void helpBtn_Click(object sender, EventArgs e)
         {
-            using (var helpForm = new HelpForm())
-            {
-                helpForm.ShowDialog(this);
-            }
+
         }
+        #endregion
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        #region Save Button Click
+        private void saveBtn_Click(object sender, EventArgs e)
         {
-            try
+            if (_isRefreshingLang) return;
+
+            // Save lang
+            if (langCombo.SelectedItem is LangManager.LangItem selectedLang)
             {
-                var settings = SettingsManager.LoadSettings();
-                // Save lang setting
-                if (langCombo.SelectedItem is LanguageItem selectedLang)
-                {
-                    if (settings.Lang != selectedLang.Code)
-                    {
-                        settings.Lang = selectedLang.Code;
-                        LangManager.SetLang(selectedLang.Code);
-                    }
-                }
-
-                // Save theme setting
-                string selectedTheme = "Light"; // Default
-                if (themeCombo.SelectedItem != null)
-                {
-                    string selectedThemeText = themeCombo.SelectedItem.ToString();
-                    if (selectedThemeText == LangManager.GetString("SettingsForm_ThemeDark", "Dark"))
-                        selectedTheme = "Dark";
-                    else
-                        selectedTheme = "Light";
-                }
-                
-                if (settings.Theme != selectedTheme)
-                {
-                    settings.Theme = selectedTheme;
-                    ThemeManager.SwitchTheme(selectedTheme);
-                }
-
-                // Save XML save path
-                settings.XmlSavePath = defaultLocationTextBox.Text;
-
-                // Save all settings
-                if (SettingsManager.SaveSettings(settings))
-                {
-                    this.DialogResult = DialogResult.OK;
-                }
-                else
-                {
-                    var errorMessage = LangManager.GetString("MainForm_Error_FailedToSaveSettings", "Failed to save settings. Please try again.");
-                    MessageBox.Show(errorMessage, 
-                        LangManager.GetString("MainForm_Error_Title", "Error"),
-                        MessageBoxButtons.OK, 
-                        MessageBoxIcon.Error);
-                    return;
-                }
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = $"Error saving settings: {ex.Message}";
-                MessageBox.Show(errorMessage, 
-                    LangManager.GetString("MainForm_Error_Title"), 
-                    MessageBoxButtons.OK, 
-                    MessageBoxIcon.Error);
-                System.Diagnostics.Debug.WriteLine($"SettingsForm: {errorMessage}");
-                return;
+                SettingsManager.UpdateSetting("lang", selectedLang.Code);
+                LangManager.SetLang(selectedLang.Code);
             }
 
+            // Save theme
+            if (themeCombo.SelectedItem is ThemeManager.ThemeItem selectedTheme)
+            {
+                SettingsManager.UpdateSetting("theme", selectedTheme.Name);
+                ThemeManager.SwitchTheme(selectedTheme.Name);
+                ThemeManager.SetForm(this);
+            }
+
+            // Save path
+            var savePath = savePathTextBox.Text.Trim();
+            SettingsManager.UpdateSetting("savepath", savePath);
+
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
+        #endregion
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        #region Cancel Button Click
+        private void cancelBtn_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-        internal class LanguageItem
-        {
-            public string Code { get; }
-            public string DisplayName { get; }
-
-            public LanguageItem(string code, string displayName)
-            {
-                Code = code;
-                DisplayName = displayName;
-            }
-
-            public override string ToString() => DisplayName;
-        }
+        #endregion
 
         #region RefreshLang
         public void RefreshLang()
         {
             try
             {
+                _isRefreshingLang = true;
+                
                 this.Text = LangManager.GetString("SettingsForm_Title", "Settings");
 
-                if (langLabel != null) langLabel.Text = LangManager.GetString("SettingsForm_Language", "Language:");
-                if (themeLabel != null) themeLabel.Text = LangManager.GetString("SettingsForm_Theme", "Theme:");
-                if (defaultLocationLabel != null) defaultLocationLabel.Text = LangManager.GetString("SettingsForm_XMLPath", "XML Path:");
+                if (langLabel != null) langLabel.Text = LangManager.GetString("SettingsForm_LanguageLabel", "Language:");
+                if (themeLabel != null) themeLabel.Text = LangManager.GetString("SettingsForm_ThemeLabel", "Theme:");
+                if (savePathLabel != null) savePathLabel.Text = LangManager.GetString("SettingsForm_SavePathLabel", "XML Save Path:");
+                if (browseBtn != null) browseBtn.Text = LangManager.GetString("SettingsForm_BrowseButton", "Browse");
 
-                if (aboutButton != null) aboutButton.Text = LangManager.GetString("SettingsForm_ButtonAbout", "About");
-                if (helpButton != null) helpButton.Text = LangManager.GetString("SettingsForm_ButtonHelp", "Help");
-                if (saveButton != null) saveButton.Text = LangManager.GetString("SettingsForm_ButtonSave", "Save");
-                if (cancelButton != null) cancelButton.Text = LangManager.GetString("SettingsForm_ButtonCancel", "Cancel");
+                if (aboutBtn != null) aboutBtn.Text = LangManager.GetString("SettingsForm_AboutButton", "About");
+                if (helpBtn != null) helpBtn.Text = LangManager.GetString("SettingsForm_HelpButton", "Help");
+                if (saveBtn != null) saveBtn.Text = LangManager.GetString("SettingsForm_SaveButton", "Save");
+                if (cancelBtn != null) cancelBtn.Text = LangManager.GetString("SettingsForm_CancelButton", "Cancel");
 
-                // Refresh theme ComboBox
-                if (themeCombo != null)
-                {
-                    LangHelper.RefreshThemeComboBox(themeCombo);
-                }
+                if (themeCombo != null) LangHelper.RefreshThemeComboBox(themeCombo);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"SettingsForm.RefreshLanguage error: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"SettingsForm: Error refreshing language: {ex.Message}");
+            }
+            finally
+            {
+                _isRefreshingLang = false;
             }
         }
         #endregion
     }
+    #endregion
 }

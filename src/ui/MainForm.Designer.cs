@@ -4,6 +4,7 @@ using QuickWinstall.Lib;
 
 namespace QuickWinstall
 {
+    #region MainForm
     partial class MainForm
     {
         private System.ComponentModel.IContainer components = null;
@@ -28,7 +29,7 @@ namespace QuickWinstall
             base.Dispose(disposing);
         }
 
-        #region Initialization
+        #region InitializationComponent
         private void InitializeComponent()
         {
             // Load configurations
@@ -44,7 +45,11 @@ namespace QuickWinstall
             this.MaximumSize = new Size(mainFormConfig.FormWidthMax, mainFormConfig.FormHeightMax);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.Sizable;
-            IconManager.SetFormIcon(this, IconManager.Icons.Preset);
+            this.MinimizeBox = true;
+            this.MaximizeBox = true;
+            this.ShowInTaskbar = true;
+            IconManager.SetFormIcon(this, IconManager.Icons.App);
+            LangManager.Initialize();
             #endregion
 
             #region Activity Panel
@@ -53,7 +58,7 @@ namespace QuickWinstall
                 Name = "activityPanel",
                 Dock = DockStyle.Fill,
                 AutoScroll = true,
-                Padding = new Padding(mainFormConfig.Padding),
+                Padding = new Padding(mainFormConfig.Padding)
             };
             #endregion
 
@@ -184,4 +189,5 @@ namespace QuickWinstall
         }
         #endregion
     }
+    #endregion
 }

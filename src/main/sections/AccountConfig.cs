@@ -7,7 +7,7 @@ using QuickWinstall.Lib;
 
 namespace QuickWinstall.Sections
 {
-    public partial class AccountConfig : UserControl, ILanguageRefreshable
+    public partial class AccountConfig : UserControl
     {
         public AccountConfig()
         {

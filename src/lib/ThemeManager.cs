@@ -1,10 +1,4 @@
-using System;
-using System.Drawing;
-using System.IO;
-using System.Net;
 using System.Text.Json;
-using System.Windows.Forms;
-using QuickWinstall;
 
 namespace QuickWinstall.Lib
 {
@@ -19,9 +13,39 @@ namespace QuickWinstall.Lib
     public static class ThemeManager
     {
         private static ThemeData _currentTheme;
+        private static string _currentThemeName = LangManager.GetString("SettingsForm_Theme_Light", "Light");
         //private static ThemeConfig _configTheme;
+
+        // State variables
         private static bool _isInitialized = false;
-        private static string _currentThemeName = "Light";
+
+        #region ThemeItem
+        public class ThemeItem
+        {
+            public string Name { get; set; }
+            public override string ToString() => Name;
+        }
+        #endregion
+
+        #region Type
+        public enum Type
+        {
+            Normal,
+            Success,
+            Info,
+            Warning,
+            Error,
+            Disabled,
+            Header,
+            WarningHeader,
+            ErrorHeader,
+            SubHeader,
+            Link,
+            LinkHover,
+            LinkVisited,
+            LinkDisabled
+        }
+        #endregion
 
         #region Initialize
         public static void Initialize()
@@ -51,26 +75,6 @@ namespace QuickWinstall.Lib
                 Initialize();
                 return Hex2Color(_currentTheme?.SeparatorColor ?? "#000000ff");
             }
-        }
-        #endregion
-
-        #region Type
-        public enum Type
-        {
-            Normal,
-            Success,
-            Info,
-            Warning,
-            Error,
-            Disabled,
-            Header,
-            WarningHeader,
-            ErrorHeader,
-            SubHeader,
-            Link,
-            LinkHover,
-            LinkVisited,
-            LinkDisabled
         }
         #endregion
 
@@ -112,9 +116,9 @@ namespace QuickWinstall.Lib
         {
             _currentTheme = new ThemeData
             {
-
+                SeparatorColor = "#000000ff"
             };
-            _currentThemeName = "Light";
+            _currentThemeName = LangManager.GetString("SettingsForm_Theme_Light", "Light");
         }
         #endregion
 
@@ -200,32 +204,25 @@ namespace QuickWinstall.Lib
                     // Apply theme based on control type
                     switch (control)
                     {
-                        case Panel panel:
+                        case Button:
+                            SetButtonStyle((Button)control, Type.Normal);
                             break;
-                        case Label label when label.Name.Contains("header") || label.Name.Contains("Header"):
+                        case ComboBox:
+                            SetComboBoxStyle((ComboBox)control, Type.Normal);
                             break;
-                        case Label label when label.Name.Contains("warning") || label.Name.Contains("Warning"):
+                        case LinkLabel:
+                            SetLinkStyle((LinkLabel)control, Type.Link);
                             break;
-                        case Label label when label.Name.Contains("info") || label.Name.Contains("Info"):
+                        case Label:
+                            SetLabelStyle((Label)control, Type.Normal);
                             break;
-                        case Label label when label.Name.Contains("error") || label.Name.Contains("Error"):
+                        case Panel:
+                            SetPanelStyle((Panel)control, Type.Normal);
                             break;
-                        case LinkLabel linkLabel:
-                            break;
-                        case Label label:
-                            break;
-                        case Button button:
-                            break;
-                        case TextBox textBox:
-                            break;
-                        case ComboBox comboBox:
-                            break;
-                        case CheckBox checkBox:
-                            break;
-                        case UserControl userControl:
+                        case TextBox:
+                            SetTextBoxStyle((TextBox)control, Type.Normal);
                             break;
                     }
-
                     // Recursively apply to child controls
                     if (control.HasChildren)
                     {
@@ -337,7 +334,7 @@ namespace QuickWinstall.Lib
         }
         #endregion
 
-        #region SetLinkLabelStyle
+        #region SetLinkStyle
         public static void SetLinkStyle(LinkLabel linkLabel, Type type = Type.Link)
         {
             switch (type)
@@ -361,8 +358,25 @@ namespace QuickWinstall.Lib
         }
         #endregion
 
+        #region SetPanelStyle
+        public static void SetPanelStyle(Panel panel, Type type = Type.Normal)
+        {
+            switch (type)
+            {
+                case Type.Normal:
+                    panel.BackColor = SystemColors.Control;
+                    panel.ForeColor = SystemColors.ControlText;
+                    break;
+                case Type.Disabled:
+                    panel.BackColor = SystemColors.ControlDark;
+                    panel.ForeColor = SystemColors.GrayText;
+                    break;
+            }
+        }
+        #endregion
+
         #region SetStatusLabelStyle
-        public static void SetStatusLabel(ToolStripStatusLabel label, Type type = Type.Normal)
+        public static void SetStatusLabelStyle(ToolStripStatusLabel label, Type type = Type.Normal)
         {
             switch (type)
             {
@@ -426,9 +440,37 @@ namespace QuickWinstall.Lib
         #endregion
 
         #region GetAvailableThemes
-        public static string[] GetAvailableThemes()
+        public static ThemeItem[] GetAvailableThemes()
         {
-            return new string[] { "Light", "Dark" };
+            try
+            {
+                var defaults = Defaults.LoadFromAppFolder();
+                var themes = defaults.ThemeSettings.ThemesAvailable;
+                var items = new List<ThemeItem>();
+
+                foreach (var theme in themes)
+                {
+                    items.Add(new ThemeItem
+                    {
+                        Name = theme
+                    });
+                }
+                return items.ToArray();
+            }
+            catch
+            {
+                return new[]
+                {
+                    new ThemeItem
+                    {
+                        Name = LangManager.GetString("SettingsForm_Theme_Light", "Light")
+                    },
+                    new ThemeItem
+                    {
+                        Name = LangManager.GetString("SettingsForm_Theme_Dark", "Dark")
+                    }
+                };
+            }
         }
         #endregion
 

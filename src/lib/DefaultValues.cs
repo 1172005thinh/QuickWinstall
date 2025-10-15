@@ -83,9 +83,13 @@ namespace QuickWinstall
     public record AppConfigDefaults(
         bool        Expanded);
 
-    public record LangDefaults(
+    public record LangSettings(
         string Lang,
         string[] LangsAvailable);
+
+    public record ThemeSettings(
+        string Theme,
+        string[] ThemesAvailable);
 
     public class Defaults
     {
@@ -98,8 +102,8 @@ namespace QuickWinstall
         public BitLockerConfigDefaults BitLockerConfig { get; init; }
         public PersonalizeConfigDefaults PersonalizeConfig { get; init; }
         public AppConfigDefaults AppConfig { get; init; }
-        public LangDefaults LangConfig { get; init; }
-
+        public LangSettings LangSettings { get; init; }
+        public ThemeSettings ThemeSettings { get; init; }
 
         public static Defaults Load(string path)
         {
