@@ -3,114 +3,121 @@
     "name": "QuickWinstall",
     "title": "Automated Windows 11 Installation"
   },
-  "mainForm": {
-    "title": "QuickWinstall",
-    "banner": {
-      "title": "Automated Windows 11 Installation"
-    },
-    "sections": {
-      "general": "General Configurations",
-      "langReg": "Language & Region Configurations",
-      "bypass": "Bypass Windows 11 Hardware Checks",
-      "diskPart": "Disk & Partition Configurations",
-      "userAcc": "User Account Configurations",
-      "oobe": "OOBE Configurations",
-      "personal": "Personal Configurations",
-      "app": "App Configurations"
-    },
+  "dialogs": {
     "buttons": {
-      "settings": "Settings",
-      "clear": "Clear",
-      "preset": "Preset",
       "cancel": "Cancel",
-      "generate": "Generate"
+      "ok": "OK"
     },
-    "status": {
-      "prefix": "Status:",
-      "ready": "Ready",
-      "loading": "Loading...",
-      "generating": "Generating autounattend.xml...",
-      "success": "File generated successfully",
-      "error": "An error occurred",
-      "unsavedChanges": "Unsaved Configurations"
+    "clear": {
+      "message": "Clear all configurations?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "emptySavePath": {
+      "message": "The save path is empty or inaccessible.\\nPlease set a valid save path in Settings.",
+      "title": "Error"
+    },
+    "failed": {
+      "message": "Failed to generate autounattend.xml file.",
+      "title": "Error"
+    },
+    "overwrite": {
+      "message": "Overwrite existing autounattend.xml?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "success": {
+      "message": "Done! File saved at:\\n{0}\\autounattend.xml",
+      "title": "Information"
+    },
+    "unsaved": {
+      "message": "Leave without saving?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "validation": {
+      "message": "Please fix this validation errors:\\n - {0}",
+      "title": "Error"
     }
   },
   "generalConfig": {
-    "windowsEdition": {
-      "label": "Windows Edition",
+    "cpuArch": {
+      "label": "CPU Architecture",
       "options": {
-        "selectOne": "Select one",
-        "home": "Windows 11 Home",
-        "pro": "Windows 11 Pro",
-        "education": "Windows 11 Education",
-        "enterprise": "Windows 11 Enterprise"
+        "arm64": "Windows ARM64",
+        "selectOne": "-- Select one --",
+        "x64": "Intel/AMD x64"
       }
     },
     "productKey": {
       "label": "Product Key",
       "placeholder": "XXXXX"
     },
-    "cpuArch": {
-      "label": "CPU Architecture",
+    "windowsEdition": {
+      "label": "Windows Edition",
       "options": {
-        "selectOne": "Select one",
-        "x64": "Intel/AMD x64",
-        "arm64": "Windows ARM64"
+        "education": "Windows 11 Education",
+        "enterprise": "Windows 11 Enterprise",
+        "home": "Windows 11 Home",
+        "pro": "Windows 11 Pro",
+        "selectOne": "-- Select one --"
       }
     }
   },
+  "mainForm": {
+    "banner": {
+      "title": "Automated Windows 11 Installation"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "generate": "Generate",
+      "preset": "Preset",
+      "settings": "Settings"
+    },
+    "sections": {
+      "app": "App Configurations",
+      "bypass": "Bypass Windows 11 Hardware Checks",
+      "diskPart": "Disk & Partition Configurations",
+      "general": "General Configurations",
+      "langReg": "Language & Region Configurations",
+      "oobe": "OOBE Configurations",
+      "personal": "Personal Configurations",
+      "userAcc": "User Account Configurations"
+    },
+    "status": {
+      "configurationCleared": "Configuration cleared",
+      "error": "An error occurred",
+      "failedToGenerateFile": "Failed to generate autounattend.xml file.",
+      "generating": "Generating autounattend.xml...",
+      "loading": "Loading...",
+      "prefix": "Status:",
+      "ready": "Ready",
+      "success": "File generated successfully",
+      "unsavedChanges": "Unsaved Configurations"
+    },
+    "title": "QuickWinstall"
+  },
   "tooltips": {
+    "generalConfig": {
+      "cpuArch": "Select the CPU architecture for installation.",
+      "header": "General Configurations Section",
+      "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
+      "windowsEdition": "Select the Windows edition to install"
+    },
     "mainForm": {
+      "cancel": "Exit QuickWinstall",
+      "clear": "Clear all configurations",
       "collapseAll": "Collapse the Configuration Panel",
       "expandAll": "Expand the Configuration Panel",
-      "settings": "Open Application's settings",
-      "clear": "Clear all configurations",
+      "generate": "Generate autounattend.xml file",
       "preset": "Load/Save a preset of current configurations",
-      "cancel": "Exit QuickWinstall",
-      "generate": "Generate autounattend.xml file"
-    },
-    "generalConfig": {
-      "windowsEdition": "Select the Windows edition to install",
-      "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
-      "cpuArch": "Select the CPU architecture for installation."
+      "settings": "Open Application's settings"
     },
     "section": {
       "expandCollapse": "Expand/Collapse {0} Section"
     }
   },
-  "dialogs": {
-    "clear": {
-      "title": "Warning",
-      "message": "Clear all configurations?\\nThis action cannot be undone."
-    },
-    "unsaved": {
-      "title": "Warning",
-      "message": "Leave without saving?\\nThis action cannot be undone."
-    },
-    "validation": {
-      "title": "Error",
-      "message": "Please fix this validation errors:\\n - {0}"
-    },
-    "emptySavePath": {
-      "title": "Error",
-      "message": "The save path is empty or inaccessible.\\nPlease set a valid save path in Settings."
-    },
-    "overwrite": {
-      "title": "Warning",
-      "message": "Overwrite existing autounattend.xml?\\nThis action cannot be undone."
-    },
-    "success": {
-      "title": "Information",
-      "message": "Done! File saved at:\\n{0}\\autounattend.xml"
-    },
-    "buttons": {
-      "ok": "OK",
-      "cancel": "Cancel"
-    }
-  },
   "validation": {
-    "required": "{0} is required.",
     "invalid": "{0} is invalid.",
-    "invalidProductKey": "Product Key must be either empty or a valid 25-character key in the format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX."
+    "invalidProductKey": "Product Key must be either empty or a valid 25-character key in the format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX.",
+    "required": "{0} is required."
   }
 }

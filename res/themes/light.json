@@ -2,7 +2,12 @@
   "name": "Light",
   "colors": {
     "background": "#e1e1e1",
-    "foreground": "#000000"
+    "foreground": "#000000",
+    "buttonBackground": "#ffffff",
+    "buttonBackgroundHover": "#dae3f3",
+    "buttonBorder": "#000000",
+    "buttonBorderHover": "#4472c4",
+    "separator": "#000000"
   },
   "fonts": {
     "normal": {

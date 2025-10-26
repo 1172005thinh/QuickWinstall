@@ -8,6 +8,8 @@ namespace QuickWinstall.Main
 {
     public partial class MainForm : Form
     {
+        #region Fields
+
         private UIValues _uiValues;
         private ThemeManager _themeManager;
         private LangManager _langManager;
@@ -18,8 +20,13 @@ namespace QuickWinstall.Main
         private SettingsManager _settingsManager;
         private XMLGenerator _xmlGenerator;
 
+        private GeneralConfig _generalConfig;
+
         private bool _hasUnsavedChanges = false;
-        private bool _isGeneralConfigExpanded = true;
+
+        #endregion
+
+        #region Constructor
 
         public MainForm()
         {
@@ -34,9 +41,16 @@ namespace QuickWinstall.Main
             _settingsManager = SettingsManager.Instance;
             _xmlGenerator = XMLGenerator.Instance;
 
+            // Initialize GeneralConfig
+            _generalConfig = new GeneralConfig();
+
             InitializeComponent();
             InitializeForm();
         }
+
+        #endregion
+
+        #region Initialization
 
         private void InitializeForm()
         {
@@ -45,6 +59,7 @@ namespace QuickWinstall.Main
 
             // Set initial status
             _statusManager.SetReady();
+            _statusManager.SetStatus(_langManager.GetString("mainForm.status.ready"), StatusType.Success);
 
             // Load last configuration if enabled
             if (_settingsManager.SaveLastConfig)
@@ -68,7 +83,10 @@ namespace QuickWinstall.Main
             statusStrip.BackColor = _themeManager.GetColor("background");
         }
 
-        // Event handlers
+        #endregion
+
+        #region Button Event Handlers
+
         private void BtnSettings_Click(object sender, EventArgs e)
         {
             // TODO: Open SettingsForm
@@ -90,7 +108,7 @@ namespace QuickWinstall.Main
                 _configValues.Clear();
                 ClearForm();
                 _hasUnsavedChanges = false;
-                _statusManager.SetStatus("Configuration cleared", StatusType.Success);
+                _statusManager.SetStatus(_langManager.GetString("mainForm.status.configurationCleared"), StatusType.Success);
             }
         }
 
@@ -102,21 +120,8 @@ namespace QuickWinstall.Main
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-            if (_hasUnsavedChanges)
-            {
-                var result = MessageBox.Show(
-                    _langManager.GetString("dialogs.unsaved.message"),
-                    _langManager.GetString("dialogs.unsaved.title"),
-                    MessageBoxButtons.OKCancel,
-                    MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button2
-                );
-
-                if (result == DialogResult.Cancel)
-                    return;
-            }
-
-            Application.Exit();
+            // Close the form, which will trigger OnFormClosing with the proper check
+            this.Close();
         }
 
         private void BtnGenerate_Click(object sender, EventArgs e)
@@ -183,51 +188,40 @@ namespace QuickWinstall.Main
             else
             {
                 MessageBox.Show(
-                    "Failed to generate autounattend.xml file.",
-                    "Error",
+                    _langManager.GetString("dialog.failed.message", _langManager.GetString("mainForm.status.failedToGenerateFile")),
+                    _langManager.GetString("dialog.failed.title"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
-                _statusManager.SetError("Failed to generate file");
+                _statusManager.SetError(_langManager.GetString("mainForm.status.failedToGenerateFile"));
             }
         }
 
         private void BtnGeneralConfigToggle_Click(object sender, EventArgs e)
         {
-            _isGeneralConfigExpanded = !_isGeneralConfigExpanded;
-            pnlGeneralConfigContent.Visible = _isGeneralConfigExpanded;
-            pnlGeneralConfigSeparator.Visible = _isGeneralConfigExpanded;
-            btnGeneralConfigToggle.Text = _isGeneralConfigExpanded ? "−" : "+";
+            _generalConfig.ToggleSection();
         }
 
         private void BtnExpandAll_Click(object sender, EventArgs e)
         {
             // Expand all sections
-            _isGeneralConfigExpanded = true;
-            pnlGeneralConfigContent.Visible = true;
-            pnlGeneralConfigSeparator.Visible = true;
-            btnGeneralConfigToggle.Text = "−";
+            _generalConfig.Expand();
         }
 
         private void BtnCollapseAll_Click(object sender, EventArgs e)
         {
             // Collapse all sections
-            _isGeneralConfigExpanded = false;
-            pnlGeneralConfigContent.Visible = false;
-            pnlGeneralConfigSeparator.Visible = false;
-            btnGeneralConfigToggle.Text = "+";
+            _generalConfig.Collapse();
         }
+
+        #endregion
+
+        #region Helper Methods
 
         private void ClearForm()
         {
-            // Clear GeneralConfig inputs
-            cmbWindowsEdition.SelectedIndex = 0;
-            txtProductKey1.Clear();
-            txtProductKey2.Clear();
-            txtProductKey3.Clear();
-            txtProductKey4.Clear();
-            txtProductKey5.Clear();
-            cmbCPUArch.SelectedIndex = 0;
+            // Clear GeneralConfig using the GeneralConfig class
+            _generalConfig.ClearControls();
         }
 
         private void OnConfigChanged(object sender, EventArgs e)
@@ -241,49 +235,18 @@ namespace QuickWinstall.Main
 
         private void UpdateConfigValues()
         {
-            // Update WindowsEdition
-            if (cmbWindowsEdition.SelectedIndex > 0)
-            {
-                _configValues.General.WindowsEdition = cmbWindowsEdition.SelectedItem?.ToString() ?? "";
-            }
-            else
-            {
-                _configValues.General.WindowsEdition = "";
-            }
-
-            // Update ProductKey
-            string pk1 = txtProductKey1.Text.Trim();
-            string pk2 = txtProductKey2.Text.Trim();
-            string pk3 = txtProductKey3.Text.Trim();
-            string pk4 = txtProductKey4.Text.Trim();
-            string pk5 = txtProductKey5.Text.Trim();
-
-            if (string.IsNullOrEmpty(pk1) && string.IsNullOrEmpty(pk2) && 
-                string.IsNullOrEmpty(pk3) && string.IsNullOrEmpty(pk4) && string.IsNullOrEmpty(pk5))
-            {
-                _configValues.General.ProductKey = "";
-            }
-            else
-            {
-                _configValues.General.ProductKey = $"{pk1}-{pk2}-{pk3}-{pk4}-{pk5}";
-            }
-
-            // Update CPUArchitecture
-            if (cmbCPUArch.SelectedIndex > 0)
-            {
-                string selected = cmbCPUArch.SelectedItem?.ToString() ?? "";
-                if (selected.Contains("x64"))
-                    _configValues.General.CPUArchitecture = "amd64";
-                else if (selected.Contains("ARM64"))
-                    _configValues.General.CPUArchitecture = "arm64";
-                else
-                    _configValues.General.CPUArchitecture = "";
-            }
-            else
-            {
-                _configValues.General.CPUArchitecture = "";
-            }
+            // Update GeneralConfig from controls
+            _generalConfig.UpdateFromControls();
+            
+            // Sync to ConfigValues
+            _configValues.General.WindowsEdition = _generalConfig.WindowsEdition;
+            _configValues.General.ProductKey = _generalConfig.ProductKey;
+            _configValues.General.CPUArchitecture = _generalConfig.CPUArchitecture;
         }
+
+        #endregion
+
+        #region Form Events
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -305,5 +268,7 @@ namespace QuickWinstall.Main
 
             base.OnFormClosing(e);
         }
+
+        #endregion
     }
 }

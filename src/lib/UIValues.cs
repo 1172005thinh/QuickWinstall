@@ -6,8 +6,36 @@ namespace QuickWinstall.Lib
 {
     public class UIValues
     {
+        #region Singleton
+
         private static UIValues? _instance;
+
+        public static UIValues Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new UIValues();
+                }
+                return _instance;
+            }
+        }
+
+        private UIValues()
+        {
+            LoadUIConfig();
+        }
+
+        #endregion
+
+        #region Fields
+
         private JObject? _uiConfig;
+
+        #endregion
+
+        #region Properties
 
         // Global spacing
         public int GlobalSpacingX { get; private set; } = 20;
@@ -35,22 +63,9 @@ namespace QuickWinstall.Lib
         public int ControlPanelHeight { get; private set; } = 60;
         public int StatusBarHeight { get; private set; } = 40;
 
-        private UIValues()
-        {
-            LoadUIConfig();
-        }
+        #endregion
 
-        public static UIValues Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new UIValues();
-                }
-                return _instance;
-            }
-        }
+        #region Methods
 
         private void LoadUIConfig()
         {
@@ -129,5 +144,7 @@ namespace QuickWinstall.Lib
                 return defaultValue;
             }
         }
+
+        #endregion
     }
 }

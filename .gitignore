@@ -4,6 +4,7 @@ autounattend.xml
 # Ignore my personal files
 docs/prompt.md
 docs/pngs/
+tools/*.txt
 
 # Ignore user-specific files
 *.rsuser

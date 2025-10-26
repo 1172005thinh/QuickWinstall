@@ -572,6 +572,7 @@ will be replaced with the actual product key value provided by the user.
 ### v0.1 - Initial Release (2024)
 
 **Initial Implementation:**
+
 - Complete application structure with all core library classes
 - MainForm UI with GeneralConfig section
 - Theme management (light/dark)
@@ -612,6 +613,7 @@ will be replaced with the actual product key value provided by the user.
     - Auto-move to next textbox when reaching max length (5 characters)
 
 **Technical Improvements:**
+
 - Added `System.Drawing.Drawing2D` for GraphicsPath rounded button regions
 - Helper methods: `CreateRoundedButton()`, `CreateProductKeyTextBox()`, `FindProductKeyTextBox()`
 - Event handlers: `BtnExpandAll_Click()`, `BtnCollapseAll_Click()`
@@ -619,6 +621,7 @@ will be replaced with the actual product key value provided by the user.
 - Proper use of `ToolTipManager.SetToolTip()` for all controls with language-based tooltip keys
 
 **Language File Updates:**
+
 - Added `mainForm.status.unsavedChanges` key for English and Vietnamese
 - Complete tooltip section with keys for all buttons and controls
 - Section-specific tooltips with formatting support (e.g., `{0}` for section name)

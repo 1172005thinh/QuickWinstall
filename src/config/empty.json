@@ -3,41 +3,5 @@
     "windowsEdition": "",
     "productKey": "",
     "cpuArchitecture": ""
-  },
-  "langReg": {
-    "systemLocale": "",
-    "userLocale": "",
-    "uiLanguage": "",
-    "keyboardLayout": "",
-    "timeZone": ""
-  },
-  "bypass": {
-    "tpm": false,
-    "secureBoot": false,
-    "ram": false,
-    "storage": false
-  },
-  "diskPart": {
-    "diskIndex": 0,
-    "partitions": []
-  },
-  "userAcc": {
-    "accountType": "",
-    "username": "",
-    "password": "",
-    "autoLogin": false
-  },
-  "oobe": {
-    "skipCortana": false,
-    "skipOneDrive": false,
-    "skipPrivacy": false
-  },
-  "personal": {
-    "theme": "",
-    "wallpaper": ""
-  },
-  "app": {
-    "install": [],
-    "uninstall": []
   }
 }

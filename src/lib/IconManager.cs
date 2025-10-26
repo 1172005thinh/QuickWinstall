@@ -34,7 +34,7 @@ namespace QuickWinstall.Lib
         {
             try
             {
-                string errorIconPath = Path.Combine(_iconsPath, "error.ico");
+                string errorIconPath = Path.Combine(_iconsPath, "error256.ico");
                 if (File.Exists(errorIconPath))
                 {
                     _defaultIcon = new Icon(errorIconPath);
@@ -52,7 +52,7 @@ namespace QuickWinstall.Lib
             {
                 // Determine icon name based on theme
                 // Some icons like app, windows11, error, warning, info are theme-independent
-                string[] themeIndependent = { "app", "app256", "windows11", "error", "error256", "warning", "warning256", "info", "info256" };
+                string[] themeIndependent = { "app", "app256", "windows11", "windows11256", "error", "error256", "warning", "warning256", "info", "info256" };
                 bool isThemeIndependent = Array.Exists(themeIndependent, s => iconName.Equals(s, StringComparison.OrdinalIgnoreCase));
 
                 string fileName = iconName;

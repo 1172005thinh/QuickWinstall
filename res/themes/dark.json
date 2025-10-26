@@ -2,14 +2,19 @@
   "name": "Dark",
   "colors": {
     "background": "#1e1e1e",
-    "foreground": "#ffffff"
+    "foreground": "#d4d4d4",
+    "buttonBackground": "#2d2d30",
+    "buttonBackgroundHover": "#3e3e42",
+    "buttonBorder": "#555555",
+    "buttonBorderHover": "#007acc",
+    "separator": "#d4d4d4"
   },
   "fonts": {
     "normal": {
       "family": "Segoe UI",
       "size": 12,
       "style": "Regular",
-      "color": "#ffffff"
+      "color": "#d4d4d4"
     },
     "header": {
       "family": "Segoe UI",
@@ -21,37 +26,37 @@
       "family": "Segoe UI",
       "size": 12,
       "style": "Bold",
-      "color": "#ffffff"
+      "color": "#e8e8e8"
     },
     "placeholder": {
       "family": "Segoe UI",
       "size": 12,
       "style": "Regular",
-      "color": "#6e6e6e"
+      "color": "#4d4d4d"
     },
     "error": {
       "family": "Segoe UI",
       "size": 12,
       "style": "Regular",
-      "color": "#ff4444"
+      "color": "#f48771"
     },
     "warning": {
       "family": "Segoe UI",
       "size": 12,
       "style": "Regular",
-      "color": "#ffaa00"
+      "color": "#cca700"
     },
     "success": {
       "family": "Segoe UI",
       "size": 12,
       "style": "Regular",
-      "color": "#00aa00"
+      "color": "#89d185"
     },
     "tooltip": {
       "family": "Segoe UI",
       "size": 10,
       "style": "Italic",
-      "color": "#999999"
+      "color": "#808080"
     }
   }
 }
