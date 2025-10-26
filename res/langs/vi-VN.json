@@ -1,0 +1,116 @@
+{
+  "app": {
+    "name": "QuickWinstall",
+    "title": "Cài đặt Windows 11 tự động"
+  },
+  "mainForm": {
+    "title": "QuickWinstall",
+    "banner": {
+      "title": "Cài đặt Windows 11 tự động"
+    },
+    "sections": {
+      "general": "Cấu hình chung",
+      "langReg": "Cấu hình ngôn ngữ và khu vực",
+      "bypass": "Bỏ qua kiểm tra phần cứng Windows 11",
+      "diskPart": "Cấu hình đĩa và phân vùng",
+      "userAcc": "Cấu hình tài khoản người dùng",
+      "oobe": "Cấu hình OOBE",
+      "personal": "Cấu hình cá nhân",
+      "app": "Cấu hình ứng dụng"
+    },
+    "buttons": {
+      "settings": "Cài đặt",
+      "clear": "Xóa",
+      "preset": "Cấu hình có sẵn",
+      "cancel": "Hủy",
+      "generate": "Tạo"
+    },
+    "status": {
+      "prefix": "Trạng thái:",
+      "ready": "Sẵn sàng",
+      "loading": "Đang tải...",
+      "generating": "Đang tạo autounattend.xml...",
+      "success": "Tạo tệp thành công",
+      "error": "Đã xảy ra lỗi",
+      "unsavedChanges": "Cấu hình chưa được lưu"
+    }
+  },
+  "generalConfig": {
+    "windowsEdition": {
+      "label": "Phiên bản Windows",
+      "options": {
+        "selectOne": "Chọn một",
+        "home": "Windows 11 Home",
+        "pro": "Windows 11 Pro",
+        "education": "Windows 11 Education",
+        "enterprise": "Windows 11 Enterprise"
+      }
+    },
+    "productKey": {
+      "label": "Khóa sản phẩm",
+      "placeholder": "XXXXX"
+    },
+    "cpuArch": {
+      "label": "Kiến trúc CPU",
+      "options": {
+        "selectOne": "Chọn một",
+        "x64": "Intel/AMD x64",
+        "arm64": "Windows ARM64"
+      }
+    }
+  },
+  "tooltips": {
+    "mainForm": {
+      "collapseAll": "Thu gọn bảng cấu hình",
+      "expandAll": "Mở rộng bảng cấu hình",
+      "settings": "Mở cài đặt ứng dụng",
+      "clear": "Xóa tất cả cấu hình",
+      "preset": "Tải/Lưu cấu hình có sẵn",
+      "cancel": "Thoát QuickWinstall",
+      "generate": "Tạo tệp autounattend.xml"
+    },
+    "generalConfig": {
+      "windowsEdition": "Chọn phiên bản Windows cần cài đặt",
+      "productKey": "Nhập khóa sản phẩm để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa nhúng.",
+      "cpuArch": "Chọn kiến trúc CPU để cài đặt."
+    },
+    "section": {
+      "expandCollapse": "Mở rộng/Thu gọn phần {0}"
+    }
+  },
+  "dialogs": {
+    "clear": {
+      "title": "Cảnh báo",
+      "message": "Xóa tất cả cấu hình?\\nHành động này không thể hoàn tác."
+    },
+    "unsaved": {
+      "title": "Cảnh báo",
+      "message": "Rời đi mà không lưu?\\nHành động này không thể hoàn tác."
+    },
+    "validation": {
+      "title": "Lỗi",
+      "message": "Vui lòng sửa các lỗi xác thực:\\n - {0}"
+    },
+    "emptySavePath": {
+      "title": "Lỗi",
+      "message": "Đường dẫn lưu trống hoặc không thể truy cập.\\nVui lòng đặt đường dẫn hợp lệ trong Cài đặt."
+    },
+    "overwrite": {
+      "title": "Cảnh báo",
+      "message": "Ghi đè autounattend.xml hiện có?\\nHành động này không thể hoàn tác."
+    },
+    "success": {
+      "title": "Thông tin",
+      "message": "Hoàn tất! Tệp đã được lưu tại:\\n{0}\\autounattend.xml"
+    },
+    "buttons": {
+      "ok": "OK",
+      "cancel": "Hủy"
+    }
+  },
+  "validation": {
+    "required": "{0} là bắt buộc.",
+    "invalid": "{0} không hợp lệ.",
+    "invalidProductKey": "Khóa sản phẩm phải để trống hoặc là khóa hợp lệ 25 ký tự theo định dạng XXXXX-XXXXX-XXXXX-XXXXX-XXXXX."
+  }
+}

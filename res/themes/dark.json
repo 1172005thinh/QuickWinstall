@@ -1,0 +1,57 @@
+{
+  "name": "Dark",
+  "colors": {
+    "background": "#1e1e1e",
+    "foreground": "#ffffff"
+  },
+  "fonts": {
+    "normal": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#ffffff"
+    },
+    "header": {
+      "family": "Segoe UI",
+      "size": 16,
+      "style": "Bold",
+      "color": "#ffffff"
+    },
+    "subheader": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Bold",
+      "color": "#ffffff"
+    },
+    "placeholder": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#6e6e6e"
+    },
+    "error": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#ff4444"
+    },
+    "warning": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#ffaa00"
+    },
+    "success": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#00aa00"
+    },
+    "tooltip": {
+      "family": "Segoe UI",
+      "size": 10,
+      "style": "Italic",
+      "color": "#999999"
+    }
+  }
+}
