@@ -7,6 +7,8 @@
     "buttonBackgroundHover": "#3e3e42",
     "buttonBorder": "#555555",
     "buttonBorderHover": "#007acc",
+    "inputBackground": "#3c3c3c",
+    "inputForeground": "#d4d4d4",
     "separator": "#d4d4d4"
   },
   "fonts": {

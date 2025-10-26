@@ -23,6 +23,7 @@ namespace QuickWinstall.Main
         private GeneralConfig _generalConfig;
 
         private bool _hasUnsavedChanges = false;
+        private bool _isLoadingConfig = false; // Flag to prevent status updates during config loading
 
         #endregion
 
@@ -41,8 +42,8 @@ namespace QuickWinstall.Main
             _settingsManager = SettingsManager.Instance;
             _xmlGenerator = XMLGenerator.Instance;
 
-            // Initialize GeneralConfig
-            _generalConfig = new GeneralConfig();
+            // Use GeneralConfig from ConfigValues (not a separate instance!)
+            _generalConfig = _configValues.General;
 
             InitializeComponent();
             InitializeForm();
@@ -61,10 +62,21 @@ namespace QuickWinstall.Main
             _statusManager.SetReady();
             _statusManager.SetStatus(_langManager.GetString("mainForm.status.ready"), StatusType.Success);
 
-            // Load last configuration if enabled
-            if (_settingsManager.SaveLastConfig)
+            // Load last configuration without triggering unsaved status
+            _isLoadingConfig = true;
+            try
             {
-                // TODO: Load last config from lastConfig.json
+                // Load last configuration data model
+                _configValues.LoadLastConfig();
+                
+                // Update UI controls from loaded config in each section
+                _generalConfig.LoadConfigIntoUI();
+                // Add other sections here when implemented
+            }
+            finally
+            {
+                // Always reset the flag, even if an error occurs
+                _isLoadingConfig = false;
             }
 
             // Apply theme to form
@@ -176,6 +188,9 @@ namespace QuickWinstall.Main
 
             if (success)
             {
+                // Save last config if autosave is enabled
+                _configValues.SaveLastConfig();
+
                 MessageBox.Show(
                     _langManager.GetString("dialogs.success.message", savePath),
                     _langManager.GetString("dialogs.success.title"),
@@ -226,6 +241,12 @@ namespace QuickWinstall.Main
 
         private void OnConfigChanged(object sender, EventArgs e)
         {
+            // Skip status update if we're loading config
+            if (_isLoadingConfig)
+            {
+                return;
+            }
+
             _hasUnsavedChanges = true;
             _statusManager.SetStatus(_langManager.GetString("mainForm.status.unsavedChanges"), StatusType.Warning);
 
@@ -238,10 +259,7 @@ namespace QuickWinstall.Main
             // Update GeneralConfig from controls
             _generalConfig.UpdateFromControls();
             
-            // Sync to ConfigValues
-            _configValues.General.WindowsEdition = _generalConfig.WindowsEdition;
-            _configValues.General.ProductKey = _generalConfig.ProductKey;
-            _configValues.General.CPUArchitecture = _generalConfig.CPUArchitecture;
+            // No need to sync - _generalConfig IS _configValues.General (same instance)
         }
 
         #endregion

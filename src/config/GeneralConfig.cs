@@ -44,6 +44,7 @@ namespace QuickWinstall.Config
         private ComboBox cmbCPUArch = null!;
 
         private bool _isExpanded = true;
+        private bool _isLoading = false; // Flag to prevent event handlers during config loading
 
         #endregion
 
@@ -73,8 +74,8 @@ namespace QuickWinstall.Config
             btnGeneralConfigToggle = createRoundedButton();
             btnGeneralConfigToggle.Location = new Point(ui.GlobalTabX, ui.GlobalSpacingY);
             btnGeneralConfigToggle.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage("collapse", theme.IsDarkTheme, ui.GlobalIconSize);
-            btnGeneralConfigToggle.Tag = "expanded";
+            btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage("expand", theme.IsDarkTheme, ui.GlobalIconSize);
+            btnGeneralConfigToggle.Tag = "collapsed";
             btnGeneralConfigToggle.Click += (sender, e) => ToggleSection();
             tooltips.SetToolTip(btnGeneralConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.general"));
 
@@ -120,6 +121,8 @@ namespace QuickWinstall.Config
             cmbWindowsEdition.Location = new Point(inputX, currentY);
             cmbWindowsEdition.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
             cmbWindowsEdition.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbWindowsEdition.BackColor = theme.GetColor("inputBackground");
+            cmbWindowsEdition.ForeColor = theme.GetFontColor("inputForeground");
             cmbWindowsEdition.Items.AddRange(new object[] {
                 lang.GetString("generalConfig.windowsEdition.options.selectOne"),
                 lang.GetString("generalConfig.windowsEdition.options.home"),
@@ -146,6 +149,7 @@ namespace QuickWinstall.Config
             int pkX = inputX;
 
             txtProductKey1 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey1.BackColor = theme.GetColor("inputBackground");
             txtProductKey1.Location = new Point(pkX, currentY);
             txtProductKey1.Tag = 1;
             tooltips.SetToolTip(txtProductKey1, "tooltips.generalConfig.productKey");
@@ -160,6 +164,7 @@ namespace QuickWinstall.Config
             pkX += ui.GlobalSpacingX;
 
             txtProductKey2 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey2.BackColor = theme.GetColor("inputBackground");
             txtProductKey2.Location = new Point(pkX, currentY);
             txtProductKey2.Tag = 2;
             tooltips.SetToolTip(txtProductKey2, "tooltips.generalConfig.productKey");
@@ -174,6 +179,7 @@ namespace QuickWinstall.Config
             pkX += ui.GlobalSpacingX;
 
             txtProductKey3 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey3.BackColor = theme.GetColor("inputBackground");
             txtProductKey3.Location = new Point(pkX, currentY);
             txtProductKey3.Tag = 3;
             txtProductKey3.Font = theme.GetFont("normal");
@@ -189,6 +195,7 @@ namespace QuickWinstall.Config
             pkX += ui.GlobalSpacingX;
 
             txtProductKey4 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey4.BackColor = theme.GetColor("inputBackground");
             txtProductKey4.Location = new Point(pkX, currentY);
             txtProductKey4.Tag = 4;
             tooltips.SetToolTip(txtProductKey4, "tooltips.generalConfig.productKey");
@@ -203,6 +210,7 @@ namespace QuickWinstall.Config
             pkX += ui.GlobalSpacingX;
 
             txtProductKey5 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey5.BackColor = theme.GetColor("inputBackground");
             txtProductKey5.Location = new Point(pkX, currentY);
             txtProductKey5.Tag = 5;
             tooltips.SetToolTip(txtProductKey5, "tooltips.generalConfig.productKey");
@@ -222,6 +230,8 @@ namespace QuickWinstall.Config
             cmbCPUArch.Location = new Point(inputX, currentY);
             cmbCPUArch.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
             cmbCPUArch.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCPUArch.BackColor = theme.GetColor("inputBackground");
+            cmbCPUArch.ForeColor = theme.GetFontColor("inputForeground");
             cmbCPUArch.Items.AddRange(new object[] {
                 lang.GetString("generalConfig.cpuArch.options.selectOne"),
                 lang.GetString("generalConfig.cpuArch.options.x64"),
@@ -260,7 +270,28 @@ namespace QuickWinstall.Config
             // Initialize placeholders
             InitializePlaceholders();
 
+            // Note: Config will be loaded after InitializeForm() calls LoadLastConfig()
+            // Then MainForm will call LoadConfigIntoUI() on this section
+
             return pnlGeneralConfig;
+        }
+
+        /// <summary>
+        /// Loads the data model values into UI controls
+        /// Called by MainForm after ConfigValues.LoadLastConfig() has loaded the data
+        /// </summary>
+        public void LoadConfigIntoUI()
+        {
+            try
+            {
+                Console.WriteLine("GeneralConfig: Loading config into UI...");
+                UpdateControlsFromModel();
+                Console.WriteLine("GeneralConfig: Config loaded into UI successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"GeneralConfig: Error loading config into UI: {ex.Message}");
+            }
         }
 
         #endregion
@@ -281,9 +312,9 @@ namespace QuickWinstall.Config
             IconManager iconMgr = IconManager.Instance;
             UIValues ui = UIValues.Instance;
             
-            string iconName = _isExpanded ? "collapse" : "expand";
+            string iconName = _isExpanded ? "expand" : "collapse";
             btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage(iconName, theme.IsDarkTheme, ui.GlobalIconSize);
-            btnGeneralConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
+            btnGeneralConfigToggle.Tag = _isExpanded ? "collapsed" : "expanded";
         }
 
         /// <summary>
@@ -324,7 +355,7 @@ namespace QuickWinstall.Config
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 textBox.Text = "XXXXX";
-                textBox.ForeColor = Color.Gray;
+                textBox.ForeColor = ThemeManager.Instance.GetFontColor("placeholder");
             }
         }
 
@@ -337,6 +368,19 @@ namespace QuickWinstall.Config
         /// </summary>
         public void UpdateFromControls()
         {
+            // Skip if we're loading config to prevent overwriting values
+            if (_isLoading)
+            {
+                return;
+            }
+
+            // Check if UI is initialized
+            if (cmbWindowsEdition == null || txtProductKey1 == null || cmbCPUArch == null)
+            {
+                Console.WriteLine("UpdateFromControls: UI controls not initialized yet!");
+                return;
+            }
+
             // Update WindowsEdition
             if (cmbWindowsEdition.SelectedIndex > 0)
             {
@@ -393,6 +437,10 @@ namespace QuickWinstall.Config
         /// </summary>
         public void ClearControls()
         {
+            // Check if UI is initialized
+            if (cmbWindowsEdition == null || txtProductKey1 == null || cmbCPUArch == null)
+                return;
+
             // Clear GeneralConfig inputs
             cmbWindowsEdition.SelectedIndex = 0;
             
@@ -409,6 +457,117 @@ namespace QuickWinstall.Config
             SetProductKeyPlaceholder(txtProductKey5);
             
             cmbCPUArch.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Updates UI controls from the data model
+        /// </summary>
+        public void UpdateControlsFromModel()
+        {
+            // Check if UI is initialized
+            if (cmbWindowsEdition == null || txtProductKey1 == null || cmbCPUArch == null)
+            {
+                Console.WriteLine("UpdateControlsFromModel: UI controls not initialized yet!");
+                return;
+            }
+
+            Console.WriteLine($"UpdateControlsFromModel: WindowsEdition={WindowsEdition}, ProductKey={ProductKey}, CPUArchitecture={CPUArchitecture}");
+
+            // Set flag to prevent event handlers from firing during loading
+            _isLoading = true;
+
+            try
+            {
+                LangManager lang = LangManager.Instance;
+                ThemeManager theme = ThemeManager.Instance;
+
+                // Update Windows Edition combo box
+                if (!string.IsNullOrWhiteSpace(WindowsEdition))
+                {
+                    for (int i = 0; i < cmbWindowsEdition.Items.Count; i++)
+                    {
+                        if (cmbWindowsEdition.Items[i]?.ToString() == WindowsEdition)
+                        {
+                            cmbWindowsEdition.SelectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    cmbWindowsEdition.SelectedIndex = 0;
+                }
+
+                // Update Product Key textboxes
+                if (!string.IsNullOrWhiteSpace(ProductKey))
+                {
+                    string[] segments = ProductKey.Split('-');
+                    if (segments.Length == 5)
+                    {
+                        SetProductKeySegment(txtProductKey1, segments[0], theme);
+                        SetProductKeySegment(txtProductKey2, segments[1], theme);
+                        SetProductKeySegment(txtProductKey3, segments[2], theme);
+                        SetProductKeySegment(txtProductKey4, segments[3], theme);
+                        SetProductKeySegment(txtProductKey5, segments[4], theme);
+                    }
+                }
+                else
+                {
+                    SetProductKeyPlaceholder(txtProductKey1);
+                    SetProductKeyPlaceholder(txtProductKey2);
+                    SetProductKeyPlaceholder(txtProductKey3);
+                    SetProductKeyPlaceholder(txtProductKey4);
+                    SetProductKeyPlaceholder(txtProductKey5);
+                }
+
+                // Update CPU Architecture combo box
+                if (!string.IsNullOrWhiteSpace(CPUArchitecture))
+                {
+                    string displayValue = CPUArchitecture.ToLower() switch
+                    {
+                        "amd64" => lang.GetString("generalConfig.cpuArch.options.x64"),
+                        "arm64" => lang.GetString("generalConfig.cpuArch.options.arm64"),
+                        _ => ""
+                    };
+
+                    if (!string.IsNullOrEmpty(displayValue))
+                    {
+                        for (int i = 0; i < cmbCPUArch.Items.Count; i++)
+                        {
+                            if (cmbCPUArch.Items[i]?.ToString() == displayValue)
+                            {
+                                cmbCPUArch.SelectedIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    cmbCPUArch.SelectedIndex = 0;
+                }
+            }
+            finally
+            {
+                // Always reset the flag, even if an error occurs
+                _isLoading = false;
+            }
+        }
+
+        /// <summary>
+        /// Helper to set a product key segment in a textbox
+        /// </summary>
+        private void SetProductKeySegment(TextBox textBox, string value, ThemeManager theme)
+        {
+            if (!string.IsNullOrWhiteSpace(value) && value != "XXXXX")
+            {
+                textBox.Text = value;
+                textBox.ForeColor = theme.GetFontColor("normal");
+            }
+            else
+            {
+                SetProductKeyPlaceholder(textBox);
+            }
         }
 
         /// <summary>

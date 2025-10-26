@@ -1,0 +1,8 @@
+{
+  // Recommended extensions for this workspace
+  "recommendations": [
+    "ms-dotnettools.csharp",
+    "ms-vscode.powershell",
+    "eamodio.gitlens"
+  ]
+}

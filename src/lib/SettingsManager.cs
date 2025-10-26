@@ -14,11 +14,13 @@ namespace QuickWinstall.Lib
         private const string DEFAULT_THEME = "Light";
         private const string DEFAULT_LANGUAGE = "en-US";
         private const bool DEFAULT_SAVE_LAST_CONFIG = true;
+        private const bool DEFAULT_LOAD_LAST_CONFIG = true;
 
         public string Theme { get; set; } = DEFAULT_THEME;
         public string Language { get; set; } = DEFAULT_LANGUAGE;
         public string SavePath { get; set; } = "";
         public bool SaveLastConfig { get; set; } = DEFAULT_SAVE_LAST_CONFIG;
+        public bool LoadLastConfig { get; set; } = DEFAULT_LOAD_LAST_CONFIG;
 
         private SettingsManager()
         {
@@ -52,6 +54,7 @@ namespace QuickWinstall.Lib
                     Language = _settings["language"]?.ToString() ?? DEFAULT_LANGUAGE;
                     SavePath = _settings["savePath"]?.ToString() ?? "";
                     SaveLastConfig = _settings["saveLastConfig"]?.ToObject<bool>() ?? DEFAULT_SAVE_LAST_CONFIG;
+                    LoadLastConfig = _settings["loadLastConfig"]?.ToObject<bool>() ?? DEFAULT_LOAD_LAST_CONFIG;
 
                     // Set default save path if empty
                     if (string.IsNullOrEmpty(SavePath))
@@ -80,6 +83,7 @@ namespace QuickWinstall.Lib
                 Language = DEFAULT_LANGUAGE;
                 SavePath = AppDomain.CurrentDomain.BaseDirectory;
                 SaveLastConfig = DEFAULT_SAVE_LAST_CONFIG;
+                LoadLastConfig = DEFAULT_LOAD_LAST_CONFIG;
 
                 SaveSettings();
             }
@@ -98,7 +102,8 @@ namespace QuickWinstall.Lib
                     ["theme"] = Theme,
                     ["language"] = Language,
                     ["savePath"] = SavePath,
-                    ["saveLastConfig"] = SaveLastConfig
+                    ["saveLastConfig"] = SaveLastConfig,
+                    ["loadLastConfig"] = LoadLastConfig
                 };
 
                 // Ensure directory exists

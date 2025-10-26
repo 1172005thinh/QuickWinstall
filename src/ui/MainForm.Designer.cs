@@ -314,15 +314,15 @@ namespace QuickWinstall.Main
             txt.Multiline = false; // Ensure single-line textbox respects height
             
             // Handle placeholder
-            txt.ForeColor = Color.Gray;
+            txt.ForeColor = theme.GetFontColor("placeholder");
             txt.Text = "XXXXX";
             
             txt.Enter += (sender, e) =>
             {
-                if (txt.Text == "XXXXX" && txt.ForeColor == Color.Gray)
+                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
                 {
                     txt.Text = "";
-                    txt.ForeColor = Color.Black;
+                    txt.ForeColor = theme.GetFontColor("normal");
                 }
             };
             
@@ -330,7 +330,7 @@ namespace QuickWinstall.Main
             {
                 if (string.IsNullOrWhiteSpace(txt.Text))
                 {
-                    txt.ForeColor = Color.Gray;
+                    txt.ForeColor = theme.GetFontColor("placeholder");
                     txt.Text = "XXXXX";
                 }
             };
@@ -339,7 +339,7 @@ namespace QuickWinstall.Main
             txt.TextChanged += (sender, e) =>
             {
                 // Don't trigger config changed for placeholder text
-                if (txt.Text == "XXXXX" && txt.ForeColor == Color.Gray)
+                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
                 {
                     return;
                 }
@@ -348,6 +348,12 @@ namespace QuickWinstall.Main
                 if (!string.IsNullOrWhiteSpace(txt.Text) && txt.Text != "XXXXX")
                 {
                     this.OnConfigChanged(sender, e);
+                    
+                    // Auto-focus to next textbox when max length reached
+                    if (txt.Text.Length >= txt.MaxLength)
+                    {
+                        this.SelectNextControl(txt, true, true, true, true);
+                    }
                 }
             };
             
