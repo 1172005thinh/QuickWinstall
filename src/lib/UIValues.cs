@@ -46,6 +46,8 @@ namespace QuickWinstall.Lib
         public int GlobalBtnWidth { get; private set; } = 100;
         public int GlobalBtnHeight { get; private set; } = 40;
         public int GlobalBtnBox { get; private set; } = 40;
+        public int GlobalBtnBorderRadius { get; private set; } = 8;
+        public int GlobalBtnBorderWidth { get; private set; } = 1;
         
         // Global labels
         public int GlobalLabelWidth { get; private set; } = 200;
@@ -61,7 +63,7 @@ namespace QuickWinstall.Lib
         // Global panels
         public int BannerHeight { get; private set; } = 100;
         public int ControlPanelHeight { get; private set; } = 60;
-        public int StatusBarHeight { get; private set; } = 40;
+        public int StatusBarHeight { get; private set; } = 30;
 
         #endregion
 
@@ -86,6 +88,8 @@ namespace QuickWinstall.Lib
                     GlobalBtnWidth = _uiConfig["global"]?["buttons"]?["width"]?.ToObject<int>() ?? 100;
                     GlobalBtnHeight = _uiConfig["global"]?["buttons"]?["height"]?.ToObject<int>() ?? 40;
                     GlobalBtnBox = _uiConfig["global"]?["buttons"]?["box"]?.ToObject<int>() ?? 40;
+                    GlobalBtnBorderRadius = _uiConfig["global"]?["buttons"]?["borderRadius"]?.ToObject<int>() ?? 8;
+                    GlobalBtnBorderWidth = _uiConfig["global"]?["buttons"]?["borderWidth"]?.ToObject<int>() ?? 1;
                     
                     // Load global label values
                     GlobalLabelWidth = _uiConfig["global"]?["labels"]?["width"]?.ToObject<int>() ?? 200;

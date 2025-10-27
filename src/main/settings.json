@@ -3,5 +3,6 @@
   "language": "vi-VN",
   "savePath": "",
   "saveLastConfig": true,
-  "loadLastConfig": true
+  "loadLastConfig": true,
+  "expandAllSectionsAtStartup": false
 }

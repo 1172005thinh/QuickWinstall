@@ -43,8 +43,13 @@ namespace QuickWinstall.Config
         private Label lblCPUArch = null!;
         private ComboBox cmbCPUArch = null!;
 
+        private StatusRing ringWindowsEdition = null!;
+        private StatusRing ringProductKey = null!;
+        private StatusRing ringCPUArch = null!;
+
         private bool _isExpanded = true;
         private bool _isLoading = false; // Flag to prevent event handlers during config loading
+        private Action _onSectionToggle = null!;
 
         #endregion
 
@@ -54,13 +59,16 @@ namespace QuickWinstall.Config
         /// Initializes the General Config section UI and returns the main panel
         /// </summary>
         public Panel InitializeUI(Panel parentContainer, EventHandler onConfigChanged, 
-            Func<int, int, TextBox> createProductKeyTextBox, Func<Button> createRoundedButton)
+            Func<Button> createRoundedButton, Action onSectionToggle, Control parentForm)
         {
             UIValues ui = UIValues.Instance;
             ThemeManager theme = ThemeManager.Instance;
             LangManager lang = LangManager.Instance;
             IconManager iconMgr = IconManager.Instance;
             ToolTipManager tooltips = ToolTipManager.Instance;
+
+            // Store callback
+            _onSectionToggle = onSectionToggle;
 
             int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 200);
             
@@ -85,6 +93,7 @@ namespace QuickWinstall.Config
             lblGeneralConfigTitle.Size = new Size(300, ui.GlobalLabelHeight);
             lblGeneralConfigTitle.Text = lang.GetString("mainForm.sections.general");
             lblGeneralConfigTitle.Font = theme.GetFont("subheader");
+            lblGeneralConfigTitle.UseMnemonic = false;
             lblGeneralConfigTitle.ForeColor = theme.GetFontColor("subheader");
             lblGeneralConfigTitle.TextAlign = ContentAlignment.MiddleLeft;
             lblGeneralConfigTitle.Cursor = Cursors.Hand;
@@ -130,8 +139,17 @@ namespace QuickWinstall.Config
                 lang.GetString("generalConfig.windowsEdition.options.education"),
                 lang.GetString("generalConfig.windowsEdition.options.enterprise")
             });
+
+            // Status ring for Windows Edition (create BEFORE setting SelectedIndex)
+            int statusRingBorderExtra = 6;
+            ringWindowsEdition = new StatusRing();
+            ringWindowsEdition.Location = new Point(cmbWindowsEdition.Left - ui.GetValue("global.statusRing.borderWidth"), cmbWindowsEdition.Top - ui.GetValue("global.statusRing.borderWidth"));
+            ringWindowsEdition.Size = new Size(cmbWindowsEdition.Width + 2 * ui.GetValue("global.statusRing.borderWidth"), cmbWindowsEdition.Height + 2 * ui.GetValue("global.statusRing.borderWidth") + statusRingBorderExtra);
+            ringWindowsEdition.Visible = false;
+            
             cmbWindowsEdition.SelectedIndex = 0;
             cmbWindowsEdition.SelectedIndexChanged += onConfigChanged;
+            cmbWindowsEdition.SelectedIndexChanged += (s, e) => ValidateWindowsEdition();
             tooltips.SetToolTip(cmbWindowsEdition, "tooltips.generalConfig.windowsEdition");
 
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -148,10 +166,17 @@ namespace QuickWinstall.Config
             int pkWidth = (ui.GlobalInputWidth - 4 * ui.GlobalSpacingX) / 5;
             int pkX = inputX;
 
-            txtProductKey1 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            // Status ring for Product Key (create BEFORE textboxes so event handlers can access it)
+            ringProductKey = new StatusRing();
+            ringProductKey.Location = new Point(inputX - ui.GetValue("global.statusRing.borderWidth"), currentY - ui.GetValue("global.statusRing.borderWidth"));
+            ringProductKey.Size = new Size(ui.GlobalInputWidth + 2 * ui.GetValue("global.statusRing.borderWidth"), ui.GlobalInputHeight + 2 * ui.GetValue("global.statusRing.borderWidth"));
+            ringProductKey.Visible = false;
+
+            txtProductKey1 = CreateProductKeyTextBox(pkWidth, ui.GlobalInputHeight, parentForm);
             txtProductKey1.BackColor = theme.GetColor("inputBackground");
             txtProductKey1.Location = new Point(pkX, currentY);
             txtProductKey1.Tag = 1;
+            txtProductKey1.TextChanged += (s, e) => ValidateProductKey();
             tooltips.SetToolTip(txtProductKey1, "tooltips.generalConfig.productKey");
             pkX += pkWidth;
 
@@ -163,10 +188,11 @@ namespace QuickWinstall.Config
             lblHyphen1.TextAlign = ContentAlignment.MiddleCenter;
             pkX += ui.GlobalSpacingX;
 
-            txtProductKey2 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey2 = CreateProductKeyTextBox(pkWidth, ui.GlobalInputHeight, parentForm);
             txtProductKey2.BackColor = theme.GetColor("inputBackground");
             txtProductKey2.Location = new Point(pkX, currentY);
             txtProductKey2.Tag = 2;
+            txtProductKey2.TextChanged += (s, e) => ValidateProductKey();
             tooltips.SetToolTip(txtProductKey2, "tooltips.generalConfig.productKey");
             pkX += pkWidth;
 
@@ -178,11 +204,12 @@ namespace QuickWinstall.Config
             lblHyphen2.TextAlign = ContentAlignment.MiddleCenter;
             pkX += ui.GlobalSpacingX;
 
-            txtProductKey3 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey3 = CreateProductKeyTextBox(pkWidth, ui.GlobalInputHeight, parentForm);
             txtProductKey3.BackColor = theme.GetColor("inputBackground");
             txtProductKey3.Location = new Point(pkX, currentY);
             txtProductKey3.Tag = 3;
             txtProductKey3.Font = theme.GetFont("normal");
+            txtProductKey3.TextChanged += (s, e) => ValidateProductKey();
             tooltips.SetToolTip(txtProductKey3, "tooltips.generalConfig.productKey");
             pkX += pkWidth;
 
@@ -194,10 +221,11 @@ namespace QuickWinstall.Config
             lblHyphen3.TextAlign = ContentAlignment.MiddleCenter;
             pkX += ui.GlobalSpacingX;
 
-            txtProductKey4 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey4 = CreateProductKeyTextBox(pkWidth, ui.GlobalInputHeight, parentForm);
             txtProductKey4.BackColor = theme.GetColor("inputBackground");
             txtProductKey4.Location = new Point(pkX, currentY);
             txtProductKey4.Tag = 4;
+            txtProductKey4.TextChanged += (s, e) => ValidateProductKey();
             tooltips.SetToolTip(txtProductKey4, "tooltips.generalConfig.productKey");
             pkX += pkWidth;
 
@@ -209,10 +237,11 @@ namespace QuickWinstall.Config
             lblHyphen4.TextAlign = ContentAlignment.MiddleCenter;
             pkX += ui.GlobalSpacingX;
 
-            txtProductKey5 = createProductKeyTextBox(pkWidth, ui.GlobalInputHeight);
+            txtProductKey5 = CreateProductKeyTextBox(pkWidth, ui.GlobalInputHeight, parentForm);
             txtProductKey5.BackColor = theme.GetColor("inputBackground");
             txtProductKey5.Location = new Point(pkX, currentY);
             txtProductKey5.Tag = 5;
+            txtProductKey5.TextChanged += (s, e) => ValidateProductKey();
             tooltips.SetToolTip(txtProductKey5, "tooltips.generalConfig.productKey");
 
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -237,8 +266,16 @@ namespace QuickWinstall.Config
                 lang.GetString("generalConfig.cpuArch.options.x64"),
                 lang.GetString("generalConfig.cpuArch.options.arm64")
             });
+            
+            // Status ring for CPU Architecture (create BEFORE setting SelectedIndex)
+            ringCPUArch = new StatusRing();
+            ringCPUArch.Location = new Point(cmbCPUArch.Left - ui.GetValue("global.statusRing.borderWidth"), cmbCPUArch.Top - ui.GetValue("global.statusRing.borderWidth"));
+            ringCPUArch.Size = new Size(cmbCPUArch.Width + 2 * ui.GetValue("global.statusRing.borderWidth"), cmbCPUArch.Height + 2 * ui.GetValue("global.statusRing.borderWidth") + statusRingBorderExtra);
+            ringCPUArch.Visible = false;
+            
             cmbCPUArch.SelectedIndex = 0;
             cmbCPUArch.SelectedIndexChanged += onConfigChanged;
+            cmbCPUArch.SelectedIndexChanged += (s, e) => ValidateCPUArch();
             tooltips.SetToolTip(cmbCPUArch, "tooltips.generalConfig.cpuArch");
 
             // Add controls to General Config Content
@@ -256,6 +293,11 @@ namespace QuickWinstall.Config
             pnlGeneralConfigContent.Controls.Add(txtProductKey5);
             pnlGeneralConfigContent.Controls.Add(lblCPUArch);
             pnlGeneralConfigContent.Controls.Add(cmbCPUArch);
+
+            // Add status rings (add last so they appear on top)
+            pnlGeneralConfigContent.Controls.Add(ringWindowsEdition);
+            pnlGeneralConfigContent.Controls.Add(ringProductKey);
+            pnlGeneralConfigContent.Controls.Add(ringCPUArch);
 
             // Set minimum size for content panel to enable horizontal scrollbar when form shrinks
             int minContentWidth = inputX + ui.GlobalInputWidth + ui.GlobalTabX;
@@ -303,18 +345,32 @@ namespace QuickWinstall.Config
         /// </summary>
         public void ToggleSection()
         {
+            UIValues ui = UIValues.Instance;
             _isExpanded = !_isExpanded;
             pnlGeneralConfigContent.Visible = _isExpanded;
             pnlGeneralConfigSeparator.Visible = _isExpanded;
 
+            // Update panel height based on state
+            if (_isExpanded)
+            {
+                int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 200);
+                pnlGeneralConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
+            }
+            else
+            {
+                pnlGeneralConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY * 2;
+            }
+
             // Update button icon
             ThemeManager theme = ThemeManager.Instance;
             IconManager iconMgr = IconManager.Instance;
-            UIValues ui = UIValues.Instance;
             
             string iconName = _isExpanded ? "expand" : "collapse";
             btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage(iconName, theme.IsDarkTheme, ui.GlobalIconSize);
             btnGeneralConfigToggle.Tag = _isExpanded ? "collapsed" : "expanded";
+
+            // Notify parent to reposition sections
+            _onSectionToggle?.Invoke();
         }
 
         /// <summary>
@@ -551,6 +607,11 @@ namespace QuickWinstall.Config
             {
                 // Always reset the flag, even if an error occurs
                 _isLoading = false;
+                
+                // Trigger validation after loading config
+                ValidateWindowsEdition();
+                ValidateProductKey();
+                ValidateCPUArch();
             }
         }
 
@@ -578,6 +639,83 @@ namespace QuickWinstall.Config
             WindowsEdition = "";
             ProductKey = "";
             CPUArchitecture = "";
+        }
+
+        /// <summary>
+        /// Validates Windows Edition field and updates its status ring
+        /// </summary>
+        private void ValidateWindowsEdition()
+        {
+            if (ringWindowsEdition == null || cmbWindowsEdition == null)
+                return;
+
+            if (cmbWindowsEdition.SelectedIndex > 0 && !string.IsNullOrWhiteSpace(cmbWindowsEdition.SelectedItem?.ToString()))
+            {
+                ringWindowsEdition.SetStatus(ValidationStatus.Valid);
+            }
+            else
+            {
+                ringWindowsEdition.SetStatus(ValidationStatus.Invalid);
+            }
+        }
+
+        /// <summary>
+        /// Validates Product Key field and updates its status ring
+        /// </summary>
+        private void ValidateProductKey()
+        {
+            if (ringProductKey == null)
+                return;
+
+            string pk1 = txtProductKey1?.Text?.Trim() ?? "";
+            string pk2 = txtProductKey2?.Text?.Trim() ?? "";
+            string pk3 = txtProductKey3?.Text?.Trim() ?? "";
+            string pk4 = txtProductKey4?.Text?.Trim() ?? "";
+            string pk5 = txtProductKey5?.Text?.Trim() ?? "";
+
+            // Remove placeholders
+            if (pk1 == "XXXXX") pk1 = "";
+            if (pk2 == "XXXXX") pk2 = "";
+            if (pk3 == "XXXXX") pk3 = "";
+            if (pk4 == "XXXXX") pk4 = "";
+            if (pk5 == "XXXXX") pk5 = "";
+
+            // If all empty, it's valid (optional field)
+            if (string.IsNullOrEmpty(pk1) && string.IsNullOrEmpty(pk2) &&
+                string.IsNullOrEmpty(pk3) && string.IsNullOrEmpty(pk4) && string.IsNullOrEmpty(pk5))
+            {
+                ringProductKey.SetStatus(ValidationStatus.Valid);
+                return;
+            }
+
+            // All filled - validate format
+            string fullKey = $"{pk1}-{pk2}-{pk3}-{pk4}-{pk5}";
+            if (IsValidProductKey(fullKey))
+            {
+                ringProductKey.SetStatus(ValidationStatus.Valid);
+            }
+            else
+            {
+                ringProductKey.SetStatus(ValidationStatus.Invalid);
+            }
+        }
+
+        /// <summary>
+        /// Validates CPU Architecture field and updates its status ring
+        /// </summary>
+        private void ValidateCPUArch()
+        {
+            if (ringCPUArch == null || cmbCPUArch == null)
+                return;
+
+            if (cmbCPUArch.SelectedIndex > 0 && !string.IsNullOrWhiteSpace(cmbCPUArch.SelectedItem?.ToString()))
+            {
+                ringCPUArch.SetStatus(ValidationStatus.Valid);
+            }
+            else
+            {
+                ringCPUArch.SetStatus(ValidationStatus.Invalid);
+            }
         }
 
         #endregion
@@ -633,6 +771,86 @@ namespace QuickWinstall.Config
 
             // Must contain only alphanumeric characters
             return Regex.IsMatch(cleanKey, @"^[A-Z0-9]{25}$");
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        /// <summary>
+        /// Creates a Product Key textbox with proper formatting and navigation behavior
+        /// </summary>
+        public static TextBox CreateProductKeyTextBox(int width, int height, Control parentForm)
+        {
+            ThemeManager theme = ThemeManager.Instance;
+            UIValues ui = UIValues.Instance;
+            
+            TextBox txt = new TextBox();
+            txt.Size = new Size(width, height);
+            txt.MaxLength = ui.GetValue("global.productKey.segmentLength", 5);
+            txt.CharacterCasing = CharacterCasing.Upper;
+            txt.TextAlign = HorizontalAlignment.Center;
+            txt.Font = theme.GetFont("normal");
+            txt.Multiline = false;
+            
+            // Handle placeholder
+            txt.ForeColor = theme.GetFontColor("placeholder");
+            txt.Text = "XXXXX";
+            
+            txt.Enter += (sender, e) =>
+            {
+                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
+                {
+                    txt.Text = "";
+                    txt.ForeColor = theme.GetFontColor("normal");
+                }
+            };
+            
+            txt.Leave += (sender, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txt.Text))
+                {
+                    txt.ForeColor = theme.GetFontColor("placeholder");
+                    txt.Text = "XXXXX";
+                }
+            };
+            
+            // Navigate to previous textbox on Backspace when empty
+            txt.KeyDown += (sender, e) =>
+            {
+                if (e.KeyCode == Keys.Back)
+                {
+                    // If textbox is empty or only has placeholder, move to previous
+                    if (string.IsNullOrWhiteSpace(txt.Text) || 
+                        (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder")))
+                    {
+                        parentForm.SelectNextControl(txt, false, true, true, true);
+                        e.Handled = true;
+                        e.SuppressKeyPress = true;
+                    }
+                }
+            };
+            
+            // Auto-move to next textbox
+            txt.TextChanged += (sender, e) =>
+            {
+                // Don't trigger for placeholder text
+                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
+                {
+                    return;
+                }
+                
+                // Auto-focus to next textbox when max length reached
+                if (!string.IsNullOrWhiteSpace(txt.Text) && txt.Text != "XXXXX")
+                {
+                    if (txt.Text.Length >= txt.MaxLength)
+                    {
+                        parentForm.SelectNextControl(txt, true, true, true, true);
+                    }
+                }
+            };
+            
+            return txt;
         }
 
         #endregion

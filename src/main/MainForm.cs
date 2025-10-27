@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using QuickWinstall.Lib;
 using QuickWinstall.Config;
@@ -21,6 +22,10 @@ namespace QuickWinstall.Main
         private XMLGenerator _xmlGenerator;
 
         private GeneralConfig _generalConfig;
+        private LangRegConfig _langRegConfig;
+
+        private Panel _pnlGeneralConfig = null!;
+        private Panel _pnlLangRegConfig = null!;
 
         private bool _hasUnsavedChanges = false;
         private bool _isLoadingConfig = false; // Flag to prevent status updates during config loading
@@ -44,6 +49,9 @@ namespace QuickWinstall.Main
 
             // Use GeneralConfig from ConfigValues (not a separate instance!)
             _generalConfig = _configValues.General;
+
+            // Initialize LangRegConfig
+            _langRegConfig = new LangRegConfig();
 
             InitializeComponent();
             InitializeForm();
@@ -71,12 +79,27 @@ namespace QuickWinstall.Main
                 
                 // Update UI controls from loaded config in each section
                 _generalConfig.LoadConfigIntoUI();
-                // Add other sections here when implemented
+                _langRegConfig.LoadConfigIntoUI();
             }
             finally
             {
                 // Always reset the flag, even if an error occurs
                 _isLoadingConfig = false;
+            }
+
+            // Handle section expansion based on setting
+            // Sections default to expanded, so we need to collapse them if setting is false
+            if (_settingsManager.ExpandAllSectionsAtStartup)
+            {
+                // Keep them expanded (default state)
+                _generalConfig.Expand();
+                _langRegConfig.Expand();
+            }
+            else
+            {
+                // Collapse sections if setting is false
+                _generalConfig.Collapse();
+                _langRegConfig.Collapse();
             }
 
             // Apply theme to form
@@ -221,12 +244,14 @@ namespace QuickWinstall.Main
         {
             // Expand all sections
             _generalConfig.Expand();
+            _langRegConfig.Expand();
         }
 
         private void BtnCollapseAll_Click(object sender, EventArgs e)
         {
             // Collapse all sections
             _generalConfig.Collapse();
+            _langRegConfig.Collapse();
         }
 
         #endregion
@@ -237,6 +262,9 @@ namespace QuickWinstall.Main
         {
             // Clear GeneralConfig using the GeneralConfig class
             _generalConfig.ClearControls();
+            
+            // Clear LangRegConfig
+            _langRegConfig.ClearControls();
         }
 
         private void OnConfigChanged(object sender, EventArgs e)
@@ -259,7 +287,21 @@ namespace QuickWinstall.Main
             // Update GeneralConfig from controls
             _generalConfig.UpdateFromControls();
             
+            // Update LangRegConfig from controls
+            _langRegConfig.UpdateFromControls();
+            
             // No need to sync - _generalConfig IS _configValues.General (same instance)
+        }
+
+        private void RepositionSections()
+        {
+            // Check if panels are initialized
+            if (_pnlGeneralConfig == null ||
+                _pnlLangRegConfig == null)
+                return;
+
+            // Reposition
+            _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
         }
 
         #endregion

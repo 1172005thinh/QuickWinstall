@@ -138,16 +138,26 @@ namespace QuickWinstall.Main
             this.pnlConfigSection.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - ui.BannerHeight - ui.ControlPanelHeight - ui.StatusBarHeight);
             this.pnlConfigSection.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             this.pnlConfigSection.AutoScroll = true;
-            this.pnlConfigSection.HorizontalScroll.Visible = true;
 
             // Initialize General Config Section via GeneralConfig class
-            Panel pnlGeneralConfig = _generalConfig.InitializeUI(
+            _pnlGeneralConfig = _generalConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
-                this.CreateProductKeyTextBox,
-                this.CreateRoundedButton
+                this.CreateRoundedButton,
+                this.RepositionSections,  // Pass reposition callback
+                this  // Pass parent form for navigation
             );
-            this.pnlConfigSection.Controls.Add(pnlGeneralConfig);
+            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+
+            // Initialize Language & Region Config Section via LangRegConfig class
+            _pnlLangRegConfig = _langRegConfig.InitializeUI(
+                this.pnlConfigSection,
+                this.OnConfigChanged,
+                this.CreateRoundedButton,
+                this.RepositionSections  // Pass reposition callback
+            );
+            _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
+            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
 
             // Control Panel
             this.pnlControlPanel = new Panel();
@@ -250,7 +260,7 @@ namespace QuickWinstall.Main
 
             // Use Flat style but disable default rectangular border so we can draw a rounded one
             btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
+            btn.FlatAppearance.BorderSize = ui.GlobalBtnBorderWidth;
             btn.BackColor = theme.GetColor("buttonBackground");
             // keep border color available from theme for our custom drawing
             btn.FlatAppearance.BorderColor = theme.GetColor("buttonBorder");
@@ -276,7 +286,7 @@ namespace QuickWinstall.Main
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 using (GraphicsPath path = new GraphicsPath())
                 {
-                    int radius = ui.GetValue("global.buttons.borderRadius", 8);
+                    int radius = ui.GlobalBtnBorderRadius;
                     // shrink rectangle by 1px so the border is drawn inside the control bounds and not clipped
                     Rectangle rect = new Rectangle(0, 0, Math.Max(0, btn.Width - 1), Math.Max(0, btn.Height - 1));
 
@@ -290,7 +300,7 @@ namespace QuickWinstall.Main
                     btn.Region = new Region(path);
 
                     // Draw custom border inside the rounded region using theme color
-                    using (Pen pen = new Pen(theme.GetColor("buttonBorder"), 1))
+                    using (Pen pen = new Pen(theme.GetColor("buttonBorder"), ui.GlobalBtnBorderWidth))
                     {
                         e.Graphics.DrawPath(pen, path);
                     }
@@ -298,66 +308,6 @@ namespace QuickWinstall.Main
             };
 
             return btn;
-        }
-
-        private TextBox CreateProductKeyTextBox(int width, int height)
-        {
-            ThemeManager theme = ThemeManager.Instance;
-            UIValues ui = UIValues.Instance;
-            
-            TextBox txt = new TextBox();
-            txt.Size = new Size(width, height);
-            txt.MaxLength = ui.GetValue("global.productKey.segmentLength", 5);
-            txt.CharacterCasing = CharacterCasing.Upper;
-            txt.TextAlign = HorizontalAlignment.Center;
-            txt.Font = theme.GetFont("normal");
-            txt.Multiline = false; // Ensure single-line textbox respects height
-            
-            // Handle placeholder
-            txt.ForeColor = theme.GetFontColor("placeholder");
-            txt.Text = "XXXXX";
-            
-            txt.Enter += (sender, e) =>
-            {
-                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
-                {
-                    txt.Text = "";
-                    txt.ForeColor = theme.GetFontColor("normal");
-                }
-            };
-            
-            txt.Leave += (sender, e) =>
-            {
-                if (string.IsNullOrWhiteSpace(txt.Text))
-                {
-                    txt.ForeColor = theme.GetFontColor("placeholder");
-                    txt.Text = "XXXXX";
-                }
-            };
-            
-            // Auto-move to next textbox
-            txt.TextChanged += (sender, e) =>
-            {
-                // Don't trigger config changed for placeholder text
-                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
-                {
-                    return;
-                }
-                
-                // Call OnConfigChanged only for actual user input
-                if (!string.IsNullOrWhiteSpace(txt.Text) && txt.Text != "XXXXX")
-                {
-                    this.OnConfigChanged(sender, e);
-                    
-                    // Auto-focus to next textbox when max length reached
-                    if (txt.Text.Length >= txt.MaxLength)
-                    {
-                        this.SelectNextControl(txt, true, true, true, true);
-                    }
-                }
-            };
-            
-            return txt;
         }
 
         #endregion

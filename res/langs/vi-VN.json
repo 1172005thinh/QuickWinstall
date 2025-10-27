@@ -102,6 +102,9 @@
       "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
       "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
     },
+    "langRegConfig": {
+      "header": "Phần cấu hình ngôn ngữ và khu vực"
+    },
     "mainForm": {
       "cancel": "Thoát QuickWinstall",
       "clear": "Xóa tất cả cấu hình",

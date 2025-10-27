@@ -102,6 +102,9 @@
       "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
       "windowsEdition": "Select the Windows edition to install"
     },
+    "langRegConfig": {
+      "header": "Language && Region Configurations Section"
+    },
     "mainForm": {
       "cancel": "Exit QuickWinstall",
       "clear": "Clear all configurations",

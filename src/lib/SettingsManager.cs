@@ -15,12 +15,14 @@ namespace QuickWinstall.Lib
         private const string DEFAULT_LANGUAGE = "en-US";
         private const bool DEFAULT_SAVE_LAST_CONFIG = true;
         private const bool DEFAULT_LOAD_LAST_CONFIG = true;
+        private const bool DEFAULT_EXPAND_ALL_SECTIONS = false;
 
         public string Theme { get; set; } = DEFAULT_THEME;
         public string Language { get; set; } = DEFAULT_LANGUAGE;
         public string SavePath { get; set; } = "";
         public bool SaveLastConfig { get; set; } = DEFAULT_SAVE_LAST_CONFIG;
         public bool LoadLastConfig { get; set; } = DEFAULT_LOAD_LAST_CONFIG;
+        public bool ExpandAllSectionsAtStartup { get; set; } = DEFAULT_EXPAND_ALL_SECTIONS;
 
         private SettingsManager()
         {
@@ -55,6 +57,7 @@ namespace QuickWinstall.Lib
                     SavePath = _settings["savePath"]?.ToString() ?? "";
                     SaveLastConfig = _settings["saveLastConfig"]?.ToObject<bool>() ?? DEFAULT_SAVE_LAST_CONFIG;
                     LoadLastConfig = _settings["loadLastConfig"]?.ToObject<bool>() ?? DEFAULT_LOAD_LAST_CONFIG;
+                    ExpandAllSectionsAtStartup = _settings["expandAllSectionsAtStartup"]?.ToObject<bool>() ?? DEFAULT_EXPAND_ALL_SECTIONS;
 
                     // Set default save path if empty
                     if (string.IsNullOrEmpty(SavePath))
@@ -84,6 +87,7 @@ namespace QuickWinstall.Lib
                 SavePath = AppDomain.CurrentDomain.BaseDirectory;
                 SaveLastConfig = DEFAULT_SAVE_LAST_CONFIG;
                 LoadLastConfig = DEFAULT_LOAD_LAST_CONFIG;
+                ExpandAllSectionsAtStartup = DEFAULT_EXPAND_ALL_SECTIONS;
 
                 SaveSettings();
             }
@@ -103,7 +107,8 @@ namespace QuickWinstall.Lib
                     ["language"] = Language,
                     ["savePath"] = SavePath,
                     ["saveLastConfig"] = SaveLastConfig,
-                    ["loadLastConfig"] = LoadLastConfig
+                    ["loadLastConfig"] = LoadLastConfig,
+                    ["expandAllSectionsAtStartup"] = ExpandAllSectionsAtStartup
                 };
 
                 // Ensure directory exists

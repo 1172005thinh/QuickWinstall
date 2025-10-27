@@ -9,7 +9,8 @@
       "width": 100,
       "height": 40,
       "box": 40,
-      "borderRadius": 8
+      "borderRadius": 8,
+      "borderWidth": 1
     },
     "labels": {
       "width": 200,
@@ -33,6 +34,10 @@
     },
     "statusBar": {
       "height": 30
+    },
+    "statusRing": {
+      "borderWidth": 4,
+      "cornerRadius": 4
     }
   },
   "sections": {
