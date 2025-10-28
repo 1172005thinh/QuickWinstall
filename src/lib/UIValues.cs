@@ -65,6 +65,14 @@ namespace QuickWinstall.Lib
         public int ControlPanelHeight { get; private set; } = 60;
         public int StatusBarHeight { get; private set; } = 30;
 
+        // Form settings
+        public bool MainFormResizable { get; private set; } = true;
+        public bool SettingsFormResizable { get; private set; } = false;
+        public bool AboutFormResizable { get; private set; } = false;
+        public bool HelpFormResizable { get; private set; } = false;
+        public bool PresetsFormResizable { get; private set; } = false;
+        public bool NewPresetFormResizable { get; private set; } = false;
+
         #endregion
 
         #region Methods
@@ -106,6 +114,14 @@ namespace QuickWinstall.Lib
                     BannerHeight = _uiConfig["global"]?["banner"]?["height"]?.ToObject<int>() ?? 100;
                     ControlPanelHeight = _uiConfig["global"]?["controlPanel"]?["height"]?.ToObject<int>() ?? 60;
                     StatusBarHeight = _uiConfig["global"]?["statusBar"]?["height"]?.ToObject<int>() ?? 40;
+
+                    // Load form settings
+                    MainFormResizable = _uiConfig["forms"]?["mainForm"]?["resizable"]?.ToObject<bool>() ?? true;
+                    SettingsFormResizable = _uiConfig["forms"]?["settingsForm"]?["resizable"]?.ToObject<bool>() ?? false;
+                    AboutFormResizable = _uiConfig["forms"]?["aboutForm"]?["resizable"]?.ToObject<bool>() ?? false;
+                    HelpFormResizable = _uiConfig["forms"]?["helpForm"]?["resizable"]?.ToObject<bool>() ?? false;
+                    PresetsFormResizable = _uiConfig["forms"]?["presetsForm"]?["resizable"]?.ToObject<bool>() ?? false;
+                    NewPresetFormResizable = _uiConfig["forms"]?["newPresetForm"]?["resizable"]?.ToObject<bool>() ?? false;
                 }
             }
             catch (Exception ex)

@@ -641,6 +641,34 @@ namespace QuickWinstall.Config
             CPUArchitecture = "";
         }
 
+        #region UI Validation Methods
+        
+        /// <summary>
+        /// Validates all UI fields and updates their status rings
+        /// Call this after theme/language changes to refresh validation state
+        /// </summary>
+        public void ValidateAllUIFields()
+        {
+            ValidateWindowsEdition();
+            ValidateProductKey();
+            ValidateCPUArch();
+            
+            // Refresh placeholder colors with current theme
+            RefreshPlaceholders();
+        }
+        
+        /// <summary>
+        /// Refreshes placeholder text colors to match current theme
+        /// </summary>
+        private void RefreshPlaceholders()
+        {
+            SetProductKeyPlaceholder(txtProductKey1);
+            SetProductKeyPlaceholder(txtProductKey2);
+            SetProductKeyPlaceholder(txtProductKey3);
+            SetProductKeyPlaceholder(txtProductKey4);
+            SetProductKeyPlaceholder(txtProductKey5);
+        }
+
         /// <summary>
         /// Validates Windows Edition field and updates its status ring
         /// </summary>
@@ -688,6 +716,14 @@ namespace QuickWinstall.Config
                 return;
             }
 
+            // Check if any segment contains non-alphanumeric characters
+            if (ContainsNonAlphanumeric(pk1) || ContainsNonAlphanumeric(pk2) || 
+                ContainsNonAlphanumeric(pk3) || ContainsNonAlphanumeric(pk4) || ContainsNonAlphanumeric(pk5))
+            {
+                ringProductKey.SetStatus(ValidationStatus.Invalid);
+                return;
+            }
+
             // All filled - validate format
             string fullKey = $"{pk1}-{pk2}-{pk3}-{pk4}-{pk5}";
             if (IsValidProductKey(fullKey))
@@ -698,6 +734,22 @@ namespace QuickWinstall.Config
             {
                 ringProductKey.SetStatus(ValidationStatus.Invalid);
             }
+        }
+
+        /// <summary>
+        /// Checks if a string contains any non-alphanumeric characters
+        /// </summary>
+        private bool ContainsNonAlphanumeric(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return false;
+
+            foreach (char c in text)
+            {
+                if (!char.IsLetterOrDigit(c))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -717,6 +769,8 @@ namespace QuickWinstall.Config
                 ringCPUArch.SetStatus(ValidationStatus.Invalid);
             }
         }
+
+        #endregion
 
         #endregion
 
@@ -812,6 +866,22 @@ namespace QuickWinstall.Config
                 {
                     txt.ForeColor = theme.GetFontColor("placeholder");
                     txt.Text = "XXXXX";
+                }
+            };
+            
+            // Only allow alphanumeric characters (A-Z, 0-9)
+            txt.KeyPress += (sender, e) =>
+            {
+                // Allow control characters (Backspace, etc.)
+                if (char.IsControl(e.KeyChar))
+                {
+                    return;
+                }
+                
+                // Only allow letters and digits
+                if (!char.IsLetterOrDigit(e.KeyChar))
+                {
+                    e.Handled = true; // Block the character
                 }
             };
             

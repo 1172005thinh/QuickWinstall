@@ -20,12 +20,20 @@
       "message": "Failed to generate autounattend.xml file.",
       "title": "Error"
     },
+    "invalidSavePath": {
+      "message": "The save path is invalid or does not exist.\\nPlease enter a valid directory path.",
+      "title": "Error"
+    },
     "overwrite": {
       "message": "Overwrite existing autounattend.xml?\\nThis action cannot be undone.",
       "title": "Warning"
     },
+    "resetSettings": {
+      "message": "Reset all settings to default values?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
     "success": {
-      "message": "Done! File saved at:\\n{0}\\autounattend.xml",
+      "message": "Done! File saved at:\\n{0}autounattend.xml",
       "title": "Information"
     },
     "unsaved": {
@@ -33,7 +41,7 @@
       "title": "Warning"
     },
     "validation": {
-      "message": "Please fix this validation errors:\\n - {0}",
+      "message": "Please fix this validation errors:\\n{0}",
       "title": "Error"
     }
   },
@@ -79,7 +87,7 @@
       "general": "General Configurations",
       "langReg": "Language & Region Configurations",
       "oobe": "OOBE Configurations",
-      "personal": "Personal Configurations",
+      "personal": "Personalize Configurations",
       "userAcc": "User Account Configurations"
     },
     "status": {
@@ -87,9 +95,11 @@
       "error": "An error occurred",
       "failedToGenerateFile": "Failed to generate autounattend.xml file.",
       "generating": "Generating autounattend.xml...",
+      "invalidSavePath": "Invalid save path.",
       "loading": "Loading...",
       "prefix": "Status:",
       "ready": "Ready",
+      "settingsUpdated": "Settings updated",
       "success": "File generated successfully",
       "unsavedChanges": "Unsaved Configurations"
     },
@@ -116,6 +126,57 @@
     },
     "section": {
       "expandCollapse": "Expand/Collapse {0} Section"
+    }
+  },
+  "settingsForm": {
+    "autoSave": {
+      "label": "Auto Save Last Config"
+    },
+    "banner": {
+      "title": "Application Settings"
+    },
+    "buttons": {
+      "about": "About",
+      "cancel": "Cancel",
+      "help": "Help",
+      "save": "Save"
+    },
+    "folderDialog": {
+      "description": "XML saved at:"
+    },
+    "language": {
+      "label": "Language"
+    },
+    "loadLast": {
+      "label": "Load Last Saved Config"
+    },
+    "savePath": {
+      "label": "XML Save Path"
+    },
+    "theme": {
+      "label": "Theme",
+      "options": {
+        "dark": "Dark",
+        "light": "Light"
+      }
+    },
+    "title": "Settings",
+    "toggle": {
+      "off": "OFF",
+      "on": "ON"
+    },
+    "tooltips": {
+      "about": "About QuickWinstall",
+      "autoSave": "Automatically save the current configuration when exiting the application to Presets/lastConfig.json",
+      "browse": "Browse for a folder to set as XML Save Path",
+      "cancel": "Discard changes and close Settings",
+      "help": "Open Help documentation",
+      "language": "Application's Language settings DOES NOT AFFECT Windows UI Language",
+      "loadLast": "Automatically load the last saved configuration from Presets/lastConfig.json when opening the application",
+      "reset": "Reset all settings to default values",
+      "save": "Save all settings and close Settings",
+      "savePath": "Set the default save path for generated autounattend.xml file",
+      "theme": "Select application theme"
     }
   },
   "validation": {

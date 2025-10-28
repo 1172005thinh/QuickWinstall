@@ -53,7 +53,33 @@
       "width": 800,
       "height": 600,
       "minWidth": 635,
-      "minHeight": 400
+      "minHeight": 400,
+      "resizable": true
+    },
+    "settingsForm": {
+      "width": 600,
+      "height": 450,
+      "resizable": false
+    },
+    "aboutForm": {
+      "width": 400,
+      "height": 300,
+      "resizable": false
+    },
+    "helpForm": {
+      "width": 600,
+      "height": 500,
+      "resizable": false
+    },
+    "presetsForm": {
+      "width": 500,
+      "height": 400,
+      "resizable": false
+    },
+    "newPresetForm": {
+      "width": 350,
+      "height": 200,
+      "resizable": false
     }
   }
 }

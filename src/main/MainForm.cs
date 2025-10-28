@@ -116,6 +116,108 @@ namespace QuickWinstall.Main
             pnlConfigSection.BackColor = _themeManager.GetColor("background");
             pnlControlPanel.BackColor = _themeManager.GetColor("background");
             statusStrip.BackColor = _themeManager.GetColor("background");
+            
+            // Update banner label colors
+            lblBannerTitle.ForeColor = _themeManager.GetFontColor("header");
+            
+            // Update status strip colors
+            lblStatusPrefix.ForeColor = _themeManager.GetFontColor("normal");
+            // lblStatus color depends on current status state
+        }
+        
+        private void UpdateLanguageUI()
+        {
+            // Update banner title
+            lblBannerTitle.Text = _langManager.GetString("mainForm.banner.title");
+            
+            // Update button texts (not icon buttons like btnExpandAll/btnCollapseAll)
+            btnSettings.Text = _langManager.GetString("mainForm.buttons.settings");
+            btnClear.Text = _langManager.GetString("mainForm.buttons.clear");
+            btnPreset.Text = _langManager.GetString("mainForm.buttons.preset");
+            btnCancel.Text = _langManager.GetString("mainForm.buttons.cancel");
+            btnGenerate.Text = _langManager.GetString("mainForm.buttons.generate");
+            
+            // Update status strip texts
+            lblStatusPrefix.Text = _langManager.GetString("mainForm.status.prefix");
+            // Refresh current status with new language
+            _statusManager.RefreshStatus();
+        }
+
+        public void RefreshUI()
+        {
+            // Set loading flag to prevent triggering unsaved changes during UI refresh
+            _isLoadingConfig = true;
+            
+            try
+            {
+                // Reapply theme
+                ApplyTheme();
+                
+                // Update language-dependent UI elements
+                UpdateLanguageUI();
+                
+                // Update all buttons with new theme
+                _themeManager.ApplyButtonTheme(btnSettings);
+                _themeManager.ApplyButtonTheme(btnClear);
+                _themeManager.ApplyButtonTheme(btnPreset);
+                _themeManager.ApplyButtonTheme(btnCancel);
+                _themeManager.ApplyButtonTheme(btnGenerate);
+                _themeManager.ApplyButtonTheme(btnExpandAll);
+                _themeManager.ApplyButtonTheme(btnCollapseAll);
+                
+                // Update icon buttons with new theme icons
+                bool isDark = _themeManager.IsDarkTheme;
+                btnExpandAll.Image = _iconManager.GetIconAsImage("add", isDark, _uiValues.GlobalIconSize);
+                btnCollapseAll.Image = _iconManager.GetIconAsImage("remove", isDark, _uiValues.GlobalIconSize);
+                
+                // Refresh all sections - recreate their UI with new theme
+                if (_generalConfig != null)
+                {
+                    // Save current control values to model BEFORE disposing controls
+                    _generalConfig.UpdateFromControls();
+                    
+                    // Clear and reinitialize the section with new theme
+                    _pnlGeneralConfig?.Dispose();
+                    _pnlGeneralConfig = _generalConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections,
+                        this
+                    );
+                    pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+                    
+                    // Reload data from model into the new UI controls
+                    _generalConfig.LoadConfigIntoUI();
+                    
+                    // Re-validate UI fields to restore validation status rings with new theme
+                    _generalConfig.ValidateAllUIFields();
+                }
+                
+                if (_langRegConfig != null)
+                {
+                    // Save current control values to model BEFORE disposing controls
+                    _langRegConfig.UpdateFromControls();
+                    
+                    _pnlLangRegConfig?.Dispose();
+                    _pnlLangRegConfig = _langRegConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlLangRegConfig);
+                    
+                    // Reload data from model into the new UI controls
+                    _langRegConfig.LoadConfigIntoUI();
+                }
+            }
+            finally
+            {
+                // Always reset the loading flag
+                _isLoadingConfig = false;
+            }
         }
 
         #endregion
@@ -124,13 +226,17 @@ namespace QuickWinstall.Main
 
         private void BtnSettings_Click(object sender, EventArgs e)
         {
-            // TODO: Open SettingsForm
-            MessageBox.Show("Settings form not yet implemented.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            using (SettingsForm settingsForm = new SettingsForm())
+            {
+                settingsForm.StartPosition = FormStartPosition.CenterParent;
+                settingsForm.ShowDialog(this);
+            }
         }
 
         private void BtnClear_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show(
+                this,
                 _langManager.GetString("dialogs.clear.message"),
                 _langManager.GetString("dialogs.clear.title"),
                 MessageBoxButtons.OKCancel,
@@ -150,7 +256,7 @@ namespace QuickWinstall.Main
         private void BtnPreset_Click(object sender, EventArgs e)
         {
             // TODO: Open PresetsForm
-            MessageBox.Show("Presets form not yet implemented.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Presets form not yet implemented.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -166,6 +272,7 @@ namespace QuickWinstall.Main
             if (errors.Count > 0)
             {
                 MessageBox.Show(
+                    this,
                     _langManager.GetString("dialogs.validation.message", errors[0]),
                     _langManager.GetString("dialogs.validation.title"),
                     MessageBoxButtons.OK,
@@ -179,12 +286,22 @@ namespace QuickWinstall.Main
             string savePath = _settingsManager.SavePath;
             if (string.IsNullOrEmpty(savePath) || !System.IO.Directory.Exists(savePath))
             {
-                MessageBox.Show(
+                DialogResult result = MessageBox.Show(
+                    this,
                     _langManager.GetString("dialogs.emptySavePath.message"),
                     _langManager.GetString("dialogs.emptySavePath.title"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
+                _statusManager.SetError(_langManager.GetString("mainForm.status.invalidSavePath"));
+                
+                // Open SettingsForm and focus on save path textbox
+                using (SettingsForm settingsForm = new SettingsForm())
+                {
+                    settingsForm.StartPosition = FormStartPosition.CenterParent;
+                    settingsForm.ShowDialog(this);
+                    settingsForm.FocusSavePathTextBox();
+                }
                 return;
             }
 
@@ -194,6 +311,7 @@ namespace QuickWinstall.Main
             if (System.IO.File.Exists(outputPath))
             {
                 var result = MessageBox.Show(
+                    this,
                     _langManager.GetString("dialogs.overwrite.message"),
                     _langManager.GetString("dialogs.overwrite.title"),
                     MessageBoxButtons.OKCancel,
@@ -215,6 +333,7 @@ namespace QuickWinstall.Main
                 _configValues.SaveLastConfig();
 
                 MessageBox.Show(
+                    this,
                     _langManager.GetString("dialogs.success.message", savePath),
                     _langManager.GetString("dialogs.success.title"),
                     MessageBoxButtons.OK,
@@ -226,6 +345,7 @@ namespace QuickWinstall.Main
             else
             {
                 MessageBox.Show(
+                    this,
                     _langManager.GetString("dialog.failed.message", _langManager.GetString("mainForm.status.failedToGenerateFile")),
                     _langManager.GetString("dialog.failed.title"),
                     MessageBoxButtons.OK,
@@ -313,6 +433,7 @@ namespace QuickWinstall.Main
             if (_hasUnsavedChanges)
             {
                 var result = MessageBox.Show(
+                    this,
                     _langManager.GetString("dialogs.unsaved.message"),
                     _langManager.GetString("dialogs.unsaved.title"),
                     MessageBoxButtons.OKCancel,

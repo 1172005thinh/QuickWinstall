@@ -95,14 +95,15 @@ namespace QuickWinstall.Lib
         {
             string result = GetStringInternal(key);
 
+            // Escape special characters BEFORE formatting with parameters
+            // This prevents escape sequences in parameter values from being processed
+            result = LangHelper.EscapeString(result);
+
             // Format with parameters if provided
             if (args != null && args.Length > 0)
             {
                 result = LangHelper.FormatString(result, args);
             }
-
-            // Escape special characters
-            result = LangHelper.EscapeString(result);
 
             return result;
         }

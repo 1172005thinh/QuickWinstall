@@ -470,6 +470,270 @@ Properties:
 
 Further updates will be added later.
 
+### SettingsForm
+
+The settings form of the application
+See the illustration for better preference:
+![SettingsForm Illustration](pngs/SettingsForm.png)
+![SettingsForm on MainForm](pngs/SettingsForm_onMainForm.png)
+
+Properties:
+
+- Form frame:
+  - Form Title: Settings
+  - Width: 400px
+  - Height: 300px
+  - Resizable: No
+  - Minimize/Maximize/Close Buttons: 0/0/1
+  - Icon: res/icons/settings.ico / res/icons/settings_dark.ico
+  - Background Color: Depends on theme (light/dark)
+  - Title Font: Normal Font
+- Content:
+  - Banner Panel:
+    - Width: same as Form width
+    - Height: 40px
+    - Background Color: Depends on theme (light/dark)
+    - Position: Top of the form
+    - Elements:
+      - Label:
+        - Text: Application Settings
+        - Font: Header Font
+        - Text Align: Middle Left
+        - Width: auto (fit to text)
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX, BannerHeight/2 - LabelHeight/2)
+      - Button:
+        - Reset to Default Button:
+          - Text: none (icon only)
+          - Icon: res/icons/reset.ico / res/icons/reset_dark.ico
+          - Size: globalBtnBox x globalBtnBox
+          - Image align: Middle Center
+          - Position (x, y): (Form.Width - globalTabX - globalBtnBox, BannerHeight/2 - globalBtnBox/2)
+          - On click: Prompt confirmation dialog before resetting -> Confirmed, reset all settings to default values (hardcoded)
+          - Tooltip: Reset all settings to default values
+          - Confirmation Dialog:
+            - Title: Warning
+            - Icon: Warning Icon
+            - Font: Normal Font
+            - Position: Center of the SettingsForm
+            - Message: Reset all settings to default values?\n This action cannot be undone.
+            - Buttons: OK/Cancel
+            - Focus Default Button: Cancel
+            - If OK clicked: Reset all settings to default values, return to SettingsForm
+            - If Cancel clicked: Return to SettingsForm
+  - Settings Panel:
+    - Width: same as Form width
+    - Height: dynamic (depends on content)
+    - Background Color: Depends on theme (light/dark)
+    - Position: Below the Banner Panel
+    - Elements:
+      - Language Selection:
+        - Label:
+          - Text: Language
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX, globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+          - Tooltip: Application’s Language settings DOES NOT AFFECT Windows UI Language
+        - Dropdown:
+          - Options: English, Tiếng Việt
+          - Value mapping:
+            - English -> en-US (Default value)
+            - Tiếng Việt -> vi-VN
+          - Position (x, y): (label.Right + globalSpacingX, globalSpacingY)
+          - Width: globalInputWidth * 0.75
+          - Height: globalInputHeight
+          - Font: Normal Font
+          - Background Color: Depends on theme (light/dark)
+          - Foreground Color: Depends on theme (light/dark)
+          - Text Align: Middle Left
+          - On change: Update application language after Save button is clicked
+          - Tooltip: Application’s Language settings DOES NOT AFFECT Windows UI Language
+          - Auto-correct: If the settings.json is manually modified to an unsupported language code, reset to default (en-US)
+      - Theme Selection:
+        - Label:
+          - Text: Theme
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX, languageDropdown.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+          - Tooltip: Select application theme
+        - Dropdown:
+          - Options: Light, Dark
+          - Value mapping:
+            - Light -> Light (Default value)
+            - Dark -> Dark
+          - Position (x, y): (label.Right + globalSpacingX, languageDropdown.Bottom + globalSpacingY)
+          - Width: globalInputWidth * 0.75
+          - Height: globalInputHeight
+          - Font: Normal Font
+          - Text Align: Middle Left
+          - Background Color: Depends on theme (light/dark)
+          - Foreground Color: Depends on theme (light/dark)
+          - On change: Update application theme after Save button is clicked
+          - Tooltip: Select application theme
+          - Auto-correct: If the settings.json is manually modified to an unsupported theme code, reset to default (Light)
+      - XML Save Path:
+        - Label:
+          - Text: XML Save Path
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX, themeDropdown.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+          - Tooltip: Set the default save path for generated autounattend.xml file
+        - TextBox:
+          - Position (x, y): (label.Right + globalSpacingX, themeDropdown.Bottom + globalSpacingY)
+          - Width: globalInputWidth * 0.75 - globalBtnBox - globalSpacingX
+          - Height: globalInputHeight
+          - Font: Normal Font
+          - Placeholder Text: e.g., C:\Users\Username\Desktop
+          - Placeholder Font: Placeholder Font
+          - Background Color: Depends on theme (light/dark)
+          - Foreground Color: Depends on theme (light/dark)
+          - Default value: Application Directory
+          - Text Align: Middle Left
+          - On change: Update save path after Save button is clicked
+          - Tooltip: Set the default save path for generated autounattend.xml file
+        - Button:
+          - Browse Button:
+            - Text: none (icon only)
+            - Icon: res/icons/browse.ico / res/icons/browse_dark.ico
+            - Font: Normal Font
+            - Text Align: Middle Center
+            - Size: globalBtnBox x globalBtnBox
+            - Background Color: Depends on theme (light/dark)
+            - Position (x, y): (textBox.Right + globalSpacingX / 2, themeDropdown.Bottom + globalSpacingY)
+            - On click: Open Folder Browser Dialog to select a folder, update the TextBox with selected folder path
+            - Tooltip: Browse for a folder to set as XML Save Path
+            - Folder Browser Dialog:
+              - Description: XML saved at:
+              - Root Folder: Application Directory
+              - File Explorer Title: Select XML Save Path
+      - Auto Save Last Configuration:
+        - Label:
+          - Text: Auto Save Last Config
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX, xmlSavePathTextBox.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Tooltip: Automatically save the current configuration when exiting the application to Presets/lastConfig.json.
+          - Text Align: Middle Left
+        - Toggle Switch:
+          - Position (x, y): (label.Right + globalSpacingX, xmlSavePathTextBox.Bottom + globalSpacingY)
+          - Width: globalInputWidth * 0.25
+          - Height: globalInputHeight
+          - Font: Normal Font
+          - On change: Update auto save last configuration setting after Save button is clicked
+          - Tooltip: Automatically save the current configuration when exiting the application to Presets/lastConfig.json.
+          - States: ON/OFF (Default: ON)
+          - ON:
+            - Background Color: #2f5597 (light) / #8faadc (dark)
+            - Toggle Color: #ffffff (light) / #e1e1e1 (dark)
+            - Value: true
+          - OFF:
+            - Background Color: #afabab (light and dark)
+            - Toggle Color: #ffffff (light) / #e1e1e1 (dark)
+            - Value: false
+          - Auto-correct: If the settings.json is manually modified to an invalid value, reset to default (true)
+        - Label:
+          - Text: ON / OFF
+          - Font: Normal Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (toggleSwitch.Right + globalSpacingX, xmlSavePathTextBox.Bottom + globalSpacingY)
+          - On Change: Update text based on toggle state
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+      - Load Last Saved Configuration:
+        - Label:
+          - Text: Load Last Saved Config
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX, autoSaveToggle.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Tooltip: Automatically load the last saved configuration from Presets/lastConfig.json when opening the application.
+          - Text Align: Middle Left
+        - Toggle Switch:
+          - Position (x, y): (label.Right + globalSpacingX, autoSaveToggle.Bottom + globalSpacingY)
+          - Width: globalInputWidth * 0.25
+          - Height: globalInputHeight
+          - Font: Normal Font
+          - On change: Update load last saved configuration setting after Save button is clicked
+          - Tooltip: Automatically load the last saved configuration from Presets/lastConfig.json when opening the application.
+          - States: ON/OFF (Default: ON)
+          - ON:
+            - Background Color: #2f5597 (light) / #8faadc (dark)
+            - Toggle Color: #ffffff (light) / #e1e1e1 (dark)
+            - Value: true
+          - OFF:
+            - Background Color: #afabab (light and dark)
+            - Toggle Color: #ffffff (light) / #e1e1e1 (dark)
+            - Value: false
+          - Auto-correct: If the settings.json is manually modified to an invalid value, reset to default (true)
+        - Label:
+          - Text: ON / OFF
+          - Font: Normal Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - FontColor: Depends on theme (light/dark)
+          - On Change: Update text based on toggle state
+          - Position (x, y): (toggleSwitch.Right + globalSpacingX, autoSaveToggle.Bottom + globalSpacingY)
+          - Text Align: Middle Left
+    - Control Panel:
+      - Width: same as Form width
+      - Height: 60px
+      - Background Color: Depends on theme (light/dark)
+      - Position: Bottom of the form
+      - Elements:
+        - About Button:
+          - Text: About
+          - Font: Normal Font
+          - Text Align: Middle Center
+          - Size: globalBtnWidth x globalBtnHeight
+          - Background Color: Depends on theme (light/dark)
+          - FontColor: Depends on theme (light/dark)
+          - Position (x, y): (globalSpacingX, ControlPanel.Height/2 - globalBtnHeight/2)
+          - On click: Open AboutForm -> not implemented yet
+          - Tooltip: About QuickWinstall
+        - Help Button:
+          - Text: Help
+          - Font: Normal Font
+          - Text Align: Middle Center
+          - Size: globalBtnWidth x globalBtnHeight
+          - Background Color: Depends on theme (light/dark)
+          - FontColor: Depends on theme (light/dark)
+          - Position (x, y): (aboutBtn.Right + globalSpacingX, ControlPanel.Height/2 - globalBtnHeight/2)
+          - On click: Open HelpForm -> not implemented yet
+          - Tooltip: Open Help documentation
+        - Cancel Button:
+          - Text: Cancel
+          - Font: Normal Font
+          - Text Align: Middle Center
+          - Size: globalBtnWidth x globalBtnHeight
+          - Background Color: Depends on theme (light/dark)
+          - FontColor: Depends on theme (light/dark)
+          - Position (x, y): (Form.Width - globalTabX - globalBtnWidth, ControlPanel.Height/2 - globalBtnHeight/2)
+          - On click: Discard changes and close SettingsForm
+          - Tooltip: Discard changes and close Settings
+        - Save Button:
+          - Text: Save
+          - Font: Normal Font
+          - Text Align: Middle Center
+          - Size: globalBtnWidth x globalBtnHeight
+          - Background Color: Depends on theme (light/dark)
+          - FontColor: Depends on theme (light/dark)
+          - Position (x, y): (cancelBtn.Left - globalSpacingX - globalBtnWidth, ControlPanel.Height/2 - globalBtnHeight/2)
+          - On click: Save all settings and close SettingsForm -> return to MainForm -> if theme or language changed, apply changes to all forms
+          - Tooltip: Save all settings and close Settings
+
 ### Lib
 
 #### ConfigValues.cs

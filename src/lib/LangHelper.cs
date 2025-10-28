@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace QuickWinstall.Lib
@@ -102,6 +105,69 @@ namespace QuickWinstall.Lib
             string region = parts.Length > 1 ? parts[1] : "";
 
             return (language, region);
+        }
+
+        /// <summary>
+        /// Gets all available language codes from the res/langs/ folder.
+        /// Returns a list of language codes (e.g., ["en-US", "vi-VN"]).
+        /// </summary>
+        public static List<string> GetAvailableLanguageCodes()
+        {
+            List<string> languages = new List<string>();
+            string langFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "langs");
+
+            if (Directory.Exists(langFolder))
+            {
+                var jsonFiles = Directory.GetFiles(langFolder, "*.json");
+                foreach (var file in jsonFiles)
+                {
+                    string langCode = Path.GetFileNameWithoutExtension(file);
+                    languages.Add(langCode);
+                }
+            }
+
+            return languages;
+        }
+
+        /// <summary>
+        /// Gets a display-friendly name for a language code.
+        /// Example: "en-US" → "English", "vi-VN" → "Tiếng Việt"
+        /// </summary>
+        public static string GetLanguageDisplayName(string langCode)
+        {
+            switch (langCode)
+            {
+                case "en-US":
+                    return "English";
+                case "vi-VN":
+                    return "Tiếng Việt";
+                default:
+                    return langCode; // Return the code itself as fallback
+            }
+        }
+
+        /// <summary>
+        /// Gets the language code at a specific index from the available languages list.
+        /// </summary>
+        public static string GetLanguageCodeFromIndex(int index)
+        {
+            var languages = GetAvailableLanguageCodes();
+            if (index >= 0 && index < languages.Count)
+            {
+                return languages[index];
+            }
+            return "en-US"; // Default fallback
+        }
+
+        /// <summary>
+        /// Gets the index of a specific language code in the available languages list.
+        /// Returns 0 (first language) if not found.
+        /// </summary>
+        public static int GetLanguageIndex(string langCode)
+        {
+            var languages = GetAvailableLanguageCodes();
+            int index = languages.IndexOf(langCode);
+            return index >= 0 ? index : 0;
         }
     }
 }

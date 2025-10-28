@@ -18,6 +18,10 @@ namespace QuickWinstall.Lib
         private ToolStripStatusLabel? _statusLabel;
         private ThemeManager _themeManager;
         private LangManager _langManager;
+        
+        // Track current status for refresh capability
+        private string _currentStatusKey = "mainForm.status.ready";
+        private StatusType _currentStatusType = StatusType.Normal;
 
         private StatusManager()
         {
@@ -84,8 +88,21 @@ namespace QuickWinstall.Lib
 
         public void SetStatusFromKey(string messageKey, StatusType statusType = StatusType.Normal, params object[] args)
         {
+            _currentStatusKey = messageKey;
+            _currentStatusType = statusType;
             string message = _langManager.GetString(messageKey, args);
             SetStatus(message, statusType);
+        }
+        
+        /// <summary>
+        /// Refresh the current status with updated language/theme
+        /// </summary>
+        public void RefreshStatus()
+        {
+            if (_statusLabel != null)
+            {
+                SetStatusFromKey(_currentStatusKey, _currentStatusType);
+            }
         }
 
         public void SetReady()

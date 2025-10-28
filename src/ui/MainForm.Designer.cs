@@ -113,7 +113,7 @@ namespace QuickWinstall.Main
             this.lblBannerTitle.TextAlign = ContentAlignment.MiddleLeft;
 
             // Expand All Button
-            this.btnExpandAll = CreateRoundedButton();
+            this.btnExpandAll = _themeManager.CreateRoundedButton();
             this.btnExpandAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
             this.btnExpandAll.Image = iconMgr.GetIconAsImage("add", theme.IsDarkTheme, ui.GlobalIconSize);
             this.btnExpandAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -121,7 +121,7 @@ namespace QuickWinstall.Main
             tooltips.SetToolTip(this.btnExpandAll, "tooltips.mainForm.expandAll");
 
             // Collapse All Button
-            this.btnCollapseAll = CreateRoundedButton();
+            this.btnCollapseAll = _themeManager.CreateRoundedButton();
             this.btnCollapseAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
             this.btnCollapseAll.Image = iconMgr.GetIconAsImage("remove", theme.IsDarkTheme, ui.GlobalIconSize);
             this.btnCollapseAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -143,7 +143,7 @@ namespace QuickWinstall.Main
             _pnlGeneralConfig = _generalConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
-                this.CreateRoundedButton,
+                _themeManager.CreateRoundedButton,
                 this.RepositionSections,  // Pass reposition callback
                 this  // Pass parent form for navigation
             );
@@ -153,7 +153,7 @@ namespace QuickWinstall.Main
             _pnlLangRegConfig = _langRegConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
-                this.CreateRoundedButton,
+                _themeManager.CreateRoundedButton,
                 this.RepositionSections  // Pass reposition callback
             );
             _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
@@ -167,35 +167,39 @@ namespace QuickWinstall.Main
 
             int btnY = (ui.ControlPanelHeight - ui.GlobalBtnHeight) / 2;
 
-            this.btnSettings = CreateRoundedButton();
+            // Settings Button
+            this.btnSettings = _themeManager.CreateRoundedButton();
             this.btnSettings.Location = new Point(ui.GlobalSpacingX, btnY);
             this.btnSettings.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
             this.btnSettings.Text = lang.GetString("mainForm.buttons.settings");
             this.btnSettings.Click += new EventHandler(this.BtnSettings_Click);
             tooltips.SetToolTip(this.btnSettings, "tooltips.mainForm.settings");
 
-            this.btnClear = CreateRoundedButton();
+            // Clear Button
+            this.btnClear = _themeManager.CreateRoundedButton();
             this.btnClear.Location = new Point(btnSettings.Right + ui.GlobalSpacingX, btnY);
             this.btnClear.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
             this.btnClear.Text = lang.GetString("mainForm.buttons.clear");
             this.btnClear.Click += new EventHandler(this.BtnClear_Click);
             tooltips.SetToolTip(this.btnClear, "tooltips.mainForm.clear");
 
-            this.btnPreset = CreateRoundedButton();
+                        // Preset Button
+            this.btnPreset = _themeManager.CreateRoundedButton();
             this.btnPreset.Location = new Point(btnClear.Right + ui.GlobalSpacingX, btnY);
             this.btnPreset.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
             this.btnPreset.Text = lang.GetString("mainForm.buttons.preset");
             this.btnPreset.Click += new EventHandler(this.BtnPreset_Click);
             tooltips.SetToolTip(this.btnPreset, "tooltips.mainForm.preset");
 
-            this.btnCancel = CreateRoundedButton();
+            // Cancel Button
+            this.btnCancel = _themeManager.CreateRoundedButton();
             this.btnCancel.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
             this.btnCancel.Text = lang.GetString("mainForm.buttons.cancel");
             this.btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             this.btnCancel.Click += new EventHandler(this.BtnCancel_Click);
             tooltips.SetToolTip(this.btnCancel, "tooltips.mainForm.cancel");
 
-            this.btnGenerate = CreateRoundedButton();
+            this.btnGenerate = _themeManager.CreateRoundedButton();
             this.btnGenerate.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
             this.btnGenerate.Text = lang.GetString("mainForm.buttons.generate");
             this.btnGenerate.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -252,64 +256,7 @@ namespace QuickWinstall.Main
 
         #region Helper Methods
 
-        private Button CreateRoundedButton()
-        {
-            Button btn = new Button();
-            ThemeManager theme = ThemeManager.Instance;
-            UIValues ui = UIValues.Instance;
-
-            // Use Flat style but disable default rectangular border so we can draw a rounded one
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = ui.GlobalBtnBorderWidth;
-            btn.BackColor = theme.GetColor("buttonBackground");
-            // keep border color available from theme for our custom drawing
-            btn.FlatAppearance.BorderColor = theme.GetColor("buttonBorder");
-            btn.Cursor = Cursors.Hand;
-            btn.Padding = new Padding(0);
-
-            // Hover effect (update background and request repaint so custom border can update if needed)
-            btn.MouseEnter += (sender, e) =>
-            {
-                btn.BackColor = theme.GetColor("buttonBackgroundHover");
-                btn.Invalidate();
-            };
-
-            btn.MouseLeave += (sender, e) =>
-            {
-                btn.BackColor = theme.GetColor("buttonBackground");
-                btn.Invalidate();
-            };
-
-            // Custom painting: set a rounded region and draw a rounded border so corners are smooth
-            btn.Paint += (sender, e) =>
-            {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                using (GraphicsPath path = new GraphicsPath())
-                {
-                    int radius = ui.GlobalBtnBorderRadius;
-                    // shrink rectangle by 1px so the border is drawn inside the control bounds and not clipped
-                    Rectangle rect = new Rectangle(0, 0, Math.Max(0, btn.Width - 1), Math.Max(0, btn.Height - 1));
-
-                    path.AddArc(rect.X, rect.Y, radius, radius, 180, 90);
-                    path.AddArc(rect.Right - radius, rect.Y, radius, radius, 270, 90);
-                    path.AddArc(rect.Right - radius, rect.Bottom - radius, radius, radius, 0, 90);
-                    path.AddArc(rect.X, rect.Bottom - radius, radius, radius, 90, 90);
-                    path.CloseFigure();
-
-                    // Clip control to rounded region so default background is rounded
-                    btn.Region = new Region(path);
-
-                    // Draw custom border inside the rounded region using theme color
-                    using (Pen pen = new Pen(theme.GetColor("buttonBorder"), ui.GlobalBtnBorderWidth))
-                    {
-                        e.Graphics.DrawPath(pen, path);
-                    }
-                }
-            };
-
-            return btn;
-        }
-
         #endregion
     }
 }
+
