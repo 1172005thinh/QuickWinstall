@@ -46,6 +46,24 @@
     },
     "langRegConfig": {
       "contentHeight": 250
+    },
+    "userAccConfig": {
+      "contentHeight": 100
+    },
+    "oobeConfig": {
+      "contentHeight": 100
+    },
+    "personalConfig": {
+      "contentHeight": 100
+    },
+    "diskPartConfig": {
+      "contentHeight": 100
+    },
+    "bypassConfig": {
+      "contentHeight": 100
+    },
+    "appConfig": {
+      "contentHeight": 100
     }
   },
   "forms": {

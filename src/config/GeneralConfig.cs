@@ -70,7 +70,7 @@ namespace QuickWinstall.Config
             // Store callback
             _onSectionToggle = onSectionToggle;
 
-            int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 200);
+            int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 180);
             
             // General Config Panel
             pnlGeneralConfig = new Panel();

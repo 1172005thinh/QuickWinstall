@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "QuickWinstall",
-    "title": "Tự động hóa cài đặt Windows 11"
+    "title": "Tự động hóa Cài đặt Windows 11"
   },
   "dialogs": {
     "buttons": {
@@ -108,12 +108,30 @@
   "tooltips": {
     "generalConfig": {
       "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
-      "header": "Phần cấu hình chung",
+      "header": "Phần Cấu hình Chung",
       "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
       "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
     },
     "langRegConfig": {
-      "header": "Phần cấu hình ngôn ngữ và khu vực"
+      "header": "Phần Cấu hình Ngôn ngữ và Khu vực"
+    },
+    "userAccConfig": {
+      "header": "Phần Cấu hình Tài khoản Người dùng"
+    },
+    "personalConfig": {
+      "header": "Phần Cấu hình Cá nhân hóa"
+    },
+    "appConfig": {
+      "header": "Phần Cấu hình Ứng dụng"
+    },
+    "diskPartConfig": {
+      "header": "Phần Cấu hình Đĩa và Phân vùng"
+    },
+    "bypassConfig": {
+      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
+    },
+    "oobeConfig": {
+      "header": "Phần Cấu hình OOBE"
     },
     "mainForm": {
       "cancel": "Thoát QuickWinstall",
@@ -162,8 +180,8 @@
     },
     "title": "Cài đặt",
     "toggle": {
-      "off": "TẮT",
-      "on": "BẬT"
+      "off": "Tắt",
+      "on": "Bật"
     },
     "tooltips": {
       "about": "Về QuickWinstall",

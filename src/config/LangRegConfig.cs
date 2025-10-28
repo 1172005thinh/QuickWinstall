@@ -95,7 +95,7 @@ namespace QuickWinstall.Config
             lblWorkInProgress = new Label();
             lblWorkInProgress.Location = new Point(ui.GlobalTabX * 2, ui.GlobalSpacingY);
             lblWorkInProgress.Size = new Size(pnlLangRegConfigContent.Width - ui.GlobalTabX * 4, contentHeight - ui.GlobalSpacingY * 2);
-            lblWorkInProgress.Text = "In working progress...";
+            lblWorkInProgress.Text = "Work in progress...";
             lblWorkInProgress.Font = theme.GetFont("normal");
             lblWorkInProgress.ForeColor = theme.GetFontColor("muted");
             lblWorkInProgress.TextAlign = ContentAlignment.MiddleCenter;

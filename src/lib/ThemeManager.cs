@@ -121,6 +121,27 @@ namespace QuickWinstall.Lib
             return _currentThemeName.ToLower() == "dark" ? Color.White : Color.Black;
         }
 
+        public FontStyle GetFontStyle(string fontType)
+        {
+            try
+            {
+                string? style = _currentTheme?["fonts"]?[fontType]?["style"]?.ToString();
+                if (!string.IsNullOrEmpty(style))
+                {
+                    return style.Contains("Bold", StringComparison.OrdinalIgnoreCase) ? FontStyle.Bold :
+                           style.Contains("Italic", StringComparison.OrdinalIgnoreCase) ? FontStyle.Italic :
+                           FontStyle.Regular;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Failed to get font style {fontType}: {ex.Message}");
+            }
+
+            // Default font style
+            return FontStyle.Regular;
+        }
+
         public string CurrentTheme => _currentThemeName;
 
         public bool IsDarkTheme => _currentThemeName.ToLower() == "dark";

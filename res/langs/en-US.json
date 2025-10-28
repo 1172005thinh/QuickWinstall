@@ -115,6 +115,24 @@
     "langRegConfig": {
       "header": "Language && Region Configurations Section"
     },
+    "oobeConfig": {
+      "header": "OOBE Configurations Section"
+    },
+    "bypassConfig": {
+      "header": "Bypass Windows 11 Hardware Checks Section"
+    },
+    "diskPartConfig": {
+      "header": "Disk && Partition Configurations Section"
+    },
+    "userAccConfig": {
+      "header": "User Account Configurations Section"
+    },
+    "personalConfig": {
+      "header": "Personalize Configurations Section"
+    },
+    "appConfig": {
+      "header": "App Configurations Section"
+    },
     "mainForm": {
       "cancel": "Exit QuickWinstall",
       "clear": "Clear all configurations",
@@ -162,8 +180,8 @@
     },
     "title": "Settings",
     "toggle": {
-      "off": "OFF",
-      "on": "ON"
+      "off": "Disabled",
+      "on": "Enabled"
     },
     "tooltips": {
       "about": "About QuickWinstall",

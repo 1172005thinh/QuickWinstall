@@ -23,9 +23,21 @@ namespace QuickWinstall.Main
 
         private GeneralConfig _generalConfig;
         private LangRegConfig _langRegConfig;
+        private UserAccConfig _userAccConfig;
+        private OOBEConfig _oobeConfig;
+        private PersonalConfig _personalConfig;
+        private DiskPartConfig _diskPartConfig;
+        private BypassConfig _bypassConfig;
+        private AppConfig _appConfig;
 
         private Panel _pnlGeneralConfig = null!;
         private Panel _pnlLangRegConfig = null!;
+        private Panel _pnlUserAccConfig = null!;
+        private Panel _pnlOOBEConfig = null!;
+        private Panel _pnlPersonalConfig = null!;
+        private Panel _pnlDiskPartConfig = null!;
+        private Panel _pnlBypassConfig = null!;
+        private Panel _pnlAppConfig = null!;
 
         private bool _hasUnsavedChanges = false;
         private bool _isLoadingConfig = false; // Flag to prevent status updates during config loading
@@ -52,6 +64,14 @@ namespace QuickWinstall.Main
 
             // Initialize LangRegConfig
             _langRegConfig = new LangRegConfig();
+            
+            // Initialize all other config sections
+            _userAccConfig = new UserAccConfig();
+            _oobeConfig = new OOBEConfig();
+            _personalConfig = new PersonalConfig();
+            _diskPartConfig = new DiskPartConfig();
+            _bypassConfig = new BypassConfig();
+            _appConfig = new AppConfig();
 
             InitializeComponent();
             InitializeForm();
@@ -94,12 +114,24 @@ namespace QuickWinstall.Main
                 // Keep them expanded (default state)
                 _generalConfig.Expand();
                 _langRegConfig.Expand();
+                _userAccConfig.Expand();
+                _oobeConfig.Expand();
+                _personalConfig.Expand();
+                _diskPartConfig.Expand();
+                _bypassConfig.Expand();
+                _appConfig.Expand();
             }
             else
             {
                 // Collapse sections if setting is false
                 _generalConfig.Collapse();
                 _langRegConfig.Collapse();
+                _userAccConfig.Collapse();
+                _oobeConfig.Collapse();
+                _personalConfig.Collapse();
+                _diskPartConfig.Collapse();
+                _bypassConfig.Collapse();
+                _appConfig.Collapse();
             }
 
             // Apply theme to form
@@ -211,6 +243,96 @@ namespace QuickWinstall.Main
                     
                     // Reload data from model into the new UI controls
                     _langRegConfig.LoadConfigIntoUI();
+                }
+                
+                if (_userAccConfig != null)
+                {
+                    _userAccConfig.UpdateFromControls();
+                    _pnlUserAccConfig?.Dispose();
+                    _pnlUserAccConfig = _userAccConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlUserAccConfig.Location = new Point(0, _pnlLangRegConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlUserAccConfig);
+                    _userAccConfig.LoadConfigIntoUI();
+                }
+                
+                if (_oobeConfig != null)
+                {
+                    _oobeConfig.UpdateFromControls();
+                    _pnlOOBEConfig?.Dispose();
+                    _pnlOOBEConfig = _oobeConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlOOBEConfig.Location = new Point(0, _pnlUserAccConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlOOBEConfig);
+                    _oobeConfig.LoadConfigIntoUI();
+                }
+                
+                if (_personalConfig != null)
+                {
+                    _personalConfig.UpdateFromControls();
+                    _pnlPersonalConfig?.Dispose();
+                    _pnlPersonalConfig = _personalConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlPersonalConfig.Location = new Point(0, _pnlOOBEConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlPersonalConfig);
+                    _personalConfig.LoadConfigIntoUI();
+                }
+                
+                if (_diskPartConfig != null)
+                {
+                    _diskPartConfig.UpdateFromControls();
+                    _pnlDiskPartConfig?.Dispose();
+                    _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlDiskPartConfig.Location = new Point(0, _pnlPersonalConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
+                    _diskPartConfig.LoadConfigIntoUI();
+                }
+                
+                if (_bypassConfig != null)
+                {
+                    _bypassConfig.UpdateFromControls();
+                    _pnlBypassConfig?.Dispose();
+                    _pnlBypassConfig = _bypassConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlBypassConfig.Location = new Point(0, _pnlDiskPartConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlBypassConfig);
+                    _bypassConfig.LoadConfigIntoUI();
+                }
+                
+                if (_appConfig != null)
+                {
+                    _appConfig.UpdateFromControls();
+                    _pnlAppConfig?.Dispose();
+                    _pnlAppConfig = _appConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        RepositionSections
+                    );
+                    _pnlAppConfig.Location = new Point(0, _pnlBypassConfig.Bottom);
+                    pnlConfigSection.Controls.Add(_pnlAppConfig);
+                    _appConfig.LoadConfigIntoUI();
                 }
             }
             finally
@@ -365,6 +487,12 @@ namespace QuickWinstall.Main
             // Expand all sections
             _generalConfig.Expand();
             _langRegConfig.Expand();
+            _userAccConfig.Expand();
+            _oobeConfig.Expand();
+            _personalConfig.Expand();
+            _diskPartConfig.Expand();
+            _bypassConfig.Expand();
+            _appConfig.Expand();
         }
 
         private void BtnCollapseAll_Click(object sender, EventArgs e)
@@ -372,6 +500,12 @@ namespace QuickWinstall.Main
             // Collapse all sections
             _generalConfig.Collapse();
             _langRegConfig.Collapse();
+            _userAccConfig.Collapse();
+            _oobeConfig.Collapse();
+            _personalConfig.Collapse();
+            _diskPartConfig.Collapse();
+            _bypassConfig.Collapse();
+            _appConfig.Collapse();
         }
 
         #endregion
@@ -385,6 +519,14 @@ namespace QuickWinstall.Main
             
             // Clear LangRegConfig
             _langRegConfig.ClearControls();
+            
+            // Clear all other sections
+            _userAccConfig.ClearControls();
+            _oobeConfig.ClearControls();
+            _personalConfig.ClearControls();
+            _diskPartConfig.ClearControls();
+            _bypassConfig.ClearControls();
+            _appConfig.ClearControls();
         }
 
         private void OnConfigChanged(object sender, EventArgs e)
@@ -416,12 +558,59 @@ namespace QuickWinstall.Main
         private void RepositionSections()
         {
             // Check if panels are initialized
-            if (_pnlGeneralConfig == null ||
-                _pnlLangRegConfig == null)
+            if (_pnlGeneralConfig == null)
                 return;
 
-            // Reposition
-            _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
+            // Reposition all sections in order
+            int currentY = 0;
+            
+            if (_pnlGeneralConfig != null)
+            {
+                _pnlGeneralConfig.Location = new Point(0, currentY);
+                currentY = _pnlGeneralConfig.Bottom;
+            }
+            
+            if (_pnlLangRegConfig != null)
+            {
+                _pnlLangRegConfig.Location = new Point(0, currentY);
+                currentY = _pnlLangRegConfig.Bottom;
+            }
+            
+            if (_pnlUserAccConfig != null)
+            {
+                _pnlUserAccConfig.Location = new Point(0, currentY);
+                currentY = _pnlUserAccConfig.Bottom;
+            }
+            
+            if (_pnlOOBEConfig != null)
+            {
+                _pnlOOBEConfig.Location = new Point(0, currentY);
+                currentY = _pnlOOBEConfig.Bottom;
+            }
+            
+            if (_pnlPersonalConfig != null)
+            {
+                _pnlPersonalConfig.Location = new Point(0, currentY);
+                currentY = _pnlPersonalConfig.Bottom;
+            }
+            
+            if (_pnlDiskPartConfig != null)
+            {
+                _pnlDiskPartConfig.Location = new Point(0, currentY);
+                currentY = _pnlDiskPartConfig.Bottom;
+            }
+            
+            if (_pnlBypassConfig != null)
+            {
+                _pnlBypassConfig.Location = new Point(0, currentY);
+                currentY = _pnlBypassConfig.Bottom;
+            }
+            
+            if (_pnlAppConfig != null)
+            {
+                _pnlAppConfig.Location = new Point(0, currentY);
+                currentY = _pnlAppConfig.Bottom;
+            }
         }
 
         #endregion
