@@ -82,15 +82,16 @@ namespace QuickWinstall.Config
             btnGeneralConfigToggle = createRoundedButton();
             btnGeneralConfigToggle.Location = new Point(ui.GlobalTabX, ui.GlobalSpacingY);
             btnGeneralConfigToggle.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage("expand", theme.IsDarkTheme, ui.GlobalIconSize);
-            btnGeneralConfigToggle.Tag = "collapsed";
+            // Set initial button state based on current _isExpanded state
+            btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
+            btnGeneralConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnGeneralConfigToggle.Click += (sender, e) => ToggleSection();
             tooltips.SetToolTip(btnGeneralConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.general"));
 
             // General Config Title
             lblGeneralConfigTitle = new Label();
             lblGeneralConfigTitle.Location = new Point(btnGeneralConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblGeneralConfigTitle.Size = new Size(300, ui.GlobalLabelHeight);
+            lblGeneralConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
             lblGeneralConfigTitle.Text = lang.GetString("mainForm.sections.general");
             lblGeneralConfigTitle.Font = theme.GetFont("subheader");
             lblGeneralConfigTitle.UseMnemonic = false;
@@ -309,6 +310,13 @@ namespace QuickWinstall.Config
             pnlGeneralConfig.Controls.Add(pnlGeneralConfigSeparator);
             pnlGeneralConfig.Controls.Add(pnlGeneralConfigContent);
 
+            // Apply current expansion state
+            pnlGeneralConfigContent.Visible = _isExpanded;
+            if (!_isExpanded)
+            {
+                pnlGeneralConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2;
+            }
+
             // Initialize placeholders
             InitializePlaceholders();
 
@@ -353,7 +361,7 @@ namespace QuickWinstall.Config
             // Update panel height based on state
             if (_isExpanded)
             {
-                int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 200);
+                int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 180);
                 pnlGeneralConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
             }
             else
@@ -367,7 +375,7 @@ namespace QuickWinstall.Config
             
             string iconName = _isExpanded ? "expand" : "collapse";
             btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage(iconName, theme.IsDarkTheme, ui.GlobalIconSize);
-            btnGeneralConfigToggle.Tag = _isExpanded ? "collapsed" : "expanded";
+            btnGeneralConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
 
             // Notify parent to reposition sections
             _onSectionToggle?.Invoke();

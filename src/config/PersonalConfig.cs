@@ -54,8 +54,9 @@ namespace QuickWinstall.Config
             btnPersonalConfigToggle = createRoundedButton();
             btnPersonalConfigToggle.Location = new Point(ui.GlobalTabX, ui.GlobalSpacingY);
             btnPersonalConfigToggle.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            btnPersonalConfigToggle.Image = iconMgr.GetIconAsImage("expand", theme.IsDarkTheme, ui.GlobalIconSize);
-            btnPersonalConfigToggle.Tag = "collapsed";
+            // Set initial button state based on current _isExpanded state
+            btnPersonalConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
+            btnPersonalConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnPersonalConfigToggle.Click += (sender, e) => ToggleSection();
             tooltips.SetToolTip(btnPersonalConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.personal"));
 
@@ -85,7 +86,7 @@ namespace QuickWinstall.Config
             lblWorkInProgress.Location = new Point(ui.GlobalTabX * 2, ui.GlobalSpacingY);
             lblWorkInProgress.Size = new Size(pnlPersonalConfigContent.Width - ui.GlobalTabX * 4, contentHeight - ui.GlobalSpacingY * 2);
             lblWorkInProgress.Text = "Work in progress...";
-            lblWorkInProgress.Font = theme.GetFont("normal");
+            lblWorkInProgress.Font = theme.GetFont("muted");
             lblWorkInProgress.ForeColor = theme.GetFontColor("muted");
             lblWorkInProgress.TextAlign = ContentAlignment.MiddleCenter;
 
@@ -94,6 +95,14 @@ namespace QuickWinstall.Config
             pnlPersonalConfig.Controls.Add(lblPersonalConfigTitle);
             pnlPersonalConfig.Controls.Add(pnlPersonalConfigSeparator);
             pnlPersonalConfig.Controls.Add(pnlPersonalConfigContent);
+
+            // Apply current expansion state
+            pnlPersonalConfigContent.Visible = _isExpanded;
+            pnlPersonalConfigSeparator.Visible = _isExpanded;
+            if (!_isExpanded)
+            {
+                pnlPersonalConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2;
+            }
 
             return pnlPersonalConfig;
         }
@@ -111,7 +120,7 @@ namespace QuickWinstall.Config
 
             if (_isExpanded)
             {
-                int contentHeight = 100;
+                int contentHeight = ui.GetSectionValue("appConfig", "contentHeight", 100);
                 pnlPersonalConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
             }
             else
@@ -124,7 +133,7 @@ namespace QuickWinstall.Config
             
             string iconName = _isExpanded ? "expand" : "collapse";
             btnPersonalConfigToggle.Image = iconMgr.GetIconAsImage(iconName, theme.IsDarkTheme, ui.GlobalIconSize);
-            btnPersonalConfigToggle.Tag = _isExpanded ? "collapsed" : "expanded";
+            btnPersonalConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
 
             _onSectionToggle?.Invoke();
         }

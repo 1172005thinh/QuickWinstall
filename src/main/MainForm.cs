@@ -32,11 +32,11 @@ namespace QuickWinstall.Main
 
         private Panel _pnlGeneralConfig = null!;
         private Panel _pnlLangRegConfig = null!;
+        private Panel _pnlBypassConfig = null!;
+        private Panel _pnlDiskPartConfig = null!;
         private Panel _pnlUserAccConfig = null!;
         private Panel _pnlOOBEConfig = null!;
         private Panel _pnlPersonalConfig = null!;
-        private Panel _pnlDiskPartConfig = null!;
-        private Panel _pnlBypassConfig = null!;
         private Panel _pnlAppConfig = null!;
 
         private bool _hasUnsavedChanges = false;
@@ -62,15 +62,12 @@ namespace QuickWinstall.Main
             // Use GeneralConfig from ConfigValues (not a separate instance!)
             _generalConfig = _configValues.General;
 
-            // Initialize LangRegConfig
             _langRegConfig = new LangRegConfig();
-            
-            // Initialize all other config sections
+            _bypassConfig = new BypassConfig();
+            _diskPartConfig = new DiskPartConfig();
             _userAccConfig = new UserAccConfig();
             _oobeConfig = new OOBEConfig();
             _personalConfig = new PersonalConfig();
-            _diskPartConfig = new DiskPartConfig();
-            _bypassConfig = new BypassConfig();
             _appConfig = new AppConfig();
 
             InitializeComponent();
@@ -114,11 +111,11 @@ namespace QuickWinstall.Main
                 // Keep them expanded (default state)
                 _generalConfig.Expand();
                 _langRegConfig.Expand();
+                _bypassConfig.Expand();
+                _diskPartConfig.Expand();
                 _userAccConfig.Expand();
                 _oobeConfig.Expand();
                 _personalConfig.Expand();
-                _diskPartConfig.Expand();
-                _bypassConfig.Expand();
                 _appConfig.Expand();
             }
             else
@@ -126,11 +123,11 @@ namespace QuickWinstall.Main
                 // Collapse sections if setting is false
                 _generalConfig.Collapse();
                 _langRegConfig.Collapse();
+                _bypassConfig.Collapse();
+                _diskPartConfig.Collapse();
                 _userAccConfig.Collapse();
                 _oobeConfig.Collapse();
                 _personalConfig.Collapse();
-                _diskPartConfig.Collapse();
-                _bypassConfig.Collapse();
                 _appConfig.Collapse();
             }
 
@@ -179,6 +176,9 @@ namespace QuickWinstall.Main
         {
             // Set loading flag to prevent triggering unsaved changes during UI refresh
             _isLoadingConfig = true;
+            
+            // Scroll to top first to prevent layout issues
+            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
             
             try
             {
@@ -484,6 +484,9 @@ namespace QuickWinstall.Main
 
         private void BtnExpandAll_Click(object sender, EventArgs e)
         {
+            // Scroll to top first for consistent experience
+            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
+            
             // Expand all sections
             _generalConfig.Expand();
             _langRegConfig.Expand();
@@ -497,6 +500,9 @@ namespace QuickWinstall.Main
 
         private void BtnCollapseAll_Click(object sender, EventArgs e)
         {
+            // Scroll to top first for consistent experience
+            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
+            
             // Collapse all sections
             _generalConfig.Collapse();
             _langRegConfig.Collapse();
@@ -561,6 +567,12 @@ namespace QuickWinstall.Main
             if (_pnlGeneralConfig == null)
                 return;
 
+            // CRITICAL: Suspend layout to prevent flicker and scroll issues
+            pnlConfigSection.SuspendLayout();
+            
+            // Always scroll to top first to prevent layout issues with AutoScrollPosition
+            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
+
             // Reposition all sections in order
             int currentY = 0;
             
@@ -611,6 +623,9 @@ namespace QuickWinstall.Main
                 _pnlAppConfig.Location = new Point(0, currentY);
                 currentY = _pnlAppConfig.Bottom;
             }
+
+            // Resume layout
+            pnlConfigSection.ResumeLayout(true);
         }
 
         #endregion

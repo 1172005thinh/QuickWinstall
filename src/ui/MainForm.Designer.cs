@@ -139,25 +139,45 @@ namespace QuickWinstall.Main
             this.pnlConfigSection.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             this.pnlConfigSection.AutoScroll = true;
 
-            // Initialize General Config Section via GeneralConfig class
+            // Initialize General Config Section
             _pnlGeneralConfig = _generalConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections,  // Pass reposition callback
-                this  // Pass parent form for navigation
+                this.RepositionSections,
+                this
             );
             this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
 
-            // Initialize Language & Region Config Section via LangRegConfig class
+            // Initialize Language & Region Config Section
             _pnlLangRegConfig = _langRegConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections  // Pass reposition callback
+                this.RepositionSections
             );
             _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
             this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
+
+            // Initialize Bypass Config Section
+            _pnlBypassConfig = _bypassConfig.InitializeUI(
+                this.pnlConfigSection,
+                this.OnConfigChanged,
+                _themeManager.CreateRoundedButton,
+                this.RepositionSections
+            );
+            _pnlBypassConfig.Location = new Point(0, _pnlLangRegConfig.Bottom);
+            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
+
+            // Initialize Disk & Partition Config Section
+            _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
+                this.pnlConfigSection,
+                this.OnConfigChanged,
+                _themeManager.CreateRoundedButton,
+                this.RepositionSections
+            );
+            _pnlDiskPartConfig.Location = new Point(0, _pnlBypassConfig.Bottom);
+            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
 
             // Initialize User Account Config Section
             _pnlUserAccConfig = _userAccConfig.InitializeUI(
@@ -166,7 +186,7 @@ namespace QuickWinstall.Main
                 _themeManager.CreateRoundedButton,
                 this.RepositionSections
             );
-            _pnlUserAccConfig.Location = new Point(0, _pnlLangRegConfig.Bottom);
+            _pnlUserAccConfig.Location = new Point(0, _pnlDiskPartConfig.Bottom);
             this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
 
             // Initialize OOBE Config Section
@@ -178,7 +198,7 @@ namespace QuickWinstall.Main
             );
             _pnlOOBEConfig.Location = new Point(0, _pnlUserAccConfig.Bottom);
             this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
-
+            
             // Initialize Personal Config Section
             _pnlPersonalConfig = _personalConfig.InitializeUI(
                 this.pnlConfigSection,
@@ -189,26 +209,6 @@ namespace QuickWinstall.Main
             _pnlPersonalConfig.Location = new Point(0, _pnlOOBEConfig.Bottom);
             this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
 
-            // Initialize Disk & Partition Config Section
-            _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
-                this.pnlConfigSection,
-                this.OnConfigChanged,
-                _themeManager.CreateRoundedButton,
-                this.RepositionSections
-            );
-            _pnlDiskPartConfig.Location = new Point(0, _pnlPersonalConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
-
-            // Initialize Bypass Config Section
-            _pnlBypassConfig = _bypassConfig.InitializeUI(
-                this.pnlConfigSection,
-                this.OnConfigChanged,
-                _themeManager.CreateRoundedButton,
-                this.RepositionSections
-            );
-            _pnlBypassConfig.Location = new Point(0, _pnlDiskPartConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
-
             // Initialize App Config Section
             _pnlAppConfig = _appConfig.InitializeUI(
                 this.pnlConfigSection,
@@ -216,7 +216,7 @@ namespace QuickWinstall.Main
                 _themeManager.CreateRoundedButton,
                 this.RepositionSections
             );
-            _pnlAppConfig.Location = new Point(0, _pnlBypassConfig.Bottom);
+            _pnlAppConfig.Location = new Point(0, _pnlPersonalConfig.Bottom);
             this.pnlConfigSection.Controls.Add(_pnlAppConfig);
 
             // Control Panel

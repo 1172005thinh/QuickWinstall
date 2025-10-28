@@ -61,15 +61,16 @@ namespace QuickWinstall.Config
             btnLangRegConfigToggle = createRoundedButton();
             btnLangRegConfigToggle.Location = new Point(ui.GlobalTabX, ui.GlobalSpacingY);
             btnLangRegConfigToggle.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            btnLangRegConfigToggle.Image = iconMgr.GetIconAsImage("expand", theme.IsDarkTheme, ui.GlobalIconSize);
-            btnLangRegConfigToggle.Tag = "collapsed";
+            // Set initial button state based on current _isExpanded state
+            btnLangRegConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
+            btnLangRegConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnLangRegConfigToggle.Click += (sender, e) => ToggleSection();
             tooltips.SetToolTip(btnLangRegConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.langReg"));
 
             // Language & Region Config Title
             lblLangRegConfigTitle = new Label();
             lblLangRegConfigTitle.Location = new Point(btnLangRegConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblLangRegConfigTitle.Size = new Size(300, ui.GlobalLabelHeight);
+            lblLangRegConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
             lblLangRegConfigTitle.Text = lang.GetString("mainForm.sections.langReg");
             lblLangRegConfigTitle.Font = theme.GetFont("subheader");
             lblLangRegConfigTitle.UseMnemonic = false;
@@ -96,7 +97,7 @@ namespace QuickWinstall.Config
             lblWorkInProgress.Location = new Point(ui.GlobalTabX * 2, ui.GlobalSpacingY);
             lblWorkInProgress.Size = new Size(pnlLangRegConfigContent.Width - ui.GlobalTabX * 4, contentHeight - ui.GlobalSpacingY * 2);
             lblWorkInProgress.Text = "Work in progress...";
-            lblWorkInProgress.Font = theme.GetFont("normal");
+            lblWorkInProgress.Font = theme.GetFont("muted");
             lblWorkInProgress.ForeColor = theme.GetFontColor("muted");
             lblWorkInProgress.TextAlign = ContentAlignment.MiddleCenter;
 
@@ -108,6 +109,14 @@ namespace QuickWinstall.Config
             pnlLangRegConfig.Controls.Add(lblLangRegConfigTitle);
             pnlLangRegConfig.Controls.Add(pnlLangRegConfigSeparator);
             pnlLangRegConfig.Controls.Add(pnlLangRegConfigContent);
+
+            // Apply current expansion state
+            pnlLangRegConfigContent.Visible = _isExpanded;
+            pnlLangRegConfigSeparator.Visible = _isExpanded;
+            if (!_isExpanded)
+            {
+                pnlLangRegConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2;
+            }
 
             return pnlLangRegConfig;
         }
@@ -129,7 +138,7 @@ namespace QuickWinstall.Config
             // Update panel height based on state
             if (_isExpanded)
             {
-                int contentHeight = 100; // Same as in InitializeUI
+                int contentHeight = ui.GetSectionValue("appConfig", "contentHeight", 100);
                 pnlLangRegConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
             }
             else
@@ -143,7 +152,7 @@ namespace QuickWinstall.Config
             
             string iconName = _isExpanded ? "expand" : "collapse";
             btnLangRegConfigToggle.Image = iconMgr.GetIconAsImage(iconName, theme.IsDarkTheme, ui.GlobalIconSize);
-            btnLangRegConfigToggle.Tag = _isExpanded ? "collapsed" : "expanded";
+            btnLangRegConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
 
             // Notify parent to reposition sections
             _onSectionToggle?.Invoke();

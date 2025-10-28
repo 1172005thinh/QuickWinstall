@@ -69,7 +69,7 @@
   "forms": {
     "mainForm": {
       "width": 800,
-      "height": 600,
+      "height": 800,
       "minWidth": 635,
       "minHeight": 400,
       "resizable": true

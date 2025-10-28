@@ -60,8 +60,9 @@ namespace QuickWinstall.Config
             btnUserAccConfigToggle = createRoundedButton();
             btnUserAccConfigToggle.Location = new Point(ui.GlobalTabX, ui.GlobalSpacingY);
             btnUserAccConfigToggle.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            btnUserAccConfigToggle.Image = iconMgr.GetIconAsImage("expand", theme.IsDarkTheme, ui.GlobalIconSize);
-            btnUserAccConfigToggle.Tag = "collapsed";
+            // Set initial button state based on current _isExpanded state
+            btnUserAccConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
+            btnUserAccConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnUserAccConfigToggle.Click += (sender, e) => ToggleSection();
             tooltips.SetToolTip(btnUserAccConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.userAcc"));
 
@@ -95,7 +96,7 @@ namespace QuickWinstall.Config
             lblWorkInProgress.Location = new Point(ui.GlobalTabX * 2, ui.GlobalSpacingY);
             lblWorkInProgress.Size = new Size(pnlUserAccConfigContent.Width - ui.GlobalTabX * 4, contentHeight - ui.GlobalSpacingY * 2);
             lblWorkInProgress.Text = "Work in progress...";
-            lblWorkInProgress.Font = theme.GetFont("normal");
+            lblWorkInProgress.Font = theme.GetFont("muted");
             lblWorkInProgress.ForeColor = theme.GetFontColor("muted");
             lblWorkInProgress.TextAlign = ContentAlignment.MiddleCenter;
 
@@ -107,6 +108,14 @@ namespace QuickWinstall.Config
             pnlUserAccConfig.Controls.Add(lblUserAccConfigTitle);
             pnlUserAccConfig.Controls.Add(pnlUserAccConfigSeparator);
             pnlUserAccConfig.Controls.Add(pnlUserAccConfigContent);
+
+            // Apply current expansion state
+            pnlUserAccConfigContent.Visible = _isExpanded;
+            pnlUserAccConfigSeparator.Visible = _isExpanded;
+            if (!_isExpanded)
+            {
+                pnlUserAccConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2;
+            }
 
             return pnlUserAccConfig;
         }
@@ -128,7 +137,7 @@ namespace QuickWinstall.Config
             // Update panel height based on state
             if (_isExpanded)
             {
-                int contentHeight = 100; // Same as in InitializeUI
+                int contentHeight = ui.GetSectionValue("appConfig", "contentHeight", 100);
                 pnlUserAccConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
             }
             else
@@ -142,7 +151,7 @@ namespace QuickWinstall.Config
             
             string iconName = _isExpanded ? "expand" : "collapse";
             btnUserAccConfigToggle.Image = iconMgr.GetIconAsImage(iconName, theme.IsDarkTheme, ui.GlobalIconSize);
-            btnUserAccConfigToggle.Tag = _isExpanded ? "collapsed" : "expanded";
+            btnUserAccConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
 
             // Notify parent to reposition sections
             _onSectionToggle?.Invoke();

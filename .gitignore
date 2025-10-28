@@ -2,6 +2,7 @@
 autounattend.xml
 
 # Ignore my personal files
+docs/*.png
 docs/prompt.md
 docs/pngs/
 tools/*.txt

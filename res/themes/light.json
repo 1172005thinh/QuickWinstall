@@ -54,6 +54,12 @@
       "style": "Regular",
       "color": "#008000"
     },
+    "muted": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Italic",
+      "color": "#bbbbbb"
+    },
     "tooltip": {
       "family": "Segoe UI",
       "size": 10,
