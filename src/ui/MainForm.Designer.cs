@@ -139,85 +139,89 @@ namespace QuickWinstall.Main
             this.pnlConfigSection.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
             this.pnlConfigSection.AutoScroll = true;
 
-            // Initialize General Config Section
-            _pnlGeneralConfig = _generalConfig.InitializeUI(
+            // Initialize sections in REVERSE order (bottom to top) with DockStyle.Top
+            // This ensures they stack correctly: General at top, App at bottom
+            
+            // Initialize App Config Section (add first, appears at bottom)
+            _pnlAppConfig = _appConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections,
-                this
+                null  // No reposition callback needed with DockStyle
             );
-            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+            _pnlAppConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlAppConfig);
 
-            // Initialize Language & Region Config Section
-            _pnlLangRegConfig = _langRegConfig.InitializeUI(
+            // Initialize Personal Config Section
+            _pnlPersonalConfig = _personalConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections
+                null
             );
-            _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
-
-            // Initialize Bypass Config Section
-            _pnlBypassConfig = _bypassConfig.InitializeUI(
+            _pnlPersonalConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
+            
+            // Initialize OOBE Config Section
+            _pnlOOBEConfig = _oobeConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections
+                null
             );
-            _pnlBypassConfig.Location = new Point(0, _pnlLangRegConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
-
-            // Initialize Disk & Partition Config Section
-            _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
-                this.pnlConfigSection,
-                this.OnConfigChanged,
-                _themeManager.CreateRoundedButton,
-                this.RepositionSections
-            );
-            _pnlDiskPartConfig.Location = new Point(0, _pnlBypassConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
+            _pnlOOBEConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
 
             // Initialize User Account Config Section
             _pnlUserAccConfig = _userAccConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections
+                null
             );
-            _pnlUserAccConfig.Location = new Point(0, _pnlDiskPartConfig.Bottom);
+            _pnlUserAccConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
 
-            // Initialize OOBE Config Section
-            _pnlOOBEConfig = _oobeConfig.InitializeUI(
+            // Initialize Disk & Partition Config Section
+            _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections
+                null
             );
-            _pnlOOBEConfig.Location = new Point(0, _pnlUserAccConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
-            
-            // Initialize Personal Config Section
-            _pnlPersonalConfig = _personalConfig.InitializeUI(
-                this.pnlConfigSection,
-                this.OnConfigChanged,
-                _themeManager.CreateRoundedButton,
-                this.RepositionSections
-            );
-            _pnlPersonalConfig.Location = new Point(0, _pnlOOBEConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
+            _pnlDiskPartConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
 
-            // Initialize App Config Section
-            _pnlAppConfig = _appConfig.InitializeUI(
+            // Initialize Bypass Config Section
+            _pnlBypassConfig = _bypassConfig.InitializeUI(
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.RepositionSections
+                null
             );
-            _pnlAppConfig.Location = new Point(0, _pnlPersonalConfig.Bottom);
-            this.pnlConfigSection.Controls.Add(_pnlAppConfig);
+            _pnlBypassConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
+
+            // Initialize Language & Region Config Section
+            _pnlLangRegConfig = _langRegConfig.InitializeUI(
+                this.pnlConfigSection,
+                this.OnConfigChanged,
+                _themeManager.CreateRoundedButton,
+                null
+            );
+            _pnlLangRegConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
+
+            // Initialize General Config Section (add last, appears at top)
+            _pnlGeneralConfig = _generalConfig.InitializeUI(
+                this.pnlConfigSection,
+                this.OnConfigChanged,
+                _themeManager.CreateRoundedButton,
+                null,
+                this
+            );
+            _pnlGeneralConfig.Dock = DockStyle.Top;
+            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
 
             // Control Panel
             this.pnlControlPanel = new Panel();

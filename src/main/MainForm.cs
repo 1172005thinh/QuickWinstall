@@ -177,9 +177,6 @@ namespace QuickWinstall.Main
             // Set loading flag to prevent triggering unsaved changes during UI refresh
             _isLoadingConfig = true;
             
-            // Scroll to top first to prevent layout issues
-            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
-            
             try
             {
                 // Reapply theme
@@ -202,137 +199,132 @@ namespace QuickWinstall.Main
                 btnExpandAll.Image = _iconManager.GetIconAsImage("add", isDark, _uiValues.GlobalIconSize);
                 btnCollapseAll.Image = _iconManager.GetIconAsImage("remove", isDark, _uiValues.GlobalIconSize);
                 
-                // Refresh all sections - recreate their UI with new theme
-                if (_generalConfig != null)
-                {
-                    // Save current control values to model BEFORE disposing controls
-                    _generalConfig.UpdateFromControls();
-                    
-                    // Clear and reinitialize the section with new theme
-                    _pnlGeneralConfig?.Dispose();
-                    _pnlGeneralConfig = _generalConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections,
-                        this
-                    );
-                    pnlConfigSection.Controls.Add(_pnlGeneralConfig);
-                    
-                    // Reload data from model into the new UI controls
-                    _generalConfig.LoadConfigIntoUI();
-                    
-                    // Re-validate UI fields to restore validation status rings with new theme
-                    _generalConfig.ValidateAllUIFields();
-                }
+                // Refresh all sections in REVERSE order (bottom to top) with DockStyle.Top
+                // Save all values first
+                _generalConfig?.UpdateFromControls();
+                _langRegConfig?.UpdateFromControls();
+                _userAccConfig?.UpdateFromControls();
+                _oobeConfig?.UpdateFromControls();
+                _personalConfig?.UpdateFromControls();
+                _diskPartConfig?.UpdateFromControls();
+                _bypassConfig?.UpdateFromControls();
+                _appConfig?.UpdateFromControls();
                 
-                if (_langRegConfig != null)
-                {
-                    // Save current control values to model BEFORE disposing controls
-                    _langRegConfig.UpdateFromControls();
-                    
-                    _pnlLangRegConfig?.Dispose();
-                    _pnlLangRegConfig = _langRegConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections
-                    );
-                    _pnlLangRegConfig.Location = new Point(0, _pnlGeneralConfig.Bottom);
-                    pnlConfigSection.Controls.Add(_pnlLangRegConfig);
-                    
-                    // Reload data from model into the new UI controls
-                    _langRegConfig.LoadConfigIntoUI();
-                }
+                // Dispose all panels
+                _pnlGeneralConfig?.Dispose();
+                _pnlLangRegConfig?.Dispose();
+                _pnlUserAccConfig?.Dispose();
+                _pnlOOBEConfig?.Dispose();
+                _pnlPersonalConfig?.Dispose();
+                _pnlDiskPartConfig?.Dispose();
+                _pnlBypassConfig?.Dispose();
+                _pnlAppConfig?.Dispose();
                 
-                if (_userAccConfig != null)
-                {
-                    _userAccConfig.UpdateFromControls();
-                    _pnlUserAccConfig?.Dispose();
-                    _pnlUserAccConfig = _userAccConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections
-                    );
-                    _pnlUserAccConfig.Location = new Point(0, _pnlLangRegConfig.Bottom);
-                    pnlConfigSection.Controls.Add(_pnlUserAccConfig);
-                    _userAccConfig.LoadConfigIntoUI();
-                }
-                
-                if (_oobeConfig != null)
-                {
-                    _oobeConfig.UpdateFromControls();
-                    _pnlOOBEConfig?.Dispose();
-                    _pnlOOBEConfig = _oobeConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections
-                    );
-                    _pnlOOBEConfig.Location = new Point(0, _pnlUserAccConfig.Bottom);
-                    pnlConfigSection.Controls.Add(_pnlOOBEConfig);
-                    _oobeConfig.LoadConfigIntoUI();
-                }
-                
-                if (_personalConfig != null)
-                {
-                    _personalConfig.UpdateFromControls();
-                    _pnlPersonalConfig?.Dispose();
-                    _pnlPersonalConfig = _personalConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections
-                    );
-                    _pnlPersonalConfig.Location = new Point(0, _pnlOOBEConfig.Bottom);
-                    pnlConfigSection.Controls.Add(_pnlPersonalConfig);
-                    _personalConfig.LoadConfigIntoUI();
-                }
-                
-                if (_diskPartConfig != null)
-                {
-                    _diskPartConfig.UpdateFromControls();
-                    _pnlDiskPartConfig?.Dispose();
-                    _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections
-                    );
-                    _pnlDiskPartConfig.Location = new Point(0, _pnlPersonalConfig.Bottom);
-                    pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
-                    _diskPartConfig.LoadConfigIntoUI();
-                }
-                
-                if (_bypassConfig != null)
-                {
-                    _bypassConfig.UpdateFromControls();
-                    _pnlBypassConfig?.Dispose();
-                    _pnlBypassConfig = _bypassConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        RepositionSections
-                    );
-                    _pnlBypassConfig.Location = new Point(0, _pnlDiskPartConfig.Bottom);
-                    pnlConfigSection.Controls.Add(_pnlBypassConfig);
-                    _bypassConfig.LoadConfigIntoUI();
-                }
-                
+                // Recreate in reverse order (App first, General last)
                 if (_appConfig != null)
                 {
-                    _appConfig.UpdateFromControls();
-                    _pnlAppConfig?.Dispose();
                     _pnlAppConfig = _appConfig.InitializeUI(
                         pnlConfigSection,
                         (sender, e) => OnConfigChanged(sender!, e),
                         _themeManager.CreateRoundedButton,
-                        RepositionSections
+                        null
                     );
-                    _pnlAppConfig.Location = new Point(0, _pnlBypassConfig.Bottom);
+                    _pnlAppConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlAppConfig);
                     _appConfig.LoadConfigIntoUI();
+                }
+                
+                if (_bypassConfig != null)
+                {
+                    _pnlBypassConfig = _bypassConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlBypassConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlBypassConfig);
+                    _bypassConfig.LoadConfigIntoUI();
+                }
+                
+                if (_diskPartConfig != null)
+                {
+                    _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlDiskPartConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
+                    _diskPartConfig.LoadConfigIntoUI();
+                }
+                
+                if (_personalConfig != null)
+                {
+                    _pnlPersonalConfig = _personalConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlPersonalConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlPersonalConfig);
+                    _personalConfig.LoadConfigIntoUI();
+                }
+                
+                if (_oobeConfig != null)
+                {
+                    _pnlOOBEConfig = _oobeConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlOOBEConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlOOBEConfig);
+                    _oobeConfig.LoadConfigIntoUI();
+                }
+                
+                if (_userAccConfig != null)
+                {
+                    _pnlUserAccConfig = _userAccConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlUserAccConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlUserAccConfig);
+                    _userAccConfig.LoadConfigIntoUI();
+                }
+                
+                if (_langRegConfig != null)
+                {
+                    _pnlLangRegConfig = _langRegConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlLangRegConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlLangRegConfig);
+                    _langRegConfig.LoadConfigIntoUI();
+                }
+                
+                if (_generalConfig != null)
+                {
+                    _pnlGeneralConfig = _generalConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null,
+                        this
+                    );
+                    _pnlGeneralConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+                    _generalConfig.LoadConfigIntoUI();
+                    _generalConfig.ValidateAllUIFields();
                 }
             }
             finally
@@ -484,9 +476,6 @@ namespace QuickWinstall.Main
 
         private void BtnExpandAll_Click(object sender, EventArgs e)
         {
-            // Scroll to top first for consistent experience
-            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
-            
             // Expand all sections
             _generalConfig.Expand();
             _langRegConfig.Expand();
@@ -500,9 +489,6 @@ namespace QuickWinstall.Main
 
         private void BtnCollapseAll_Click(object sender, EventArgs e)
         {
-            // Scroll to top first for consistent experience
-            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
-            
             // Collapse all sections
             _generalConfig.Collapse();
             _langRegConfig.Collapse();
@@ -561,72 +547,8 @@ namespace QuickWinstall.Main
             // No need to sync - _generalConfig IS _configValues.General (same instance)
         }
 
-        private void RepositionSections()
-        {
-            // Check if panels are initialized
-            if (_pnlGeneralConfig == null)
-                return;
-
-            // CRITICAL: Suspend layout to prevent flicker and scroll issues
-            pnlConfigSection.SuspendLayout();
-            
-            // Always scroll to top first to prevent layout issues with AutoScrollPosition
-            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
-
-            // Reposition all sections in order
-            int currentY = 0;
-            
-            if (_pnlGeneralConfig != null)
-            {
-                _pnlGeneralConfig.Location = new Point(0, currentY);
-                currentY = _pnlGeneralConfig.Bottom;
-            }
-            
-            if (_pnlLangRegConfig != null)
-            {
-                _pnlLangRegConfig.Location = new Point(0, currentY);
-                currentY = _pnlLangRegConfig.Bottom;
-            }
-            
-            if (_pnlUserAccConfig != null)
-            {
-                _pnlUserAccConfig.Location = new Point(0, currentY);
-                currentY = _pnlUserAccConfig.Bottom;
-            }
-            
-            if (_pnlOOBEConfig != null)
-            {
-                _pnlOOBEConfig.Location = new Point(0, currentY);
-                currentY = _pnlOOBEConfig.Bottom;
-            }
-            
-            if (_pnlPersonalConfig != null)
-            {
-                _pnlPersonalConfig.Location = new Point(0, currentY);
-                currentY = _pnlPersonalConfig.Bottom;
-            }
-            
-            if (_pnlDiskPartConfig != null)
-            {
-                _pnlDiskPartConfig.Location = new Point(0, currentY);
-                currentY = _pnlDiskPartConfig.Bottom;
-            }
-            
-            if (_pnlBypassConfig != null)
-            {
-                _pnlBypassConfig.Location = new Point(0, currentY);
-                currentY = _pnlBypassConfig.Bottom;
-            }
-            
-            if (_pnlAppConfig != null)
-            {
-                _pnlAppConfig.Location = new Point(0, currentY);
-                currentY = _pnlAppConfig.Bottom;
-            }
-
-            // Resume layout
-            pnlConfigSection.ResumeLayout(true);
-        }
+        // NOTE: RepositionSections() is no longer needed with DockStyle.Top
+        // Sections automatically stack and reposition when they expand/collapse
 
         #endregion
 

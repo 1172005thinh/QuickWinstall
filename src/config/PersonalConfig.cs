@@ -28,14 +28,14 @@ namespace QuickWinstall.Config
 
         private bool _isExpanded = true;
         private bool _isLoading = false;
-        private Action _onSectionToggle = null!;
+        private Action? _onSectionToggle = null;
 
         #endregion
 
         #region UI Initialization
 
         public Panel InitializeUI(Panel parentContainer, EventHandler onConfigChanged, 
-            Func<Button> createRoundedButton, Action onSectionToggle)
+            Func<Button> createRoundedButton, Action? onSectionToggle)
         {
             UIValues ui = UIValues.Instance;
             ThemeManager theme = ThemeManager.Instance;

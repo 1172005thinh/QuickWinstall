@@ -49,7 +49,7 @@ namespace QuickWinstall.Config
 
         private bool _isExpanded = true;
         private bool _isLoading = false; // Flag to prevent event handlers during config loading
-        private Action _onSectionToggle = null!;
+        private Action? _onSectionToggle = null;
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace QuickWinstall.Config
         /// Initializes the General Config section UI and returns the main panel
         /// </summary>
         public Panel InitializeUI(Panel parentContainer, EventHandler onConfigChanged, 
-            Func<Button> createRoundedButton, Action onSectionToggle, Control parentForm)
+            Func<Button> createRoundedButton, Action? onSectionToggle, Control parentForm)
         {
             UIValues ui = UIValues.Instance;
             ThemeManager theme = ThemeManager.Instance;
