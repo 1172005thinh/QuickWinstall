@@ -15,7 +15,7 @@ namespace QuickWinstall.Lib
         private const string DEFAULT_LANGUAGE = "en-US";
         private const bool DEFAULT_SAVE_LAST_CONFIG = true;
         private const bool DEFAULT_LOAD_LAST_CONFIG = true;
-        private const bool DEFAULT_EXPAND_ALL_SECTIONS = false;
+        private const bool DEFAULT_EXPAND_ALL_SECTIONS = true;
 
         public string Theme { get; set; } = DEFAULT_THEME;
         public string Language { get; set; } = DEFAULT_LANGUAGE;

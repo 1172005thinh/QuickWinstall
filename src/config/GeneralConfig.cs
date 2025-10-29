@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Newtonsoft.Json.Linq;
 using QuickWinstall.Lib;
 
 namespace QuickWinstall.Config
@@ -50,6 +52,7 @@ namespace QuickWinstall.Config
         private bool _isExpanded = true;
         private bool _isLoading = false; // Flag to prevent event handlers during config loading
         private Action? _onSectionToggle = null;
+        private EventHandler? _onConfigChanged = null;
 
         #endregion
 
@@ -69,6 +72,7 @@ namespace QuickWinstall.Config
 
             // Store callback
             _onSectionToggle = onSectionToggle;
+            _onConfigChanged = onConfigChanged;
 
             int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 180);
             
@@ -112,7 +116,7 @@ namespace QuickWinstall.Config
             pnlGeneralConfigContent.Location = new Point(0, pnlGeneralConfigSeparator.Bottom + ui.GlobalSpacingY / 2);
             pnlGeneralConfigContent.Size = new Size(pnlGeneralConfig.Width, contentHeight);
             pnlGeneralConfigContent.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pnlGeneralConfigContent.AutoScroll = true;
+            pnlGeneralConfigContent.AutoScroll = false;
 
             int labelX = ui.GlobalTabX * 2 + ui.GlobalBtnBox;
             int inputX = labelX + ui.GlobalLabelWidth + ui.GlobalSpacingX;
@@ -346,7 +350,7 @@ namespace QuickWinstall.Config
 
         #endregion
 
-        #region UI Control Methods
+        #region UI Interactions
 
         /// <summary>
         /// Toggles the visibility of the section content
@@ -439,21 +443,16 @@ namespace QuickWinstall.Config
             }
 
             // Check if UI is initialized
-            if (cmbWindowsEdition == null || txtProductKey1 == null || cmbCPUArch == null)
+            if (cmbWindowsEdition == null ||
+                txtProductKey1 == null ||
+                cmbCPUArch == null)
             {
                 Console.WriteLine("UpdateFromControls: UI controls not initialized yet!");
                 return;
             }
 
-            // Update WindowsEdition
-            if (cmbWindowsEdition.SelectedIndex > 0)
-            {
-                WindowsEdition = cmbWindowsEdition.SelectedItem?.ToString() ?? "";
-            }
-            else
-            {
-                WindowsEdition = "";
-            }
+            // Update WindowsEdition using mapping
+            WindowsEdition = GetWindowsEditionValueFromIndex(cmbWindowsEdition.SelectedIndex);
 
             // Update ProductKey
             string pk1 = txtProductKey1.Text.Trim();
@@ -479,21 +478,8 @@ namespace QuickWinstall.Config
                 ProductKey = $"{pk1}-{pk2}-{pk3}-{pk4}-{pk5}";
             }
 
-            // Update CPUArchitecture
-            if (cmbCPUArch.SelectedIndex > 0)
-            {
-                string selected = cmbCPUArch.SelectedItem?.ToString() ?? "";
-                if (selected.Contains("x64"))
-                    CPUArchitecture = "amd64";
-                else if (selected.Contains("ARM64"))
-                    CPUArchitecture = "arm64";
-                else
-                    CPUArchitecture = "";
-            }
-            else
-            {
-                CPUArchitecture = "";
-            }
+            // Update CPUArchitecture using mapping
+            CPUArchitecture = GetCPUArchValueFromIndex(cmbCPUArch.SelectedIndex);
         }
 
         /// <summary>
@@ -501,26 +487,63 @@ namespace QuickWinstall.Config
         /// </summary>
         public void ClearControls()
         {
-            // Check if UI is initialized
-            if (cmbWindowsEdition == null || txtProductKey1 == null || cmbCPUArch == null)
-                return;
+            _isLoading = true;
 
-            // Clear GeneralConfig inputs
-            cmbWindowsEdition.SelectedIndex = 0;
-            
-            // Clear and restore placeholders for Product Key textboxes
-            txtProductKey1.Clear();
-            SetProductKeyPlaceholder(txtProductKey1);
-            txtProductKey2.Clear();
-            SetProductKeyPlaceholder(txtProductKey2);
-            txtProductKey3.Clear();
-            SetProductKeyPlaceholder(txtProductKey3);
-            txtProductKey4.Clear();
-            SetProductKeyPlaceholder(txtProductKey4);
-            txtProductKey5.Clear();
-            SetProductKeyPlaceholder(txtProductKey5);
-            
-            cmbCPUArch.SelectedIndex = 0;
+            try
+            {
+                // Check if UI is initialized
+                if (cmbWindowsEdition == null ||
+                    txtProductKey1 == null ||
+                    cmbCPUArch == null)
+                    return;
+
+                // Try to load empty state from src/config/empty.json
+                string emptyPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "config", "empty.json");
+                if (File.Exists(emptyPath))
+                {
+                    try
+                    {
+                        string jsonContent = File.ReadAllText(emptyPath);
+                        JObject empty = JObject.Parse(jsonContent);
+
+                        if (empty["general"] is JObject generalSection)
+                        {
+                            // Use SetValues(dynamic) to populate the data model from JSON
+                            SetValues(generalSection);
+
+                            // Update UI from the model
+                            UpdateControlsFromModel();
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"GeneralConfig.ClearControls: failed to read/parse empty.json: {ex.Message}");
+                        // fall through to hardcoded clear as fallback
+                    }
+                }
+
+                // Fallback: Clear controls manually
+                cmbWindowsEdition.SelectedIndex = 0;
+
+                // Clear and restore placeholders for Product Key textboxes
+                txtProductKey1.Clear();
+                SetProductKeyPlaceholder(txtProductKey1);
+                txtProductKey2.Clear();
+                SetProductKeyPlaceholder(txtProductKey2);
+                txtProductKey3.Clear();
+                SetProductKeyPlaceholder(txtProductKey3);
+                txtProductKey4.Clear();
+                SetProductKeyPlaceholder(txtProductKey4);
+                txtProductKey5.Clear();
+                SetProductKeyPlaceholder(txtProductKey5);
+
+                cmbCPUArch.SelectedIndex = 0;
+            }
+            finally
+            {
+                _isLoading = false;
+            }
         }
 
         /// <summary>
@@ -528,6 +551,9 @@ namespace QuickWinstall.Config
         /// </summary>
         public void UpdateControlsFromModel()
         {
+            // Set flag to prevent event handlers from firing during loading
+            _isLoading = true;
+            
             // Check if UI is initialized
             if (cmbWindowsEdition == null || txtProductKey1 == null || cmbCPUArch == null)
             {
@@ -537,30 +563,13 @@ namespace QuickWinstall.Config
 
             Console.WriteLine($"UpdateControlsFromModel: WindowsEdition={WindowsEdition}, ProductKey={ProductKey}, CPUArchitecture={CPUArchitecture}");
 
-            // Set flag to prevent event handlers from firing during loading
-            _isLoading = true;
-
             try
             {
                 LangManager lang = LangManager.Instance;
                 ThemeManager theme = ThemeManager.Instance;
 
-                // Update Windows Edition combo box
-                if (!string.IsNullOrWhiteSpace(WindowsEdition))
-                {
-                    for (int i = 0; i < cmbWindowsEdition.Items.Count; i++)
-                    {
-                        if (cmbWindowsEdition.Items[i]?.ToString() == WindowsEdition)
-                        {
-                            cmbWindowsEdition.SelectedIndex = i;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    cmbWindowsEdition.SelectedIndex = 0;
-                }
+                // Update Windows Edition combo box using mapping
+                cmbWindowsEdition.SelectedIndex = GetIndexFromWindowsEditionValue(WindowsEdition);
 
                 // Update Product Key textboxes
                 if (!string.IsNullOrWhiteSpace(ProductKey))
@@ -584,32 +593,8 @@ namespace QuickWinstall.Config
                     SetProductKeyPlaceholder(txtProductKey5);
                 }
 
-                // Update CPU Architecture combo box
-                if (!string.IsNullOrWhiteSpace(CPUArchitecture))
-                {
-                    string displayValue = CPUArchitecture.ToLower() switch
-                    {
-                        "amd64" => lang.GetString("generalConfig.cpuArch.options.x64"),
-                        "arm64" => lang.GetString("generalConfig.cpuArch.options.arm64"),
-                        _ => ""
-                    };
-
-                    if (!string.IsNullOrEmpty(displayValue))
-                    {
-                        for (int i = 0; i < cmbCPUArch.Items.Count; i++)
-                        {
-                            if (cmbCPUArch.Items[i]?.ToString() == displayValue)
-                            {
-                                cmbCPUArch.SelectedIndex = i;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    cmbCPUArch.SelectedIndex = 0;
-                }
+                // Update CPU Architecture combo box using mapping
+                cmbCPUArch.SelectedIndex = GetIndexFromCPUArchValue(CPUArchitecture);
             }
             finally
             {
@@ -647,6 +632,32 @@ namespace QuickWinstall.Config
             WindowsEdition = "";
             ProductKey = "";
             CPUArchitecture = "";
+        }
+
+        /// <summary>
+        /// Gets the configuration values as a dictionary
+        /// </summary>
+        public Dictionary<string, string> GetValues()
+        {
+            return new Dictionary<string, string>
+            {
+                ["WindowsEdition"] = WindowsEdition,
+                ["ProductKey"] = ProductKey,
+                ["CPUArchitecture"] = CPUArchitecture
+            };
+        }
+
+        /// <summary>
+        /// Sets configuration values from JSON
+        /// </summary>
+        public void SetValues(dynamic json)
+        {
+            if (json.windowsEdition != null)
+                WindowsEdition = json.windowsEdition;
+            if (json.productKey != null)
+                ProductKey = json.productKey;
+            if (json.cpuArchitecture != null)
+                CPUArchitecture = json.cpuArchitecture;
         }
 
         #region UI Validation Methods
@@ -779,6 +790,72 @@ namespace QuickWinstall.Config
         }
 
         #endregion
+
+        #endregion
+
+        #region Value Mapping Helpers
+
+        /// <summary>
+        /// Maps dropdown index to Windows Edition value
+        /// </summary>
+        private string GetWindowsEditionValueFromIndex(int index)
+        {
+            switch (index)
+            {
+                case 1: return "Windows 11 Home";
+                case 2: return "Windows 11 Pro";
+                case 3: return "Windows 11 Education";
+                case 4: return "Windows 11 Enterprise";
+                default: return ""; // Index 0 or invalid
+            }
+        }
+
+        /// <summary>
+        /// Maps Windows Edition value to dropdown index
+        /// </summary>
+        private int GetIndexFromWindowsEditionValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return 0;
+
+            switch (value)
+            {
+                case "Windows 11 Home": return 1;
+                case "Windows 11 Pro": return 2;
+                case "Windows 11 Education": return 3;
+                case "Windows 11 Enterprise": return 4;
+                default: return 0; // Unknown value
+            }
+        }
+
+        /// <summary>
+        /// Maps dropdown index to CPU Architecture value (amd64, arm64)
+        /// </summary>
+        private string GetCPUArchValueFromIndex(int index)
+        {
+            switch (index)
+            {
+                case 1: return "amd64"; // x64
+                case 2: return "arm64"; // ARM64
+                default: return ""; // Index 0 or invalid
+            }
+        }
+
+        /// <summary>
+        /// Maps CPU Architecture value to dropdown index
+        /// </summary>
+        private int GetIndexFromCPUArchValue(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return 0;
+
+            switch (value)
+            {
+                case "amd64": return 1;
+                case "arm64": return 2;
+                default: return 0; // Unknown value
+            }
+        }
 
         #endregion
 
@@ -934,19 +1011,6 @@ namespace QuickWinstall.Config
         #endregion
 
         #region Serialization
-
-        /// <summary>
-        /// Gets the configuration values as a dictionary
-        /// </summary>
-        public Dictionary<string, string> GetValues()
-        {
-            return new Dictionary<string, string>
-            {
-                ["WindowsEdition"] = WindowsEdition,
-                ["ProductKey"] = ProductKey,
-                ["CPUArchitecture"] = CPUArchitecture
-            };
-        }
 
         /// <summary>
         /// Sets the configuration values from a dictionary

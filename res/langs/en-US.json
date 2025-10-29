@@ -47,7 +47,7 @@
   },
   "generalConfig": {
     "cpuArch": {
-      "label": "CPU Architecture",
+      "label": "CPU Architecture:",
       "options": {
         "arm64": "Windows ARM64",
         "selectOne": "-- Select one --",
@@ -55,17 +55,103 @@
       }
     },
     "productKey": {
-      "label": "Product Key",
+      "label": "Product Key:",
       "placeholder": "XXXXX"
     },
     "windowsEdition": {
-      "label": "Windows Edition",
+      "label": "Windows Edition:",
       "options": {
         "education": "Windows 11 Education",
         "enterprise": "Windows 11 Enterprise",
         "home": "Windows 11 Home",
         "pro": "Windows 11 Pro",
         "selectOne": "-- Select one --"
+      }
+    }
+  },
+  "langRegConfig": {
+    "systemLocale": {
+      "label": "System Locale:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "de-DE": "German (Deutsch)",
+        "fr-FR": "French (Français)",
+        "es-ES": "Spanish (Español)",
+        "pt-BR": "Portuguese (Português)"
+      }
+    },
+    "userLocale": {
+      "label": "User Locale:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "de-DE": "German (Deutsch)",
+        "fr-FR": "French (Français)",
+        "es-ES": "Spanish (Español)",
+        "pt-BR": "Portuguese (Português)"
+      }
+    },
+    "sameAsSystemLocale": {
+      "label": "Same as System Locale"
+    },
+    "windowsUILanguage": {
+      "label": "Windows UI Language:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "de-DE": "German (Deutsch)",
+        "fr-FR": "French (Français)",
+        "es-ES": "Spanish (Español)",
+        "pt-BR": "Portuguese (Português)"
+      }
+    },
+    "keyboardLayout": {
+      "label": "Keyboard Layout:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "de-DE": "German (Deutsch)",
+        "fr-FR": "French (Français)",
+        "es-ES": "Spanish (Español)",
+        "pt-BR": "Portuguese (Português)"
+      }
+    },
+    "timeZone": {
+      "label": "Time Zone:",
+      "options": {
+        "selectOne": "-- Select one --",
+        "UTC-08:00": "UTC-08:00 Pacific Time (US & Canada)",
+        "UTC-07:00": "UTC-07:00 Mountain Time (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Central Time (US & Canada)",
+        "UTC-05:00": "UTC-05:00 Eastern Time (US & Canada)",
+        "UTC": "UTC Coordinated Universal Time",
+        "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
+        "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+        "UTC+07:00": "UTC+07:00 Bangkok, Hanoi, Jakarta",
+        "UTC+08:00": "UTC+08:00 Beijing, Chongqing, Hong Kong, Urumqi",
+        "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney"
       }
     }
   },
@@ -105,50 +191,9 @@
     },
     "title": "QuickWinstall"
   },
-  "tooltips": {
-    "generalConfig": {
-      "cpuArch": "Select the CPU architecture for installation.",
-      "header": "General Configurations Section",
-      "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
-      "windowsEdition": "Select the Windows edition to install"
-    },
-    "langRegConfig": {
-      "header": "Language && Region Configurations Section"
-    },
-    "oobeConfig": {
-      "header": "OOBE Configurations Section"
-    },
-    "bypassConfig": {
-      "header": "Bypass Windows 11 Hardware Checks Section"
-    },
-    "diskPartConfig": {
-      "header": "Disk && Partition Configurations Section"
-    },
-    "userAccConfig": {
-      "header": "User Account Configurations Section"
-    },
-    "personalConfig": {
-      "header": "Personalize Configurations Section"
-    },
-    "appConfig": {
-      "header": "App Configurations Section"
-    },
-    "mainForm": {
-      "cancel": "Exit QuickWinstall",
-      "clear": "Clear all configurations",
-      "collapseAll": "Collapse the Configuration Panel",
-      "expandAll": "Expand the Configuration Panel",
-      "generate": "Generate autounattend.xml file",
-      "preset": "Load/Save a preset of current configurations",
-      "settings": "Open Application's settings"
-    },
-    "section": {
-      "expandCollapse": "Expand/Collapse {0} Section"
-    }
-  },
   "settingsForm": {
     "autoSave": {
-      "label": "Auto Save Last Config"
+      "label": "Auto save last config:"
     },
     "banner": {
       "title": "Application Settings"
@@ -159,20 +204,23 @@
       "help": "Help",
       "save": "Save"
     },
+    "expandAll": {
+      "label": "Expand all on startup:"
+    },
     "folderDialog": {
       "description": "XML saved at:"
     },
     "language": {
-      "label": "Language"
+      "label": "Language:"
     },
     "loadLast": {
-      "label": "Load Last Saved Config"
+      "label": "Load last saved config:"
     },
     "savePath": {
-      "label": "XML Save Path"
+      "label": "XML save path:"
     },
     "theme": {
-      "label": "Theme",
+      "label": "Theme:",
       "options": {
         "dark": "Dark",
         "light": "Light"
@@ -188,6 +236,7 @@
       "autoSave": "Automatically save the current configuration when exiting the application to Presets/lastConfig.json",
       "browse": "Browse for a folder to set as XML Save Path",
       "cancel": "Discard changes and close Settings",
+      "expandAll": "Expand all configuration sections by default when the application starts",
       "help": "Open Help documentation",
       "language": "Application's Language settings DOES NOT AFFECT Windows UI Language",
       "loadLast": "Automatically load the last saved configuration from Presets/lastConfig.json when opening the application",
@@ -195,6 +244,54 @@
       "save": "Save all settings and close Settings",
       "savePath": "Set the default save path for generated autounattend.xml file",
       "theme": "Select application theme"
+    }
+  },
+  "tooltips": {
+    "appConfig": {
+      "header": "App Configurations Section"
+    },
+    "bypassConfig": {
+      "header": "Bypass Windows 11 Hardware Checks Section"
+    },
+    "diskPartConfig": {
+      "header": "Disk && Partition Configurations Section"
+    },
+    "generalConfig": {
+      "cpuArch": "Select the CPU architecture for installation.",
+      "header": "General Configurations Section",
+      "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
+      "windowsEdition": "Select the Windows edition to install"
+    },
+    "langRegConfig": {
+      "header": "Language && Region Configurations Section",
+      "systemLocale": "Select the system locale for the Windows.",
+      "sameAsSystemLocale": "Set the User Locale same as the System Locale.\\n Difference between System Locale and User Locale may break Windows Installation.",
+      "userLocale": "Select the user locale for the Windows.",
+      "windowsUILanguage": "Select the Windows UI language.",
+      "keyboardLayout": "Select the keyboard layout.",
+      "timeZone": "Select the time zone."
+    },
+    "mainForm": {
+      "cancel": "Exit QuickWinstall",
+      "clear": "Clear all configurations",
+      "collapseAll": "Collapse the Configuration Panel",
+      "expandAll": "Expand the Configuration Panel",
+      "generate": "Generate autounattend.xml file",
+      "logoClick": "Scroll to top",
+      "preset": "Load/Save a preset of current configurations",
+      "settings": "Open Application's settings"
+    },
+    "oobeConfig": {
+      "header": "OOBE Configurations Section"
+    },
+    "personalConfig": {
+      "header": "Personalize Configurations Section"
+    },
+    "section": {
+      "expandCollapse": "Expand/Collapse {0} Section"
+    },
+    "userAccConfig": {
+      "header": "User Account Configurations Section"
     }
   },
   "validation": {

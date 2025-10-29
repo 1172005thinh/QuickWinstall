@@ -47,7 +47,7 @@
   },
   "generalConfig": {
     "cpuArch": {
-      "label": "Kiến trúc CPU",
+      "label": "Kiến trúc CPU:",
       "options": {
         "arm64": "Windows ARM64",
         "selectOne": "-- Chọn một --",
@@ -55,17 +55,103 @@
       }
     },
     "productKey": {
-      "label": "Product Key",
+      "label": "Product Key:",
       "placeholder": "XXXXX"
     },
     "windowsEdition": {
-      "label": "Phiên bản Windows",
+      "label": "Phiên bản Windows:",
       "options": {
         "education": "Windows 11 Education",
         "enterprise": "Windows 11 Enterprise",
         "home": "Windows 11 Home",
         "pro": "Windows 11 Pro",
         "selectOne": "-- Chọn một --"
+      }
+    }
+  },
+  "langRegConfig": {
+    "systemLocale": {
+      "label": "Ngôn ngữ Hệ thống:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
+      }
+    },
+    "userLocale": {
+      "label": "Ngôn ngữ Người dùng:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
+      }
+    },
+    "sameAsSystemLocale": {
+      "label": "Giống như Ngôn ngữ Hệ thống"
+    },
+    "windowsUILanguage": {
+      "label": "Ngôn ngữ Giao diện Windows:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
+      }
+    },
+    "keyboardLayout": {
+      "label": "Bố cục Bàn phím:",
+      "options": {
+        "en-US": "English (United States)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
+      }
+    },
+    "timeZone": {
+      "label": "Múi giờ:",
+      "options": {
+        "selectOne": "-- Chọn một --",
+        "UTC-08:00": "UTC-08:00 Thái Bình Dương (Mỹ & Canada)",
+        "UTC-07:00": "UTC-07:00 Vùng Núi Phía Tây (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Vùng Trung tâm (US & Canada)",
+        "UTC-05:00": "UTC-05:00 Phía Đông (US & Canada)",
+        "UTC": "UTC Thời gian Quốc tế",
+        "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
+        "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+        "UTC+07:00": "UTC+07:00 Bangkok, Hà Nội, Jakarta",
+        "UTC+08:00": "UTC+08:00 Bắc Kinh, Trùng Khánh, Hồng Kông, Urumqi",
+        "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney"
       }
     }
   },
@@ -105,59 +191,21 @@
     },
     "title": "QuickWinstall"
   },
-  "tooltips": {
-    "generalConfig": {
-      "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
-      "header": "Phần Cấu hình Chung",
-      "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
-      "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
-    },
-    "langRegConfig": {
-      "header": "Phần Cấu hình Ngôn ngữ và Khu vực"
-    },
-    "userAccConfig": {
-      "header": "Phần Cấu hình Tài khoản Người dùng"
-    },
-    "personalConfig": {
-      "header": "Phần Cấu hình Cá nhân hóa"
-    },
-    "appConfig": {
-      "header": "Phần Cấu hình Ứng dụng"
-    },
-    "diskPartConfig": {
-      "header": "Phần Cấu hình Đĩa và Phân vùng"
-    },
-    "bypassConfig": {
-      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
-    },
-    "oobeConfig": {
-      "header": "Phần Cấu hình OOBE"
-    },
-    "mainForm": {
-      "cancel": "Thoát QuickWinstall",
-      "clear": "Xóa tất cả cấu hình",
-      "collapseAll": "Thu gọn bảng cấu hình",
-      "expandAll": "Mở rộng bảng cấu hình",
-      "generate": "Tạo tệp autounattend.xml",
-      "preset": "Tải/Lưu cấu hình có sẵn",
-      "settings": "Mở cài đặt ứng dụng"
-    },
-    "section": {
-      "expandCollapse": "Mở rộng/Thu gọn phần {0}"
-    }
-  },
   "settingsForm": {
     "autoSave": {
       "label": "Tự động lưu cấu hình"
     },
     "banner": {
-      "title": "Cài đặt ứng dụng"
+      "title": "Cài đặt Ứng dụng"
     },
     "buttons": {
       "about": "Thông tin",
       "cancel": "Hủy",
       "help": "Trợ giúp",
       "save": "Lưu"
+    },
+    "expandAll": {
+      "label": "Mở rộng khi khởi động:"
     },
     "folderDialog": {
       "description": "Tệp XML lưu tại:"
@@ -188,6 +236,7 @@
       "autoSave": "Tự động lưu cấu hình hiện tại khi thoát ứng dụng vào Presets/lastConfig.json",
       "browse": "Duyệt để chọn thư mục làm đường dẫn lưu XML",
       "cancel": "Hủy thay đổi và đóng Cài đặt",
+      "expandAll": "Mở rộng tất cả các mục cấu hình khi khởi động ứng dụng",
       "help": "Mở tài liệu trợ giúp",
       "language": "Cài đặt ngôn ngữ ứng dụng KHÔNG ẢNH HƯỞNG ngôn ngữ giao diện Windows",
       "loadLast": "Tự động tải cấu hình đã lưu cuối cùng từ Presets/lastConfig.json khi mở ứng dụng",
@@ -195,6 +244,54 @@
       "save": "Lưu tất cả cài đặt và đóng Cài đặt",
       "savePath": "Đặt đường dẫn lưu mặc định cho tệp autounattend.xml được tạo",
       "theme": "Chọn giao diện ứng dụng"
+    }
+  },
+  "tooltips": {
+    "appConfig": {
+      "header": "Phần Cấu hình Ứng dụng"
+    },
+    "bypassConfig": {
+      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
+    },
+    "diskPartConfig": {
+      "header": "Phần Cấu hình Đĩa và Phân vùng"
+    },
+    "generalConfig": {
+      "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
+      "header": "Phần Cấu hình Chung",
+      "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
+      "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
+    },
+    "langRegConfig": {
+      "header": "Phần Cấu hình Ngôn ngữ và Khu vực",
+      "systemLocale": "Chọn ngôn ngữ hệ thống cho Windows.",
+      "sameAsSystemLocale": "Đặt Ngôn ngữ Người dùng giống như Ngôn ngữ Hệ thống.\\n Cài đặt Windows có thể bị lỗi nếu Ngôn ngữ Người dùng khác với Ngôn ngữ Hệ thống.",
+      "userLocale": "Chọn ngôn ngữ người dùng cho Windows.",
+      "windowsUILanguage": "Chọn ngôn ngữ giao diện Windows.",
+      "keyboardLayout": "Chọn bố cục bàn phím.",
+      "timeZone": "Chọn múi giờ."
+    },
+    "mainForm": {
+      "cancel": "Thoát QuickWinstall",
+      "clear": "Xóa tất cả cấu hình",
+      "collapseAll": "Thu gọn bảng cấu hình",
+      "expandAll": "Mở rộng bảng cấu hình",
+      "generate": "Tạo tệp autounattend.xml",
+      "logoClick": "Quay lại đầu trang",
+      "preset": "Tải/Lưu cấu hình có sẵn",
+      "settings": "Mở cài đặt ứng dụng"
+    },
+    "oobeConfig": {
+      "header": "Phần Cấu hình OOBE"
+    },
+    "personalConfig": {
+      "header": "Phần Cấu hình Cá nhân hóa"
+    },
+    "section": {
+      "expandCollapse": "Mở rộng/Thu gọn phần {0}"
+    },
+    "userAccConfig": {
+      "header": "Phần Cấu hình Tài khoản Người dùng"
     }
   },
   "validation": {

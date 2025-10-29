@@ -71,14 +71,11 @@ namespace QuickWinstall.Lib
                 string placeholder = $"{{{{{kvp.Key}}}}}";
                 string value = kvp.Value ?? "";
 
-                // Handle empty product key - remove the entire ProductKey element
+                // Handle empty product key - just clear the <Key> content, keep the structure
                 if (kvp.Key == "ProductKey" && string.IsNullOrWhiteSpace(value))
                 {
-                    // Remove the ProductKey element entirely
-                    result = Regex.Replace(result, 
-                        @"<ProductKey>.*?</ProductKey>", 
-                        "", 
-                        RegexOptions.Singleline);
+                    // Replace {{ProductKey}} with empty string, leaving <Key></Key>
+                    result = result.Replace(placeholder, "");
                 }
                 else
                 {

@@ -15,6 +15,7 @@ namespace QuickWinstall.Lib
         private ConfigValues()
         {
             General = new GeneralConfig();
+            LangReg = new LangRegConfig();
             _emptyConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "config", "empty.json");
         }
 
@@ -42,9 +43,9 @@ namespace QuickWinstall.Lib
 
         // Configuration sections
         public GeneralConfig General { get; set; }
+        public LangRegConfig LangReg { get; set; }
         
         // Additional configuration sections will be added later
-        // public LangRegConfig LangReg { get; set; }
         // public BypassConfig Bypass { get; set; }
         // public DiskPartConfig DiskPart { get; set; }
         // public UserAccConfig UserAcc { get; set; }
@@ -71,22 +72,20 @@ namespace QuickWinstall.Lib
                     // Load empty values for General section
                     if (emptyConfig["general"] is JObject generalSection)
                     {
-                        var emptyValues = new Dictionary<string, string>
-                        {
-                            ["WindowsEdition"] = generalSection["windowsEdition"]?.ToString() ?? "",
-                            ["ProductKey"] = generalSection["productKey"]?.ToString() ?? "",
-                            ["CPUArchitecture"] = generalSection["cpuArchitecture"]?.ToString() ?? ""
-                        };
-                        General.SetValues(emptyValues);
-                    }
-                    else
-                    {
-                        // Fallback to hardcoded clear
-                        General.Clear();
+                        General.SetValues(generalSection);
                     }
 
                     // Clear UI controls
                     General.ClearControls();
+
+                    // Load empty values for LangReg section
+                    if (emptyConfig["langReg"] is JObject langRegSection)
+                    {
+                        LangReg.SetValues(langRegSection);
+                    }
+                    
+                    // Clear LangReg UI controls
+                    LangReg.ClearControls();
 
                     // Clear other sections when implemented
                 }
@@ -96,6 +95,7 @@ namespace QuickWinstall.Lib
                     Console.WriteLine($"Warning: empty.json not found at {_emptyConfigPath}. Using hardcoded empty values.");
                     General.Clear();
                     General.ClearControls();
+                    LangReg.ClearControls();
                 }
             }
             catch (Exception ex)
@@ -103,6 +103,7 @@ namespace QuickWinstall.Lib
                 Console.WriteLine($"Error clearing config from empty.json: {ex.Message}. Using hardcoded empty values.");
                 General.Clear();
                 General.ClearControls();
+                LangReg.ClearControls();
             }
         }
 
@@ -111,6 +112,7 @@ namespace QuickWinstall.Lib
             List<string> errors = new List<string>();
             
             errors.AddRange(General.Validate());
+            errors.AddRange(LangReg.Validate());
             // Validate other sections when implemented
 
             return errors;
@@ -122,6 +124,11 @@ namespace QuickWinstall.Lib
 
             // Get values from all sections
             foreach (var kvp in General.GetValues())
+            {
+                values[kvp.Key] = kvp.Value;
+            }
+            
+            foreach (var kvp in LangReg.GetValues())
             {
                 values[kvp.Key] = kvp.Value;
             }
@@ -160,6 +167,7 @@ namespace QuickWinstall.Lib
                 try
                 {
                     General.UpdateFromControls();
+                    LangReg.UpdateFromControls();
                     Console.WriteLine("Updated config from UI controls.");
                 }
                 catch (Exception ex)
@@ -175,6 +183,15 @@ namespace QuickWinstall.Lib
                         ["windowsEdition"] = General.WindowsEdition ?? "",
                         ["productKey"] = General.ProductKey ?? "",
                         ["cpuArchitecture"] = General.CPUArchitecture ?? ""
+                    },
+                    ["langReg"] = new JObject
+                    {
+                        ["systemLocale"] = LangReg.SystemLocale ?? "",
+                        ["userLocale"] = LangReg.UserLocale ?? "",
+                        ["windowsUILanguage"] = LangReg.WindowsUILanguage ?? "",
+                        ["keyboardLayout"] = LangReg.KeyboardLayout ?? "",
+                        ["timeZone"] = LangReg.TimeZone ?? "",
+                        ["sameAsSystemLocale"] = LangReg.SameAsSystemLocale
                     }
                     // Add other sections when implemented
                 };
@@ -231,19 +248,15 @@ namespace QuickWinstall.Lib
                 // Load General section
                 if (config["general"] is JObject generalSection)
                 {
-                    var values = new Dictionary<string, string>
-                    {
-                        ["WindowsEdition"] = generalSection["windowsEdition"]?.ToString() ?? "",
-                        ["ProductKey"] = generalSection["productKey"]?.ToString() ?? "",
-                        ["CPUArchitecture"] = generalSection["cpuArchitecture"]?.ToString() ?? ""
-                    };
-                    
-                    Console.WriteLine($"Loading values: WindowsEdition={values["WindowsEdition"]}, ProductKey={values["ProductKey"]}, CPUArchitecture={values["CPUArchitecture"]}");
-                    
-                    General.SetValues(values);
-                    // Note: UI controls will be updated by each section after initialization
-                    
-                    Console.WriteLine("Config data model loaded successfully. UI update deferred to sections.");
+                    General.SetValues(generalSection);        
+                    Console.WriteLine("GeneralConfig loaded successfully.");
+                }
+
+                // Load LangReg section
+                if (config["langReg"] is JObject langRegSection)
+                {
+                    LangReg.SetValues(langRegSection);
+                    Console.WriteLine("LangReg config loaded successfully.");
                 }
 
                 // Load other sections when implemented

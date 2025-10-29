@@ -92,6 +92,9 @@ namespace QuickWinstall.Main
             this.picLogo.Location = new Point(ui.GlobalTabX, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
             this.picLogo.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
             this.picLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            this.picLogo.Cursor = Cursors.Hand;
+            this.picLogo.Click += new EventHandler(this.picLogo_Click);
+            tooltips.SetToolTip(this.picLogo, "tooltips.mainForm.logoClick", lang.GetString("tooltips.mainForm.logoClick"));
             
             // Try to load logo
             try
@@ -115,7 +118,7 @@ namespace QuickWinstall.Main
             // Expand All Button
             this.btnExpandAll = _themeManager.CreateRoundedButton();
             this.btnExpandAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            this.btnExpandAll.Image = iconMgr.GetIconAsImage("add", theme.IsDarkTheme, ui.GlobalIconSize);
+            this.btnExpandAll.Image = iconMgr.GetIconAsImage("all_expand", theme.IsDarkTheme, ui.GlobalIconSize);
             this.btnExpandAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.btnExpandAll.Click += new EventHandler(this.BtnExpandAll_Click);
             tooltips.SetToolTip(this.btnExpandAll, "tooltips.mainForm.expandAll");
@@ -123,7 +126,7 @@ namespace QuickWinstall.Main
             // Collapse All Button
             this.btnCollapseAll = _themeManager.CreateRoundedButton();
             this.btnCollapseAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            this.btnCollapseAll.Image = iconMgr.GetIconAsImage("remove", theme.IsDarkTheme, ui.GlobalIconSize);
+            this.btnCollapseAll.Image = iconMgr.GetIconAsImage("all_collapse", theme.IsDarkTheme, ui.GlobalIconSize);
             this.btnCollapseAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.btnCollapseAll.Click += new EventHandler(this.BtnCollapseAll_Click);
             tooltips.SetToolTip(this.btnCollapseAll, "tooltips.mainForm.collapseAll");

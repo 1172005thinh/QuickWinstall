@@ -4,11 +4,18 @@
     "background": "#1e1e1e",
     "foreground": "#d4d4d4",
     "buttonBackground": "#2d2d30",
+    "mutedButtonBackground": "#404045",
     "buttonBackgroundHover": "#3e3e42",
     "buttonBorder": "#555555",
+    "mutedButtonBorder": "#666666",
     "buttonBorderHover": "#007acc",
     "inputBackground": "#3c3c3c",
     "inputForeground": "#d4d4d4",
+    "mutedInputBackground": "#444444",
+    "mutedInputForeground": "#a0a0a0",
+    "toggleOnBackground": "#4472c4",
+    "toggleOffBackground": "#333333",
+    "toggleThumb": "#ffffff",
     "separator": "#d4d4d4"
   },
   "fonts": {

@@ -59,10 +59,9 @@ namespace QuickWinstall.Main
             _settingsManager = SettingsManager.Instance;
             _xmlGenerator = XMLGenerator.Instance;
 
-            // Use GeneralConfig from ConfigValues (not a separate instance!)
             _generalConfig = _configValues.General;
-
-            _langRegConfig = new LangRegConfig();
+            _langRegConfig = _configValues.LangReg;
+            
             _bypassConfig = new BypassConfig();
             _diskPartConfig = new DiskPartConfig();
             _userAccConfig = new UserAccConfig();
@@ -196,9 +195,9 @@ namespace QuickWinstall.Main
                 
                 // Update icon buttons with new theme icons
                 bool isDark = _themeManager.IsDarkTheme;
-                btnExpandAll.Image = _iconManager.GetIconAsImage("add", isDark, _uiValues.GlobalIconSize);
-                btnCollapseAll.Image = _iconManager.GetIconAsImage("remove", isDark, _uiValues.GlobalIconSize);
-                
+                btnExpandAll.Image = _iconManager.GetIconAsImage("all_expand", isDark, _uiValues.GlobalIconSize);
+                btnCollapseAll.Image = _iconManager.GetIconAsImage("all_collapse", isDark, _uiValues.GlobalIconSize);
+
                 // Refresh all sections in REVERSE order (bottom to top) with DockStyle.Top
                 // Save all values first
                 _generalConfig?.UpdateFromControls();
@@ -310,6 +309,7 @@ namespace QuickWinstall.Main
                     _pnlLangRegConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlLangRegConfig);
                     _langRegConfig.LoadConfigIntoUI();
+                    _langRegConfig.ValidateAllUIFields();
                 }
                 
                 if (_generalConfig != null)
@@ -381,6 +381,17 @@ namespace QuickWinstall.Main
 
         private void BtnGenerate_Click(object sender, EventArgs e)
         {
+            // Update config values from UI controls before validation
+            try
+            {
+                _generalConfig.UpdateFromControls();
+                _langRegConfig.UpdateFromControls();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Failed to update config from controls: {ex.Message}");
+            }
+
             // Validate configuration
             List<string> errors = _configValues.Validate();
             if (errors.Count > 0)
@@ -408,7 +419,7 @@ namespace QuickWinstall.Main
                     MessageBoxIcon.Error
                 );
                 _statusManager.SetError(_langManager.GetString("mainForm.status.invalidSavePath"));
-                
+
                 // Open SettingsForm and focus on save path textbox
                 using (SettingsForm settingsForm = new SettingsForm())
                 {
@@ -468,10 +479,11 @@ namespace QuickWinstall.Main
                 _statusManager.SetError(_langManager.GetString("mainForm.status.failedToGenerateFile"));
             }
         }
-
-        private void BtnGeneralConfigToggle_Click(object sender, EventArgs e)
+        
+        private void picLogo_Click(object sender, EventArgs e)
         {
-            _generalConfig.ToggleSection();
+            // Scroll to top of the ConfigSection panel
+            pnlConfigSection.AutoScrollPosition = new Point(0, 0);
         }
 
         private void BtnExpandAll_Click(object sender, EventArgs e)
@@ -506,13 +518,8 @@ namespace QuickWinstall.Main
 
         private void ClearForm()
         {
-            // Clear GeneralConfig using the GeneralConfig class
-            _generalConfig.ClearControls();
-            
-            // Clear LangRegConfig
+            _generalConfig.ClearControls();            
             _langRegConfig.ClearControls();
-            
-            // Clear all other sections
             _userAccConfig.ClearControls();
             _oobeConfig.ClearControls();
             _personalConfig.ClearControls();
@@ -544,7 +551,7 @@ namespace QuickWinstall.Main
             // Update LangRegConfig from controls
             _langRegConfig.UpdateFromControls();
             
-            // No need to sync - _generalConfig IS _configValues.General (same instance)
+            // No need to sync - both _generalConfig and _langRegConfig ARE the same instances from _configValues
         }
 
         // NOTE: RepositionSections() is no longer needed with DockStyle.Top

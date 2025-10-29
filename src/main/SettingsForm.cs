@@ -19,6 +19,7 @@ namespace QuickWinstall
         private string _originalSavePath;
         private bool _originalSaveLastConfig;
         private bool _originalLoadLastConfig;
+        private bool _originalExpandAllSectionsAtStartup;
 
         public SettingsForm()
         {
@@ -35,6 +36,7 @@ namespace QuickWinstall
             _originalSavePath = _settingsManager.SavePath;
             _originalSaveLastConfig = _settingsManager.SaveLastConfig;
             _originalLoadLastConfig = _settingsManager.LoadLastConfig;
+            _originalExpandAllSectionsAtStartup = _settingsManager.ExpandAllSectionsAtStartup;
 
             LoadCurrentSettings();
             ApplyTheme();
@@ -79,18 +81,22 @@ namespace QuickWinstall
             cmbTheme.Items.Add(_langManager.GetString("settingsForm.theme.options.light"));
             cmbTheme.Items.Add(_langManager.GetString("settingsForm.theme.options.dark"));
             
-            cmbTheme.SelectedIndex = _settingsManager.Theme == "Dark" ? 1 : 0;
+            cmbTheme.SelectedIndex = _settingsManager.Theme.Equals("Dark", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
 
             // Save path
             txtSavePath.Text = _settingsManager.SavePath;
 
             // Auto save last config
-            SetToggleState(toggleAutoSave, _settingsManager.SaveLastConfig);
+            _themeManager.UpdateToggleSwitchState(toggleAutoSave, _settingsManager.SaveLastConfig);
             UpdateToggleLabel(lblAutoSaveState, _settingsManager.SaveLastConfig);
 
             // Load last saved config
-            SetToggleState(toggleLoadLast, _settingsManager.LoadLastConfig);
+            _themeManager.UpdateToggleSwitchState(toggleLoadLast, _settingsManager.LoadLastConfig);
             UpdateToggleLabel(lblLoadLastState, _settingsManager.LoadLastConfig);
+            
+            // Expand all sections on startup
+            _themeManager.UpdateToggleSwitchState(toggleExpandAll, _settingsManager.ExpandAllSectionsAtStartup);
+            UpdateToggleLabel(lblExpandAllState, _settingsManager.ExpandAllSectionsAtStartup);
         }
 
         private void ApplyTheme()
@@ -113,6 +119,8 @@ namespace QuickWinstall
             lblAutoSaveState.ForeColor = _themeManager.GetFontColor("normal");
             lblLoadLast.ForeColor = _themeManager.GetFontColor("normal");
             lblLoadLastState.ForeColor = _themeManager.GetFontColor("normal");
+            lblExpandAll.ForeColor = _themeManager.GetFontColor("normal");
+            lblExpandAllState.ForeColor = _themeManager.GetFontColor("normal");
 
             // Dropdowns
             cmbLanguage.BackColor = _themeManager.GetColor("inputBackground");
@@ -141,9 +149,9 @@ namespace QuickWinstall
             btnResetToDefault.Image = _iconManager.GetIconAsImage("reset", useDarkTheme, UIValues.Instance.GlobalIconSize);
             btnBrowse.Image = _iconManager.GetIconAsImage("browse", useDarkTheme, UIValues.Instance.GlobalIconSize);
 
-            // Toggle switches
-            UpdateToggleColors(toggleAutoSave, _settingsManager.SaveLastConfig);
-            UpdateToggleColors(toggleLoadLast, _settingsManager.LoadLastConfig);
+            // Toggle switches - update colors based on theme
+            _themeManager.UpdateToggleSwitchState(toggleAutoSave, _themeManager.GetToggleSwitchState(toggleAutoSave));
+            _themeManager.UpdateToggleSwitchState(toggleLoadLast, _themeManager.GetToggleSwitchState(toggleLoadLast));
         }
 
         private void ApplyLanguage()
@@ -192,10 +200,12 @@ namespace QuickWinstall
                 cmbLanguage.SelectedIndex = 0; // English
                 cmbTheme.SelectedIndex = 0; // Light
                 txtSavePath.Text = AppDomain.CurrentDomain.BaseDirectory;
-                SetToggleState(toggleAutoSave, true);
+                _themeManager.UpdateToggleSwitchState(toggleAutoSave, true);
                 UpdateToggleLabel(lblAutoSaveState, true);
-                SetToggleState(toggleLoadLast, true);
+                _themeManager.UpdateToggleSwitchState(toggleLoadLast, true);
                 UpdateToggleLabel(lblLoadLastState, true);
+                _themeManager.UpdateToggleSwitchState(toggleExpandAll, true);
+                UpdateToggleLabel(lblExpandAllState, true);
             }
         }
 
@@ -241,8 +251,9 @@ namespace QuickWinstall
             _settingsManager.Language = LangHelper.GetLanguageCodeFromIndex(cmbLanguage.SelectedIndex);
             _settingsManager.Theme = cmbTheme.SelectedIndex == 1 ? "Dark" : "Light";
             _settingsManager.SavePath = txtSavePath.Text;
-            _settingsManager.SaveLastConfig = GetToggleState(toggleAutoSave);
-            _settingsManager.LoadLastConfig = GetToggleState(toggleLoadLast);
+            _settingsManager.SaveLastConfig = _themeManager.GetToggleSwitchState(toggleAutoSave);
+            _settingsManager.LoadLastConfig = _themeManager.GetToggleSwitchState(toggleLoadLast);
+            _settingsManager.ExpandAllSectionsAtStartup = _themeManager.GetToggleSwitchState(toggleExpandAll);
             _settingsManager.SaveSettings();
 
             // Check if theme or language changed
@@ -302,72 +313,6 @@ namespace QuickWinstall
 
         #region Toggle Switch Helpers
 
-        private void SetToggleState(Panel toggle, bool state)
-        {
-            toggle.Tag = state;
-            UpdateToggleColors(toggle, state);
-            AnimateToggleThumb(toggle, state);
-        }
-
-        private bool GetToggleState(Panel toggle)
-        {
-            return toggle.Tag is bool state && state;
-        }
-
-        private void UpdateToggleColors(Panel toggle, bool state)
-        {
-            if (state)
-            {
-                // ON state - use theme colors
-                toggle.BackColor = _settingsManager.Theme == "Dark" 
-                    ? System.Drawing.ColorTranslator.FromHtml("#5b9bd5")  // Lighter blue for dark theme
-                    : System.Drawing.ColorTranslator.FromHtml("#2f5597");  // Blue for light theme
-            }
-            else
-            {
-                // OFF state - gray
-                toggle.BackColor = _settingsManager.Theme == "Dark"
-                    ? System.Drawing.ColorTranslator.FromHtml("#5a5a5a")  // Dark gray
-                    : System.Drawing.ColorTranslator.FromHtml("#9e9e9e");  // Light gray
-            }
-        }
-
-        private void AnimateToggleThumb(Panel toggle, bool state)
-        {
-            // Find the thumb control (tagged as "thumb")
-            foreach (Control ctrl in toggle.Controls)
-            {
-                if (ctrl is Panel thumb && thumb.Tag?.ToString() == "thumb")
-                {
-                    int targetX = state 
-                        ? toggle.Width - thumb.Width - 3  // ON position (right)
-                        : 3;                               // OFF position (left)
-                    
-                    // Simple animation - move thumb to target position
-                    System.Windows.Forms.Timer animTimer = new System.Windows.Forms.Timer();
-                    animTimer.Interval = 10;
-                    int step = state ? -3 : 3; // Move left for ON, right for OFF
-                    
-                    animTimer.Tick += (s, e) =>
-                    {
-                        if ((state && thumb.Left <= targetX) || (!state && thumb.Left >= targetX))
-                        {
-                            thumb.Left = targetX;
-                            animTimer.Stop();
-                            animTimer.Dispose();
-                        }
-                        else
-                        {
-                            thumb.Left += step;
-                        }
-                    };
-                    
-                    animTimer.Start();
-                    break;
-                }
-            }
-        }
-
         private void UpdateToggleLabel(Label label, bool state)
         {
             label.Text = state 
@@ -379,9 +324,10 @@ namespace QuickWinstall
         {
             if (sender is Panel toggle)
             {
-                bool currentState = GetToggleState(toggle);
+                ThemeManager theme = ThemeManager.Instance;
+                bool currentState = theme.GetToggleSwitchState(toggle);
                 bool newState = !currentState;
-                SetToggleState(toggle, newState);
+                theme.UpdateToggleSwitchState(toggle, newState);
 
                 // Update corresponding label
                 if (toggle == toggleAutoSave)
@@ -391,6 +337,10 @@ namespace QuickWinstall
                 else if (toggle == toggleLoadLast)
                 {
                     UpdateToggleLabel(lblLoadLastState, newState);
+                }
+                else if (toggle == toggleExpandAll)
+                {
+                    UpdateToggleLabel(lblExpandAllState, newState);
                 }
             }
         }

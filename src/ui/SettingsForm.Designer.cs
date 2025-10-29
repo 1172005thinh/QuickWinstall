@@ -37,6 +37,10 @@ namespace QuickWinstall
         private Panel toggleLoadLast;
         private Label lblLoadLastState;
         
+        private Label lblExpandAll;
+        private Panel toggleExpandAll;
+        private Label lblExpandAllState;
+        
         // Control buttons
         private Button btnAbout;
         private Button btnHelp;
@@ -89,7 +93,6 @@ namespace QuickWinstall
             this.lblBannerTitle.Size = new Size(400, ui.GlobalLabelHeight);
             this.lblBannerTitle.Location = new Point(ui.GlobalTabX, (bannerHeight - ui.GlobalLabelHeight) / 2);
             this.lblBannerTitle.TextAlign = ContentAlignment.MiddleLeft;
-            this.pnlBanner.Controls.Add(this.lblBannerTitle);
             
             // Reset Button - positioned like CollapseAll button in MainForm
             this.btnResetToDefault = theme.CreateRoundedButton();
@@ -112,8 +115,6 @@ namespace QuickWinstall
             
             this.pnlBanner.Controls.Add(this.btnResetToDefault);
             
-            this.Controls.Add(this.pnlBanner);
-            
             // Settings Panel - positioned below banner like MainForm's config section
             this.pnlSettings = new Panel();
             this.pnlSettings.Location = new Point(0, pnlBanner.Bottom);
@@ -134,7 +135,6 @@ namespace QuickWinstall
             this.lblLanguage.Location = new Point(labelX, currentY);
             this.lblLanguage.TextAlign = ContentAlignment.MiddleLeft;
             tooltips.SetToolTip(this.lblLanguage, "settingsForm.tooltips.language");
-            this.pnlSettings.Controls.Add(this.lblLanguage);
             
             this.cmbLanguage = new ComboBox();
             this.cmbLanguage.Size = new Size(inputWidth, ui.GlobalInputHeight);
@@ -142,7 +142,6 @@ namespace QuickWinstall
             this.cmbLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cmbLanguage.Font = theme.GetFont("normal");
             tooltips.SetToolTip(this.cmbLanguage, "settingsForm.tooltips.language");
-            this.pnlSettings.Controls.Add(this.cmbLanguage);
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
             
@@ -154,7 +153,6 @@ namespace QuickWinstall
             this.lblTheme.Location = new Point(labelX, currentY);
             this.lblTheme.TextAlign = ContentAlignment.MiddleLeft;
             tooltips.SetToolTip(this.lblTheme, "settingsForm.tooltips.theme");
-            this.pnlSettings.Controls.Add(this.lblTheme);
             
             this.cmbTheme = new ComboBox();
             this.cmbTheme.Size = new Size(inputWidth, ui.GlobalInputHeight);
@@ -162,7 +160,6 @@ namespace QuickWinstall
             this.cmbTheme.DropDownStyle = ComboBoxStyle.DropDownList;
             this.cmbTheme.Font = theme.GetFont("normal");
             tooltips.SetToolTip(this.cmbTheme, "settingsForm.tooltips.theme");
-            this.pnlSettings.Controls.Add(this.cmbTheme);
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
             
@@ -174,7 +171,6 @@ namespace QuickWinstall
             this.lblSavePath.Location = new Point(labelX, currentY);
             this.lblSavePath.TextAlign = ContentAlignment.MiddleLeft;
             tooltips.SetToolTip(this.lblSavePath, "settingsForm.tooltips.savePath");
-            this.pnlSettings.Controls.Add(this.lblSavePath);
             
             int textBoxWidth = inputWidth - ui.GlobalBtnBox - ui.GlobalSpacingX / 2;
             this.txtSavePath = new TextBox();
@@ -182,7 +178,6 @@ namespace QuickWinstall
             this.txtSavePath.Location = new Point(inputX, currentY);
             this.txtSavePath.Font = theme.GetFont("normal");
             tooltips.SetToolTip(this.txtSavePath, "settingsForm.tooltips.savePath");
-            this.pnlSettings.Controls.Add(this.txtSavePath);
             
             this.btnBrowse = theme.CreateRoundedButton();
             this.btnBrowse.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
@@ -190,7 +185,6 @@ namespace QuickWinstall
             this.btnBrowse.ImageAlign = ContentAlignment.MiddleCenter;
             this.btnBrowse.Click += btnBrowse_Click;
             tooltips.SetToolTip(this.btnBrowse, "settingsForm.tooltips.browse");
-            this.pnlSettings.Controls.Add(this.btnBrowse);
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
             
@@ -202,13 +196,10 @@ namespace QuickWinstall
             this.lblAutoSave.Location = new Point(labelX, currentY);
             this.lblAutoSave.TextAlign = ContentAlignment.MiddleLeft;
             tooltips.SetToolTip(this.lblAutoSave, "settingsForm.tooltips.autoSave");
-            this.pnlSettings.Controls.Add(this.lblAutoSave);
             
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
-            this.toggleAutoSave = CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight);
+            this.toggleAutoSave = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             this.toggleAutoSave.Click += ToggleSwitch_Click;
-            tooltips.SetToolTip(this.toggleAutoSave, "settingsForm.tooltips.autoSave");
-            this.pnlSettings.Controls.Add(this.toggleAutoSave);
             
             this.lblAutoSaveState = new Label();
             this.lblAutoSaveState.Text = "ON";
@@ -217,7 +208,6 @@ namespace QuickWinstall
             this.lblAutoSaveState.Location = new Point(inputX + toggleWidth + ui.GlobalSpacingX, currentY);
             this.lblAutoSaveState.TextAlign = ContentAlignment.MiddleLeft;
             this.lblAutoSaveState.Top += (ui.GlobalInputHeight - this.lblAutoSaveState.Height) / 2;
-            this.pnlSettings.Controls.Add(this.lblAutoSaveState);
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
             
@@ -228,13 +218,10 @@ namespace QuickWinstall
             this.lblLoadLast.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
             this.lblLoadLast.Location = new Point(labelX, currentY);
             this.lblLoadLast.TextAlign = ContentAlignment.MiddleLeft;
-            tooltips.SetToolTip(this.lblLoadLast, "settingsForm.tooltips.loadLast");
-            this.pnlSettings.Controls.Add(this.lblLoadLast);
             
-            this.toggleLoadLast = CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight);
+            this.toggleLoadLast = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             this.toggleLoadLast.Click += ToggleSwitch_Click;
             tooltips.SetToolTip(this.toggleLoadLast, "settingsForm.tooltips.loadLast");
-            this.pnlSettings.Controls.Add(this.toggleLoadLast);
             
             this.lblLoadLastState = new Label();
             this.lblLoadLastState.Text = "ON";
@@ -243,9 +230,28 @@ namespace QuickWinstall
             this.lblLoadLastState.Location = new Point(inputX + toggleWidth + ui.GlobalSpacingX, currentY);
             this.lblLoadLastState.TextAlign = ContentAlignment.MiddleLeft;
             this.lblLoadLastState.Top += (ui.GlobalInputHeight - this.lblLoadLastState.Height) / 2;
-            this.pnlSettings.Controls.Add(this.lblLoadLastState);
             
-            this.Controls.Add(this.pnlSettings);
+            currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
+            
+            // Expand All Sections on Startup
+            this.lblExpandAll = new Label();
+            this.lblExpandAll.Text = lang.GetString("settingsForm.expandAll.label");
+            this.lblExpandAll.Font = theme.GetFont("normal");
+            this.lblExpandAll.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            this.lblExpandAll.Location = new Point(labelX, currentY);
+            this.lblExpandAll.TextAlign = ContentAlignment.MiddleLeft;
+            
+            this.toggleExpandAll = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+            this.toggleExpandAll.Click += ToggleSwitch_Click;
+            tooltips.SetToolTip(this.toggleExpandAll, "settingsForm.tooltips.expandAll");
+            
+            this.lblExpandAllState = new Label();
+            this.lblExpandAllState.Text = "ON";
+            this.lblExpandAllState.Font = theme.GetFont("normal");
+            this.lblExpandAllState.AutoSize = true;
+            this.lblExpandAllState.Location = new Point(inputX + toggleWidth + ui.GlobalSpacingX, currentY);
+            this.lblExpandAllState.TextAlign = ContentAlignment.MiddleLeft;
+            this.lblExpandAllState.Top += (ui.GlobalInputHeight - this.lblExpandAllState.Height) / 2;
             
             // Control Panel - matching MainForm pattern
             this.pnlControls = new Panel();
@@ -264,7 +270,6 @@ namespace QuickWinstall
             this.btnAbout.TextAlign = ContentAlignment.MiddleCenter;
             this.btnAbout.Click += btnAbout_Click;
             tooltips.SetToolTip(this.btnAbout, "settingsForm.tooltips.about");
-            this.pnlControls.Controls.Add(this.btnAbout);
             
             // Help Button
             this.btnHelp = theme.CreateRoundedButton();
@@ -275,7 +280,6 @@ namespace QuickWinstall
             this.btnHelp.TextAlign = ContentAlignment.MiddleCenter;
             this.btnHelp.Click += btnHelp_Click;
             tooltips.SetToolTip(this.btnHelp, "settingsForm.tooltips.help");
-            this.pnlControls.Controls.Add(this.btnHelp);
             
             // Cancel Button
             this.btnCancel = theme.CreateRoundedButton();
@@ -286,7 +290,6 @@ namespace QuickWinstall
             this.btnCancel.TextAlign = ContentAlignment.MiddleCenter;
             this.btnCancel.Click += btnCancel_Click;
             tooltips.SetToolTip(this.btnCancel, "settingsForm.tooltips.cancel");
-            this.pnlControls.Controls.Add(this.btnCancel);
             
             // Save Button
             this.btnSave = theme.CreateRoundedButton();
@@ -297,68 +300,40 @@ namespace QuickWinstall
             this.btnSave.TextAlign = ContentAlignment.MiddleCenter;
             this.btnSave.Click += btnSave_Click;
             tooltips.SetToolTip(this.btnSave, "settingsForm.tooltips.save");
-            this.pnlControls.Controls.Add(this.btnSave);
-            
-            this.Controls.Add(this.pnlControls);
-        }
 
-        private Panel CreateToggleSwitch(Point location, int width, int height)
-        {
-            // Create the main toggle container with rounded corners
-            Panel toggle = new Panel();
-            toggle.Location = location;
-            toggle.Size = new Size(width, height);
-            toggle.BorderStyle = BorderStyle.None;
-            toggle.Cursor = Cursors.Hand;
-            toggle.Tag = true; // Default state is ON
-            
-            // Make the toggle track rounded
-            System.Drawing.Drawing2D.GraphicsPath trackPath = new System.Drawing.Drawing2D.GraphicsPath();
-            int cornerRadius = height / 2;
-            trackPath.AddArc(0, 0, height, height, 90, 180);
-            trackPath.AddLine(cornerRadius, 0, width - cornerRadius, 0);
-            trackPath.AddArc(width - height, 0, height, height, 270, 180);
-            trackPath.AddLine(width - cornerRadius, height, cornerRadius, height);
-            toggle.Region = new Region(trackPath);
-            
-            // Create the toggle thumb (circular button)
-            Panel toggleThumb = new Panel();
-            int thumbSize = height - 6; // Slightly smaller than track height for padding
-            toggleThumb.Size = new Size(thumbSize, thumbSize);
-            toggleThumb.Location = new Point(width - thumbSize - 3, 3); // Position for ON state
-            toggleThumb.BackColor = Color.White;
-            toggleThumb.Tag = "thumb";
-            
-            // Make the thumb circular
-            System.Drawing.Drawing2D.GraphicsPath thumbPath = new System.Drawing.Drawing2D.GraphicsPath();
-            thumbPath.AddEllipse(0, 0, thumbSize, thumbSize);
-            toggleThumb.Region = new Region(thumbPath);
-            
-            // Add shadow effect using Paint event
-            toggle.Paint += (s, e) =>
-            {
-                // Draw inner shadow for depth effect
-                using (System.Drawing.Drawing2D.GraphicsPath shadowPath = new System.Drawing.Drawing2D.GraphicsPath())
-                {
-                    int shadowRadius = height / 2;
-                    shadowPath.AddArc(1, 1, height - 2, height - 2, 90, 180);
-                    shadowPath.AddLine(shadowRadius, 1, width - shadowRadius, 1);
-                    shadowPath.AddArc(width - height + 1, 1, height - 2, height - 2, 270, 180);
-                    shadowPath.AddLine(width - shadowRadius, height - 1, shadowRadius, height - 1);
-                    
-                    using (Pen shadowPen = new Pen(Color.FromArgb(30, 0, 0, 0), 1))
-                    {
-                        e.Graphics.DrawPath(shadowPen, shadowPath);
-                    }
-                }
-            };
-            
-            toggle.Controls.Add(toggleThumb);
-            
-            // Add click event to both toggle and thumb
-            toggleThumb.Click += (s, e) => ToggleSwitch_Click(toggle, e);
-            
-            return toggle;
+            // Add child controls to their parent containers (collected at end)
+            // Banner
+            this.pnlBanner.Controls.Add(this.lblBannerTitle);
+            this.pnlBanner.Controls.Add(this.btnResetToDefault);
+
+            // Settings
+            this.pnlSettings.Controls.Add(this.lblLanguage);
+            this.pnlSettings.Controls.Add(this.cmbLanguage);
+            this.pnlSettings.Controls.Add(this.lblTheme);
+            this.pnlSettings.Controls.Add(this.cmbTheme);
+            this.pnlSettings.Controls.Add(this.lblSavePath);
+            this.pnlSettings.Controls.Add(this.txtSavePath);
+            this.pnlSettings.Controls.Add(this.btnBrowse);
+            this.pnlSettings.Controls.Add(this.lblAutoSave);
+            this.pnlSettings.Controls.Add(this.toggleAutoSave);
+            this.pnlSettings.Controls.Add(this.lblAutoSaveState);
+            this.pnlSettings.Controls.Add(this.lblLoadLast);
+            this.pnlSettings.Controls.Add(this.toggleLoadLast);
+            this.pnlSettings.Controls.Add(this.lblLoadLastState);
+            this.pnlSettings.Controls.Add(this.lblExpandAll);
+            this.pnlSettings.Controls.Add(this.toggleExpandAll);
+            this.pnlSettings.Controls.Add(this.lblExpandAllState);
+
+            // Control Panel
+            this.pnlControls.Controls.Add(this.btnAbout);
+            this.pnlControls.Controls.Add(this.btnHelp);
+            this.pnlControls.Controls.Add(this.btnCancel);
+            this.pnlControls.Controls.Add(this.btnSave);
+
+            // Add top-level panels to the form
+            this.Controls.Add(this.pnlBanner);
+            this.Controls.Add(this.pnlSettings);
+            this.Controls.Add(this.pnlControls);
         }
     }
 }

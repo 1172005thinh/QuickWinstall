@@ -9,6 +9,9 @@
     "buttonBorderHover": "#4472c4",
     "inputBackground": "#ffffff",
     "inputForeground": "#000000",
+    "toggleOnBackground": "#4472c4",
+    "toggleOffBackground": "#cccccc",
+    "toggleThumb": "#ffffff",
     "separator": "#000000"
   },
   "fonts": {

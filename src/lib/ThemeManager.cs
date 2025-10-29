@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Reflection;
 using System.IO;
 using System.Windows.Forms;
 using Newtonsoft.Json.Linq;
@@ -212,6 +213,132 @@ namespace QuickWinstall.Lib
             btn.FlatAppearance.BorderColor = GetColor("buttonBorder");
             btn.ForeColor = GetFontColor("normal");
             btn.Invalidate();
+        }
+
+        /// <summary>
+        /// Creates a toggle switch control with rounded corners and smooth animation
+        /// </summary>
+        /// <param name="location">Location of the toggle switch</param>
+        /// <param name="width">Width of the toggle switch</param>
+        /// <param name="height">Height of the toggle switch</param>
+        /// <param name="initialState">Initial state (true = ON, false = OFF)</param>
+        /// <returns>Panel containing the toggle switch</returns>
+        public Panel CreateToggleSwitch(Point location, int width, int height, bool initialState = true)
+        {
+            // Create the main toggle container with rounded corners
+            Panel toggle = new Panel();
+            toggle.Location = location;
+            toggle.Size = new Size(width, height);
+            toggle.BorderStyle = BorderStyle.None;
+            toggle.Cursor = Cursors.Hand;
+            toggle.Tag = initialState; // Default state
+            
+            // Make the toggle track rounded
+            GraphicsPath trackPath = new GraphicsPath();
+            int cornerRadius = height / 2;
+            trackPath.AddArc(0, 0, height, height, 90, 180);
+            trackPath.AddLine(cornerRadius, 0, width - cornerRadius, 0);
+            trackPath.AddArc(width - height, 0, height, height, 270, 180);
+            trackPath.AddLine(width - cornerRadius, height, cornerRadius, height);
+            toggle.Region = new Region(trackPath);
+            
+            // Set initial background color based on state
+            toggle.BackColor = initialState ? GetColor("toggleOnBackground") : GetColor("toggleOffBackground");
+            
+            // Create the toggle thumb (circular button)
+            Panel toggleThumb = new Panel();
+            int thumbSize = height - 6; // Slightly smaller than track height for padding
+            toggleThumb.Size = new Size(thumbSize, thumbSize);
+            toggleThumb.Location = initialState ? 
+                new Point(width - thumbSize - 3, 3) : // ON state (right)
+                new Point(3, 3); // OFF state (left)
+            toggleThumb.BackColor = GetColor("toggleThumb");
+            toggleThumb.Tag = "thumb";
+            
+            // Make the thumb circular
+            GraphicsPath thumbPath = new GraphicsPath();
+            thumbPath.AddEllipse(0, 0, thumbSize, thumbSize);
+            toggleThumb.Region = new Region(thumbPath);
+            
+            // Add shadow effect using Paint event
+            toggle.Paint += (s, e) =>
+            {
+                // Draw inner shadow for depth effect
+                using (GraphicsPath shadowPath = new GraphicsPath())
+                {
+                    int shadowRadius = height / 2;
+                    shadowPath.AddArc(1, 1, height - 2, height - 2, 90, 180);
+                    shadowPath.AddLine(shadowRadius, 1, width - shadowRadius, 1);
+                    shadowPath.AddArc(width - height + 1, 1, height - 2, height - 2, 270, 180);
+                    shadowPath.AddLine(width - shadowRadius, height - 1, shadowRadius, height - 1);
+                    
+                    using (Pen shadowPen = new Pen(Color.FromArgb(30, 0, 0, 0), 1))
+                    {
+                        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                        e.Graphics.DrawPath(shadowPen, shadowPath);
+                    }
+                }
+            };
+            
+            // Forward thumb click to the parent toggle's Click event so both parts act the same
+            toggleThumb.Click += (s, e) =>
+            {
+                try
+                {
+                    // Invoke protected OnClick on the parent toggle to raise its Click event handlers
+                    MethodInfo? mi = typeof(Control).GetMethod("OnClick", BindingFlags.Instance | BindingFlags.NonPublic);
+                    mi?.Invoke(toggle, new object[] { e });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Warning: Failed to forward thumb click: {ex.Message}");
+                    // Fallback: attempt to raise Click via event invocation if available
+                    try { toggle.PerformLayout(); } catch { }
+                }
+            };
+
+            toggle.Controls.Add(toggleThumb);
+            
+            return toggle;
+        }
+
+        /// <summary>
+        /// Updates the visual state of a toggle switch
+        /// </summary>
+        /// <param name="toggle">The toggle switch panel</param>
+        /// <param name="state">The new state (true = ON, false = OFF)</param>
+        public void UpdateToggleSwitchState(Panel toggle, bool state)
+        {
+            if (toggle == null) return;
+
+            toggle.Tag = state;
+            
+            // Update background color
+            toggle.BackColor = state ? GetColor("toggleOnBackground") : GetColor("toggleOffBackground");
+            
+            // Find and move the thumb
+            foreach (Control ctrl in toggle.Controls)
+            {
+                if (ctrl.Tag?.ToString() == "thumb" && ctrl is Panel thumb)
+                {
+                    int thumbSize = thumb.Height;
+                    int newX = state ? toggle.Width - thumbSize - 3 : 3;
+                    thumb.Location = new Point(newX, 3);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the current state of a toggle switch
+        /// </summary>
+        /// <param name="toggle">The toggle switch panel</param>
+        /// <returns>True if ON, false if OFF</returns>
+        public bool GetToggleSwitchState(Panel toggle)
+        {
+            if (toggle?.Tag is bool state)
+                return state;
+            return false;
         }
     }
 }

@@ -42,7 +42,8 @@ QuickWinstall/
 │   │   └── lastConfig.json
 │   └── themes/
 │       ├── dark.json
-│       └── light.json
+│       ├── light.json
+│       └── windowsXP.json
 ├── src/
 │   ├── lib/
 │   │   ├── ConfigValues.cs
@@ -110,7 +111,11 @@ Light:
 
 Dark:
 
-- Not defined yet
+- Defined already in `res/themes/dark.json`
+
+Windows XP:
+
+- Has Windows XP style fonts and colors, defined in `res/themes/windowsXP.json`
 
 UI Elements:
 
@@ -468,7 +473,171 @@ Properties:
 
 ### LangRegConfig
 
-Further updates will be added later.
+- Content:
+  - Labels and Input Fields for each configuration parameter:
+    - System Locale:
+      - Label:
+        - Text: System Locale
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, lineSeparator.Bottom + globalSpacingY)
+        - ThemeColor: Depends on theme (light/dark)
+        - Text Align: Middle Left
+        - Tooltip: Select the System Locale
+      - Dropdown:
+        - Options: Select one, English (United States), Vietnamese (Vietnam)
+        - Value mapping:
+          - Select one -> (empty string)
+          - English (United States) -> en-US
+          - Vietnamese (Vietnam) -> vi-VN
+        - Position (x, y): (label.Right + globalSpacingX, lineSeparator.Bottom + globalSpacingY)
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Text Align: Middle Left
+        - On change: If "Same as System Locale" is checked, set User Locale dropdown value to the same as System Locale dropdown.
+        - Validation: Must not be empty. If empty -> message: System Locale must not be empty. Watchout for System Local != User Locale && checkbox checked case as user can manually change in json file. If so, uncheck the checkbox automatically.
+        - Warning: If "Same as System Locale" is unchecked and User Locale is not the same as System Locale (not empty) -> warning ring to both dropdowns with message: Different System Locale and User Locale may cause issues during Windows Installation.
+      - Status Ring:
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the dropdown, the dropdown is on top of the status ring
+    - User Locale:
+      - Label:
+        - Text: User Locale
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, systemLocaleDropdown.Bottom + globalSpacingY)
+        - ThemeColor: Depends on theme (light/dark)
+        - Text Align: Middle Left
+        - Tooltip: Select the User Locale
+      - Dropdown:
+        - Options: Select one, English (United States), Vietnamese (Vietnam)
+        - Value mapping:
+          - Select one -> (empty string)
+          - English (United States) -> en-US
+          - Vietnamese (Vietnam) -> vi-VN
+        - Position (x, y): (label.Right + globalSpacingX, systemLocaleDropdown.Bottom + globalSpacingY)
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Text Align: Middle Left
+        - On change: If "Same as System Locale" is checked, set its value to the same as System Locale dropdown.
+        - Validation: Disabled if "Same as System Locale" is checked. If enabled, must not be empty. If empty -> message: User Locale must not be empty. Watchout for System Local != User Locale && checkbox checked case as user can manually change in json file. If so, uncheck the checkbox automatically.
+        - Warning: If "Same as System Locale" is unchecked and User Locale is not the same as System Locale (not empty) -> warning ring to both dropdowns with message: Different System Locale and User Locale may cause issues during Windows Installation.
+      - Status Ring:
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the dropdown, the dropdown is on top of the status ring
+    - Same as System Locale:
+      - Toggle checkbox:
+        - Label:
+          - Text: Same as System Locale
+          - Font: Normal Font
+          - Width: globalInputWidth
+          - Height: globalInputHeight
+          - ThemeColor: Depends on theme (light/dark)
+          - Position (x, y): (checkbox.Right + globalSpacingX, userLocaleDropdown.Bottom + globalSpacingY)
+          - Text Align: Middle Left
+          - Tooltip: Enable or disable using the same locale as the system locale for User Locale
+        - Checkbox:
+          - Position (x, y): (labelUserLocale.Right + globalSpacingX, userLocaleDropdown.Bottom + globalSpacingY)
+          - Size: globalCheckboxSize x globalCheckboxSize (new keys -> add to ui.json and UIValues.cs)
+          - On check: Disable User Locale dropdown and set its value to the same as System Locale. Update userLocaleDropdown state accordingly. Update if System Locale changes.
+          - On uncheck: Enable User Locale dropdown.
+          - Default Value: Checked
+          - Tooltip: Enable or disable using the same locale as the system locale for User Locale
+      - Validation Rules:
+        - If checked: User Locale must be the same as System Locale.
+        - If unchecked: User Locale must not be empty.
+    - Windows UI Language:
+      - Label:
+        - Text: Windows UI Language
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, sameAsSystemLocaleCheckbox.Bottom + globalSpacingY)
+        - ThemeColor: Depends on theme (light/dark)
+        - Text Align: Middle Left
+        - Tooltip: Select the Windows UI Language
+      - Dropdown:
+        - Options: Select one, English (United States), Vietnamese (Vietnam)
+        - Value mapping:
+          - Select one -> (empty string)
+          - English (United States) -> en-US
+          - Vietnamese (Vietnam) -> vi-VN
+        - Position (x, y): (label.Right + globalSpacingX, sameAsSystemLocaleCheckbox.Bottom + globalSpacingY)
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Text Align: Middle Left
+        - Validation: Must not be empty. If empty -> message: Windows UI Language must not be empty.
+      - Status Ring:
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the dropdown, the dropdown is on top of the status ring
+    - Keyboard Layout:
+      - Label:
+        - Text: Keyboard Layout
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, windowsUILanguageDropdown.Bottom + globalSpacingY)
+        - ThemeColor: Depends on theme (light/dark)
+        - Text Align: Middle Left
+        - Tooltip: Select the Keyboard Layout
+      - Dropdown:
+        - Options: Select one, US, Vietnamese
+        - Value mapping:
+          - Select one -> (empty string)
+          - US -> 0409:00000409
+          - Vietnamese -> 00000409:00000409 (Vietnamese Keyboard Layout uses US layout with additional Vietnamese input method)
+        - Position (x, y): (label.Right + globalSpacingX, windowsUILanguageDropdown.Bottom + globalSpacingY)
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Text Align: Middle Left
+        - Validation: Must not be empty. If empty -> message: Keyboard Layout must not be empty.
+      - Status Ring:
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the dropdown, the dropdown is on top of the status ring
+    - Time Zone:
+      - Label:
+        - Text: Time Zone
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, keyboardLayoutDropdown.Bottom + globalSpacingY)
+        - ThemeColor: Depends on theme (light/dark)
+        - Text Align: Middle Left
+        - Tooltip: Select the Time Zone
+      - Dropdown:
+        - Options: Select one, (list of time zones)
+        - Value mapping:
+          - Select one -> (empty string)
+          - (list of time zones) -> (corresponding time zone IDs)
+        - Position (x, y): (label.Right + globalSpacingX, keyboardLayoutDropdown.Bottom + globalSpacingY)
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Text Align: Middle Left
+        - Validation: Must not be empty. If empty -> message: Time Zone must not be empty.
+      - Status Ring:
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the dropdown, the dropdown is on top of the status ring
+
+### BypassConfig
+
+Later...
 
 ### SettingsForm
 
@@ -830,62 +999,3 @@ will be replaced with the actual product key value provided by the user.
 
 <ProductKey>ABCDE-FGHIJ-KLMNO-PQRST-UVWXY</ProductKey>
 ```
-
-## Changelog
-
-### v0.1 - Initial Release (2024)
-
-**Initial Implementation:**
-
-- Complete application structure with all core library classes
-- MainForm UI with GeneralConfig section
-- Theme management (light/dark)
-- Multi-language support (English/Vietnamese)
-- XML generation with template system
-- Configuration validation
-- Product key format validation
-
-**UI Fixes and Enhancements:**
-
-1. **Icon Loading** - Fixed IconManager to properly load application icon (app256.ico) and Windows 11 logo (windows11.png)
-
-2. **Expand/Collapse All Buttons** - Added global expand/collapse buttons in Banner Panel for all configuration sections
-
-3. **Section Header Alignment** - Centered section headers vertically relative to toggle buttons, made headers clickable
-
-4. **Tooltips** - Implemented comprehensive tooltip system with ToolTipManager for all interactive controls
-
-5. **Button Styling** - Created rounded button corners with `CreateRoundedButton()` helper method, removed white borders using `FlatStyle.Flat` with `BorderSize=0`
-
-6. **Application Icon** - Set Form.Icon property to display application icon in window title bar and taskbar
-
-7. **ui.json Restructure** - Changed from flat structure to hierarchical format with `global` and `sections` organization for better maintainability
-
-8. **UIValues Section Support** - Added `GetSectionValue()` and path-based `GetValue()` methods to support sectioned configuration
-
-9. **Line Separators** - Added 1px black separator panels between section headers and content for visual clarity
-
-10. **Content Panel Height** - Fixed content panel height to use configurable value from ui.json instead of hardcoded 250px
-
-11. **Status Bar Improvements** - Set `lblStatus.Spring = true` to fill remaining window width, implemented "Unsaved Configurations" warning when changes are made
-
-12. **Product Key TextBox** - Enhanced with:
-    - Centered text alignment
-    - Placeholder text "XXXXX" with gray color
-    - Auto-clear placeholder on focus
-    - Auto-restore placeholder when empty
-    - Auto-move to next textbox when reaching max length (5 characters)
-
-**Technical Improvements:**
-
-- Added `System.Drawing.Drawing2D` for GraphicsPath rounded button regions
-- Helper methods: `CreateRoundedButton()`, `CreateProductKeyTextBox()`, `FindProductKeyTextBox()`
-- Event handlers: `BtnExpandAll_Click()`, `BtnCollapseAll_Click()`
-- Enhanced `OnConfigChanged()` to update status bar with unsaved changes warning
-- Proper use of `ToolTipManager.SetToolTip()` for all controls with language-based tooltip keys
-
-**Language File Updates:**
-
-- Added `mainForm.status.unsavedChanges` key for English and Vietnamese
-- Complete tooltip section with keys for all buttons and controls
-- Section-specific tooltips with formatting support (e.g., `{0}` for section name)

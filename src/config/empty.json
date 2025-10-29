@@ -3,5 +3,13 @@
     "windowsEdition": "",
     "productKey": "",
     "cpuArchitecture": ""
+  },
+  "langRegConfig": {
+    "systemLocale": "",
+    "userLocale": "",
+    "windowsUILanguage": "",
+    "keyboardLayout": "",
+    "timeZone": "",
+    "sameAsSystemLocale": true
   }
 }
