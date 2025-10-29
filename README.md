@@ -1,6 +1,6 @@
 # QuickWinstall
 
-![Version](https://img.shields.io/badge/version-0.2.5-blue)
+![Version](https://img.shields.io/badge/version-0.3.2-blue)
 ![License](https://img.shields.io/badge/license-Free%20Open%20Source-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![DEV](https://img.shields.io/badge/status-in_development-orange)
@@ -128,7 +128,7 @@ License: MIT (or change as appropriate). Please include a `LICENSE` file if you 
 
 ## Changelog
 
-Only changes since v1.0 should be listed here. Because this repository is currently at v0.2.4, the changelog will start at v1.0 when that release is prepared.
+Only changes since v1.0 should be listed here. The changelog will start at v1.0 when that release is prepared.
 
 - IN DEVELOPMENT
 

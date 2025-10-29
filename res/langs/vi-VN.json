@@ -71,7 +71,7 @@
   },
   "langRegConfig": {
     "systemLocale": {
-      "label": "Ngôn ngữ Hệ thống:",
+      "label": "Vùng của Hệ thống:",
       "options": {
         "en-US": "English (United States)",
         "selectOne": "-- Chọn một --",
@@ -87,7 +87,7 @@
       }
     },
     "userLocale": {
-      "label": "Ngôn ngữ Người dùng:",
+      "label": "Vùng của Người dùng:",
       "options": {
         "en-US": "English (United States)",
         "selectOne": "-- Chọn một --",
@@ -103,10 +103,10 @@
       }
     },
     "sameAsSystemLocale": {
-      "label": "Giống như Ngôn ngữ Hệ thống"
+      "label": "Giống Vùng của Hệ thống"
     },
     "windowsUILanguage": {
-      "label": "Ngôn ngữ Giao diện Windows:",
+      "label": "Ngôn ngữ UI của Windows:",
       "options": {
         "en-US": "English (United States)",
         "selectOne": "-- Chọn một --",
