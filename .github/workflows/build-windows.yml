@@ -1,0 +1,39 @@
+name: Build QuickWinstall EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ dev ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # If your app is .NET Core / .NET 5+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x' # adjust to your SDK
+
+      - name: Restore & Publish
+        run: dotnet publish QuickWinstall.csproj -c Release -r win-x64 --self-contained false -o ./artifacts
+        # -c Release: Build in Release mode (optimized)
+        # -r win-x64: Target Windows 64-bit
+        # --self-contained false: Requires .NET runtime on user's PC (smaller file)
+        # -o ./artifacts: Output folder
+
+      - name: Copy resources
+        run: |
+          xcopy /E /I /Y res artifacts\res
+          xcopy /E /I /Y src artifacts\src
+        # Copies res/ and src/ folders to artifacts (your app needs these)
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: QuickWinstall-win
+          path: ./artifacts/
+          # This creates a downloadable .zip with all files
