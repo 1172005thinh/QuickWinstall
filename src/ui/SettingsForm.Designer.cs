@@ -31,15 +31,14 @@ namespace QuickWinstall
         
         private Label lblAutoSave;
         private Panel toggleAutoSave;
-        private Label lblAutoSaveState;
         
         private Label lblLoadLast;
         private Panel toggleLoadLast;
-        private Label lblLoadLastState;
         
         private Label lblExpandAll;
         private Panel toggleExpandAll;
-        private Label lblExpandAllState;
+        private Label lblLockSections;
+        private Panel toggleLockSections;
         
         // Control buttons
         private Button btnAbout;
@@ -71,8 +70,8 @@ namespace QuickWinstall
             
             // Form settings
             this.Text = "Settings";
-            this.Width = ui.GetValue("forms.settingsForm.width", 600);
-            this.Height = ui.GetValue("forms.settingsForm.height", 450);
+            this.Width = ui.GetValue("forms.settingsForm.width", 580);
+            this.Height = ui.GetValue("forms.settingsForm.height", 520);
             this.FormBorderStyle = ui.SettingsFormResizable ? FormBorderStyle.Sizable : FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -192,22 +191,16 @@ namespace QuickWinstall
             this.lblAutoSave = new Label();
             this.lblAutoSave.Text = lang.GetString("settingsForm.autoSave.label");
             this.lblAutoSave.Font = theme.GetFont("normal");
-            this.lblAutoSave.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            this.lblAutoSave.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             this.lblAutoSave.Location = new Point(labelX, currentY);
             this.lblAutoSave.TextAlign = ContentAlignment.MiddleLeft;
+            this.lblAutoSave.Cursor = Cursors.Hand;
+            this.lblAutoSave.Click += (s, e) => OnToggleAutoSave();
             tooltips.SetToolTip(this.lblAutoSave, "settingsForm.tooltips.autoSave");
-            
+
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
-            this.toggleAutoSave = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
-            this.toggleAutoSave.Click += ToggleSwitch_Click;
-            
-            this.lblAutoSaveState = new Label();
-            this.lblAutoSaveState.Text = "ON";
-            this.lblAutoSaveState.Font = theme.GetFont("normal");
-            this.lblAutoSaveState.AutoSize = true;
-            this.lblAutoSaveState.Location = new Point(inputX + toggleWidth + ui.GlobalSpacingX, currentY);
-            this.lblAutoSaveState.TextAlign = ContentAlignment.MiddleLeft;
-            this.lblAutoSaveState.Top += (ui.GlobalInputHeight - this.lblAutoSaveState.Height) / 2;
+            this.toggleAutoSave = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+            this.toggleAutoSave.Click += (s, e) => OnToggleAutoSave();
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
             
@@ -215,21 +208,15 @@ namespace QuickWinstall
             this.lblLoadLast = new Label();
             this.lblLoadLast.Text = lang.GetString("settingsForm.loadLast.label");
             this.lblLoadLast.Font = theme.GetFont("normal");
-            this.lblLoadLast.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            this.lblLoadLast.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             this.lblLoadLast.Location = new Point(labelX, currentY);
             this.lblLoadLast.TextAlign = ContentAlignment.MiddleLeft;
+            this.lblLoadLast.Cursor = Cursors.Hand;
+            this.lblLoadLast.Click += (s, e) => OnToggleLoadLast();
+            tooltips.SetToolTip(this.lblLoadLast, "settingsForm.tooltips.loadLast");
             
-            this.toggleLoadLast = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
-            this.toggleLoadLast.Click += ToggleSwitch_Click;
-            tooltips.SetToolTip(this.toggleLoadLast, "settingsForm.tooltips.loadLast");
-            
-            this.lblLoadLastState = new Label();
-            this.lblLoadLastState.Text = "ON";
-            this.lblLoadLastState.Font = theme.GetFont("normal");
-            this.lblLoadLastState.AutoSize = true;
-            this.lblLoadLastState.Location = new Point(inputX + toggleWidth + ui.GlobalSpacingX, currentY);
-            this.lblLoadLastState.TextAlign = ContentAlignment.MiddleLeft;
-            this.lblLoadLastState.Top += (ui.GlobalInputHeight - this.lblLoadLastState.Height) / 2;
+            this.toggleLoadLast = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+            this.toggleLoadLast.Click += (s, e) => OnToggleLoadLast();
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
             
@@ -237,22 +224,34 @@ namespace QuickWinstall
             this.lblExpandAll = new Label();
             this.lblExpandAll.Text = lang.GetString("settingsForm.expandAll.label");
             this.lblExpandAll.Font = theme.GetFont("normal");
-            this.lblExpandAll.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            this.lblExpandAll.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             this.lblExpandAll.Location = new Point(labelX, currentY);
             this.lblExpandAll.TextAlign = ContentAlignment.MiddleLeft;
-            
-            this.toggleExpandAll = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
-            this.toggleExpandAll.Click += ToggleSwitch_Click;
-            tooltips.SetToolTip(this.toggleExpandAll, "settingsForm.tooltips.expandAll");
-            
-            this.lblExpandAllState = new Label();
-            this.lblExpandAllState.Text = "ON";
-            this.lblExpandAllState.Font = theme.GetFont("normal");
-            this.lblExpandAllState.AutoSize = true;
-            this.lblExpandAllState.Location = new Point(inputX + toggleWidth + ui.GlobalSpacingX, currentY);
-            this.lblExpandAllState.TextAlign = ContentAlignment.MiddleLeft;
-            this.lblExpandAllState.Top += (ui.GlobalInputHeight - this.lblExpandAllState.Height) / 2;
-            
+            this.lblExpandAll.Cursor = Cursors.Hand;
+            this.lblExpandAll.Click += (s, e) => OnToggleExpandAll();
+            tooltips.SetToolTip(this.lblExpandAll, "settingsForm.tooltips.expandAll");  
+
+            this.toggleExpandAll = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+            this.toggleExpandAll.Click += (s, e) => OnToggleExpandAll();
+
+            currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
+
+            // Lock Sections at Startup
+            this.lblLockSections = new Label();
+            this.lblLockSections.Text = lang.GetString("settingsForm.lockSections.label");
+            this.lblLockSections.Font = theme.GetFont("normal");
+            this.lblLockSections.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
+            this.lblLockSections.Location = new Point(labelX, currentY);
+            this.lblLockSections.TextAlign = ContentAlignment.MiddleLeft;
+            this.lblLockSections.Cursor = Cursors.Hand;
+            this.lblLockSections.Click += (s, e) => OnToggleLockSections();
+            tooltips.SetToolTip(this.lblLockSections, "settingsForm.tooltips.lockSections");
+
+            this.toggleLockSections = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, false);
+            this.toggleLockSections.Click += (s, e) => OnToggleLockSections();
+
+            currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
+
             // Control Panel - matching MainForm pattern
             this.pnlControls = new Panel();
             this.pnlControls.Location = new Point(0, this.ClientSize.Height - 60);
@@ -316,13 +315,12 @@ namespace QuickWinstall
             this.pnlSettings.Controls.Add(this.btnBrowse);
             this.pnlSettings.Controls.Add(this.lblAutoSave);
             this.pnlSettings.Controls.Add(this.toggleAutoSave);
-            this.pnlSettings.Controls.Add(this.lblAutoSaveState);
             this.pnlSettings.Controls.Add(this.lblLoadLast);
             this.pnlSettings.Controls.Add(this.toggleLoadLast);
-            this.pnlSettings.Controls.Add(this.lblLoadLastState);
             this.pnlSettings.Controls.Add(this.lblExpandAll);
             this.pnlSettings.Controls.Add(this.toggleExpandAll);
-            this.pnlSettings.Controls.Add(this.lblExpandAllState);
+            this.pnlSettings.Controls.Add(this.lblLockSections);
+            this.pnlSettings.Controls.Add(this.toggleLockSections);
 
             // Control Panel
             this.pnlControls.Controls.Add(this.btnAbout);

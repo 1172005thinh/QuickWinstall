@@ -637,7 +637,77 @@ Properties:
 
 ### BypassConfig
 
-Later...
+- Content:
+  - Label and Input Field for each configuration parameter:
+    - Bypass Hardware Check:
+      - Label:
+        - Text: Enable Bypass Windows 11 Hardware Check
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, lineSeparator.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable to make hardware check bypass options available
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, lineSeparator.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) hardware check bypass
+        - On update: If disabled, disable all depenedent toggles (All, TPM, RAM, Secure Boot, CPU,...). If enabled, enable all dependents (just for available, not change their states).
+        - Default Value: True
+    - Bypass All Checks:
+      - Label:
+        - Text: Bypass All Checks
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, enableBypassWindows11HardwareCheckToggle.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable or disable bypassing all hardware checks during installation
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, enableBypassWindows11HardwareCheckToggle.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) all hardware check bypasses
+        - On update: If enabled, assign True to all individual bypass toggles (TPM, RAM, Secure Boot, CPU,...). If disabled, do not change individual toggles states. If all individual toggles are enabled, enable this toggle automatically; else, disable this toggle automatically.
+        - Default Value: True
+    - Bypass TPM Check:
+      - Label:
+        - Text: Bypass TPM Check
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, bypassAllChecksToggle.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable or disable bypassing TPM check during installation
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, bypassAllChecksToggle.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) TPM check bypass
+        - Default Value: True
+    - Bypass RAM Check:
+      - Label:
+        - Text: Bypass RAM Check
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, bypassTPMCheckToggle.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable or disable bypassing RAM check during installation
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, bypassTPMCheckToggle.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) RAM check bypass
+        - Default Value: True
+    - ... (similar structure for Bypass Secure Boot Check, Bypass CPU Check, Storage Check, Disk Check)
+    - Validation Rules:
+      - None (all toggles are optional)
+    - Value mapping to XML:
+      - Bypass All checks = True -> Set all individual bypass values to 1 in XML
+      - Bypass All checks = False -> Set all individual bypass values to 0 in XML
+      - Look for {{BypassTPMCheck}}, {{BypassRAMCheck}}, {{BypassSecureBootCheck}}, {{BypassCPUCheck}}, {{BypassStorageCheck}}, {{BypassDiskCheck}} keys in the XML template for individual bypass values mapping.
 
 ### SettingsForm
 

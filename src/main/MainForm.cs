@@ -41,6 +41,8 @@ namespace QuickWinstall.Main
 
         private bool _hasUnsavedChanges = false;
         private bool _isLoadingConfig = false; // Flag to prevent status updates during config loading
+        private bool _allSectionsExpanded = true; // Track expand/collapse all state
+        private bool _allSectionsLocked = false; // Track lock/unlock all state
 
         #endregion
 
@@ -61,8 +63,8 @@ namespace QuickWinstall.Main
 
             _generalConfig = _configValues.General;
             _langRegConfig = _configValues.LangReg;
+            _bypassConfig = _configValues.Bypass;
             
-            _bypassConfig = new BypassConfig();
             _diskPartConfig = new DiskPartConfig();
             _userAccConfig = new UserAccConfig();
             _oobeConfig = new OOBEConfig();
@@ -96,6 +98,12 @@ namespace QuickWinstall.Main
                 // Update UI controls from loaded config in each section
                 _generalConfig.LoadConfigIntoUI();
                 _langRegConfig.LoadConfigIntoUI();
+                _bypassConfig.LoadConfigIntoUI();
+                _diskPartConfig.LoadConfigIntoUI();
+                _userAccConfig.LoadConfigIntoUI();
+                _oobeConfig.LoadConfigIntoUI();
+                _personalConfig.LoadConfigIntoUI();
+                _appConfig.LoadConfigIntoUI();
             }
             finally
             {
@@ -116,6 +124,7 @@ namespace QuickWinstall.Main
                 _oobeConfig.Expand();
                 _personalConfig.Expand();
                 _appConfig.Expand();
+                _allSectionsExpanded = true;
             }
             else
             {
@@ -128,6 +137,43 @@ namespace QuickWinstall.Main
                 _oobeConfig.Collapse();
                 _personalConfig.Collapse();
                 _appConfig.Collapse();
+                _allSectionsExpanded = false;
+
+                // Update button icon to show expand state
+                btnToggleAll.Image = _iconManager.GetIconAsImage("all_expand", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleAll, "tooltips.mainForm.expandAll");
+            }
+            
+            // Handle section lock state based on setting
+            if (_settingsManager.LockSectionsAtStartup)
+            {
+                _generalConfig.SetEnableState(false);
+                _langRegConfig.SetEnableState(false);
+                _bypassConfig.SetEnableState(false);
+                //_diskPartConfig.SetEnableState(false);
+                //_userAccConfig.SetEnableState(false);
+                //_oobeConfig.SetEnableState(false);
+                //_personalConfig.SetEnableState(false);
+                //_appConfig.SetEnableState(false);
+
+                _allSectionsLocked = true;
+                btnToggleLock.Image = _iconManager.GetIconAsImage("unlock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.unlockAll");
+            }
+            else
+            {
+                _generalConfig.SetEnableState(true);
+                _langRegConfig.SetEnableState(true);
+                _bypassConfig.SetEnableState(true);
+                //_diskPartConfig.SetEnableState(true);
+                //_userAccConfig.SetEnableState(true);
+                //_oobeConfig.SetEnableState(true);
+                //_personalConfig.SetEnableState(true);
+                //_appConfig.SetEnableState(true);
+
+                _allSectionsLocked = false;
+                btnToggleLock.Image = _iconManager.GetIconAsImage("lock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.lockAll");
             }
 
             // Apply theme to form
@@ -190,33 +236,36 @@ namespace QuickWinstall.Main
                 _themeManager.ApplyButtonTheme(btnPreset);
                 _themeManager.ApplyButtonTheme(btnCancel);
                 _themeManager.ApplyButtonTheme(btnGenerate);
-                _themeManager.ApplyButtonTheme(btnExpandAll);
-                _themeManager.ApplyButtonTheme(btnCollapseAll);
+                _themeManager.ApplyButtonTheme(btnToggleAll);
+                _themeManager.ApplyButtonTheme(btnToggleLock);
                 
                 // Update icon buttons with new theme icons
                 bool isDark = _themeManager.IsDarkTheme;
-                btnExpandAll.Image = _iconManager.GetIconAsImage("all_expand", isDark, _uiValues.GlobalIconSize);
-                btnCollapseAll.Image = _iconManager.GetIconAsImage("all_collapse", isDark, _uiValues.GlobalIconSize);
+                string iconName = _allSectionsExpanded ? "all_collapse" : "all_expand";
+                btnToggleAll.Image = _iconManager.GetIconAsImage(iconName, isDark, _uiValues.GlobalIconSize);
+                
+                string lockIconName = _allSectionsLocked ? "lock" : "unlock";
+                btnToggleLock.Image = _iconManager.GetIconAsImage(lockIconName, isDark, _uiValues.GlobalIconSize);
 
                 // Refresh all sections in REVERSE order (bottom to top) with DockStyle.Top
                 // Save all values first
                 _generalConfig?.UpdateFromControls();
                 _langRegConfig?.UpdateFromControls();
+                _bypassConfig?.UpdateFromControls();
+                _diskPartConfig?.UpdateFromControls();
                 _userAccConfig?.UpdateFromControls();
                 _oobeConfig?.UpdateFromControls();
                 _personalConfig?.UpdateFromControls();
-                _diskPartConfig?.UpdateFromControls();
-                _bypassConfig?.UpdateFromControls();
                 _appConfig?.UpdateFromControls();
                 
                 // Dispose all panels
                 _pnlGeneralConfig?.Dispose();
                 _pnlLangRegConfig?.Dispose();
+                _pnlBypassConfig?.Dispose();
+                _pnlDiskPartConfig?.Dispose();
                 _pnlUserAccConfig?.Dispose();
                 _pnlOOBEConfig?.Dispose();
                 _pnlPersonalConfig?.Dispose();
-                _pnlDiskPartConfig?.Dispose();
-                _pnlBypassConfig?.Dispose();
                 _pnlAppConfig?.Dispose();
                 
                 // Recreate in reverse order (App first, General last)
@@ -231,32 +280,6 @@ namespace QuickWinstall.Main
                     _pnlAppConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlAppConfig);
                     _appConfig.LoadConfigIntoUI();
-                }
-                
-                if (_bypassConfig != null)
-                {
-                    _pnlBypassConfig = _bypassConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        null
-                    );
-                    _pnlBypassConfig.Dock = DockStyle.Top;
-                    pnlConfigSection.Controls.Add(_pnlBypassConfig);
-                    _bypassConfig.LoadConfigIntoUI();
-                }
-                
-                if (_diskPartConfig != null)
-                {
-                    _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
-                        pnlConfigSection,
-                        (sender, e) => OnConfigChanged(sender!, e),
-                        _themeManager.CreateRoundedButton,
-                        null
-                    );
-                    _pnlDiskPartConfig.Dock = DockStyle.Top;
-                    pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
-                    _diskPartConfig.LoadConfigIntoUI();
                 }
                 
                 if (_personalConfig != null)
@@ -298,13 +321,41 @@ namespace QuickWinstall.Main
                     _userAccConfig.LoadConfigIntoUI();
                 }
                 
+                if (_diskPartConfig != null)
+                {
+                    _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        null
+                    );
+                    _pnlDiskPartConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
+                    _diskPartConfig.LoadConfigIntoUI();
+                }
+                
+                if (_bypassConfig != null)
+                {
+                    _pnlBypassConfig = _bypassConfig.InitializeUI(
+                        pnlConfigSection,
+                        (sender, e) => OnConfigChanged(sender!, e),
+                        _themeManager.CreateRoundedButton,
+                        CheckAndUpdateExpandCollapseButton,
+                        CheckAndUpdateLockUnlockButton
+                    );
+                    _pnlBypassConfig.Dock = DockStyle.Top;
+                    pnlConfigSection.Controls.Add(_pnlBypassConfig);
+                    _bypassConfig.LoadConfigIntoUI();
+                }
+                
                 if (_langRegConfig != null)
                 {
                     _pnlLangRegConfig = _langRegConfig.InitializeUI(
                         pnlConfigSection,
                         (sender, e) => OnConfigChanged(sender!, e),
                         _themeManager.CreateRoundedButton,
-                        null
+                        CheckAndUpdateExpandCollapseButton,
+                        CheckAndUpdateLockUnlockButton
                     );
                     _pnlLangRegConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlLangRegConfig);
@@ -318,7 +369,8 @@ namespace QuickWinstall.Main
                         pnlConfigSection,
                         (sender, e) => OnConfigChanged(sender!, e),
                         _themeManager.CreateRoundedButton,
-                        null,
+                        CheckAndUpdateExpandCollapseButton,
+                        CheckAndUpdateLockUnlockButton,
                         this
                     );
                     _pnlGeneralConfig.Dock = DockStyle.Top;
@@ -386,6 +438,12 @@ namespace QuickWinstall.Main
             {
                 _generalConfig.UpdateFromControls();
                 _langRegConfig.UpdateFromControls();
+                _bypassConfig.UpdateFromControls();
+                _diskPartConfig.UpdateFromControls();
+                _userAccConfig.UpdateFromControls();
+                _oobeConfig.UpdateFromControls();
+                _personalConfig.UpdateFromControls();
+                _appConfig.UpdateFromControls();
             }
             catch (Exception ex)
             {
@@ -486,30 +544,119 @@ namespace QuickWinstall.Main
             pnlConfigSection.AutoScrollPosition = new Point(0, 0);
         }
 
-        private void BtnExpandAll_Click(object sender, EventArgs e)
+        private void BtnToggleAll_Click(object sender, EventArgs e)
         {
-            // Expand all sections
-            _generalConfig.Expand();
-            _langRegConfig.Expand();
-            _userAccConfig.Expand();
-            _oobeConfig.Expand();
-            _personalConfig.Expand();
-            _diskPartConfig.Expand();
-            _bypassConfig.Expand();
-            _appConfig.Expand();
+            if (_allSectionsExpanded)
+            {
+                // Collapse all sections
+                _generalConfig.Collapse();
+                _langRegConfig.Collapse();
+                _userAccConfig.Collapse();
+                _oobeConfig.Collapse();
+                _personalConfig.Collapse();
+                _diskPartConfig.Collapse();
+                _bypassConfig.Collapse();
+                _appConfig.Collapse();
+                
+                _allSectionsExpanded = false;
+                btnToggleAll.Image = _iconManager.GetIconAsImage("all_expand", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleAll, "tooltips.mainForm.expandAll");
+            }
+            else
+            {
+                // Expand all sections
+                _generalConfig.Expand();
+                _langRegConfig.Expand();
+                _userAccConfig.Expand();
+                _oobeConfig.Expand();
+                _personalConfig.Expand();
+                _diskPartConfig.Expand();
+                _bypassConfig.Expand();
+                _appConfig.Expand();
+                
+                _allSectionsExpanded = true;
+                btnToggleAll.Image = _iconManager.GetIconAsImage("all_collapse", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleAll, "tooltips.mainForm.collapseAll");
+            }
         }
 
-        private void BtnCollapseAll_Click(object sender, EventArgs e)
+        private void BtnToggleLock_Click(object sender, EventArgs e)
         {
-            // Collapse all sections
-            _generalConfig.Collapse();
-            _langRegConfig.Collapse();
-            _userAccConfig.Collapse();
-            _oobeConfig.Collapse();
-            _personalConfig.Collapse();
-            _diskPartConfig.Collapse();
-            _bypassConfig.Collapse();
-            _appConfig.Collapse();
+            if (_allSectionsLocked)
+            {
+                // Unlock all sections (set Enable toggles to true)
+                _generalConfig.SetEnableState(true);
+                _langRegConfig.SetEnableState(true);
+                _bypassConfig.SetEnableState(true);
+                
+                _allSectionsLocked = false;
+                btnToggleLock.Image = _iconManager.GetIconAsImage("lock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.lockAll");
+            }
+            else
+            {
+                // Lock all sections (set Enable toggles to false)
+                _generalConfig.SetEnableState(false);
+                _langRegConfig.SetEnableState(false);
+                _bypassConfig.SetEnableState(false);
+                
+                _allSectionsLocked = true;
+                btnToggleLock.Image = _iconManager.GetIconAsImage("unlock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.unlockAll");
+            }
+        }
+
+        /// <summary>
+        /// Checks if all sections are in the same expand/collapse state and updates the button accordingly
+        /// </summary>
+        public void CheckAndUpdateExpandCollapseButton()
+        {
+            // Check if all sections have the same expanded state
+            bool allExpanded = _generalConfig.IsExpanded && _langRegConfig.IsExpanded && 
+                              _userAccConfig.IsExpanded && _oobeConfig.IsExpanded && 
+                              _personalConfig.IsExpanded && _diskPartConfig.IsExpanded && 
+                              _bypassConfig.IsExpanded && _appConfig.IsExpanded;
+                              
+            bool allCollapsed = !_generalConfig.IsExpanded && !_langRegConfig.IsExpanded && 
+                               !_userAccConfig.IsExpanded && !_oobeConfig.IsExpanded && 
+                               !_personalConfig.IsExpanded && !_diskPartConfig.IsExpanded && 
+                               !_bypassConfig.IsExpanded && !_appConfig.IsExpanded;
+            
+            if (allExpanded && !_allSectionsExpanded)
+            {
+                _allSectionsExpanded = true;
+                btnToggleAll.Image = _iconManager.GetIconAsImage("all_collapse", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleAll, "tooltips.mainForm.collapseAll");
+            }
+            else if (allCollapsed && _allSectionsExpanded)
+            {
+                _allSectionsExpanded = false;
+                btnToggleAll.Image = _iconManager.GetIconAsImage("all_expand", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleAll, "tooltips.mainForm.expandAll");
+            }
+        }
+
+        /// <summary>
+        /// Checks if all sections with Enable toggles are in the same lock/unlock state and updates the button accordingly
+        /// </summary>
+        public void CheckAndUpdateLockUnlockButton()
+        {
+            // Check if all sections with Enable toggles have the same state
+            bool allUnlocked = _generalConfig.EnableGeneral && _langRegConfig.EnableLangReg && _bypassConfig.EnableBypass;
+            bool allLocked = !_generalConfig.EnableGeneral && !_langRegConfig.EnableLangReg && !_bypassConfig.EnableBypass;
+            
+            if (allUnlocked && _allSectionsLocked)
+            {
+                _allSectionsLocked = false;
+                btnToggleLock.Image = _iconManager.GetIconAsImage("lock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.lockAll");
+            }
+            else if (allLocked && !_allSectionsLocked)
+            {
+                _allSectionsLocked = true;
+                btnToggleLock.Image = _iconManager.GetIconAsImage("unlock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
+                _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.unlockAll");
+            }
         }
 
         #endregion
@@ -518,13 +665,21 @@ namespace QuickWinstall.Main
 
         private void ClearForm()
         {
-            _generalConfig.ClearControls();            
-            _langRegConfig.ClearControls();
+            // Only clear sections that are not locked (enabled)
+            if (_generalConfig.EnableGeneral)
+                _generalConfig.ClearControls();
+            
+            if (_langRegConfig.EnableLangReg)
+                _langRegConfig.ClearControls();
+            
+            if (_bypassConfig.EnableBypass)
+                _bypassConfig.ClearControls();
+            
+            // These sections don't have Enable toggles, so always clear them
+            _diskPartConfig.ClearControls();
             _userAccConfig.ClearControls();
             _oobeConfig.ClearControls();
             _personalConfig.ClearControls();
-            _diskPartConfig.ClearControls();
-            _bypassConfig.ClearControls();
             _appConfig.ClearControls();
         }
 

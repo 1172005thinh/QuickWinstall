@@ -15,6 +15,7 @@ namespace QuickWinstall.Config
     {
         #region Data Model
 
+        public bool EnableLangReg { get; set; } = true;
         public string SystemLocale { get; set; } = "";
         public string UserLocale { get; set; } = "";
         public string WindowsUILanguage { get; set; } = "";
@@ -31,6 +32,10 @@ namespace QuickWinstall.Config
         private Label lblLangRegConfigTitle = null!;
         private Panel pnlLangRegConfigSeparator = null!;
         private Panel pnlLangRegConfigContent = null!;
+
+        // Enable Language & Region Config
+        private Label lblEnableLangReg = null!;
+        private Panel toggleEnableLangReg = null!;
         
         // System Locale
         private Label lblSystemLocale = null!;
@@ -61,9 +66,15 @@ namespace QuickWinstall.Config
         private StatusRing ringTimeZone = null!;
 
         private bool _isExpanded = true;
-        private bool _isLoading = false; // Flag to prevent event handlers during config loading
+        private bool _isLoading = false;
         private Action? _onSectionToggle = null;
+        private Action? _onEnableToggle = null;
         private EventHandler? _onConfigChanged = null;
+
+        /// <summary>
+        /// Gets whether the section is expanded
+        /// </summary>
+        public bool IsExpanded => _isExpanded;
 
         #endregion
 
@@ -73,7 +84,7 @@ namespace QuickWinstall.Config
         /// Initializes the Language & Region Config section UI and returns the main panel
         /// </summary>
         public Panel InitializeUI(Panel parentContainer, EventHandler onConfigChanged,
-            Func<Button> createRoundedButton, Action? onSectionToggle)
+            Func<Button> createRoundedButton, Action? onSectionToggle, Action? onEnableToggle)
         {
             UIValues ui = UIValues.Instance;
             ThemeManager theme = ThemeManager.Instance;
@@ -83,9 +94,10 @@ namespace QuickWinstall.Config
 
             // Store callbacks
             _onSectionToggle = onSectionToggle;
+            _onEnableToggle = onEnableToggle;
             _onConfigChanged = onConfigChanged;
 
-            int contentHeight = ui.GetSectionValue("langRegConfig", "contentHeight", 340);
+            int contentHeight = ui.GetSectionValue("langRegConfig", "contentHeight", 390);
 
             // Language & Region Config Panel
             pnlLangRegConfig = new Panel();
@@ -100,12 +112,12 @@ namespace QuickWinstall.Config
             btnLangRegConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
             btnLangRegConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnLangRegConfigToggle.Click += (sender, e) => ToggleSection();
-            tooltips.SetToolTip(btnLangRegConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.langReg"));
+            tooltips.SetToolTip(btnLangRegConfigToggle, _isExpanded ? "tooltips.section.collapse" : "tooltips.section.expand", lang.GetString("mainForm.sections.langReg"));
 
             // Language & Region Config Title
             lblLangRegConfigTitle = new Label();
             lblLangRegConfigTitle.Location = new Point(btnLangRegConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblLangRegConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
+            lblLangRegConfigTitle.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             lblLangRegConfigTitle.Text = lang.GetString("mainForm.sections.langReg");
             lblLangRegConfigTitle.Font = theme.GetFont("subheader");
             lblLangRegConfigTitle.UseMnemonic = false;
@@ -114,10 +126,29 @@ namespace QuickWinstall.Config
             lblLangRegConfigTitle.Cursor = Cursors.Hand;
             lblLangRegConfigTitle.Click += (sender, e) => ToggleSection();
             tooltips.SetToolTip(lblLangRegConfigTitle, "tooltips.langRegConfig.header", lang.GetString("tooltips.langRegConfig.header"));
+            
+            int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
+
+            // Enable Language & Region Config
+            // Check if language & region config should be locked at startup
+            EnableLangReg = !SettingsManager.Instance.LockSectionsAtStartup;
+            toggleEnableLangReg = theme.CreateToggleSwitch(new Point(ui.GlobalTabX * 2 + ui.GlobalBtnBox, btnLangRegConfigToggle.Bottom + ui.GlobalSpacingY), toggleWidth, ui.GlobalInputHeight, EnableLangReg);
+            toggleEnableLangReg.TabStop = false; // Skip this control in tab order
+            toggleEnableLangReg.Click += (s, e) => OnToggleEnableLangReg();
+
+            lblEnableLangReg = new Label();
+            lblEnableLangReg.Location = new Point(toggleEnableLangReg.Right + ui.GlobalSpacingX, btnLangRegConfigToggle.Bottom + ui.GlobalSpacingY);
+            lblEnableLangReg.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
+            lblEnableLangReg.Text = lang.GetString("langRegConfig.enableLangReg.label");
+            lblEnableLangReg.Font = theme.GetFont("normal");
+            lblEnableLangReg.TextAlign = ContentAlignment.MiddleLeft;
+            lblEnableLangReg.Cursor = Cursors.Hand;
+            lblEnableLangReg.Click += (s, e) => OnToggleEnableLangReg();
+            tooltips.SetToolTip(lblEnableLangReg, "tooltips.langRegConfig.enableLangReg");
 
             // Line Separator
             pnlLangRegConfigSeparator = new Panel();
-            pnlLangRegConfigSeparator.Location = new Point(ui.GlobalTabX, btnLangRegConfigToggle.Bottom + ui.GlobalSpacingY / 2);
+            pnlLangRegConfigSeparator.Location = new Point(ui.GlobalTabX, toggleEnableLangReg.Bottom + ui.GlobalSpacingY * 2);
             pnlLangRegConfigSeparator.Size = new Size(pnlLangRegConfig.Width - 2 * ui.GlobalTabX, 1);
             pnlLangRegConfigSeparator.BackColor = theme.GetColor("separator");
 
@@ -240,7 +271,6 @@ namespace QuickWinstall.Config
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
 
             // Same as System Locale toggle switch
-            int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
             toggleSameAsSystemLocale = theme.CreateToggleSwitch(new Point(inputX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             toggleSameAsSystemLocale.Click += (s, e) => OnToggleSameAsSystemLocale();
 
@@ -248,7 +278,9 @@ namespace QuickWinstall.Config
             lblSameAsSystemLocale.Location = new Point(toggleSameAsSystemLocale.Right + ui.GlobalSpacingX, currentY);
             lblSameAsSystemLocale.Size = new Size(ui.GlobalInputWidth - toggleWidth - ui.GlobalSpacingX, ui.GlobalLabelHeight);
             lblSameAsSystemLocale.Text = lang.GetString("langRegConfig.sameAsSystemLocale.label");
+            // Initial color will be set to normal since toggle starts as true, then UpdateControlsFromModel will correct it
             lblSameAsSystemLocale.Font = theme.GetFont("normal");
+            lblSameAsSystemLocale.ForeColor = theme.GetFontColor("normal");
             lblSameAsSystemLocale.TextAlign = ContentAlignment.MiddleLeft;
             lblSameAsSystemLocale.Cursor = Cursors.Hand;
             lblSameAsSystemLocale.Click += (s, e) => OnToggleSameAsSystemLocale();
@@ -265,7 +297,6 @@ namespace QuickWinstall.Config
             lblWindowsUILanguage.Font = theme.GetFont("normal");
             lblWindowsUILanguage.TextAlign = ContentAlignment.MiddleLeft;
             tooltips.SetToolTip(lblWindowsUILanguage, "tooltips.langRegConfig.windowsUILanguage");
-            pnlLangRegConfigContent.Controls.Add(lblWindowsUILanguage);
 
             cmbWindowsUILanguage = new ComboBox();
             cmbWindowsUILanguage.Location = new Point(inputX, currentY);
@@ -412,8 +443,8 @@ namespace QuickWinstall.Config
             pnlLangRegConfigContent.Controls.Add(cmbSystemLocale);
             pnlLangRegConfigContent.Controls.Add(lblUserLocale);
             pnlLangRegConfigContent.Controls.Add(cmbUserLocale);
-            pnlLangRegConfigContent.Controls.Add(lblSameAsSystemLocale);
             pnlLangRegConfigContent.Controls.Add(toggleSameAsSystemLocale);
+            pnlLangRegConfigContent.Controls.Add(lblWindowsUILanguage);
             pnlLangRegConfigContent.Controls.Add(lblWindowsUILanguage);
             pnlLangRegConfigContent.Controls.Add(cmbWindowsUILanguage);
             pnlLangRegConfigContent.Controls.Add(lblKeyboardLayout);
@@ -427,13 +458,11 @@ namespace QuickWinstall.Config
             pnlLangRegConfigContent.Controls.Add(ringKeyboardLayout);
             pnlLangRegConfigContent.Controls.Add(ringTimeZone);
 
-            // Set minimum size for content panel
-            int minContentWidth = inputX + ui.GlobalInputWidth + ui.GlobalTabX;
-            pnlLangRegConfigContent.MinimumSize = new Size(minContentWidth, contentHeight);
-
             // Add controls to Language & Region Config Panel
             pnlLangRegConfig.Controls.Add(btnLangRegConfigToggle);
             pnlLangRegConfig.Controls.Add(lblLangRegConfigTitle);
+            pnlLangRegConfig.Controls.Add(lblEnableLangReg);
+            pnlLangRegConfig.Controls.Add(toggleEnableLangReg);
             pnlLangRegConfig.Controls.Add(pnlLangRegConfigSeparator);
             pnlLangRegConfig.Controls.Add(pnlLangRegConfigContent);
 
@@ -482,12 +511,14 @@ namespace QuickWinstall.Config
             // Update panel height based on state
             if (_isExpanded)
             {
-                int contentHeight = ui.GetSectionValue("langRegConfig", "contentHeight", 340);
+                int contentHeight = ui.GetSectionValue("langRegConfig", "contentHeight", 390);
                 pnlLangRegConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
+                ToolTipManager.Instance.SetToolTip(btnLangRegConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.langReg"));
             }
             else
             {
                 pnlLangRegConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY * 2;
+                ToolTipManager.Instance.SetToolTip(btnLangRegConfigToggle, "tooltips.section.expand", LangManager.Instance.GetString("mainForm.sections.langReg"));
             }
 
             // Update button icon
@@ -521,20 +552,38 @@ namespace QuickWinstall.Config
         }
 
         /// <summary>
+        /// Sets the Enable state for this section
+        /// </summary>
+        public void SetEnableState(bool enabled)
+        {
+            if (_isLoading) return;
+            
+            ThemeManager theme = ThemeManager.Instance;
+            theme.UpdateToggleSwitchState(toggleEnableLangReg, enabled);
+            EnableLangReg = enabled;
+
+            // Update dependent controls muted state
+            UpdateControlsFromModel();
+        }
+
+        /// <summary>
         /// Handles the toggle switch for "Same as System Locale"
         /// </summary>
         private void OnToggleSameAsSystemLocale()
         {
-            ThemeManager theme = ThemeManager.Instance;
+            // Don't allow toggling if section is disabled
+            if (!EnableLangReg) return;
             
+            ThemeManager theme = ThemeManager.Instance;
+
             // Toggle the state
             bool currentState = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleSameAsSystemLocale, newState);
-            
+
             // Update UserLocale dropdown state
             cmbUserLocale.Enabled = !newState;
-            
+
             // Update font styles based on toggle state
             if (newState)
             {
@@ -556,16 +605,124 @@ namespace QuickWinstall.Config
                 lblSameAsSystemLocale.Font = theme.GetFont("muted");
                 lblSameAsSystemLocale.ForeColor = theme.GetFontColor("muted");
             }
-            
+
             // If turning ON (newState = true), sync User Locale to System Locale
             if (newState && cmbSystemLocale.SelectedIndex > 0)
             {
                 cmbUserLocale.SelectedIndex = cmbSystemLocale.SelectedIndex;
             }
-            
+
             // Revalidate both locales
             ValidateSystemLocale();
             ValidateUserLocale();
+        }
+        
+        /// <summary>
+        /// Handles the toggle for Enable General Configurations
+        /// </summary>
+        private void OnToggleEnableLangReg()
+        {
+            if (_isLoading) return;
+
+            ThemeManager theme = ThemeManager.Instance;
+
+            // Toggle state
+            bool currentState = theme.GetToggleSwitchState(toggleEnableLangReg);
+            bool newState = !currentState;
+            theme.UpdateToggleSwitchState(toggleEnableLangReg, newState);
+
+            EnableLangReg = newState;
+
+            // Enable or disable all dependent controls
+            bool enableControls = newState;
+            
+            cmbSystemLocale.Enabled = enableControls;
+            cmbUserLocale.Enabled = enableControls && !theme.GetToggleSwitchState(toggleSameAsSystemLocale);
+            toggleSameAsSystemLocale.Enabled = enableControls;
+            cmbWindowsUILanguage.Enabled = enableControls;
+            cmbKeyboardLayout.Enabled = enableControls;
+            cmbTimeZone.Enabled = enableControls;
+
+            // Update muted state for toggles
+            bool isMuted = !newState;
+            theme.UpdateToggleSwitchMutedState(toggleSameAsSystemLocale, isMuted);
+
+            // Update font styles based on enabled state
+            if (enableControls)
+            {
+                // Normal state
+                lblEnableLangReg.Font = theme.GetFont("normal");
+                lblEnableLangReg.ForeColor = theme.GetFontColor("normal");
+                
+                lblSystemLocale.Font = theme.GetFont("normal");
+                lblSystemLocale.ForeColor = theme.GetFontColor("normal");
+                cmbSystemLocale.Font = theme.GetFont("normal");
+                cmbSystemLocale.ForeColor = theme.GetFontColor("inputForeground");
+                
+                // User Locale depends on toggleSameAsSystemLocale state
+                bool sameAsSystem = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
+                lblUserLocale.Font = theme.GetFont(sameAsSystem ? "muted" : "normal");
+                lblUserLocale.ForeColor = theme.GetFontColor(sameAsSystem ? "muted" : "normal");
+                cmbUserLocale.Font = theme.GetFont(sameAsSystem ? "muted" : "normal");
+                cmbUserLocale.ForeColor = theme.GetFontColor(sameAsSystem ? "muted" : "inputForeground");
+                
+                lblSameAsSystemLocale.Font = theme.GetFont(sameAsSystem ? "normal" : "muted");
+                lblSameAsSystemLocale.ForeColor = theme.GetFontColor(sameAsSystem ? "normal" : "muted");
+                lblSameAsSystemLocale.Cursor = Cursors.Hand;
+                
+                lblWindowsUILanguage.Font = theme.GetFont("normal");
+                lblWindowsUILanguage.ForeColor = theme.GetFontColor("normal");
+                cmbWindowsUILanguage.Font = theme.GetFont("normal");
+                cmbWindowsUILanguage.ForeColor = theme.GetFontColor("inputForeground");
+                
+                lblKeyboardLayout.Font = theme.GetFont("normal");
+                lblKeyboardLayout.ForeColor = theme.GetFontColor("normal");
+                cmbKeyboardLayout.Font = theme.GetFont("normal");
+                cmbKeyboardLayout.ForeColor = theme.GetFontColor("inputForeground");
+                
+                lblTimeZone.Font = theme.GetFont("normal");
+                lblTimeZone.ForeColor = theme.GetFontColor("normal");
+                cmbTimeZone.Font = theme.GetFont("normal");
+                cmbTimeZone.ForeColor = theme.GetFontColor("inputForeground");
+            }
+            else
+            {
+                // Muted state
+                lblEnableLangReg.Font = theme.GetFont("muted");
+                lblEnableLangReg.ForeColor = theme.GetFontColor("muted");
+                
+                lblSystemLocale.Font = theme.GetFont("muted");
+                lblSystemLocale.ForeColor = theme.GetFontColor("muted");
+                cmbSystemLocale.Font = theme.GetFont("muted");
+                cmbSystemLocale.ForeColor = theme.GetFontColor("muted");
+                
+                lblUserLocale.Font = theme.GetFont("muted");
+                lblUserLocale.ForeColor = theme.GetFontColor("muted");
+                cmbUserLocale.Font = theme.GetFont("muted");
+                cmbUserLocale.ForeColor = theme.GetFontColor("muted");
+                
+                lblSameAsSystemLocale.Font = theme.GetFont("muted");
+                lblSameAsSystemLocale.ForeColor = theme.GetFontColor("muted");
+                lblSameAsSystemLocale.Cursor = Cursors.Default;
+                
+                lblWindowsUILanguage.Font = theme.GetFont("muted");
+                lblWindowsUILanguage.ForeColor = theme.GetFontColor("muted");
+                cmbWindowsUILanguage.Font = theme.GetFont("muted");
+                cmbWindowsUILanguage.ForeColor = theme.GetFontColor("muted");
+                
+                lblKeyboardLayout.Font = theme.GetFont("muted");
+                lblKeyboardLayout.ForeColor = theme.GetFontColor("muted");
+                cmbKeyboardLayout.Font = theme.GetFont("muted");
+                cmbKeyboardLayout.ForeColor = theme.GetFontColor("muted");
+                
+                lblTimeZone.Font = theme.GetFont("muted");
+                lblTimeZone.ForeColor = theme.GetFontColor("muted");
+                cmbTimeZone.Font = theme.GetFont("muted");
+                cmbTimeZone.ForeColor = theme.GetFontColor("muted");
+            }
+
+            // Notify MainForm to update lock/unlock button
+            _onEnableToggle?.Invoke();
         }
 
         #endregion
@@ -601,8 +758,8 @@ namespace QuickWinstall.Config
             KeyboardLayout = GetKeyboardValueFromIndex(cmbKeyboardLayout.SelectedIndex);
             TimeZone = GetTimeZoneValueFromIndex(cmbTimeZone.SelectedIndex);
             
-            ThemeManager theme = ThemeManager.Instance;
-            SameAsSystemLocale = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
+            //ThemeManager theme = ThemeManager.Instance;
+            //SameAsSystemLocale = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
         }
 
         /// <summary>
@@ -690,13 +847,99 @@ namespace QuickWinstall.Config
             {
                 ThemeManager theme = ThemeManager.Instance;
 
+                // Enable/disable controls based on EnableLangReg
+                bool enableControls = EnableLangReg;
+                            
+                cmbSystemLocale.Enabled = enableControls;
+                cmbUserLocale.Enabled = enableControls && !theme.GetToggleSwitchState(toggleSameAsSystemLocale);
+                toggleSameAsSystemLocale.Enabled = enableControls;
+                cmbWindowsUILanguage.Enabled = enableControls;
+                cmbKeyboardLayout.Enabled = enableControls;
+                cmbTimeZone.Enabled = enableControls;
+
+                // Update muted state for toggles
+                bool isMuted = !enableControls;
+                theme.UpdateToggleSwitchMutedState(toggleSameAsSystemLocale, isMuted);
+
+                // Update font styles based on enabled state
+                if (enableControls)
+                {
+                    // Normal state
+                    lblEnableLangReg.Font = theme.GetFont("normal");
+                    lblEnableLangReg.ForeColor = theme.GetFontColor("normal");
+                    lblSystemLocale.Font = theme.GetFont("normal");
+                    lblSystemLocale.ForeColor = theme.GetFontColor("normal");
+                    cmbSystemLocale.Font = theme.GetFont("normal");
+                    cmbSystemLocale.ForeColor = theme.GetFontColor("inputForeground");
+                    
+                    // User Locale depends on toggleSameAsSystemLocale state
+                    bool sameAsSystem = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
+                    lblUserLocale.Font = theme.GetFont(sameAsSystem ? "muted" : "normal");
+                    lblUserLocale.ForeColor = theme.GetFontColor(sameAsSystem ? "muted" : "normal");
+                    cmbUserLocale.Font = theme.GetFont(sameAsSystem ? "muted" : "normal");
+                    cmbUserLocale.ForeColor = theme.GetFontColor(sameAsSystem ? "muted" : "inputForeground");
+                    
+                    lblSameAsSystemLocale.Font = theme.GetFont(sameAsSystem ? "normal" : "muted");
+                    lblSameAsSystemLocale.ForeColor = theme.GetFontColor(sameAsSystem ? "normal" : "muted");
+                    lblSameAsSystemLocale.Cursor = Cursors.Hand;
+                    
+                    lblWindowsUILanguage.Font = theme.GetFont("normal");
+                    lblWindowsUILanguage.ForeColor = theme.GetFontColor("normal");
+                    cmbWindowsUILanguage.Font = theme.GetFont("normal");
+                    cmbWindowsUILanguage.ForeColor = theme.GetFontColor("inputForeground");
+                    
+                    lblKeyboardLayout.Font = theme.GetFont("normal");
+                    lblKeyboardLayout.ForeColor = theme.GetFontColor("normal");
+                    cmbKeyboardLayout.Font = theme.GetFont("normal");
+                    cmbKeyboardLayout.ForeColor = theme.GetFontColor("inputForeground");
+                    
+                    lblTimeZone.Font = theme.GetFont("normal");
+                    lblTimeZone.ForeColor = theme.GetFontColor("normal");
+                    cmbTimeZone.Font = theme.GetFont("normal");
+                    cmbTimeZone.ForeColor = theme.GetFontColor("inputForeground");
+                }
+                else
+                {
+                    // Muted state
+                    lblEnableLangReg.Font = theme.GetFont("muted");
+                    lblEnableLangReg.ForeColor = theme.GetFontColor("muted");
+
+                    lblSystemLocale.Font = theme.GetFont("muted");
+                    lblSystemLocale.ForeColor = theme.GetFontColor("muted");
+                    cmbSystemLocale.Font = theme.GetFont("muted");
+                    cmbSystemLocale.ForeColor = theme.GetFontColor("muted");
+                    
+                    lblUserLocale.Font = theme.GetFont("muted");
+                    lblUserLocale.ForeColor = theme.GetFontColor("muted");
+                    cmbUserLocale.Font = theme.GetFont("muted");
+                    cmbUserLocale.ForeColor = theme.GetFontColor("muted");
+                    
+                    lblSameAsSystemLocale.Font = theme.GetFont("muted");
+                    lblSameAsSystemLocale.ForeColor = theme.GetFontColor("muted");
+                    lblSameAsSystemLocale.Cursor = Cursors.Default;
+                    
+                    lblWindowsUILanguage.Font = theme.GetFont("muted");
+                    lblWindowsUILanguage.ForeColor = theme.GetFontColor("muted");
+                    cmbWindowsUILanguage.Font = theme.GetFont("muted");
+                    cmbWindowsUILanguage.ForeColor = theme.GetFontColor("muted");
+                    
+                    lblKeyboardLayout.Font = theme.GetFont("muted");
+                    lblKeyboardLayout.ForeColor = theme.GetFontColor("muted");
+                    cmbKeyboardLayout.Font = theme.GetFont("muted");
+                    cmbKeyboardLayout.ForeColor = theme.GetFontColor("muted");
+                    
+                    lblTimeZone.Font = theme.GetFont("muted");
+                    lblTimeZone.ForeColor = theme.GetFontColor("muted");
+                    cmbTimeZone.Font = theme.GetFont("muted");
+                    cmbTimeZone.ForeColor = theme.GetFontColor("muted");
+                }
+
                 // Map data model values to dropdown indices
                 cmbSystemLocale.SelectedIndex = GetIndexFromLocaleValue(SystemLocale);
                 cmbUserLocale.SelectedIndex = GetIndexFromLocaleValue(UserLocale);
                 cmbWindowsUILanguage.SelectedIndex = GetIndexFromLocaleValue(WindowsUILanguage);
                 cmbKeyboardLayout.SelectedIndex = GetIndexFromKeyboardValue(KeyboardLayout);
                 cmbTimeZone.SelectedIndex = GetIndexFromTimeZoneValue(TimeZone);
-                theme.UpdateToggleSwitchState(toggleSameAsSystemLocale, SameAsSystemLocale);
 
                 // Handle special case: if toggle is ON but values don't match in JSON
                 if (SameAsSystemLocale && !string.IsNullOrEmpty(SystemLocale) && UserLocale != SystemLocale)
@@ -709,7 +952,8 @@ namespace QuickWinstall.Config
                 // Update User Locale dropdown state based on toggle
                 bool toggleState = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
                 cmbUserLocale.Enabled = !toggleState;
-                
+
+                /*                
                 // Update font styles based on toggle state
                 if (toggleState)
                 {
@@ -731,6 +975,7 @@ namespace QuickWinstall.Config
                     lblSameAsSystemLocale.Font = theme.GetFont("muted");
                     lblSameAsSystemLocale.ForeColor = theme.GetFontColor("muted");
                 }
+                */
 
                 // Validate after loading
                 ValidateAllUIFields();

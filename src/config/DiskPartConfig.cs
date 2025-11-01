@@ -30,6 +30,11 @@ namespace QuickWinstall.Config
         private bool _isLoading = false;
         private Action? _onSectionToggle = null;
 
+        /// <summary>
+        /// Gets whether the section is expanded
+        /// </summary>
+        public bool IsExpanded => _isExpanded;
+
         #endregion
 
         #region UI Initialization

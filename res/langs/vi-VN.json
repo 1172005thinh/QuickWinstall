@@ -45,7 +45,36 @@
       "title": "Lỗi"
     }
   },
+  "bypassConfig": {
+    "enableBypass": {
+      "label": "Mở khóa Bỏ qua Kiểm tra Phần cứng"
+    },
+    "bypassAll": {
+      "label": "Bỏ qua Tất cả"
+    },
+    "bypassTPM": {
+      "label": "Bỏ qua TPM Check"
+    },
+    "bypassRAM": {
+      "label": "Bỏ qua RAM Check"
+    },
+    "bypassSecureBoot": {
+      "label": "Bỏ qua Secure Boot Check"
+    },
+    "bypassCPU": {
+      "label": "Bỏ qua CPU Check"
+    },
+    "bypassStorage": {
+      "label": "Bỏ qua Dung lượng Check"
+    },
+    "bypassDisk": {
+      "label": "Bỏ qua Ổ đĩa Check"
+    }
+  },
   "generalConfig": {
+    "enableGeneral": {
+      "label": "Mở khóa Cấu hình Chung"
+    },
     "cpuArch": {
       "label": "Kiến trúc CPU:",
       "options": {
@@ -70,6 +99,9 @@
     }
   },
   "langRegConfig": {
+    "enableLangReg": {
+      "label": "Mở khóa Cấu hình Ngôn ngữ và Khu vực"
+    },
     "systemLocale": {
       "label": "Vùng của Hệ thống:",
       "options": {
@@ -193,7 +225,7 @@
   },
   "settingsForm": {
     "autoSave": {
-      "label": "Tự động lưu cấu hình"
+      "label": "Tự động lưu cấu hình khi Tạo file:"
     },
     "banner": {
       "title": "Cài đặt Ứng dụng"
@@ -205,22 +237,25 @@
       "save": "Lưu"
     },
     "expandAll": {
-      "label": "Mở rộng khi khởi động:"
+      "label": "Mở rộng mọi bảng cấu hình khi Khởi động:"
     },
     "folderDialog": {
       "description": "Tệp XML lưu tại:"
     },
     "language": {
-      "label": "Ngôn ngữ"
+      "label": "Ngôn ngữ:"
     },
     "loadLast": {
-      "label": "Nạp cấu hình đã lưu"
+      "label": "Tự động nạp cấu hình đã lưu lần cuối khi Khởi động:"
     },
     "savePath": {
-      "label": "Đường dẫn lưu XML"
+      "label": "Đường dẫn lưu XML:"
+    },
+    "lockSections": {
+      "label": "Khóa tất cả các bảng cấu hình khi Khởi động:"
     },
     "theme": {
-      "label": "Giao diện",
+      "label": "Giao diện:",
       "options": {
         "dark": "Tối",
         "light": "Sáng"
@@ -240,6 +275,7 @@
       "help": "Mở tài liệu trợ giúp",
       "language": "Cài đặt ngôn ngữ ứng dụng KHÔNG ẢNH HƯỞNG ngôn ngữ giao diện Windows",
       "loadLast": "Tự động tải cấu hình đã lưu cuối cùng từ Presets/lastConfig.json khi mở ứng dụng",
+      "lockSections": "Khóa tất cả các phần cấu hình để ngăn việc mở rộng/thu gọn khi ứng dụng khởi động",
       "reset": "Đặt lại tất cả cài đặt về mặc định",
       "save": "Lưu tất cả cài đặt và đóng Cài đặt",
       "savePath": "Đặt đường dẫn lưu mặc định cho tệp autounattend.xml được tạo",
@@ -251,18 +287,29 @@
       "header": "Phần Cấu hình Ứng dụng"
     },
     "bypassConfig": {
-      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
+      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11",
+      "enableBypass": "Khóa hoặc mở khóa tất cả các tùy chọn bỏ qua kiểm tra phần cứng",
+      "bypassAll": "Bật tất cả các tùy chọn bỏ qua kiểm tra phần cứng cùng lúc",
+      "bypassTPM": "Bỏ qua yêu cầu Trusted Platform Module (TPM) 2.0",
+      "bypassRAM": "Bỏ qua yêu cầu RAM tối thiểu 4GB",
+      "bypassSecureBoot": "Bỏ qua yêu cầu Secure Boot",
+      "bypassCPU": "Bỏ qua kiểm tra tương thích CPU",
+      "bypassStorage": "Bỏ qua yêu cầu dung lượng tối thiểu 64GB",
+      "bypassDisk": "Bỏ qua các kiểm tra phần cứng liên quan đến đĩa"
     },
     "diskPartConfig": {
+      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa và Phân vùng",
       "header": "Phần Cấu hình Đĩa và Phân vùng"
     },
     "generalConfig": {
+      "enableGeneral": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Chung",
       "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
       "header": "Phần Cấu hình Chung",
       "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
       "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
     },
     "langRegConfig": {
+      "enableLangReg": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Ngôn ngữ và Khu vực",
       "header": "Phần Cấu hình Ngôn ngữ và Khu vực",
       "systemLocale": "Chọn ngôn ngữ hệ thống cho Windows.",
       "sameAsSystemLocale": "Đặt Ngôn ngữ Người dùng giống như Ngôn ngữ Hệ thống.\\n Cài đặt Windows có thể bị lỗi nếu Ngôn ngữ Người dùng khác với Ngôn ngữ Hệ thống.",
@@ -277,20 +324,26 @@
       "collapseAll": "Thu gọn bảng cấu hình",
       "expandAll": "Mở rộng bảng cấu hình",
       "generate": "Tạo tệp autounattend.xml",
+      "lockAll": "Khóa tất cả phần",
       "logoClick": "Quay lại đầu trang",
       "preset": "Tải/Lưu cấu hình có sẵn",
-      "settings": "Mở cài đặt ứng dụng"
+      "settings": "Mở cài đặt ứng dụng",
+      "unlockAll": "Mở khóa tất cả phần"
     },
     "oobeConfig": {
+      "enableOobe": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình OOBE",
       "header": "Phần Cấu hình OOBE"
     },
     "personalConfig": {
+      "enablePersonal": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Cá nhân hóa",
       "header": "Phần Cấu hình Cá nhân hóa"
     },
     "section": {
-      "expandCollapse": "Mở rộng/Thu gọn phần {0}"
+      "expand": "Mở rộng phần {0}",
+      "collapse": "Thu gọn phần {0}"
     },
     "userAccConfig": {
+      "enableUserAcc": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Tài khoản Người dùng",
       "header": "Phần Cấu hình Tài khoản Người dùng"
     }
   },

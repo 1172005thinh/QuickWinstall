@@ -16,6 +16,7 @@ namespace QuickWinstall.Lib
         private const bool DEFAULT_SAVE_LAST_CONFIG = true;
         private const bool DEFAULT_LOAD_LAST_CONFIG = true;
         private const bool DEFAULT_EXPAND_ALL_SECTIONS = true;
+        private const bool DEFAULT_LOCK_SECTIONS_AT_STARTUP = false;
 
         public string Theme { get; set; } = DEFAULT_THEME;
         public string Language { get; set; } = DEFAULT_LANGUAGE;
@@ -23,6 +24,7 @@ namespace QuickWinstall.Lib
         public bool SaveLastConfig { get; set; } = DEFAULT_SAVE_LAST_CONFIG;
         public bool LoadLastConfig { get; set; } = DEFAULT_LOAD_LAST_CONFIG;
         public bool ExpandAllSectionsAtStartup { get; set; } = DEFAULT_EXPAND_ALL_SECTIONS;
+        public bool LockSectionsAtStartup { get; set; } = DEFAULT_LOCK_SECTIONS_AT_STARTUP;
 
         private SettingsManager()
         {
@@ -58,6 +60,7 @@ namespace QuickWinstall.Lib
                     SaveLastConfig = _settings["saveLastConfig"]?.ToObject<bool>() ?? DEFAULT_SAVE_LAST_CONFIG;
                     LoadLastConfig = _settings["loadLastConfig"]?.ToObject<bool>() ?? DEFAULT_LOAD_LAST_CONFIG;
                     ExpandAllSectionsAtStartup = _settings["expandAllSectionsAtStartup"]?.ToObject<bool>() ?? DEFAULT_EXPAND_ALL_SECTIONS;
+                    LockSectionsAtStartup = _settings["lockSectionsAtStartup"]?.ToObject<bool>() ?? DEFAULT_LOCK_SECTIONS_AT_STARTUP;
 
                     // Set default save path if empty
                     if (string.IsNullOrEmpty(SavePath))
@@ -88,6 +91,7 @@ namespace QuickWinstall.Lib
                 SaveLastConfig = DEFAULT_SAVE_LAST_CONFIG;
                 LoadLastConfig = DEFAULT_LOAD_LAST_CONFIG;
                 ExpandAllSectionsAtStartup = DEFAULT_EXPAND_ALL_SECTIONS;
+                LockSectionsAtStartup = DEFAULT_LOCK_SECTIONS_AT_STARTUP;
 
                 SaveSettings();
             }
@@ -108,7 +112,8 @@ namespace QuickWinstall.Lib
                     ["savePath"] = SavePath,
                     ["saveLastConfig"] = SaveLastConfig,
                     ["loadLastConfig"] = LoadLastConfig,
-                    ["expandAllSectionsAtStartup"] = ExpandAllSectionsAtStartup
+                    ["expandAllSectionsAtStartup"] = ExpandAllSectionsAtStartup,
+                    ["lockSectionsAtStartup"] = LockSectionsAtStartup
                 };
 
                 // Ensure directory exists

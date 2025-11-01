@@ -11,5 +11,14 @@
     "keyboardLayout": "",
     "timeZone": "",
     "sameAsSystemLocale": true
+  },
+  "bypassConfig": {
+    "bypassAll": false,
+    "bypassTPM": false,
+    "bypassRAM": false,
+    "bypassSecureBoot": false,
+    "bypassCPU": false,
+    "bypassStorage": false,
+    "bypassDisk": false
   }
 }

@@ -17,8 +17,8 @@ namespace QuickWinstall.Main
         private Panel pnlBanner;
         private PictureBox picLogo;
         private Label lblBannerTitle;
-        private Button btnExpandAll;
-        private Button btnCollapseAll;
+        private Button btnToggleAll;
+        private Button btnToggleLock;
         
         private Panel pnlConfigSection;
         
@@ -115,25 +115,25 @@ namespace QuickWinstall.Main
             this.lblBannerTitle.ForeColor = theme.GetFontColor("header");
             this.lblBannerTitle.TextAlign = ContentAlignment.MiddleLeft;
 
-            // Expand All Button
-            this.btnExpandAll = _themeManager.CreateRoundedButton();
-            this.btnExpandAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            this.btnExpandAll.Image = iconMgr.GetIconAsImage("all_expand", theme.IsDarkTheme, ui.GlobalIconSize);
-            this.btnExpandAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.btnExpandAll.Click += new EventHandler(this.BtnExpandAll_Click);
-            tooltips.SetToolTip(this.btnExpandAll, "tooltips.mainForm.expandAll");
+            // Toggle All Button (Expand/Collapse)
+            this.btnToggleAll = _themeManager.CreateRoundedButton();
+            this.btnToggleAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
+            this.btnToggleAll.Image = iconMgr.GetIconAsImage("all_collapse", theme.IsDarkTheme, ui.GlobalIconSize);
+            this.btnToggleAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            this.btnToggleAll.Click += new EventHandler(this.BtnToggleAll_Click);
+            tooltips.SetToolTip(this.btnToggleAll, "tooltips.mainForm.collapseAll");
 
-            // Collapse All Button
-            this.btnCollapseAll = _themeManager.CreateRoundedButton();
-            this.btnCollapseAll.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
-            this.btnCollapseAll.Image = iconMgr.GetIconAsImage("all_collapse", theme.IsDarkTheme, ui.GlobalIconSize);
-            this.btnCollapseAll.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            this.btnCollapseAll.Click += new EventHandler(this.BtnCollapseAll_Click);
-            tooltips.SetToolTip(this.btnCollapseAll, "tooltips.mainForm.collapseAll");
+            // Toggle Lock Button (Lock/Unlock All Sections)
+            this.btnToggleLock = _themeManager.CreateRoundedButton();
+            this.btnToggleLock.Size = new Size(ui.GlobalBtnBox, ui.GlobalBtnBox);
+            this.btnToggleLock.Image = iconMgr.GetIconAsImage("lock", theme.IsDarkTheme, ui.GlobalIconSize);
+            this.btnToggleLock.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            this.btnToggleLock.Click += new EventHandler(this.BtnToggleLock_Click);
+            tooltips.SetToolTip(this.btnToggleLock, "tooltips.mainForm.lockAll");
 
             // Position buttons from right
-            this.btnCollapseAll.Location = new Point(this.ClientSize.Width - ui.GlobalTabX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
-            this.btnExpandAll.Location = new Point(btnCollapseAll.Left - ui.GlobalSpacingX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
+            this.btnToggleAll.Location = new Point(this.ClientSize.Width - ui.GlobalTabX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
+            this.btnToggleLock.Location = new Point(btnToggleAll.Left - ui.GlobalSpacingX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
 
             // Config Section Panel
             this.pnlConfigSection = new Panel();
@@ -150,7 +150,7 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null  // No reposition callback needed with DockStyle
+                this.CheckAndUpdateExpandCollapseButton
             );
             _pnlAppConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlAppConfig);
@@ -160,7 +160,7 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null
+                this.CheckAndUpdateExpandCollapseButton
             );
             _pnlPersonalConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
@@ -170,7 +170,7 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null
+                this.CheckAndUpdateExpandCollapseButton
             );
             _pnlOOBEConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
@@ -180,7 +180,7 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null
+                this.CheckAndUpdateExpandCollapseButton
             );
             _pnlUserAccConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
@@ -190,7 +190,7 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null
+                this.CheckAndUpdateExpandCollapseButton
             );
             _pnlDiskPartConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
@@ -200,7 +200,8 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null
+                this.CheckAndUpdateExpandCollapseButton,
+                this.CheckAndUpdateLockUnlockButton
             );
             _pnlBypassConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
@@ -210,7 +211,8 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null
+                this.CheckAndUpdateExpandCollapseButton,
+                this.CheckAndUpdateLockUnlockButton
             );
             _pnlLangRegConfig.Dock = DockStyle.Top;
             this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
@@ -220,7 +222,8 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                null,
+                this.CheckAndUpdateExpandCollapseButton,
+                this.CheckAndUpdateLockUnlockButton,
                 this
             );
             _pnlGeneralConfig.Dock = DockStyle.Top;
@@ -250,7 +253,7 @@ namespace QuickWinstall.Main
             this.btnClear.Click += new EventHandler(this.BtnClear_Click);
             tooltips.SetToolTip(this.btnClear, "tooltips.mainForm.clear");
 
-                        // Preset Button
+            // Preset Button
             this.btnPreset = _themeManager.CreateRoundedButton();
             this.btnPreset.Location = new Point(btnClear.Right + ui.GlobalSpacingX, btnY);
             this.btnPreset.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
@@ -266,6 +269,7 @@ namespace QuickWinstall.Main
             this.btnCancel.Click += new EventHandler(this.BtnCancel_Click);
             tooltips.SetToolTip(this.btnCancel, "tooltips.mainForm.cancel");
 
+            // Generate Button
             this.btnGenerate = _themeManager.CreateRoundedButton();
             this.btnGenerate.Size = new Size(ui.GlobalBtnWidth, ui.GlobalBtnHeight);
             this.btnGenerate.Text = lang.GetString("mainForm.buttons.generate");
@@ -307,8 +311,8 @@ namespace QuickWinstall.Main
             // Add all to Form
             this.pnlBanner.Controls.Add(this.picLogo);
             this.pnlBanner.Controls.Add(this.lblBannerTitle);
-            this.pnlBanner.Controls.Add(this.btnExpandAll);
-            this.pnlBanner.Controls.Add(this.btnCollapseAll);
+            this.pnlBanner.Controls.Add(this.btnToggleAll);
+            this.pnlBanner.Controls.Add(this.btnToggleLock);
             
             this.Controls.Add(this.pnlBanner);
             this.Controls.Add(this.pnlConfigSection);

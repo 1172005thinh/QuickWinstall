@@ -45,7 +45,36 @@
       "title": "Error"
     }
   },
+  "bypassConfig": {
+    "enableBypass": {
+      "label": "Unlock Hardware Check Bypass"
+    },
+    "bypassAll": {
+      "label": "Bypass All"
+    },
+    "bypassTPM": {
+      "label": "Bypass TPM Check"
+    },
+    "bypassRAM": {
+      "label": "Bypass RAM Check"
+    },
+    "bypassSecureBoot": {
+      "label": "Bypass Secure Boot Check"
+    },
+    "bypassCPU": {
+      "label": "Bypass CPU Check"
+    },
+    "bypassStorage": {
+      "label": "Bypass Storage Check"
+    },
+    "bypassDisk": {
+      "label": "Bypass Disk Check"
+    }
+  },
   "generalConfig": {
+    "enableGeneral": {
+      "label": "Unlock General Configurations"
+    },
     "cpuArch": {
       "label": "CPU Architecture:",
       "options": {
@@ -70,6 +99,9 @@
     }
   },
   "langRegConfig": {
+    "enableLangReg": {
+      "label": "Unlock Language && Region Configurations"
+    },
     "systemLocale": {
       "label": "System Locale:",
       "options": {
@@ -193,7 +225,7 @@
   },
   "settingsForm": {
     "autoSave": {
-      "label": "Auto save last config:"
+      "label": "Auto save config after a successful Generate:"
     },
     "banner": {
       "title": "Application Settings"
@@ -205,7 +237,7 @@
       "save": "Save"
     },
     "expandAll": {
-      "label": "Expand all on startup:"
+      "label": "Expand all config sections on Startup:"
     },
     "folderDialog": {
       "description": "XML saved at:"
@@ -214,10 +246,13 @@
       "label": "Language:"
     },
     "loadLast": {
-      "label": "Load last saved config:"
+      "label": "Auto load last saved config on Startup:"
     },
     "savePath": {
       "label": "XML save path:"
+    },
+    "lockSections": {
+      "label": "Lock all config sections on Startup:"
     },
     "theme": {
       "label": "Theme:",
@@ -240,6 +275,7 @@
       "help": "Open Help documentation",
       "language": "Application's Language settings DOES NOT AFFECT Windows UI Language",
       "loadLast": "Automatically load the last saved configuration from Presets/lastConfig.json when opening the application",
+      "lockSections": "Lock all configuration sections to prevent expanding/collapsing when the application starts",
       "reset": "Reset all settings to default values",
       "save": "Save all settings and close Settings",
       "savePath": "Set the default save path for generated autounattend.xml file",
@@ -251,18 +287,29 @@
       "header": "App Configurations Section"
     },
     "bypassConfig": {
-      "header": "Bypass Windows 11 Hardware Checks Section"
+      "header": "Bypass Windows 11 Hardware Checks Section",
+      "enableBypass": "Unlock or lock all hardware requirement checks bypass",
+      "bypassAll": "Enable all hardware requirement bypasses at once",
+      "bypassTPM": "Bypass the Trusted Platform Module (TPM) 2.0 requirement",
+      "bypassRAM": "Bypass the 4GB RAM minimum requirement",
+      "bypassSecureBoot": "Bypass the Secure Boot requirement",
+      "bypassCPU": "Bypass the CPU compatibility check",
+      "bypassStorage": "Bypass the 64GB storage minimum requirement",
+      "bypassDisk": "Bypass disk-related hardware checks"
     },
     "diskPartConfig": {
+      "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
       "header": "Disk && Partition Configurations Section"
     },
     "generalConfig": {
+      "enableGeneral": "Unlock or lock all options in the General Configurations section",
       "cpuArch": "Select the CPU architecture for installation.",
       "header": "General Configurations Section",
       "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
       "windowsEdition": "Select the Windows edition to install"
     },
     "langRegConfig": {
+      "enableLangReg": "Unlock or lock all options in the Language & Region Configurations section",
       "header": "Language && Region Configurations Section",
       "systemLocale": "Select the system locale for the Windows.",
       "sameAsSystemLocale": "Set the User Locale same as the System Locale.\\n Difference between System Locale and User Locale may break Windows Installation.",
@@ -277,20 +324,26 @@
       "collapseAll": "Collapse the Configuration Panel",
       "expandAll": "Expand the Configuration Panel",
       "generate": "Generate autounattend.xml file",
+      "lockAll": "Lock all sections",
       "logoClick": "Scroll to top",
       "preset": "Load/Save a preset of current configurations",
-      "settings": "Open Application's settings"
+      "settings": "Open Application's settings",
+      "unlockAll": "Unlock all sections"
     },
     "oobeConfig": {
+      "enableOobe": "Unlock or lock all options in the OOBE Configurations section",
       "header": "OOBE Configurations Section"
     },
     "personalConfig": {
+      "enablePersonal": "Unlock or lock all options in the Personalize Configurations section",
       "header": "Personalize Configurations Section"
     },
     "section": {
-      "expandCollapse": "Expand/Collapse {0} Section"
+      "expand": "Expand {0} Section",
+      "collapse": "Collapse {0} Section"
     },
     "userAccConfig": {
+      "enableUserAcc": "Unlock or lock all options in the User Account Configurations section",
       "header": "User Account Configurations Section"
     }
   },

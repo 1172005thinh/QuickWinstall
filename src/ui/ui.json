@@ -42,10 +42,10 @@
   },
   "sections": {
     "generalConfig": {
-      "contentHeight": 180
+      "contentHeight": 230
     },
     "langRegConfig": {
-      "contentHeight": 340
+      "contentHeight": 390
     },
     "userAccConfig": {
       "contentHeight": 100
@@ -60,7 +60,7 @@
       "contentHeight": 100
     },
     "bypassConfig": {
-      "contentHeight": 100
+      "contentHeight": 440
     },
     "appConfig": {
       "contentHeight": 100
@@ -75,8 +75,8 @@
       "resizable": true
     },
     "settingsForm": {
-      "width": 600,
-      "height": 470,
+      "width": 580,
+      "height": 520,
       "resizable": false
     },
     "aboutForm": {

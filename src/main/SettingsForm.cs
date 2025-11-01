@@ -88,15 +88,15 @@ namespace QuickWinstall
 
             // Auto save last config
             _themeManager.UpdateToggleSwitchState(toggleAutoSave, _settingsManager.SaveLastConfig);
-            UpdateToggleLabel(lblAutoSaveState, _settingsManager.SaveLastConfig);
 
             // Load last saved config
             _themeManager.UpdateToggleSwitchState(toggleLoadLast, _settingsManager.LoadLastConfig);
-            UpdateToggleLabel(lblLoadLastState, _settingsManager.LoadLastConfig);
             
             // Expand all sections on startup
             _themeManager.UpdateToggleSwitchState(toggleExpandAll, _settingsManager.ExpandAllSectionsAtStartup);
-            UpdateToggleLabel(lblExpandAllState, _settingsManager.ExpandAllSectionsAtStartup);
+
+            // Lock sections at startup
+            _themeManager.UpdateToggleSwitchState(toggleLockSections, _settingsManager.LockSectionsAtStartup);
         }
 
         private void ApplyTheme()
@@ -116,11 +116,9 @@ namespace QuickWinstall
             lblTheme.ForeColor = _themeManager.GetFontColor("normal");
             lblSavePath.ForeColor = _themeManager.GetFontColor("normal");
             lblAutoSave.ForeColor = _themeManager.GetFontColor("normal");
-            lblAutoSaveState.ForeColor = _themeManager.GetFontColor("normal");
             lblLoadLast.ForeColor = _themeManager.GetFontColor("normal");
-            lblLoadLastState.ForeColor = _themeManager.GetFontColor("normal");
             lblExpandAll.ForeColor = _themeManager.GetFontColor("normal");
-            lblExpandAllState.ForeColor = _themeManager.GetFontColor("normal");
+            lblLockSections.ForeColor = _themeManager.GetFontColor("normal");
 
             // Dropdowns
             cmbLanguage.BackColor = _themeManager.GetColor("inputBackground");
@@ -152,6 +150,8 @@ namespace QuickWinstall
             // Toggle switches - update colors based on theme
             _themeManager.UpdateToggleSwitchState(toggleAutoSave, _themeManager.GetToggleSwitchState(toggleAutoSave));
             _themeManager.UpdateToggleSwitchState(toggleLoadLast, _themeManager.GetToggleSwitchState(toggleLoadLast));
+            _themeManager.UpdateToggleSwitchState(toggleExpandAll, _themeManager.GetToggleSwitchState(toggleExpandAll));
+            _themeManager.UpdateToggleSwitchState(toggleLockSections, _themeManager.GetToggleSwitchState(toggleLockSections));
         }
 
         private void ApplyLanguage()
@@ -168,6 +168,8 @@ namespace QuickWinstall
             lblSavePath.Text = _langManager.GetString("settingsForm.savePath.label");
             lblAutoSave.Text = _langManager.GetString("settingsForm.autoSave.label");
             lblLoadLast.Text = _langManager.GetString("settingsForm.loadLast.label");
+            lblExpandAll.Text = _langManager.GetString("settingsForm.expandAll.label");
+            lblLockSections.Text = _langManager.GetString("settingsForm.lockSections.label");
 
             // Update theme dropdown with translated options
             int currentThemeIndex = cmbTheme.SelectedIndex;
@@ -201,11 +203,9 @@ namespace QuickWinstall
                 cmbTheme.SelectedIndex = 0; // Light
                 txtSavePath.Text = AppDomain.CurrentDomain.BaseDirectory;
                 _themeManager.UpdateToggleSwitchState(toggleAutoSave, true);
-                UpdateToggleLabel(lblAutoSaveState, true);
                 _themeManager.UpdateToggleSwitchState(toggleLoadLast, true);
-                UpdateToggleLabel(lblLoadLastState, true);
                 _themeManager.UpdateToggleSwitchState(toggleExpandAll, true);
-                UpdateToggleLabel(lblExpandAllState, true);
+                _themeManager.UpdateToggleSwitchState(toggleLockSections, false);
             }
         }
 
@@ -254,6 +254,7 @@ namespace QuickWinstall
             _settingsManager.SaveLastConfig = _themeManager.GetToggleSwitchState(toggleAutoSave);
             _settingsManager.LoadLastConfig = _themeManager.GetToggleSwitchState(toggleLoadLast);
             _settingsManager.ExpandAllSectionsAtStartup = _themeManager.GetToggleSwitchState(toggleExpandAll);
+            _settingsManager.LockSectionsAtStartup = _themeManager.GetToggleSwitchState(toggleLockSections);
             _settingsManager.SaveSettings();
 
             // Check if theme or language changed
@@ -311,41 +312,40 @@ namespace QuickWinstall
             );
         }
 
-        #region Toggle Switch Helpers
-
-        private void UpdateToggleLabel(Label label, bool state)
+        /// <summary>
+        /// Handles the toggle for Enable General Configurations
+        /// </summary>
+        private void OnToggleAutoSave()
         {
-            label.Text = state 
-                ? _langManager.GetString("settingsForm.toggle.on") 
-                : _langManager.GetString("settingsForm.toggle.off");
+            ThemeManager theme = ThemeManager.Instance;
+            bool currentState = theme.GetToggleSwitchState(toggleAutoSave);
+            bool newState = !currentState;
+            theme.UpdateToggleSwitchState(toggleAutoSave, newState);
         }
 
-        private void ToggleSwitch_Click(object sender, EventArgs e)
+        private void OnToggleLoadLast()
         {
-            if (sender is Panel toggle)
-            {
-                ThemeManager theme = ThemeManager.Instance;
-                bool currentState = theme.GetToggleSwitchState(toggle);
-                bool newState = !currentState;
-                theme.UpdateToggleSwitchState(toggle, newState);
-
-                // Update corresponding label
-                if (toggle == toggleAutoSave)
-                {
-                    UpdateToggleLabel(lblAutoSaveState, newState);
-                }
-                else if (toggle == toggleLoadLast)
-                {
-                    UpdateToggleLabel(lblLoadLastState, newState);
-                }
-                else if (toggle == toggleExpandAll)
-                {
-                    UpdateToggleLabel(lblExpandAllState, newState);
-                }
-            }
+            ThemeManager theme = ThemeManager.Instance;
+            bool currentState = theme.GetToggleSwitchState(toggleLoadLast);
+            bool newState = !currentState;
+            theme.UpdateToggleSwitchState(toggleLoadLast, newState);
         }
 
-        #endregion
+        private void OnToggleExpandAll()
+        {
+            ThemeManager theme = ThemeManager.Instance;
+            bool currentState = theme.GetToggleSwitchState(toggleExpandAll);
+            bool newState = !currentState;
+            theme.UpdateToggleSwitchState(toggleExpandAll, newState);
+        }
+
+        private void OnToggleLockSections()
+        {
+            ThemeManager theme = ThemeManager.Instance;
+            bool currentState = theme.GetToggleSwitchState(toggleLockSections);
+            bool newState = !currentState;
+            theme.UpdateToggleSwitchState(toggleLockSections, newState);
+        }
 
         public void FocusSavePathTextBox()
         {

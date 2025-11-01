@@ -15,7 +15,10 @@
     "mutedInputForeground": "#a0a0a0",
     "toggleOnBackground": "#4472c4",
     "toggleOffBackground": "#333333",
+    "toggleMutedOnBackground": "#2a3d5c",
+    "toggleMutedOffBackground": "#1a1a1a",
     "toggleThumb": "#ffffff",
+    "toggleMutedThumb": "#666666",
     "separator": "#d4d4d4"
   },
   "fonts": {

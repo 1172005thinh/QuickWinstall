@@ -4,5 +4,6 @@
   "savePath": "",
   "saveLastConfig": true,
   "loadLastConfig": true,
-  "expandAllSectionsAtStartup": true
+  "expandAllSectionsAtStartup": true,
+  "lockSectionsAtStartup": false
 }

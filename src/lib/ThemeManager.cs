@@ -340,5 +340,40 @@ namespace QuickWinstall.Lib
                 return state;
             return false;
         }
+
+        /// <summary>
+        /// Updates the visual appearance of a toggle switch to muted or normal state
+        /// </summary>
+        /// <param name="toggle">The toggle switch panel</param>
+        /// <param name="isMuted">True to apply muted appearance, false for normal</param>
+        public void UpdateToggleSwitchMutedState(Panel toggle, bool isMuted)
+        {
+            if (toggle == null) return;
+
+            bool currentState = GetToggleSwitchState(toggle);
+            
+            // Update background color based on muted state and current ON/OFF state
+            if (isMuted)
+            {
+                // Use different muted colors for ON vs OFF to maintain visual distinction
+                toggle.BackColor = currentState ? GetColor("toggleMutedOnBackground") : GetColor("toggleMutedOffBackground");
+            }
+            else
+            {
+                // Normal colors
+                toggle.BackColor = currentState ? GetColor("toggleOnBackground") : GetColor("toggleOffBackground");
+            }
+            
+            // Find and update the thumb color
+            foreach (Control ctrl in toggle.Controls)
+            {
+                if (ctrl.Tag?.ToString() == "thumb" && ctrl is Panel thumb)
+                {
+                    thumb.BackColor = isMuted ? GetColor("toggleMutedThumb") : GetColor("toggleThumb");
+                    break;
+                }
+            }
+        }
     }
 }
+

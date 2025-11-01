@@ -16,6 +16,7 @@ namespace QuickWinstall.Lib
         {
             General = new GeneralConfig();
             LangReg = new LangRegConfig();
+            Bypass = new BypassConfig();
             _emptyConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "config", "empty.json");
         }
 
@@ -44,9 +45,9 @@ namespace QuickWinstall.Lib
         // Configuration sections
         public GeneralConfig General { get; set; }
         public LangRegConfig LangReg { get; set; }
+        public BypassConfig Bypass { get; set; }
         
         // Additional configuration sections will be added later
-        // public BypassConfig Bypass { get; set; }
         // public DiskPartConfig DiskPart { get; set; }
         // public UserAccConfig UserAcc { get; set; }
         // public OOBEConfig OOBE { get; set; }
@@ -69,23 +70,33 @@ namespace QuickWinstall.Lib
                     string jsonContent = File.ReadAllText(_emptyConfigPath);
                     JObject emptyConfig = JObject.Parse(jsonContent);
 
+                    // Preserve Enable states before clearing
+                    bool generalEnabled = General.EnableGeneral;
+                    bool langRegEnabled = LangReg.EnableLangReg;
+                    bool bypassEnabled = Bypass.EnableBypass;
+
                     // Load empty values for General section
                     if (emptyConfig["general"] is JObject generalSection)
                     {
                         General.SetValues(generalSection);
                     }
 
-                    // Clear UI controls
-                    General.ClearControls();
-
                     // Load empty values for LangReg section
                     if (emptyConfig["langReg"] is JObject langRegSection)
                     {
                         LangReg.SetValues(langRegSection);
                     }
-                    
-                    // Clear LangReg UI controls
-                    LangReg.ClearControls();
+
+                    // Load empty values for Bypass section
+                    if (emptyConfig["bypass"] is JObject bypassSection)
+                    {
+                        Bypass.SetValues(bypassSection);
+                    }
+
+                    // Restore Enable states after clearing data models
+                    General.EnableGeneral = generalEnabled;
+                    LangReg.EnableLangReg = langRegEnabled;
+                    Bypass.EnableBypass = bypassEnabled;
 
                     // Clear other sections when implemented
                 }
@@ -94,16 +105,12 @@ namespace QuickWinstall.Lib
                     // Fallback to hardcoded clear if empty.json not found
                     Console.WriteLine($"Warning: empty.json not found at {_emptyConfigPath}. Using hardcoded empty values.");
                     General.Clear();
-                    General.ClearControls();
-                    LangReg.ClearControls();
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error clearing config from empty.json: {ex.Message}. Using hardcoded empty values.");
                 General.Clear();
-                General.ClearControls();
-                LangReg.ClearControls();
             }
         }
 
@@ -129,6 +136,11 @@ namespace QuickWinstall.Lib
             }
             
             foreach (var kvp in LangReg.GetValues())
+            {
+                values[kvp.Key] = kvp.Value;
+            }
+            
+            foreach (var kvp in Bypass.GetValues())
             {
                 values[kvp.Key] = kvp.Value;
             }
@@ -168,6 +180,7 @@ namespace QuickWinstall.Lib
                 {
                     General.UpdateFromControls();
                     LangReg.UpdateFromControls();
+                    Bypass.UpdateFromControls();
                     Console.WriteLine("Updated config from UI controls.");
                 }
                 catch (Exception ex)
@@ -192,6 +205,16 @@ namespace QuickWinstall.Lib
                         ["keyboardLayout"] = LangReg.KeyboardLayout ?? "",
                         ["timeZone"] = LangReg.TimeZone ?? "",
                         ["sameAsSystemLocale"] = LangReg.SameAsSystemLocale
+                    },
+                    ["bypass"] = new JObject
+                    {
+                        ["bypassAll"] = Bypass.BypassAll,
+                        ["bypassTPM"] = Bypass.BypassTPM,
+                        ["bypassRAMCheck"] = Bypass.BypassRAM,
+                        ["bypassSecureBoot"] = Bypass.BypassSecureBoot,
+                        ["bypassCPU"] = Bypass.BypassCPU,
+                        ["bypassStorage"] = Bypass.BypassStorage,
+                        ["bypassDisk"] = Bypass.BypassDisk
                     }
                     // Add other sections when implemented
                 };
@@ -257,6 +280,13 @@ namespace QuickWinstall.Lib
                 {
                     LangReg.SetValues(langRegSection);
                     Console.WriteLine("LangReg config loaded successfully.");
+                }
+
+                // Load Bypass section
+                if (config["bypass"] is JObject bypassSection)
+                {
+                    Bypass.SetValues(bypassSection);
+                    Console.WriteLine("BypassConfig loaded successfully.");
                 }
 
                 // Load other sections when implemented
