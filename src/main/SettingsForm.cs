@@ -143,7 +143,8 @@ namespace QuickWinstall
 
             // Icons
             bool useDarkTheme = _settingsManager.Theme == "Dark";
-            this.Icon = _iconManager.GetIcon("settings", useDarkTheme);
+            // I cannot alternate frame color so I decided to keep the icon consistent
+            this.Icon = _iconManager.GetIcon("settings", useDarkTheme && false);
             btnResetToDefault.Image = _iconManager.GetIconAsImage("reset", useDarkTheme, UIValues.Instance.GlobalIconSize);
             btnBrowse.Image = _iconManager.GetIconAsImage("browse", useDarkTheme, UIValues.Instance.GlobalIconSize);
 

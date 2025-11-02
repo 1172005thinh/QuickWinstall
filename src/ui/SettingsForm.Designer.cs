@@ -69,7 +69,7 @@ namespace QuickWinstall
             int bannerHeight = (int)(ui.BannerHeight * 0.6);
             
             // Form settings
-            this.Text = "Settings";
+            this.Text = lang.GetString("settingsForm.title");
             this.Width = ui.GetValue("forms.settingsForm.width", 580);
             this.Height = ui.GetValue("forms.settingsForm.height", 520);
             this.FormBorderStyle = ui.SettingsFormResizable ? FormBorderStyle.Sizable : FormBorderStyle.FixedDialog;

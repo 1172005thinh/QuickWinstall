@@ -1,6 +1,6 @@
 # QuickWinstall
 
-![Version](https://img.shields.io/badge/version-0.5-blue)
+![Version](https://img.shields.io/badge/version-0.5.1-blue)
 ![License](https://img.shields.io/badge/license-Free%20Open%20Source-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![DEV](https://img.shields.io/badge/status-in_development-orange)
@@ -15,7 +15,7 @@ QuickWinstall provides a friendly UI around common unattended-install tasks such
 
 - Visual editor for unattended-install configuration sections:
   - General: edition, product key, architecture
-  - Language & Region: system locale, keyboard, locale settings (not fully implemented)
+  - Language & Region: system locale, keyboard, locale settings
   - Bypass / compatibility toggles
   - Disk & Partition: partition presets and quick formatting (not fully implemented)
   - User Account: local account / admin options (not fully implemented)
@@ -45,7 +45,7 @@ Top-level files and important folders:
   - `themes/` — JSON theme files
   - `presets/` — preset/config files and lastConfig.json
 
-Tests are located under `src/tests/`.
+Tests are located under `tools/tests/`.
 
 ---
 
@@ -66,7 +66,7 @@ Minimum recommended:
 
 As an end user:
 
-1. In this repository, navigate to the `Actions` tab, open `Add Github Actions - Build QuickWinstall` workflow, and click download artifact `QuickWinstall-win` to get the latest build.
+1. In this repository, navigate to the `Actions` tab, open the latest workflow, and click download artifact `QuickWinstall-win` to get the latest build.
 2. Extract the downloaded ZIP file.
 3. Run `QuickWinstall.exe`.
 
