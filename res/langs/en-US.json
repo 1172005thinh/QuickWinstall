@@ -3,6 +3,32 @@
     "name": "QuickWinstall",
     "title": "Automated Windows 11 Installation"
   },
+  "bypassConfig": {
+    "bypassAll": {
+      "label": "Bypass All Hardware Checks"
+    },
+    "bypassCPU": {
+      "label": "Bypass CPU Check"
+    },
+    "bypassDisk": {
+      "label": "Bypass Disk Check"
+    },
+    "bypassRAM": {
+      "label": "Bypass RAM Check"
+    },
+    "bypassSecureBoot": {
+      "label": "Bypass Secure Boot Check"
+    },
+    "bypassStorage": {
+      "label": "Bypass Storage Check"
+    },
+    "bypassTPM": {
+      "label": "Bypass TPM Check"
+    },
+    "enableBypass": {
+      "label": "Unlock Hardware Check Bypass"
+    }
+  },
   "dialogs": {
     "buttons": {
       "cancel": "Cancel",
@@ -45,36 +71,7 @@
       "title": "Error"
     }
   },
-  "bypassConfig": {
-    "enableBypass": {
-      "label": "Unlock Hardware Check Bypass"
-    },
-    "bypassAll": {
-      "label": "Bypass All"
-    },
-    "bypassTPM": {
-      "label": "Bypass TPM Check"
-    },
-    "bypassRAM": {
-      "label": "Bypass RAM Check"
-    },
-    "bypassSecureBoot": {
-      "label": "Bypass Secure Boot Check"
-    },
-    "bypassCPU": {
-      "label": "Bypass CPU Check"
-    },
-    "bypassStorage": {
-      "label": "Bypass Storage Check"
-    },
-    "bypassDisk": {
-      "label": "Bypass Disk Check"
-    }
-  },
   "generalConfig": {
-    "enableGeneral": {
-      "label": "Unlock General Configurations"
-    },
     "cpuArch": {
       "label": "CPU Architecture:",
       "options": {
@@ -82,6 +79,9 @@
         "selectOne": "-- Select one --",
         "x64": "Intel/AMD x64"
       }
+    },
+    "enableGeneral": {
+      "label": "Unlock General Configurations"
     },
     "productKey": {
       "label": "Product Key:",
@@ -102,88 +102,88 @@
     "enableLangReg": {
       "label": "Unlock Language && Region Configurations"
     },
-    "systemLocale": {
-      "label": "System Locale:",
+    "keyboardLayout": {
+      "label": "Keyboard Layout:",
       "options": {
+        "de-DE": "German (Deutsch)",
         "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
         "selectOne": "-- Select one --",
         "vi-VN": "Vietnamese (Tiếng Việt)",
         "zh-CN": "Simplified Chinese (简体中文)",
-        "zh-TW": "Traditional Chinese (繁體中文)",
-        "ja-JP": "Japanese (日本語)",
-        "ko-KR": "Korean (한국어)",
-        "de-DE": "German (Deutsch)",
-        "fr-FR": "French (Français)",
-        "es-ES": "Spanish (Español)",
-        "pt-BR": "Portuguese (Português)"
-      }
-    },
-    "userLocale": {
-      "label": "User Locale:",
-      "options": {
-        "en-US": "English (United States)",
-        "selectOne": "-- Select one --",
-        "vi-VN": "Vietnamese (Tiếng Việt)",
-        "zh-CN": "Simplified Chinese (简体中文)",
-        "zh-TW": "Traditional Chinese (繁體中文)",
-        "ja-JP": "Japanese (日本語)",
-        "ko-KR": "Korean (한국어)",
-        "de-DE": "German (Deutsch)",
-        "fr-FR": "French (Français)",
-        "es-ES": "Spanish (Español)",
-        "pt-BR": "Portuguese (Português)"
+        "zh-TW": "Traditional Chinese (繁體中文)"
       }
     },
     "sameAsSystemLocale": {
       "label": "Same as System Locale"
     },
-    "windowsUILanguage": {
-      "label": "Windows UI Language:",
+    "systemLocale": {
+      "label": "System Locale:",
       "options": {
+        "de-DE": "German (Deutsch)",
         "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
         "selectOne": "-- Select one --",
         "vi-VN": "Vietnamese (Tiếng Việt)",
         "zh-CN": "Simplified Chinese (简体中文)",
-        "zh-TW": "Traditional Chinese (繁體中文)",
-        "ja-JP": "Japanese (日本語)",
-        "ko-KR": "Korean (한국어)",
-        "de-DE": "German (Deutsch)",
-        "fr-FR": "French (Français)",
-        "es-ES": "Spanish (Español)",
-        "pt-BR": "Portuguese (Português)"
-      }
-    },
-    "keyboardLayout": {
-      "label": "Keyboard Layout:",
-      "options": {
-        "en-US": "English (United States)",
-        "selectOne": "-- Select one --",
-        "vi-VN": "Vietnamese (Tiếng Việt)",
-        "zh-CN": "Simplified Chinese (简体中文)",
-        "zh-TW": "Traditional Chinese (繁體中文)",
-        "ja-JP": "Japanese (日本語)",
-        "ko-KR": "Korean (한국어)",
-        "de-DE": "German (Deutsch)",
-        "fr-FR": "French (Français)",
-        "es-ES": "Spanish (Español)",
-        "pt-BR": "Portuguese (Português)"
+        "zh-TW": "Traditional Chinese (繁體中文)"
       }
     },
     "timeZone": {
       "label": "Time Zone:",
       "options": {
-        "selectOne": "-- Select one --",
-        "UTC-08:00": "UTC-08:00 Pacific Time (US & Canada)",
-        "UTC-07:00": "UTC-07:00 Mountain Time (US & Canada)",
-        "UTC-06:00": "UTC-06:00 Central Time (US & Canada)",
-        "UTC-05:00": "UTC-05:00 Eastern Time (US & Canada)",
         "UTC": "UTC Coordinated Universal Time",
         "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
         "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
         "UTC+07:00": "UTC+07:00 Bangkok, Hanoi, Jakarta",
         "UTC+08:00": "UTC+08:00 Beijing, Chongqing, Hong Kong, Urumqi",
         "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
-        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney"
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney",
+        "UTC-05:00": "UTC-05:00 Eastern Time (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Central Time (US & Canada)",
+        "UTC-07:00": "UTC-07:00 Mountain Time (US & Canada)",
+        "UTC-08:00": "UTC-08:00 Pacific Time (US & Canada)",
+        "selectOne": "-- Select one --"
+      }
+    },
+    "userLocale": {
+      "label": "User Locale:",
+      "options": {
+        "de-DE": "German (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)"
+      }
+    },
+    "windowsUILanguage": {
+      "label": "Windows UI Language:",
+      "options": {
+        "de-DE": "German (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)"
       }
     }
   },
@@ -223,6 +223,49 @@
     },
     "title": "QuickWinstall"
   },
+  "oobeConfig": {
+    "enableOobe": {
+      "label": "Unlock OOBE Configurations"
+    },
+    "networkLocation": {
+      "label": "Network Location:",
+      "option": {
+        "home": "Home Network (Private)",
+        "public": "Public Network",
+        "selectOne": "-- Select one --",
+        "work": "Work Network (Private)"
+      }
+    },
+    "protectYourPC": {
+      "label": "Privacy Settings:",
+      "option": {
+        "cloudTelemetry": "Express Settings (Cloud & Telemetry Enabled)",
+        "privacyFocused": "Privacy Settings (Telemetry Disabled)",
+        "selectOne": "-- Select one --"
+      }
+    },
+    "skipAll": {
+      "label": "Skip All OOBE Steps"
+    },
+    "skipEULA": {
+      "label": "Skip EULA Page"
+    },
+    "skipLocalAccountCreation": {
+      "label": "Skip Local Account Screen"
+    },
+    "skipMachineOOBE": {
+      "label": "Skip machine-level OOBE tasks"
+    },
+    "skipOnlineAccountCreation": {
+      "label": "Skip Online Account Screen"
+    },
+    "skipUserOOBE": {
+      "label": "Skip user-level OOBE tasks"
+    },
+    "skipWirelessNetwork": {
+      "label": "Skip Wireless Setup"
+    }
+  },
   "settingsForm": {
     "autoSave": {
       "label": "Auto save config after a successful Generate:"
@@ -248,11 +291,11 @@
     "loadLast": {
       "label": "Auto load last saved config on Startup:"
     },
-    "savePath": {
-      "label": "XML save path:"
-    },
     "lockSections": {
       "label": "Lock all config sections on Startup:"
+    },
+    "savePath": {
+      "label": "XML save path:"
     },
     "theme": {
       "label": "Theme:",
@@ -287,23 +330,23 @@
       "header": "App Configurations Section"
     },
     "bypassConfig": {
-      "header": "Bypass Windows 11 Hardware Checks Section",
-      "enableBypass": "Unlock or lock all hardware requirement checks bypass",
-      "bypassAll": "Enable all hardware requirement bypasses at once",
-      "bypassTPM": "Bypass the Trusted Platform Module (TPM) 2.0 requirement",
+      "bypassAll": "Enable/Disable all hardware requirement bypasses at once",
+      "bypassCPU": "Bypass the CPU compatibility check",
+      "bypassDisk": "Bypass disk-related hardware checks",
       "bypassRAM": "Bypass the 4GB RAM minimum requirement",
       "bypassSecureBoot": "Bypass the Secure Boot requirement",
-      "bypassCPU": "Bypass the CPU compatibility check",
       "bypassStorage": "Bypass the 64GB storage minimum requirement",
-      "bypassDisk": "Bypass disk-related hardware checks"
+      "bypassTPM": "Bypass the Trusted Platform Module (TPM) 2.0 requirement",
+      "enableBypass": "Unlock or lock all hardware requirement checks bypass",
+      "header": "Bypass Windows 11 Hardware Checks Section"
     },
     "diskPartConfig": {
       "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
       "header": "Disk && Partition Configurations Section"
     },
     "generalConfig": {
-      "enableGeneral": "Unlock or lock all options in the General Configurations section",
       "cpuArch": "Select the CPU architecture for installation.",
+      "enableGeneral": "Unlock or lock all options in the General Configurations section",
       "header": "General Configurations Section",
       "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
       "windowsEdition": "Select the Windows edition to install"
@@ -311,12 +354,12 @@
     "langRegConfig": {
       "enableLangReg": "Unlock or lock all options in the Language & Region Configurations section",
       "header": "Language && Region Configurations Section",
-      "systemLocale": "Select the system locale for the Windows.",
-      "sameAsSystemLocale": "Set the User Locale same as the System Locale.\\n Difference between System Locale and User Locale may break Windows Installation.",
-      "userLocale": "Select the user locale for the Windows.",
-      "windowsUILanguage": "Select the Windows UI language.",
       "keyboardLayout": "Select the keyboard layout.",
-      "timeZone": "Select the time zone."
+      "sameAsSystemLocale": "Set the User Locale same as the System Locale.\\n Difference between System Locale and User Locale may break Windows Installation.",
+      "systemLocale": "Select the system locale for the Windows.",
+      "timeZone": "Select the time zone.",
+      "userLocale": "Select the user locale for the Windows.",
+      "windowsUILanguage": "Select the Windows UI language."
     },
     "mainForm": {
       "cancel": "Exit QuickWinstall",
@@ -332,15 +375,24 @@
     },
     "oobeConfig": {
       "enableOobe": "Unlock or lock all options in the OOBE Configurations section",
-      "header": "OOBE Configurations Section"
+      "header": "OOBE Configurations Section",
+      "networkLocation": "Set the initial network location profile.\\nHome/Work: Private firewall profile (allows network discovery).\\nPublic: Public firewall profile (blocks network discovery).",
+      "protectYourPC": "Choose privacy settings for telemetry and cloud features.\\nExpress Settings: Enables cloud features and telemetry.\\nPrivacy Settings: Disables most telemetry and cloud features.",
+      "skipAll": "Skip all Out-Of-Box Experience (OOBE) steps during Windows installation",
+      "skipEULA": "Skip the End User License Agreement acceptance page",
+      "skipLocalAccountCreation": "Skip the local account creation screen",
+      "skipMachineOOBE": "Skip machine-level OOBE configuration",
+      "skipOnlineAccountCreation": "Skip the Microsoft account sign-in screen",
+      "skipUserOOBE": "Skip user-level OOBE configuration",
+      "skipWirelessNetwork": "Skip wireless network setup during OOBE"
     },
     "personalConfig": {
       "enablePersonal": "Unlock or lock all options in the Personalize Configurations section",
       "header": "Personalize Configurations Section"
     },
     "section": {
-      "expand": "Expand {0} Section",
-      "collapse": "Collapse {0} Section"
+      "collapse": "Collapse {0} Section",
+      "expand": "Expand {0} Section"
     },
     "userAccConfig": {
       "enableUserAcc": "Unlock or lock all options in the User Account Configurations section",

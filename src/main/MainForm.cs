@@ -64,10 +64,10 @@ namespace QuickWinstall.Main
             _generalConfig = _configValues.General;
             _langRegConfig = _configValues.LangReg;
             _bypassConfig = _configValues.Bypass;
+            _oobeConfig = _configValues.OOBE;
             
             _diskPartConfig = new DiskPartConfig();
             _userAccConfig = new UserAccConfig();
-            _oobeConfig = new OOBEConfig();
             _personalConfig = new PersonalConfig();
             _appConfig = new AppConfig();
 
@@ -152,7 +152,7 @@ namespace QuickWinstall.Main
                 _bypassConfig.SetEnableState(false);
                 //_diskPartConfig.SetEnableState(false);
                 //_userAccConfig.SetEnableState(false);
-                //_oobeConfig.SetEnableState(false);
+                _oobeConfig.SetEnableState(false);
                 //_personalConfig.SetEnableState(false);
                 //_appConfig.SetEnableState(false);
 
@@ -167,7 +167,7 @@ namespace QuickWinstall.Main
                 _bypassConfig.SetEnableState(true);
                 //_diskPartConfig.SetEnableState(true);
                 //_userAccConfig.SetEnableState(true);
-                //_oobeConfig.SetEnableState(true);
+                _oobeConfig.SetEnableState(true);
                 //_personalConfig.SetEnableState(true);
                 //_appConfig.SetEnableState(true);
 
@@ -301,11 +301,13 @@ namespace QuickWinstall.Main
                         pnlConfigSection,
                         (sender, e) => OnConfigChanged(sender!, e),
                         _themeManager.CreateRoundedButton,
-                        null
+                        CheckAndUpdateExpandCollapseButton,
+                        CheckAndUpdateLockUnlockButton
                     );
                     _pnlOOBEConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlOOBEConfig);
                     _oobeConfig.LoadConfigIntoUI();
+                    _oobeConfig.ValidateAllUIFields();
                 }
                 
                 if (_userAccConfig != null)
@@ -588,6 +590,7 @@ namespace QuickWinstall.Main
                 _generalConfig.SetEnableState(true);
                 _langRegConfig.SetEnableState(true);
                 _bypassConfig.SetEnableState(true);
+                _oobeConfig.SetEnableState(true);
                 
                 _allSectionsLocked = false;
                 btnToggleLock.Image = _iconManager.GetIconAsImage("lock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
@@ -599,6 +602,7 @@ namespace QuickWinstall.Main
                 _generalConfig.SetEnableState(false);
                 _langRegConfig.SetEnableState(false);
                 _bypassConfig.SetEnableState(false);
+                _oobeConfig.SetEnableState(false);
                 
                 _allSectionsLocked = true;
                 btnToggleLock.Image = _iconManager.GetIconAsImage("unlock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
@@ -642,9 +646,15 @@ namespace QuickWinstall.Main
         public void CheckAndUpdateLockUnlockButton()
         {
             // Check if all sections with Enable toggles have the same state
-            bool allUnlocked = _generalConfig.EnableGeneral && _langRegConfig.EnableLangReg && _bypassConfig.EnableBypass;
-            bool allLocked = !_generalConfig.EnableGeneral && !_langRegConfig.EnableLangReg && !_bypassConfig.EnableBypass;
-            
+            bool allUnlocked = _generalConfig.EnableGeneral &&
+                                _langRegConfig.EnableLangReg &&
+                                _bypassConfig.EnableBypass &&
+                                _oobeConfig.EnableOOBE;
+            bool allLocked = !_generalConfig.EnableGeneral &&
+                                !_langRegConfig.EnableLangReg &&
+                                !_bypassConfig.EnableBypass &&
+                                !_oobeConfig.EnableOOBE;
+
             if (allUnlocked && _allSectionsLocked)
             {
                 _allSectionsLocked = false;
@@ -671,14 +681,16 @@ namespace QuickWinstall.Main
             
             if (_langRegConfig.EnableLangReg)
                 _langRegConfig.ClearControls();
-            
+
             if (_bypassConfig.EnableBypass)
                 _bypassConfig.ClearControls();
+            
+            if (_oobeConfig.EnableOOBE)
+                _oobeConfig.ClearControls();
             
             // These sections don't have Enable toggles, so always clear them
             _diskPartConfig.ClearControls();
             _userAccConfig.ClearControls();
-            _oobeConfig.ClearControls();
             _personalConfig.ClearControls();
             _appConfig.ClearControls();
         }
@@ -700,13 +712,10 @@ namespace QuickWinstall.Main
 
         private void UpdateConfigValues()
         {
-            // Update GeneralConfig from controls
             _generalConfig.UpdateFromControls();
-            
-            // Update LangRegConfig from controls
             _langRegConfig.UpdateFromControls();
-            
-            // No need to sync - both _generalConfig and _langRegConfig ARE the same instances from _configValues
+            _bypassConfig.UpdateFromControls();
+            _oobeConfig.UpdateFromControls();
         }
 
         // NOTE: RepositionSections() is no longer needed with DockStyle.Top

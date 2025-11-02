@@ -17,6 +17,11 @@ namespace QuickWinstall.Lib
             General = new GeneralConfig();
             LangReg = new LangRegConfig();
             Bypass = new BypassConfig();
+            DiskPart = new DiskPartConfig();
+            UserAcc = new UserAccConfig();
+            OOBE = new OOBEConfig();
+            Personal = new PersonalConfig();
+            App = new AppConfig();
             _emptyConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "config", "empty.json");
         }
 
@@ -46,13 +51,11 @@ namespace QuickWinstall.Lib
         public GeneralConfig General { get; set; }
         public LangRegConfig LangReg { get; set; }
         public BypassConfig Bypass { get; set; }
-        
-        // Additional configuration sections will be added later
-        // public DiskPartConfig DiskPart { get; set; }
-        // public UserAccConfig UserAcc { get; set; }
-        // public OOBEConfig OOBE { get; set; }
-        // public PersonalConfig Personal { get; set; }
-        // public AppConfig App { get; set; }
+        public DiskPartConfig DiskPart { get; set; }
+        public UserAccConfig UserAcc { get; set; }
+        public OOBEConfig OOBE { get; set; }
+        public PersonalConfig Personal { get; set; }
+        public AppConfig App { get; set; }
 
         #endregion
 
@@ -74,6 +77,11 @@ namespace QuickWinstall.Lib
                     bool generalEnabled = General.EnableGeneral;
                     bool langRegEnabled = LangReg.EnableLangReg;
                     bool bypassEnabled = Bypass.EnableBypass;
+                    //bool diskPartEnabled = DiskPart.EnableDiskPart;
+                    //bool userAccEnabled = UserAcc.EnableUserAcc;
+                    bool oobeEnabled = OOBE.EnableOOBE;
+                    //bool personalEnabled = Personal.EnablePersonal;
+                    //bool appEnabled = App.EnableApp;
 
                     // Load empty values for General section
                     if (emptyConfig["general"] is JObject generalSection)
@@ -93,12 +101,45 @@ namespace QuickWinstall.Lib
                         Bypass.SetValues(bypassSection);
                     }
 
+                    // Load empty values for DiskPart section
+                    // if (emptyConfig["diskPart"] is JObject diskPartSection)
+                    // {
+                    //     DiskPart.SetValues(diskPartSection);
+                    // }
+
+                    // Load empty values for UserAcc section
+                    // if (emptyConfig["userAcc"] is JObject userAccSection)
+                    // {
+                    //     UserAcc.SetValues(userAccSection);
+                    // }
+
+                    // Load empty values for OOBE section
+                    if (emptyConfig["oobe"] is JObject oobeSection)
+                    {
+                        OOBE.SetValues(oobeSection);
+                    }
+
+                    // Load empty values for Personal section
+                    // if (emptyConfig["personal"] is JObject personalSection)
+                    // {
+                    //     Personal.SetValues(personalSection);
+                    // }
+
+                    // Load empty values for App section
+                    // if (emptyConfig["app"] is JObject appSection)
+                    // {
+                    //     App.SetValues(appSection);
+                    // }
+
                     // Restore Enable states after clearing data models
                     General.EnableGeneral = generalEnabled;
                     LangReg.EnableLangReg = langRegEnabled;
                     Bypass.EnableBypass = bypassEnabled;
-
-                    // Clear other sections when implemented
+                    //DiskPart.EnableDiskPart = diskPartEnabled;
+                    //UserAcc.EnableUserAcc = userAccEnabled;
+                    OOBE.EnableOOBE = oobeEnabled;
+                    //Personal.EnablePersonal = personalEnabled;
+                    //App.EnableApp = appEnabled;
                 }
                 else
                 {
@@ -120,7 +161,12 @@ namespace QuickWinstall.Lib
             
             errors.AddRange(General.Validate());
             errors.AddRange(LangReg.Validate());
-            // Validate other sections when implemented
+            //errors.AddRange(Bypass.Validate());
+            //errors.AddRange(DiskPart.Validate());
+            //errors.AddRange(UserAcc.Validate());
+            errors.AddRange(OOBE.Validate());
+            //errors.AddRange(Personal.Validate());
+            //errors.AddRange(App.Validate());
 
             return errors;
         }
@@ -139,13 +185,36 @@ namespace QuickWinstall.Lib
             {
                 values[kvp.Key] = kvp.Value;
             }
-            
+
             foreach (var kvp in Bypass.GetValues())
             {
                 values[kvp.Key] = kvp.Value;
             }
 
-            // Add other sections when implemented
+            //foreach (var kvp in DiskPart.GetValues())
+            //{
+            //    values[kvp.Key] = kvp.Value;
+            //}
+
+            //foreach (var kvp in UserAcc.GetValues())
+            //{
+            //    values[kvp.Key] = kvp.Value;
+            //}
+
+            foreach (var kvp in OOBE.GetValues())
+            {
+                values[kvp.Key] = kvp.Value;
+            }
+
+            //foreach (var kvp in Personal.GetValues())
+            //{
+            //    values[kvp.Key] = kvp.Value;
+            //}
+
+            //foreach (var kvp in App.GetValues())
+            //{
+            //    values[kvp.Key] = kvp.Value;
+            //}
 
             return values;
         }
@@ -181,6 +250,11 @@ namespace QuickWinstall.Lib
                     General.UpdateFromControls();
                     LangReg.UpdateFromControls();
                     Bypass.UpdateFromControls();
+                    //DiskPart.UpdateFromControls();
+                    //UserAcc.UpdateFromControls();
+                    OOBE.UpdateFromControls();
+                    //Personal.UpdateFromControls();
+                    //App.UpdateFromControls();
                     Console.WriteLine("Updated config from UI controls.");
                 }
                 catch (Exception ex)
@@ -210,14 +284,26 @@ namespace QuickWinstall.Lib
                     {
                         ["bypassAll"] = Bypass.BypassAll,
                         ["bypassTPM"] = Bypass.BypassTPM,
-                        ["bypassRAMCheck"] = Bypass.BypassRAM,
+                        ["bypassRAM"] = Bypass.BypassRAM,
                         ["bypassSecureBoot"] = Bypass.BypassSecureBoot,
                         ["bypassCPU"] = Bypass.BypassCPU,
                         ["bypassStorage"] = Bypass.BypassStorage,
                         ["bypassDisk"] = Bypass.BypassDisk
-                    }
-                    // Add other sections when implemented
-                };
+                    },
+                    ["oobe"] = new JObject
+                    {
+                        ["skipAll"] = OOBE.SkipAll,
+                        ["skipEULA"] = OOBE.SkipEULA,
+                        ["skipLocalAccountCreation"] = OOBE.SkipLocalAccountCreation,
+                        ["skipOnlineAccountCreation"] = OOBE.SkipOnlineAccountCreation,
+                        ["skipWirelessNetwork"] = OOBE.SkipWirelessNetwork,
+                        ["skipMachineOOBE"] = OOBE.SkipMachineOOBE,
+                        ["skipUserOOBE"] = OOBE.SkipUserOOBE,
+                        ["networkLocation"] = OOBE.NetworkLocation,
+                        ["protectYourPC"] = OOBE.ProtectYourPC
+                    },
+                        // Add other sections when implemented
+                    };
 
                 Console.WriteLine($"Config JSON: {config.ToString(Newtonsoft.Json.Formatting.None)}");
 
@@ -289,7 +375,40 @@ namespace QuickWinstall.Lib
                     Console.WriteLine("BypassConfig loaded successfully.");
                 }
 
-                // Load other sections when implemented
+                // Load DiskPart section
+                // if (config["diskPart"] is JObject diskPartSection)
+                // {
+                //     DiskPart.SetValues(diskPartSection);
+                //     Console.WriteLine("DiskPartConfig loaded successfully.");
+                // }
+
+                // Load UserAcc section
+                // if (config["userAcc"] is JObject userAccSection)
+                // {
+                //     UserAcc.SetValues(userAccSection);
+                //     Console.WriteLine("UserAccConfig loaded successfully.");
+                // }
+
+                // Load OOBE section
+                if (config["oobe"] is JObject oobeSection)
+                {
+                    OOBE.SetValues(oobeSection);
+                    Console.WriteLine("OOBEConfig loaded successfully.");
+                }
+
+                // Load Personal section
+                // if (config["personal"] is JObject personalSection)
+                // {
+                //     Personal.SetValues(personalSection);
+                //     Console.WriteLine("PersonalConfig loaded successfully.");
+                // }
+
+                // Load App section
+                // if (config["app"] is JObject appSection)
+                // {
+                //     App.SetValues(appSection);
+                //     Console.WriteLine("AppConfig loaded successfully.");
+                // }
             }
             catch (Exception ex)
             {

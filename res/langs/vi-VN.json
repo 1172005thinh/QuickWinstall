@@ -3,6 +3,32 @@
     "name": "QuickWinstall",
     "title": "Tự động hóa Cài đặt Windows 11"
   },
+  "bypassConfig": {
+    "bypassAll": {
+      "label": "Bỏ qua Tất cả Kiểm tra Phần cứng"
+    },
+    "bypassCPU": {
+      "label": "Bỏ qua CPU Check"
+    },
+    "bypassDisk": {
+      "label": "Bỏ qua Ổ đĩa Check"
+    },
+    "bypassRAM": {
+      "label": "Bỏ qua RAM Check"
+    },
+    "bypassSecureBoot": {
+      "label": "Bỏ qua Secure Boot Check"
+    },
+    "bypassStorage": {
+      "label": "Bỏ qua Dung lượng Check"
+    },
+    "bypassTPM": {
+      "label": "Bỏ qua TPM Check"
+    },
+    "enableBypass": {
+      "label": "Mở khóa Bỏ qua Kiểm tra Phần cứng"
+    }
+  },
   "dialogs": {
     "buttons": {
       "cancel": "Hủy",
@@ -45,36 +71,7 @@
       "title": "Lỗi"
     }
   },
-  "bypassConfig": {
-    "enableBypass": {
-      "label": "Mở khóa Bỏ qua Kiểm tra Phần cứng"
-    },
-    "bypassAll": {
-      "label": "Bỏ qua Tất cả"
-    },
-    "bypassTPM": {
-      "label": "Bỏ qua TPM Check"
-    },
-    "bypassRAM": {
-      "label": "Bỏ qua RAM Check"
-    },
-    "bypassSecureBoot": {
-      "label": "Bỏ qua Secure Boot Check"
-    },
-    "bypassCPU": {
-      "label": "Bỏ qua CPU Check"
-    },
-    "bypassStorage": {
-      "label": "Bỏ qua Dung lượng Check"
-    },
-    "bypassDisk": {
-      "label": "Bỏ qua Ổ đĩa Check"
-    }
-  },
   "generalConfig": {
-    "enableGeneral": {
-      "label": "Mở khóa Cấu hình Chung"
-    },
     "cpuArch": {
       "label": "Kiến trúc CPU:",
       "options": {
@@ -82,6 +79,9 @@
         "selectOne": "-- Chọn một --",
         "x64": "Intel/AMD x64"
       }
+    },
+    "enableGeneral": {
+      "label": "Mở khóa Cấu hình Chung"
     },
     "productKey": {
       "label": "Product Key:",
@@ -102,88 +102,88 @@
     "enableLangReg": {
       "label": "Mở khóa Cấu hình Ngôn ngữ và Khu vực"
     },
-    "systemLocale": {
-      "label": "Vùng của Hệ thống:",
+    "keyboardLayout": {
+      "label": "Bố cục Bàn phím:",
       "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
         "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
         "selectOne": "-- Chọn một --",
         "vi-VN": "Tiếng Việt",
         "zh-CN": "Tiếng Trung Giản thể (简体中文)",
-        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
-        "ja-JP": "Tiếng Nhật (日本語)",
-        "ko-KR": "Tiếng Hàn (한국어)",
-        "de-DE": "Tiếng Đức (Deutsch)",
-        "fr-FR": "Tiếng Pháp (Français)",
-        "es-ES": "Tiếng Tây Ban Nha (Español)",
-        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
-      }
-    },
-    "userLocale": {
-      "label": "Vùng của Người dùng:",
-      "options": {
-        "en-US": "English (United States)",
-        "selectOne": "-- Chọn một --",
-        "vi-VN": "Tiếng Việt",
-        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
-        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
-        "ja-JP": "Tiếng Nhật (日本語)",
-        "ko-KR": "Tiếng Hàn (한국어)",
-        "de-DE": "Tiếng Đức (Deutsch)",
-        "fr-FR": "Tiếng Pháp (Français)",
-        "es-ES": "Tiếng Tây Ban Nha (Español)",
-        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
       }
     },
     "sameAsSystemLocale": {
       "label": "Giống Vùng của Hệ thống"
     },
-    "windowsUILanguage": {
-      "label": "Ngôn ngữ UI của Windows:",
+    "systemLocale": {
+      "label": "Vùng của Hệ thống:",
       "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
         "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
         "selectOne": "-- Chọn một --",
         "vi-VN": "Tiếng Việt",
         "zh-CN": "Tiếng Trung Giản thể (简体中文)",
-        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
-        "ja-JP": "Tiếng Nhật (日本語)",
-        "ko-KR": "Tiếng Hàn (한국어)",
-        "de-DE": "Tiếng Đức (Deutsch)",
-        "fr-FR": "Tiếng Pháp (Français)",
-        "es-ES": "Tiếng Tây Ban Nha (Español)",
-        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
-      }
-    },
-    "keyboardLayout": {
-      "label": "Bố cục Bàn phím:",
-      "options": {
-        "en-US": "English (United States)",
-        "selectOne": "-- Chọn một --",
-        "vi-VN": "Tiếng Việt",
-        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
-        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)",
-        "ja-JP": "Tiếng Nhật (日本語)",
-        "ko-KR": "Tiếng Hàn (한국어)",
-        "de-DE": "Tiếng Đức (Deutsch)",
-        "fr-FR": "Tiếng Pháp (Français)",
-        "es-ES": "Tiếng Tây Ban Nha (Español)",
-        "pt-BR": "Tiếng Bồ Đào Nha (Português)"
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
       }
     },
     "timeZone": {
       "label": "Múi giờ:",
       "options": {
-        "selectOne": "-- Chọn một --",
-        "UTC-08:00": "UTC-08:00 Thái Bình Dương (Mỹ & Canada)",
-        "UTC-07:00": "UTC-07:00 Vùng Núi Phía Tây (US & Canada)",
-        "UTC-06:00": "UTC-06:00 Vùng Trung tâm (US & Canada)",
-        "UTC-05:00": "UTC-05:00 Phía Đông (US & Canada)",
         "UTC": "UTC Thời gian Quốc tế",
         "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
         "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
         "UTC+07:00": "UTC+07:00 Bangkok, Hà Nội, Jakarta",
         "UTC+08:00": "UTC+08:00 Bắc Kinh, Trùng Khánh, Hồng Kông, Urumqi",
         "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
-        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney"
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney",
+        "UTC-05:00": "UTC-05:00 Phía Đông (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Vùng Trung tâm (US & Canada)",
+        "UTC-07:00": "UTC-07:00 Vùng Núi Phía Tây (US & Canada)",
+        "UTC-08:00": "UTC-08:00 Thái Bình Dương (Mỹ & Canada)",
+        "selectOne": "-- Chọn một --"
+      }
+    },
+    "userLocale": {
+      "label": "Vùng của Người dùng:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "windowsUILanguage": {
+      "label": "Ngôn ngữ UI của Windows:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
       }
     }
   },
@@ -223,6 +223,49 @@
     },
     "title": "QuickWinstall"
   },
+  "oobeConfig": {
+    "enableOobe": {
+      "label": "Mở khóa Cấu hình OOBE"
+    },
+    "networkLocation": {
+      "label": "Kiểu kết nối mạng:",
+      "option": {
+        "home": "Mạng Gia đình (Riêng tư)",
+        "public": "Mạng Công cộng",
+        "selectOne": "-- Chọn một --",
+        "work": "Mạng Công việc (Riêng tư)"
+      }
+    },
+    "protectYourPC": {
+      "label": "Cài đặt Quyền Riêng tư:",
+      "option": {
+        "cloudTelemetry": "Cài đặt Nhanh (Bật Cloud & Telemetry)",
+        "privacyFocused": "Cài đặt Riêng tư (Tắt Telemetry)",
+        "selectOne": "-- Chọn một --"
+      }
+    },
+    "skipAll": {
+      "label": "Bỏ qua Tất cả các Bước OOBE"
+    },
+    "skipEULA": {
+      "label": "Bỏ qua Trang Điều khoản EULA"
+    },
+    "skipLocalAccountCreation": {
+      "label": "Bỏ qua Bước Tạo Tài khoản Cục bộ"
+    },
+    "skipMachineOOBE": {
+      "label": "Bỏ qua Bước chạy task Cấp độ Hệ thống"
+    },
+    "skipOnlineAccountCreation": {
+      "label": "Bỏ qua Bước Tạo Tài khoản Trực tuyến"
+    },
+    "skipUserOOBE": {
+      "label": "Bỏ qua Bước chạy task Cấp độ Người dùng"
+    },
+    "skipWirelessNetwork": {
+      "label": "Bỏ qua Bước Thiết lập Mạng Không dây"
+    }
+  },
   "settingsForm": {
     "autoSave": {
       "label": "Tự động lưu cấu hình khi Tạo file:"
@@ -248,11 +291,11 @@
     "loadLast": {
       "label": "Tự động nạp cấu hình đã lưu lần cuối khi Khởi động:"
     },
-    "savePath": {
-      "label": "Đường dẫn lưu XML:"
-    },
     "lockSections": {
       "label": "Khóa tất cả các bảng cấu hình khi Khởi động:"
+    },
+    "savePath": {
+      "label": "Đường dẫn lưu XML:"
     },
     "theme": {
       "label": "Giao diện:",
@@ -287,23 +330,23 @@
       "header": "Phần Cấu hình Ứng dụng"
     },
     "bypassConfig": {
-      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11",
-      "enableBypass": "Khóa hoặc mở khóa tất cả các tùy chọn bỏ qua kiểm tra phần cứng",
-      "bypassAll": "Bật tất cả các tùy chọn bỏ qua kiểm tra phần cứng cùng lúc",
-      "bypassTPM": "Bỏ qua yêu cầu Trusted Platform Module (TPM) 2.0",
+      "bypassAll": "Bật/Tắt tất cả các tùy chọn bỏ qua kiểm tra phần cứng cùng lúc",
+      "bypassCPU": "Bỏ qua kiểm tra tương thích CPU",
+      "bypassDisk": "Bỏ qua các kiểm tra phần cứng liên quan đến đĩa",
       "bypassRAM": "Bỏ qua yêu cầu RAM tối thiểu 4GB",
       "bypassSecureBoot": "Bỏ qua yêu cầu Secure Boot",
-      "bypassCPU": "Bỏ qua kiểm tra tương thích CPU",
       "bypassStorage": "Bỏ qua yêu cầu dung lượng tối thiểu 64GB",
-      "bypassDisk": "Bỏ qua các kiểm tra phần cứng liên quan đến đĩa"
+      "bypassTPM": "Bỏ qua yêu cầu Trusted Platform Module (TPM) 2.0",
+      "enableBypass": "Khóa hoặc mở khóa tất cả các tùy chọn bỏ qua kiểm tra phần cứng",
+      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
     },
     "diskPartConfig": {
       "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa và Phân vùng",
       "header": "Phần Cấu hình Đĩa và Phân vùng"
     },
     "generalConfig": {
-      "enableGeneral": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Chung",
       "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
+      "enableGeneral": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Chung",
       "header": "Phần Cấu hình Chung",
       "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
       "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
@@ -311,12 +354,12 @@
     "langRegConfig": {
       "enableLangReg": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Ngôn ngữ và Khu vực",
       "header": "Phần Cấu hình Ngôn ngữ và Khu vực",
-      "systemLocale": "Chọn ngôn ngữ hệ thống cho Windows.",
-      "sameAsSystemLocale": "Đặt Ngôn ngữ Người dùng giống như Ngôn ngữ Hệ thống.\\n Cài đặt Windows có thể bị lỗi nếu Ngôn ngữ Người dùng khác với Ngôn ngữ Hệ thống.",
-      "userLocale": "Chọn ngôn ngữ người dùng cho Windows.",
-      "windowsUILanguage": "Chọn ngôn ngữ giao diện Windows.",
       "keyboardLayout": "Chọn bố cục bàn phím.",
-      "timeZone": "Chọn múi giờ."
+      "sameAsSystemLocale": "Đặt Ngôn ngữ Người dùng giống như Ngôn ngữ Hệ thống.\\n Cài đặt Windows có thể bị lỗi nếu Ngôn ngữ Người dùng khác với Ngôn ngữ Hệ thống.",
+      "systemLocale": "Chọn ngôn ngữ hệ thống cho Windows.",
+      "timeZone": "Chọn múi giờ.",
+      "userLocale": "Chọn ngôn ngữ người dùng cho Windows.",
+      "windowsUILanguage": "Chọn ngôn ngữ giao diện Windows."
     },
     "mainForm": {
       "cancel": "Thoát QuickWinstall",
@@ -332,15 +375,24 @@
     },
     "oobeConfig": {
       "enableOobe": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình OOBE",
-      "header": "Phần Cấu hình OOBE"
+      "header": "Phần Cấu hình OOBE",
+      "networkLocation": "Đặt hồ sơ vị trí mạng ban đầu.\\nGia đình/Công việc: Hồ sơ tường lửa riêng tư (cho phép khám phá mạng).\\nCông cộng: Hồ sơ tường lửa công cộng (chặn khám phá mạng).",
+      "protectYourPC": "Chọn cài đặt riêng tư cho telemetry và tính năng đám mây.\\nCài đặt Nhanh: Bật các tính năng đám mây và telemetry.\\nCài đặt Riêng tư: Tắt hầu hết telemetry và tính năng đám mây.",
+      "skipAll": "Bỏ qua tất cả các bước Trải nghiệm Hộp (OOBE) trong quá trình cài đặt Windows",
+      "skipEULA": "Bỏ qua trang chấp nhận Thỏa thuận Giấy phép Người dùng Cuối",
+      "skipLocalAccountCreation": "Bỏ qua màn hình tạo tài khoản cục bộ",
+      "skipMachineOOBE": "Bỏ qua cấu hình OOBE cấp máy",
+      "skipOnlineAccountCreation": "Bỏ qua màn hình đăng nhập tài khoản Microsoft",
+      "skipUserOOBE": "Bỏ qua cấu hình OOBE cấp người dùng",
+      "skipWirelessNetwork": "Bỏ qua thiết lập mạng không dây trong OOBE"
     },
     "personalConfig": {
       "enablePersonal": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Cá nhân hóa",
       "header": "Phần Cấu hình Cá nhân hóa"
     },
     "section": {
-      "expand": "Mở rộng phần {0}",
-      "collapse": "Thu gọn phần {0}"
+      "collapse": "Thu gọn phần {0}",
+      "expand": "Mở rộng phần {0}"
     },
     "userAccConfig": {
       "enableUserAcc": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Tài khoản Người dùng",

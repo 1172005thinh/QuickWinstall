@@ -1,6 +1,6 @@
 # QuickWinstall
 
-![Version](https://img.shields.io/badge/version-0.4-blue)
+![Version](https://img.shields.io/badge/version-0.5-blue)
 ![License](https://img.shields.io/badge/license-Free%20Open%20Source-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![DEV](https://img.shields.io/badge/status-in_development-orange)
@@ -16,11 +16,11 @@ QuickWinstall provides a friendly UI around common unattended-install tasks such
 - Visual editor for unattended-install configuration sections:
   - General: edition, product key, architecture
   - Language & Region: system locale, keyboard, locale settings (not fully implemented)
-  - User Account: local account / admin options (not fully implemented)
-  - OOBE: out-of-box experience options (not fully implemented)
-  - Personalization: simple UI placeholders (not fully implemented)
+  - Bypass / compatibility toggles
   - Disk & Partition: partition presets and quick formatting (not fully implemented)
-  - Bypass / compatibility toggles (not fully implemented)
+  - User Account: local account / admin options (not fully implemented)
+  - OOBE: out-of-box experience options
+  - Personalization: simple UI placeholders (not fully implemented)
   - App-level settings and presets (not fully implemented)
 - Live preview and simple persistence of presets
 - Theme and language (localization) support (English & Vietnamese included)
@@ -66,10 +66,9 @@ Minimum recommended:
 
 As an end user:
 
-1. Run the installer or launch the built executable (`QuickWinstall.exe`).
-2. Use the main form to edit sections and configure your unattended preset.
-3. Save or export a preset from `res/presets/`.
-4. Use generated configuration with your deployment tooling (e.g., Microsoft Autounattend, other imaging/deployment pipelines).
+1. In this repository, navigate to the `Actions` tab, open `Add Github Actions - Build QuickWinstall` workflow, and click download artifact `QuickWinstall-win` to get the latest build.
+2. Extract the downloaded ZIP file.
+3. Run `QuickWinstall.exe`.
 
 As a developer (local run):
 

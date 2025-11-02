@@ -199,7 +199,9 @@ namespace QuickWinstall
             tooltips.SetToolTip(this.lblAutoSave, "settingsForm.tooltips.autoSave");
 
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
-            this.toggleAutoSave = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+            int toggleX = pnlSettings.Width - toggleWidth - ui.GlobalSpacingX;
+
+            this.toggleAutoSave = theme.CreateToggleSwitch(new Point(toggleX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             this.toggleAutoSave.Click += (s, e) => OnToggleAutoSave();
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -214,8 +216,8 @@ namespace QuickWinstall
             this.lblLoadLast.Cursor = Cursors.Hand;
             this.lblLoadLast.Click += (s, e) => OnToggleLoadLast();
             tooltips.SetToolTip(this.lblLoadLast, "settingsForm.tooltips.loadLast");
-            
-            this.toggleLoadLast = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+
+            this.toggleLoadLast = theme.CreateToggleSwitch(new Point(toggleX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             this.toggleLoadLast.Click += (s, e) => OnToggleLoadLast();
             
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -231,7 +233,7 @@ namespace QuickWinstall
             this.lblExpandAll.Click += (s, e) => OnToggleExpandAll();
             tooltips.SetToolTip(this.lblExpandAll, "settingsForm.tooltips.expandAll");  
 
-            this.toggleExpandAll = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, true);
+            this.toggleExpandAll = theme.CreateToggleSwitch(new Point(toggleX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             this.toggleExpandAll.Click += (s, e) => OnToggleExpandAll();
 
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -247,7 +249,7 @@ namespace QuickWinstall
             this.lblLockSections.Click += (s, e) => OnToggleLockSections();
             tooltips.SetToolTip(this.lblLockSections, "settingsForm.tooltips.lockSections");
 
-            this.toggleLockSections = theme.CreateToggleSwitch(new Point(pnlSettings.Width - toggleWidth - ui.GlobalSpacingX, currentY), toggleWidth, ui.GlobalInputHeight, false);
+            this.toggleLockSections = theme.CreateToggleSwitch(new Point(toggleX, currentY), toggleWidth, ui.GlobalInputHeight, false);
             this.toggleLockSections.Click += (s, e) => OnToggleLockSections();
 
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;

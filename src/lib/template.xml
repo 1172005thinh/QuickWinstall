@@ -172,14 +172,14 @@
                 </SynchronousCommand>
             </FirstLogonCommands>
 			<OOBE>
-				<HideEULAPage>true</HideEULAPage>
-				<HideLocalAccountScreen>true</HideLocalAccountScreen>
-				<HideOnlineAccountScreens>true</HideOnlineAccountScreens>
-				<HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
-				<NetworkLocation>Home</NetworkLocation>
-				<ProtectYourPC>3</ProtectYourPC>
-				<SkipMachineOOBE>true</SkipMachineOOBE>
-				<SkipUserOOBE>true</SkipUserOOBE>
+				<HideEULAPage>{{SkipEULA}}</HideEULAPage>
+				<HideLocalAccountScreen>{{SkipLocalAccountCreation}}</HideLocalAccountScreen>
+				<HideOnlineAccountScreens>{{SkipOnlineAccountCreation}}</HideOnlineAccountScreens>
+				<HideWirelessSetupInOOBE>{{SkipWirelessNetwork}}</HideWirelessSetupInOOBE>
+				<NetworkLocation>{{NetworkLocation}}</NetworkLocation>
+				<ProtectYourPC>{{ProtectYourPC}}</ProtectYourPC>
+				<SkipMachineOOBE>{{SkipMachineOOBE}}</SkipMachineOOBE>
+				<SkipUserOOBE>{{SkipUserOOBE}}</SkipUserOOBE>
 			</OOBE>
 		</component>
 	</settings>

@@ -20,5 +20,17 @@
     "bypassCPU": false,
     "bypassStorage": false,
     "bypassDisk": false
+  },
+  "oobeConfig": {
+    "enableOOBE": false,
+    "skipAll": false,
+    "skipEULA": false,
+    "skipLocalAccountCreation": false,
+    "skipOnlineAccountCreation": false,
+    "skipWirelessNetwork": false,
+    "skipMachineOOBE": false,
+    "skipUserOOBE": false,
+    "networkLocation": "",
+    "protectYourPC": ""
   }
 }

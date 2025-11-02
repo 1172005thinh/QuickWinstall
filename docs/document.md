@@ -709,6 +709,29 @@ Properties:
       - Bypass All checks = False -> Set all individual bypass values to 0 in XML
       - Look for {{BypassTPMCheck}}, {{BypassRAMCheck}}, {{BypassSecureBootCheck}}, {{BypassCPUCheck}}, {{BypassStorageCheck}}, {{BypassDiskCheck}} keys in the XML template for individual bypass values mapping.
 
+### DiskPartConfig
+
+Later...
+
+### UserAccConfig
+
+Later...
+
+### OOBEConfig
+
+- Content:
+  - Label and Input Field for each configuration parameter:
+    - Skip All
+    - Skip EULA screen
+    - Skip Local Account Creation screen
+    - Skip Online Account Creation screen
+    - Skip Wireless Network screen
+    - Skip Machine OOBE settings screen
+    - Skip User OOBE settings screen
+  - Validation Rules:
+    - None (all toggles are optional)
+  - Structure are similar to BypassConfig section.
+
 ### SettingsForm
 
 The settings form of the application

@@ -74,7 +74,7 @@ namespace QuickWinstall.Config
             // User Account Config Title
             lblUserAccConfigTitle = new Label();
             lblUserAccConfigTitle.Location = new Point(btnUserAccConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblUserAccConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
+            lblUserAccConfigTitle.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             lblUserAccConfigTitle.Text = lang.GetString("mainForm.sections.userAcc");
             lblUserAccConfigTitle.Font = theme.GetFont("subheader");
             lblUserAccConfigTitle.UseMnemonic = false;

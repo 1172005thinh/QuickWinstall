@@ -830,7 +830,7 @@ namespace QuickWinstall.Config
         {
             // Set flag to prevent event handlers from firing during loading
             _isLoading = true;
-
+            
             // Check if UI is initialized
             if (cmbSystemLocale == null ||
                 cmbUserLocale == null ||
@@ -839,9 +839,10 @@ namespace QuickWinstall.Config
                 cmbTimeZone == null)
             {
                 Console.WriteLine("UpdateControlsFromModel: UI controls not initialized yet!");
-                _isLoading = false;
                 return;
             }
+
+            Console.WriteLine($"UpdateControlsFromModel: SystemLocale={SystemLocale}, UserLocale={UserLocale}, WindowsUILanguage={WindowsUILanguage}, KeyboardLayout={KeyboardLayout}, TimeZone={TimeZone}");
 
             try
             {
@@ -952,30 +953,6 @@ namespace QuickWinstall.Config
                 // Update User Locale dropdown state based on toggle
                 bool toggleState = theme.GetToggleSwitchState(toggleSameAsSystemLocale);
                 cmbUserLocale.Enabled = !toggleState;
-
-                /*                
-                // Update font styles based on toggle state
-                if (toggleState)
-                {
-                    // When toggle is ON
-                    lblUserLocale.Font = theme.GetFont("muted");
-                    lblUserLocale.ForeColor = theme.GetFontColor("muted");
-                    cmbUserLocale.Font = theme.GetFont("muted");
-                    cmbUserLocale.ForeColor = theme.GetFontColor("muted");
-                    lblSameAsSystemLocale.Font = theme.GetFont("normal");
-                    lblSameAsSystemLocale.ForeColor = theme.GetFontColor("normal");
-                }
-                else
-                {
-                    // When toggle is OFF
-                    lblUserLocale.Font = theme.GetFont("normal");
-                    lblUserLocale.ForeColor = theme.GetFontColor("normal");
-                    cmbUserLocale.Font = theme.GetFont("normal");
-                    cmbUserLocale.ForeColor = theme.GetFontColor("inputForeground");
-                    lblSameAsSystemLocale.Font = theme.GetFont("muted");
-                    lblSameAsSystemLocale.ForeColor = theme.GetFontColor("muted");
-                }
-                */
 
                 // Validate after loading
                 ValidateAllUIFields();

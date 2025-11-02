@@ -39,6 +39,9 @@ namespace QuickWinstall.Config
         // Bypass All Checks
         private Label lblBypassAll = null!;
         private Panel toggleBypassAll = null!;
+
+        // Separator after Bypass All
+        private Panel pnlBypassConfigAllSeparator = null!;
         
         // Individual bypass checks
         private Label lblBypassTPM = null!;
@@ -87,7 +90,7 @@ namespace QuickWinstall.Config
             _onEnableToggle = onEnableToggle;
             _onConfigChanged = onConfigChanged;
             
-            int contentHeight = ui.GetSectionValue("bypassConfig", "contentHeight", 440);
+            int contentHeight = ui.GetSectionValue("bypassConfig", "contentHeight", 450);
             
             pnlBypassConfig = new Panel();
             pnlBypassConfig.Location = new Point(0, 0);
@@ -115,6 +118,7 @@ namespace QuickWinstall.Config
             tooltips.SetToolTip(lblBypassConfigTitle, "tooltips.bypassConfig.header", lang.GetString("tooltips.bypassConfig.header"));
 
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
+            int doubleLabelWidth = ui.GlobalLabelWidth * 2;
 
             // Enable Bypass Hardware Check
             // Check if bypass should be locked at startup
@@ -125,7 +129,7 @@ namespace QuickWinstall.Config
 
             lblEnableBypass = new Label();
             lblEnableBypass.Location = new Point(toggleEnableBypass.Right + ui.GlobalSpacingX, btnBypassConfigToggle.Bottom + ui.GlobalSpacingY);
-            lblEnableBypass.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
+            lblEnableBypass.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblEnableBypass.Text = lang.GetString("bypassConfig.enableBypass.label");
             lblEnableBypass.Font = theme.GetFont("normal");
             lblEnableBypass.TextAlign = ContentAlignment.MiddleLeft;
@@ -147,13 +151,13 @@ namespace QuickWinstall.Config
             pnlBypassConfigContent.AutoScroll = false;
 
             int labelX = ui.GlobalTabX * 2 + ui.GlobalBtnBox;
-            int toggleX = labelX + ui.GlobalLabelWidth + ui.GlobalSpacingX;
+            int toggleX = pnlBypassConfigContent.Width - toggleWidth - ui.GlobalSpacingX;
             int currentY = ui.GlobalSpacingY;
 
             // Bypass All Checks
             lblBypassAll = new Label();
             lblBypassAll.Location = new Point(labelX, currentY);
-            lblBypassAll.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassAll.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassAll.Text = lang.GetString("bypassConfig.bypassAll.label");
             lblBypassAll.Font = theme.GetFont("normal");
             lblBypassAll.TextAlign = ContentAlignment.MiddleLeft;
@@ -166,13 +170,21 @@ namespace QuickWinstall.Config
 
             currentY += ui.GlobalLabelHeight + ui.GlobalSpacingY * 2;
 
+            // Line Separator
+            pnlBypassConfigAllSeparator = new Panel();
+            pnlBypassConfigAllSeparator.Location = new Point(labelX, currentY);
+            pnlBypassConfigAllSeparator.Size = new Size(pnlBypassConfigContent.Width - labelX - ui.GlobalTabX, 1);
+            pnlBypassConfigAllSeparator.BackColor = theme.GetColor("separator");
+
+            currentY += ui.GlobalSpacingY * 2;
+
             labelX = ui.GlobalTabX * 3 + ui.GlobalBtnBox + ui.GlobalSpacingX;
-            toggleX = labelX + ui.GlobalLabelWidth + ui.GlobalSpacingX;
+            toggleX = pnlBypassConfigContent.Width - toggleWidth - ui.GlobalSpacingX;
 
             // Bypass TPM Check
             lblBypassTPM = new Label();
             lblBypassTPM.Location = new Point(labelX, currentY);
-            lblBypassTPM.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassTPM.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassTPM.Text = lang.GetString("bypassConfig.bypassTPM.label");
             lblBypassTPM.Font = theme.GetFont("normal");
             lblBypassTPM.TextAlign = ContentAlignment.MiddleLeft;
@@ -188,7 +200,7 @@ namespace QuickWinstall.Config
             // Bypass RAM Check
             lblBypassRAM = new Label();
             lblBypassRAM.Location = new Point(labelX, currentY);
-            lblBypassRAM.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassRAM.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassRAM.Text = lang.GetString("bypassConfig.bypassRAM.label");
             lblBypassRAM.Font = theme.GetFont("normal");
             lblBypassRAM.TextAlign = ContentAlignment.MiddleLeft;
@@ -204,7 +216,7 @@ namespace QuickWinstall.Config
             // Bypass Secure Boot Check
             lblBypassSecureBoot = new Label();
             lblBypassSecureBoot.Location = new Point(labelX, currentY);
-            lblBypassSecureBoot.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassSecureBoot.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassSecureBoot.Text = lang.GetString("bypassConfig.bypassSecureBoot.label");
             lblBypassSecureBoot.Font = theme.GetFont("normal");
             lblBypassSecureBoot.TextAlign = ContentAlignment.MiddleLeft;
@@ -220,7 +232,7 @@ namespace QuickWinstall.Config
             // Bypass CPU Check
             lblBypassCPU = new Label();
             lblBypassCPU.Location = new Point(labelX, currentY);
-            lblBypassCPU.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassCPU.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassCPU.Text = lang.GetString("bypassConfig.bypassCPU.label");
             lblBypassCPU.Font = theme.GetFont("normal");
             lblBypassCPU.TextAlign = ContentAlignment.MiddleLeft;
@@ -236,7 +248,7 @@ namespace QuickWinstall.Config
             // Bypass Storage Check
             lblBypassStorage = new Label();
             lblBypassStorage.Location = new Point(labelX, currentY);
-            lblBypassStorage.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassStorage.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassStorage.Text = lang.GetString("bypassConfig.bypassStorage.label");
             lblBypassStorage.Font = theme.GetFont("normal");
             lblBypassStorage.TextAlign = ContentAlignment.MiddleLeft;
@@ -252,7 +264,7 @@ namespace QuickWinstall.Config
             // Bypass Disk Check
             lblBypassDisk = new Label();
             lblBypassDisk.Location = new Point(labelX, currentY);
-            lblBypassDisk.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblBypassDisk.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
             lblBypassDisk.Text = lang.GetString("bypassConfig.bypassDisk.label");
             lblBypassDisk.Font = theme.GetFont("normal");
             lblBypassDisk.TextAlign = ContentAlignment.MiddleLeft;
@@ -266,6 +278,7 @@ namespace QuickWinstall.Config
             // Add all controls to content panel
             pnlBypassConfigContent.Controls.Add(lblBypassAll);
             pnlBypassConfigContent.Controls.Add(toggleBypassAll);
+            pnlBypassConfigContent.Controls.Add(pnlBypassConfigAllSeparator);
             pnlBypassConfigContent.Controls.Add(lblBypassTPM);
             pnlBypassConfigContent.Controls.Add(toggleBypassTPM);
             pnlBypassConfigContent.Controls.Add(lblBypassRAM);
@@ -305,7 +318,16 @@ namespace QuickWinstall.Config
 
         public void LoadConfigIntoUI()
         {
-            UpdateControlsFromModel();
+            try
+            {
+                Console.WriteLine("BypassConfig: Loading config into UI...");
+                UpdateControlsFromModel();
+                Console.WriteLine("BypassConfig: Config loaded into UI successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"BypassConfig: Error loading config into UI: {ex.Message}");
+            }
         }
 
         #endregion
@@ -321,7 +343,7 @@ namespace QuickWinstall.Config
 
             if (_isExpanded)
             {
-                int contentHeight = ui.GetSectionValue("bypassConfig", "contentHeight", 440);
+                int contentHeight = ui.GetSectionValue("bypassConfig", "contentHeight", 450);
                 pnlBypassConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
                 ToolTipManager.Instance.SetToolTip(btnBypassConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.bypass"));
             }
@@ -415,18 +437,25 @@ namespace QuickWinstall.Config
                 
                 lblBypassAll.Font = theme.GetFont("muted");
                 lblBypassAll.ForeColor = theme.GetFontColor("muted");
+                lblBypassAll.Cursor = Cursors.Default;
                 lblBypassTPM.Font = theme.GetFont("muted");
                 lblBypassTPM.ForeColor = theme.GetFontColor("muted");
+                lblBypassTPM.Cursor = Cursors.Default;
                 lblBypassRAM.Font = theme.GetFont("muted");
                 lblBypassRAM.ForeColor = theme.GetFontColor("muted");
+                lblBypassRAM.Cursor = Cursors.Default;
                 lblBypassSecureBoot.Font = theme.GetFont("muted");
                 lblBypassSecureBoot.ForeColor = theme.GetFontColor("muted");
+                lblBypassSecureBoot.Cursor = Cursors.Default;
                 lblBypassCPU.Font = theme.GetFont("muted");
                 lblBypassCPU.ForeColor = theme.GetFontColor("muted");
+                lblBypassCPU.Cursor = Cursors.Default;
                 lblBypassStorage.Font = theme.GetFont("muted");
                 lblBypassStorage.ForeColor = theme.GetFontColor("muted");
+                lblBypassStorage.Cursor = Cursors.Default;
                 lblBypassDisk.Font = theme.GetFont("muted");
                 lblBypassDisk.ForeColor = theme.GetFontColor("muted");
+                lblBypassDisk.Cursor = Cursors.Default;
             }
             else
             {
@@ -435,18 +464,25 @@ namespace QuickWinstall.Config
                 
                 lblBypassAll.Font = theme.GetFont("normal");
                 lblBypassAll.ForeColor = theme.GetFontColor("normal");
+                lblBypassAll.Cursor = Cursors.Hand;
                 lblBypassTPM.Font = theme.GetFont("normal");
                 lblBypassTPM.ForeColor = theme.GetFontColor("normal");
+                lblBypassTPM.Cursor = Cursors.Hand;
                 lblBypassRAM.Font = theme.GetFont("normal");
                 lblBypassRAM.ForeColor = theme.GetFontColor("normal");
+                lblBypassRAM.Cursor = Cursors.Hand;
                 lblBypassSecureBoot.Font = theme.GetFont("normal");
                 lblBypassSecureBoot.ForeColor = theme.GetFontColor("normal");
+                lblBypassSecureBoot.Cursor = Cursors.Hand;
                 lblBypassCPU.Font = theme.GetFont("normal");
                 lblBypassCPU.ForeColor = theme.GetFontColor("normal");
+                lblBypassCPU.Cursor = Cursors.Hand;
                 lblBypassStorage.Font = theme.GetFont("normal");
                 lblBypassStorage.ForeColor = theme.GetFontColor("normal");
+                lblBypassStorage.Cursor = Cursors.Hand;
                 lblBypassDisk.Font = theme.GetFont("normal");
                 lblBypassDisk.ForeColor = theme.GetFontColor("normal");
+                lblBypassDisk.Cursor = Cursors.Hand;
             }
 
             // Notify MainForm to update lock/unlock button
@@ -558,6 +594,19 @@ namespace QuickWinstall.Config
         {
             if (_isLoading) return;
             
+            // Check if UI is initialized
+            if (toggleBypassAll == null ||
+                toggleBypassTPM == null ||
+                toggleBypassRAM == null ||
+                toggleBypassSecureBoot == null ||
+                toggleBypassCPU == null ||
+                toggleBypassStorage == null ||
+                toggleBypassDisk == null)
+            {
+                Console.WriteLine("UpdateControlsFromModel: UI controls not initialized yet!");
+                return;
+            }
+            
             ThemeManager theme = ThemeManager.Instance;
             
             // EnableBypass should never be saved - it's a safety lock that always resets to true
@@ -611,18 +660,25 @@ namespace QuickWinstall.Config
                 // Update all labels to normal state
                 lblBypassAll.Font = theme.GetFont("normal");
                 lblBypassAll.ForeColor = theme.GetFontColor("normal");
+                lblBypassAll.Cursor = Cursors.Hand;
                 lblBypassTPM.Font = theme.GetFont("normal");
                 lblBypassTPM.ForeColor = theme.GetFontColor("normal");
+                lblBypassTPM.Cursor = Cursors.Hand;
                 lblBypassRAM.Font = theme.GetFont("normal");
                 lblBypassRAM.ForeColor = theme.GetFontColor("normal");
+                lblBypassRAM.Cursor = Cursors.Hand;
                 lblBypassSecureBoot.Font = theme.GetFont("normal");
                 lblBypassSecureBoot.ForeColor = theme.GetFontColor("normal");
+                lblBypassSecureBoot.Cursor = Cursors.Hand;
                 lblBypassCPU.Font = theme.GetFont("normal");
                 lblBypassCPU.ForeColor = theme.GetFontColor("normal");
+                lblBypassCPU.Cursor = Cursors.Hand;
                 lblBypassStorage.Font = theme.GetFont("normal");
                 lblBypassStorage.ForeColor = theme.GetFontColor("normal");
+                lblBypassStorage.Cursor = Cursors.Hand;
                 lblBypassDisk.Font = theme.GetFont("normal");
                 lblBypassDisk.ForeColor = theme.GetFontColor("normal");
+                lblBypassDisk.Cursor = Cursors.Hand;
                 
                 // Reset data model (except EnableBypass which stays true)
                 BypassAll = false;
@@ -642,6 +698,21 @@ namespace QuickWinstall.Config
         public void UpdateControlsFromModel()
         {
             _isLoading = true;
+            
+            // Check if UI is initialized
+            if (toggleBypassAll == null ||
+                toggleBypassTPM == null ||
+                toggleBypassRAM == null ||
+                toggleBypassSecureBoot == null ||
+                toggleBypassCPU == null ||
+                toggleBypassStorage == null ||
+                toggleBypassDisk == null)
+            {
+                Console.WriteLine("UpdateControlsFromModel: UI controls not initialized yet!");
+                return;
+            }
+
+            Console.WriteLine($"UpdateControlsFromModel: BypassAll={BypassAll}, BypassTPM={BypassTPM}, BypassRAM={BypassRAM}, BypassSecureBoot={BypassSecureBoot}, BypassCPU={BypassCPU}, BypassStorage={BypassStorage}, BypassDisk={BypassDisk}");
 
             try
             {
@@ -687,18 +758,25 @@ namespace QuickWinstall.Config
                     lblEnableBypass.ForeColor = theme.GetFontColor("muted");
                     lblBypassAll.Font = theme.GetFont("muted");
                     lblBypassAll.ForeColor = theme.GetFontColor("muted");
+                    lblBypassAll.Cursor = Cursors.Default;
                     lblBypassTPM.Font = theme.GetFont("muted");
                     lblBypassTPM.ForeColor = theme.GetFontColor("muted");
+                    lblBypassTPM.Cursor = Cursors.Default;
                     lblBypassRAM.Font = theme.GetFont("muted");
                     lblBypassRAM.ForeColor = theme.GetFontColor("muted");
+                    lblBypassRAM.Cursor = Cursors.Default;
                     lblBypassSecureBoot.Font = theme.GetFont("muted");
                     lblBypassSecureBoot.ForeColor = theme.GetFontColor("muted");
+                    lblBypassSecureBoot.Cursor = Cursors.Default;
                     lblBypassCPU.Font = theme.GetFont("muted");
                     lblBypassCPU.ForeColor = theme.GetFontColor("muted");
+                    lblBypassCPU.Cursor = Cursors.Default;
                     lblBypassStorage.Font = theme.GetFont("muted");
                     lblBypassStorage.ForeColor = theme.GetFontColor("muted");
+                    lblBypassStorage.Cursor = Cursors.Default;
                     lblBypassDisk.Font = theme.GetFont("muted");
                     lblBypassDisk.ForeColor = theme.GetFontColor("muted");
+                    lblBypassDisk.Cursor = Cursors.Default;
                 }
                 else
                 {
@@ -706,18 +784,25 @@ namespace QuickWinstall.Config
                     lblEnableBypass.ForeColor = theme.GetFontColor("normal");
                     lblBypassAll.Font = theme.GetFont("normal");
                     lblBypassAll.ForeColor = theme.GetFontColor("normal");
+                    lblBypassAll.Cursor = Cursors.Hand;
                     lblBypassTPM.Font = theme.GetFont("normal");
                     lblBypassTPM.ForeColor = theme.GetFontColor("normal");
+                    lblBypassTPM.Cursor = Cursors.Hand;
                     lblBypassRAM.Font = theme.GetFont("normal");
                     lblBypassRAM.ForeColor = theme.GetFontColor("normal");
+                    lblBypassRAM.Cursor = Cursors.Hand;
                     lblBypassSecureBoot.Font = theme.GetFont("normal");
                     lblBypassSecureBoot.ForeColor = theme.GetFontColor("normal");
+                    lblBypassSecureBoot.Cursor = Cursors.Hand;
                     lblBypassCPU.Font = theme.GetFont("normal");
                     lblBypassCPU.ForeColor = theme.GetFontColor("normal");
+                    lblBypassCPU.Cursor = Cursors.Hand;
                     lblBypassStorage.Font = theme.GetFont("normal");
                     lblBypassStorage.ForeColor = theme.GetFontColor("normal");
+                    lblBypassStorage.Cursor = Cursors.Hand;
                     lblBypassDisk.Font = theme.GetFont("normal");
                     lblBypassDisk.ForeColor = theme.GetFontColor("normal");
+                    lblBypassDisk.Cursor = Cursors.Hand;
                 }
             }
             finally

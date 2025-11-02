@@ -67,7 +67,7 @@ namespace QuickWinstall.Config
 
             lblAppConfigTitle = new Label();
             lblAppConfigTitle.Location = new Point(btnAppConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblAppConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
+            lblAppConfigTitle.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             lblAppConfigTitle.Text = lang.GetString("mainForm.sections.app");
             lblAppConfigTitle.Font = theme.GetFont("subheader");
             lblAppConfigTitle.UseMnemonic = false;

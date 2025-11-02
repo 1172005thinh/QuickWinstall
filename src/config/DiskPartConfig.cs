@@ -67,7 +67,7 @@ namespace QuickWinstall.Config
 
             lblDiskPartConfigTitle = new Label();
             lblDiskPartConfigTitle.Location = new Point(btnDiskPartConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblDiskPartConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
+            lblDiskPartConfigTitle.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             lblDiskPartConfigTitle.Text = lang.GetString("mainForm.sections.diskPart");
             lblDiskPartConfigTitle.Font = theme.GetFont("subheader");
             lblDiskPartConfigTitle.UseMnemonic = false;

@@ -67,7 +67,7 @@ namespace QuickWinstall.Config
 
             lblPersonalConfigTitle = new Label();
             lblPersonalConfigTitle.Location = new Point(btnPersonalConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
-            lblPersonalConfigTitle.Size = new Size(400, ui.GlobalLabelHeight);
+            lblPersonalConfigTitle.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             lblPersonalConfigTitle.Text = lang.GetString("mainForm.sections.personal");
             lblPersonalConfigTitle.Font = theme.GetFont("subheader");
             lblPersonalConfigTitle.UseMnemonic = false;
