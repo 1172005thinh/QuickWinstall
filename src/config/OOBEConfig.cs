@@ -79,6 +79,7 @@ namespace QuickWinstall.Config
 
         private bool _isExpanded = true;
         private bool _isLoading = false;
+        private bool _isFirstInitialization = true;
         private Action? _onSectionToggle = null;
         private Action? _onEnableToggle = null;
         private EventHandler? _onConfigChanged = null;
@@ -137,7 +138,12 @@ namespace QuickWinstall.Config
 
             // Enable OOBE Config
             // Check if oobe should be locked at startup
-            EnableOOBE = !SettingsManager.Instance.LockSectionsAtStartup;
+            // Only set EnableOOBE from settings on first initialization
+            if (_isFirstInitialization)
+            {
+                EnableOOBE = !SettingsManager.Instance.LockSectionsAtStartup;
+                _isFirstInitialization = false;
+            }
             toggleEnableOOBE = theme.CreateToggleSwitch(new Point(ui.GlobalTabX * 2 + ui.GlobalBtnBox, btnOOBEConfigToggle.Bottom + ui.GlobalSpacingY), toggleWidth, ui.GlobalInputHeight, EnableOOBE);
             toggleEnableOOBE.TabStop = false; // Skip this control in tab order
             toggleEnableOOBE.Click += (s, e) => OnToggleEnableOOBE();

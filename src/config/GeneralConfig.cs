@@ -58,7 +58,8 @@ namespace QuickWinstall.Config
         private StatusRing ringCPUArch = null!;
 
         private bool _isExpanded = true;
-        private bool _isLoading = false; // Flag to prevent event handlers during config loading
+        private bool _isLoading = false;
+        private bool _isFirstInitialization = true;
         private Action? _onSectionToggle = null;
         private Action? _onEnableToggle = null;
         private EventHandler? _onConfigChanged = null;
@@ -122,7 +123,12 @@ namespace QuickWinstall.Config
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
 
             // Enable General Config
-            EnableGeneral = !SettingsManager.Instance.LockSectionsAtStartup;
+            // Only set EnableGeneral from settings on first initialization
+            if (_isFirstInitialization)
+            {
+                EnableGeneral = !SettingsManager.Instance.LockSectionsAtStartup;
+                _isFirstInitialization = false;
+            }
             toggleEnableGeneral = theme.CreateToggleSwitch(new Point(ui.GlobalTabX * 2 + ui.GlobalBtnBox, btnGeneralConfigToggle.Bottom + ui.GlobalSpacingY), toggleWidth, ui.GlobalInputHeight, EnableGeneral);
             toggleEnableGeneral.TabStop = false; // Skip this control in tab order
             toggleEnableGeneral.Click += (s, e) => OnToggleEnableGeneral();

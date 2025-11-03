@@ -64,6 +64,7 @@ namespace QuickWinstall.Config
 
         private bool _isExpanded = true;
         private bool _isLoading = false;
+        private bool _isFirstInitialization = true;
         private Action? _onSectionToggle = null;
         private Action? _onEnableToggle = null;
         private EventHandler? _onConfigChanged = null;
@@ -121,8 +122,12 @@ namespace QuickWinstall.Config
             int doubleLabelWidth = ui.GlobalLabelWidth * 2;
 
             // Enable Bypass Hardware Check
-            // Check if bypass should be locked at startup
-            EnableBypass = !SettingsManager.Instance.LockSectionsAtStartup;
+            // Only set EnableBypass from settings on first initialization
+            if (_isFirstInitialization)
+            {
+                EnableBypass = !SettingsManager.Instance.LockSectionsAtStartup;
+                _isFirstInitialization = false;
+            }
             toggleEnableBypass = theme.CreateToggleSwitch(new Point(ui.GlobalTabX * 2 + ui.GlobalBtnBox, btnBypassConfigToggle.Bottom + ui.GlobalSpacingY), toggleWidth, ui.GlobalInputHeight, EnableBypass);
             toggleEnableBypass.TabStop = false; // Skip this control in tab order
             toggleEnableBypass.Click += (s, e) => OnToggleEnableBypass();

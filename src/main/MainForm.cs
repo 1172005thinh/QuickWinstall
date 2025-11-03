@@ -244,7 +244,7 @@ namespace QuickWinstall.Main
                 string iconName = _allSectionsExpanded ? "all_collapse" : "all_expand";
                 btnToggleAll.Image = _iconManager.GetIconAsImage(iconName, isDark, _uiValues.GlobalIconSize);
                 
-                string lockIconName = _allSectionsLocked ? "lock" : "unlock";
+                string lockIconName = _allSectionsLocked ? "unlock" : "lock";
                 btnToggleLock.Image = _iconManager.GetIconAsImage(lockIconName, isDark, _uiValues.GlobalIconSize);
 
                 // Refresh all sections in REVERSE order (bottom to top) with DockStyle.Top

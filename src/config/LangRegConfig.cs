@@ -67,6 +67,7 @@ namespace QuickWinstall.Config
 
         private bool _isExpanded = true;
         private bool _isLoading = false;
+        private bool _isFirstInitialization = true;
         private Action? _onSectionToggle = null;
         private Action? _onEnableToggle = null;
         private EventHandler? _onConfigChanged = null;
@@ -130,8 +131,12 @@ namespace QuickWinstall.Config
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
 
             // Enable Language & Region Config
-            // Check if language & region config should be locked at startup
-            EnableLangReg = !SettingsManager.Instance.LockSectionsAtStartup;
+            // Only set EnableLangReg from settings on first initialization
+            if (_isFirstInitialization)
+            {
+                EnableLangReg = !SettingsManager.Instance.LockSectionsAtStartup;
+                _isFirstInitialization = false;
+            }
             toggleEnableLangReg = theme.CreateToggleSwitch(new Point(ui.GlobalTabX * 2 + ui.GlobalBtnBox, btnLangRegConfigToggle.Bottom + ui.GlobalSpacingY), toggleWidth, ui.GlobalInputHeight, EnableLangReg);
             toggleEnableLangReg.TabStop = false; // Skip this control in tab order
             toggleEnableLangReg.Click += (s, e) => OnToggleEnableLangReg();
