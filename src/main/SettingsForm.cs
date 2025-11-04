@@ -291,14 +291,10 @@ namespace QuickWinstall
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            // TODO: Open AboutForm when implemented
-            MessageBox.Show(
-                this,
-                "AboutForm not implemented yet",
-                "Information",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            using (AboutForm aboutForm = new AboutForm())
+            {
+                aboutForm.ShowDialog(this);
+            }
         }
 
         private void btnHelp_Click(object sender, EventArgs e)

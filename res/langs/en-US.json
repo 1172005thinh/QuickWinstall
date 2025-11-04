@@ -266,6 +266,48 @@
       "label": "Skip Wireless Setup"
     }
   },
+  "aboutForm": {
+    "title": "About QuickWinstall",
+    "banner": {
+      "project": "QuickWinstall Project",
+      "brief": "A free, open-source autounattend generator\\nfor Windows 11 Installation."
+    },
+    "originalAuthor": {
+      "label": "Original Author:",
+      "name": "1172005thinh (QuickComp.)"
+    },
+    "followMe": {
+      "label": "Follow me now!"
+    },
+    "contributors": {
+      "label": "Contributors:",
+      "contributor1": "1172005thinh (QuickComp.)",
+      "submitRequest": "Contributors are welcome! Feel free to submit requests on"
+    },
+    "references": {
+      "label": "References:",
+      "reference1": "Schneegans Unattend Generator",
+      "reference2": "Microsoft Documentation",
+      "reference3": "Microsoft Windows Deployment",
+      "reference4": "GitHub Repository"
+    },
+    "license": {
+      "label": "License:",
+      "name": "Free, open-source following MIT License."
+    },
+    "version": {
+      "label": "Version:"
+    },
+    "buttons": {
+      "close": "Close"
+    },
+    "tooltips": {
+      "youtube": "Visit my YouTube channel",
+      "github": "Visit my GitHub profile",
+      "facebook": "Visit my Facebook page",
+      "close": "Close About QuickWinstall"
+    }
+  },
   "settingsForm": {
     "autoSave": {
       "label": "Auto save config after a successful Generate:"

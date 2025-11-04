@@ -996,6 +996,227 @@ Properties:
           - On click: Save all settings and close SettingsForm -> return to MainForm -> if theme or language changed, apply changes to all forms
           - Tooltip: Save all settings and close Settings
 
+### AboutForm
+
+The about form of the application
+See the illustration for better preference:
+![AboutForm Illustration](pngs/AboutForm.png)
+
+Properties:
+
+- Form frame:
+  - Form Title: About QuickWinstall
+  - Width: 580px <-- ui.json
+  - Height: 600px <-- ui.json
+  - Resizable: No
+  - Minimize/Maximize/Close Buttons: 0/0/1
+  - Icon: res/icons/about.ico / res/icons/about_dark.ico
+  - Background Color: Depends on theme (light/dark)
+  - Title Font: Normal Font
+- Content:
+  - Banner Panel:
+    - Width: same as Form width
+    - Height: 80px
+    - Background Color: Depends on theme (light/dark)
+    - Position: Top of the form
+    - Elements:
+      - Icon:
+        - Source: res/icons/app256.ico
+        - Size: 128x128px
+        - Position (x, y): (globalTabX, BannerHeight/2 - 128/2)
+      - Label Project:
+        - Text: QuickWinstall Project <-- lang package
+        - Font: Header Font
+        - Text Align: Middle Left
+        - Width: auto (fit to text)
+        - Height: globalLabelHeight
+        - Position (x, y): (icon.Right + globalSpacingX, BannerHeight/2 - globalLabelHeight - globalSpacingY/2)
+      - Label Brief:
+        - Text: A free, open-source autounattend generator for Windows 11 Installation. <-- lang package
+        - Font: Normal Font
+        - Text Align: Middle Left
+        - Width: auto (fit to text)
+        - Height: globalLabelHeight * 2
+        - Position (x, y): (icon.Right + globalSpacingX, BannerHeight/2 + globalSpacingY/2)
+      - Image:
+        - Source: res/images/bg_Windows11.png
+        - Size: fit to Banner Panel height, width auto
+        - Position (x, y): (Form.Width - Image.Width, BannerHeight/2 - Image.Height/2)
+    - About Panel:
+      - Width: same as Form width
+      - Height: dynamic (depends on content)
+      - Background Color: Depends on theme (light/dark)
+      - Position: Below the Banner Panel
+      - Elements:
+        - Image:
+          - Source: res/images/bg_AboutForm.png
+          - Size: fit to About Panel height, width auto
+          - Position (x, y): (0, 0)
+        - Label Original Author:
+          - Text: Original Author: <-- lang package
+          - Font: Subheader Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX x 8, globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Label Original Author Name Bullet:
+          - Text: * <-- lang package
+          - Font: Normal Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX x 9, labelOriginalAuthor.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Label Original Author Name:
+          - Text: 1172005thinh (QuickComp.) <-- lang package
+          - Font: Normal Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (labelOriginalAuthorBullet.Right + globalSpacingX, labelOriginalAuthor.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Label Follow Me:
+          - Text: Follow me now! <-- lang package
+          - Font: Normal Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX x 9, labelOriginalAuthorNameBullet.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Icon Youtube:
+          - Source: res/icons/youtube.ico / res/icons/youtube_dark.ico
+          - Size: globalBtnBox x 2 x globalBtnBox x 2
+          - Position (x, y): (globalTabX x 10, labelFollowMe.Bottom + globalSpacingY)
+          - On hover: Change cursor to Hand
+          - On click: Open URL `https://www.youtube.com/@quickcompstore/`
+          - Tooltip: `https://www.youtube.com/@quickcompstore/`
+        - Icon GitHub:
+          - Source: res/icons/github.ico / res/icons/github_dark.ico
+          - Size: globalBtnBox x 2 x globalBtnBox x 2
+          - Position (x, y): (youtubeIcon.Right + globalSpacingX, labelFollowMe.Bottom + globalSpacingY)
+          - On hover: Change cursor to Hand
+          - On click: Open URL `https://github.com/1172005thinh/`
+          - Tooltip: `https://github.com/1172005thinh/`
+        - Icon Facebook:
+          - Source: res/icons/facebook.ico / res/icons/facebook_dark.ico
+          - Size: globalBtnBox x 2 x globalBtnBox x 2
+          - Position (x, y): (githubIcon.Right + globalSpacingX, labelFollowMe.Bottom + globalSpacingY)
+          - On hover: Change cursor to Hand
+          - On click: Open URL `https://www.facebook.com/quickcomp.hungthinhnguyen/`
+          - Tooltip: `https://www.facebook.com/quickcomp.hungthinhnguyen/`
+        - Label Contributors:
+          - Text: Contributors: <-- lang package
+          - Font: Subheader Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX x 8, labelOriginalAuthorName.Bottom + globalSpacingY * 2)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Contributor Panel:
+          - Width: globalLabelWidth
+          - Height: dynamic (depends on number of contributors)
+          - Background Color: Depends on theme (light/dark)
+          - Position: Below the Contributors Label
+          - Contributors should have a list to show most significant contributors only (max 5)
+          - Elements:
+            - Label Contributor 1 Bullet:
+              - Text: * <-- lang package
+              - Font: Normal Font
+              - Width: auto (fit to text)
+              - Height: globalLabelHeight
+              - Position (x, y): (globalTabX x 9, labelContributors.Bottom + globalSpacingY)
+              - FontColor: Depends on theme (light/dark)
+              - Text Align: Middle Left
+            - Label Contributor 1 Name:
+              - Text: 1172005thinh (QuickComp.) <-- lang package
+              - Font: Normal Font
+              - Width: auto (fit to text)
+              - Height: globalLabelHeight
+              - Position (x, y): (labelContributor1Bullet.Right + globalSpacingX, labelContributors.Bottom + globalSpacingY)
+              - FontColor: Depends on theme (light/dark)
+              - Text Align: Middle Left
+            - ... (similar structure for Contributor 2, 3, 4, 5), but only show if the list has that many contributors
+        - Label Contributor Submit Request:
+          - Text: Contributors are welcome! Feel free to submit requests on + [GitHub](https://github.com/1172005thinh/quickwinstall/) <-- lang package for GitHub part
+          - Font: Normal Font + Link Font for GitHub part
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight * 2
+          - Position (x, y): (globalTabX x 9, labelContributor1Name.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Label References:
+          - Text: References: <-- lang package
+          - Font: Subheader Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX x 8, labelContributorSubmitRequest.Bottom + globalSpacingY * 2)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Reference Panel:
+          - Width: globalLabelWidth
+          - Height: dynamic (depends on number of references)
+          - Background Color: Depends on theme (light/dark)
+          - Position: Below the References Label
+          - Elements:
+            - Label Reference 1 Bullet:
+              - Text: * <-- lang package
+              - Font: Normal Font
+              - Width: auto (fit to text)
+              - Height: globalLabelHeight
+              - Position (x, y): (globalTabX x 9, labelReferences.Bottom + globalSpacingY)
+              - FontColor: Depends on theme (light/dark)
+              - Text Align: Middle Left
+            - Label Reference 1 Name:
+              - Text: [Schneegans Unattend Generator](https://schneegans.de/windows/unattend-generator/) <-- lang package for Schneegans Unattend Generator part
+              - Font: Normal Font
+              - Width: auto (fit to text)
+              - Height: globalLabelHeight
+              - Position (x, y): (labelReference1Bullet.Right + globalSpacingX, labelReferences.Bottom + globalSpacingY)
+              - FontColor: Depends on theme (light/dark)
+              - Text Align: Middle Left
+            - ... (similar structure for Reference 2, 3, 4, 5), but only show if the list has that many references
+        - Label License:
+          - Text: License: <-- lang package
+          - Font: Subheader Font
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX x 8, labelReferences.Bottom + globalSpacingY * 2)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+        - Label License Name:
+          - Text: Free, open-source software licensed under the MIT License. <-- lang package
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight * 2
+          - Position (x, y): (globalTabX x 9, labelLicense.Bottom + globalSpacingY)
+          - FontColor: Depends on theme (light/dark)
+          - Text Align: Middle Left
+    - Control Panel:
+      - Width: same as Form width
+      - Height: 60px
+      - Background Color: Depends on theme (light/dark)
+      - Position: Bottom of the form
+      - Elements:
+        - Label Version:
+          - Text: Version: vX.X.X
+          - Font: Normal Font
+          - Text Align: Middle Left
+          - Width: auto (fit to text)
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX, ControlPanel.Height/2 - globalLabelHeight/2)
+          - FontColor: Depends on theme (light/dark)
+        - Close Button:
+          - Text: Close
+          - Font: Normal Font
+          - Text Align: Middle Center
+          - Size: globalBtnWidth x globalBtnHeight
+          - Background Color: Depends on theme (light/dark)
+          - FontColor: Depends on theme (light/dark)
+          - Position (x, y): (Form.Width - globalTabX - globalBtnWidth, ControlPanel.Height/2 - globalBtnHeight/2)
+          - On click: Close AboutForm
+          - Tooltip: Close About QuickWinstall
+
 ### Lib
 
 #### ConfigValues.cs

@@ -266,6 +266,48 @@
       "label": "Bỏ qua Bước Thiết lập Mạng Không dây"
     }
   },
+  "aboutForm": {
+    "title": "Thông tin",
+    "banner": {
+      "project": "QuickWinstall Project",
+      "brief": "Một công cụ tạo file autounattend miễn phí,\\nmã nguồn mở cho Cài đặt Windows 11."
+    },
+    "originalAuthor": {
+      "label": "Tác giả gốc:",
+      "name": "1172005thinh (QuickComp.)"
+    },
+    "followMe": {
+      "label": "Ủng hộ mình ở đây!"
+    },
+    "contributors": {
+      "label": "Contributors:",
+      "contributor1": "1172005thinh (QuickComp.)",
+      "submitRequest": "Chào mừng những người đóng góp! Hãy thoải mái gửi yêu cầu trên"
+    },
+    "references": {
+      "label": "Liên kết:",
+      "reference1": "Schneegans Unattend Generator",
+      "reference2": "Microsoft Documentation",
+      "reference3": "Microsoft Windows Deployment",
+      "reference4": "GitHub Repository"
+    },
+    "license": {
+      "label": "Giấy phép:",
+      "name": "Mã nguồn mở, miễn phí theo giấy phép MIT."
+    },
+    "version": {
+      "label": "Phiên bản:"
+    },
+    "buttons": {
+      "close": "Đóng"
+    },
+    "tooltips": {
+      "youtube": "Truy cập kênh YouTube của mình",
+      "github": "Truy cập trang GitHub của mình",
+      "facebook": "Truy cập trang Facebook của mình",
+      "close": "Đóng Giới thiệu QuickWinstall"
+    }
+  },
   "settingsForm": {
     "autoSave": {
       "label": "Tự động lưu cấu hình khi Tạo file:"

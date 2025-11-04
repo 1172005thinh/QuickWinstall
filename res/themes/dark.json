@@ -19,7 +19,10 @@
     "toggleMutedOffBackground": "#1a1a1a",
     "toggleThumb": "#ffffff",
     "toggleMutedThumb": "#666666",
-    "separator": "#d4d4d4"
+    "separator": "#d4d4d4",
+    "link": "#3794ff",
+    "linkActive": "#1f6feb",
+    "linkVisited": "#8957e5"
   },
   "fonts": {
     "normal": {
