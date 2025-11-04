@@ -14,7 +14,7 @@ namespace QuickWinstall
         private readonly UIValues _uiValues;
 
         // Version
-        public string appVersion = "0.5.3";
+        public string appVersion = "0.5.4";
 
         public AboutForm()
         {

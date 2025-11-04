@@ -203,6 +203,8 @@ namespace QuickWinstall.Main
         {
             // Update banner title
             lblBannerTitle.Text = _langManager.GetString("mainForm.banner.title");
+            _toolTipManager.SetToolTip(picLogo, "tooltips.mainForm.logoClick");
+            
             
             // Update button texts (not icon buttons like btnExpandAll/btnCollapseAll)
             btnSettings.Text = _langManager.GetString("mainForm.buttons.settings");
@@ -210,6 +212,13 @@ namespace QuickWinstall.Main
             btnPreset.Text = _langManager.GetString("mainForm.buttons.preset");
             btnCancel.Text = _langManager.GetString("mainForm.buttons.cancel");
             btnGenerate.Text = _langManager.GetString("mainForm.buttons.generate");
+            
+            // Update icon button tooltips based on current state
+            string toggleAllTooltip = _allSectionsExpanded ? "tooltips.mainForm.collapseAll" : "tooltips.mainForm.expandAll";
+            _toolTipManager.SetToolTip(btnToggleAll, toggleAllTooltip);
+            
+            string toggleLockTooltip = _allSectionsLocked ? "tooltips.mainForm.unlockAll" : "tooltips.mainForm.lockAll";
+            _toolTipManager.SetToolTip(btnToggleLock, toggleLockTooltip);
             
             // Update status strip texts
             lblStatusPrefix.Text = _langManager.GetString("mainForm.status.prefix");
