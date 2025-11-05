@@ -109,7 +109,7 @@ namespace QuickWinstall.Main
             // Banner Title
             this.lblBannerTitle = new Label();
             this.lblBannerTitle.Location = new Point(picLogo.Right + ui.GlobalSpacingX, (ui.BannerHeight - ui.GlobalLabelHeight) / 2);
-            this.lblBannerTitle.Size = new Size(400, ui.GlobalLabelHeight);
+            this.lblBannerTitle.Size = new Size(500, ui.GlobalLabelHeight);
             this.lblBannerTitle.Text = lang.GetString("mainForm.banner.title");
             this.lblBannerTitle.Font = theme.GetFont("header");
             this.lblBannerTitle.ForeColor = theme.GetFontColor("header");
