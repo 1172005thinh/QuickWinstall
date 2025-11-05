@@ -1,0 +1,449 @@
+{
+  "app": {
+    "name": "Phỏ Anh Hai",
+    "title": "Phở Anh Hai - Số 10 Đan Phượng Hà Nội"
+  },
+  "bypassConfig": {
+    "bypassAll": {
+      "label": "Bỏ qua Phở Check Phần cứng"
+    },
+    "bypassCPU": {
+      "label": "Bỏ qua Phở Check CPU"
+    },
+    "bypassDisk": {
+      "label": "Bỏ qua Phở Check Ổ đĩa"
+    },
+    "bypassRAM": {
+      "label": "Bỏ qua Phở Check RAM"
+    },
+    "bypassSecureBoot": {
+      "label": "Bỏ qua Phở Check Secure Boot"
+    },
+    "bypassStorage": {
+      "label": "Bỏ qua Phở Check Dung lượng"
+    },
+    "bypassTPM": {
+      "label": "Bỏ qua Phở Check TPM"
+    },
+    "enableBypass": {
+      "label": "Mua Phở Bỏ qua Check Phần cứng"
+    }
+  },
+  "dialogs": {
+    "buttons": {
+      "cancel": "Hủy",
+      "ok": "Ờ"
+    },
+    "clear": {
+      "message": "Phá menu nãy giờ, rồi còn bắt Anh Hai làm lại menu nữa?\\n Anh Hai buồn lắm đó!",
+      "title": "Cảnh báo"
+    },
+    "emptySavePath": {
+      "message": "Địa chỉ giao hàng không tồn tại hoặc không thể truy cập.\\n Vui lòng nhập địa chỉ hợp lệ.",
+      "title": "Lỗi"
+    },
+    "failed": {
+      "message": "Không thể bán Phở autounattend.xml.",
+      "title": "Lỗi"
+    },
+    "invalidSavePath": {
+      "message": "Địa chỉ giao hàng không tồn tại hoặc không thể truy cập.\\n Vui lòng nhập địa chỉ hợp lệ.",
+      "title": "Lỗi"
+    },
+    "overwrite": {
+      "message": "Ghi đè autounattend.xml hiện có?\\nCậu Vàng sẽ không thích điều này đâu!",
+      "title": "Cảnh báo"
+    },
+    "resetSettings": {
+      "message": "Restart the game?\\nHành động này không thể hoàn tác.",
+      "title": "Cảnh báo"
+    },
+    "success": {
+      "message": "Xong! Phở đã được lưu tại:\\n{0}autounattend.xml",
+      "title": "Thông tin"
+    },
+    "unsaved": {
+      "message": "Ăn quịt à? Sao không trả tiền Phở đi chứ!\\nLưu lại sổ trước khi trốn?",
+      "title": "Cảnh báo"
+    },
+    "validation": {
+      "message": "Quán này không thể sửa lỗi Phở sau:\\n{0}",
+      "title": "Lỗi"
+    }
+  },
+  "generalConfig": {
+    "cpuArch": {
+      "label": "Kiến trúc Phở CPU:",
+      "options": {
+        "arm64": "Phở ARM64",
+        "selectOne": "-- Đặt món --",
+        "x64": "Phở Intel/AMD x64"
+      }
+    },
+    "enableGeneral": {
+      "label": "Mua Phở Cấu hình Chung"
+    },
+    "productKey": {
+      "label": "Passcode?",
+      "placeholder": "XXXXX"
+    },
+    "windowsEdition": {
+      "label": "Phiên bản Phở:",
+      "options": {
+        "education": "Phở 11 Education",
+        "enterprise": "Phở 11 Enterprise",
+        "home": "Phở 11 Home",
+        "pro": "Phở 11 Pro",
+        "selectOne": "-- Đặt món --"
+      }
+    }
+  },
+  "langRegConfig": {
+    "enableLangReg": {
+      "label": "Mua Phở Cấu hình Ngôn ngữ và Khu vực"
+    },
+    "keyboardLayout": {
+      "label": "Bố cục Phở Bàn phím:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn đê! --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "sameAsSystemLocale": {
+      "label": "Giống Vùng của Phở Hệ thống"
+    },
+    "systemLocale": {
+      "label": "Vùng của Phở Hệ thống:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn đê! --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "timeZone": {
+      "label": "Múi giờ bán Phở Quốc tế:",
+      "options": {
+        "UTC": "UTC Thời gian Quốc tế",
+        "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
+        "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+        "UTC+07:00": "UTC+07:00 Bangkok, Hà Nội, Jakarta",
+        "UTC+08:00": "UTC+08:00 Bắc Kinh, Trùng Khánh, Hồng Kông, Urumqi",
+        "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney",
+        "UTC-05:00": "UTC-05:00 Phía Đông (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Vùng Trung tâm (US & Canada)",
+        "UTC-07:00": "UTC-07:00 Vùng Núi Phía Tây (US & Canada)",
+        "UTC-08:00": "UTC-08:00 Thái Bình Dương (Mỹ & Canada)",
+        "selectOne": "-- Chọn đê! --"
+      }
+    },
+    "userLocale": {
+      "label": "Vùng của Phở Người dùng:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn đê! --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "windowsUILanguage": {
+      "label": "Ngôn ngữ UI của Phở:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn đê! --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    }
+  },
+  "mainForm": {
+    "banner": {
+      "title": "Phở Anh Hai - Số 10 Đan Phượng Hà Nội"
+    },
+    "buttons": {
+      "cancel": "Hủy món",
+      "clear": "Xóa menu",
+      "generate": "Bán 1 tô",
+      "preset": "Preset",
+      "settings": "Chủ quán?"
+    },
+    "sections": {
+      "app": "Phở Cấu hình Ứng dụng",
+      "bypass": "Phở Bỏ qua Kiểm tra Phần cứng Windows 11",
+      "diskPart": "Phở Cấu hình Đĩa và Phân vùng",
+      "general": "Phở Cấu hình Chung",
+      "langReg": "Phở Cấu hình Ngôn ngữ và Khu vực",
+      "oobe": "Phở Cấu hình OOBE",
+      "personal": "Phở Cấu hình Cá nhân hóa",
+      "userAcc": "Phở Cấu hình Tài khoản Người dùng"
+    },
+    "status": {
+      "configurationCleared": "Đã xóa menu",
+      "error": "Game crashed!",
+      "failedToGenerateFile": "Không thể bán phở autounattend.xml.",
+      "generating": "Đang làm Phở autounattend.xml...",
+      "invalidSavePath": "Địa chỉ giao hàng không hợp lệ.",
+      "loading": "Đang làm...",
+      "prefix": "Anh Hai:",
+      "ready": "Mại dzô! Phở sẵn sàng bán!",
+      "settingsUpdated": "Đã sửa lại Quán Phở",
+      "success": "Bán Phở thành công",
+      "unsavedChanges": "Phở này chưa trả tiền! Đừng đi đâu cả!"
+    },
+    "title": "Quán Phở Anh Hai"
+  },
+  "oobeConfig": {
+    "enableOobe": {
+      "label": "Mở khóa Phở Cấu hình OOBE"
+    },
+    "networkLocation": {
+      "label": "Kiểu kết nối Phở:",
+      "option": {
+        "home": "Phở Gia đình (Riêng tư)",
+        "public": "Phở Công cộng",
+        "selectOne": "-- Chọn đê! --",
+        "work": "Phở Công việc (Riêng tư)"
+      }
+    },
+    "protectYourPC": {
+      "label": "Cài đặt Phở Riêng tư:",
+      "option": {
+        "cloudTelemetry": "Phở Nhanh (Bật Cloud & Telemetry)",
+        "privacyFocused": "Phở Riêng tư (Tắt Telemetry)",
+        "selectOne": "-- Chọn đê! --"
+      }
+    },
+    "skipAll": {
+      "label": "Bỏ qua Tất cả các Bước Phở OOBE"
+    },
+    "skipEULA": {
+      "label": "Bỏ qua Điều khoản EULA khi mua Phở"
+    },
+    "skipLocalAccountCreation": {
+      "label": "Bỏ qua Đăng ký thành viên Phở cục bộ"
+    },
+    "skipMachineOOBE": {
+      "label": "Bỏ qua mua Phở ở chế độ SYSTEM"
+    },
+    "skipOnlineAccountCreation": {
+      "label": "Bỏ qua Đăng ký thành viên Phở online"
+    },
+    "skipUserOOBE": {
+      "label": "Bỏ qua mua Phở ở chế độ USER"
+    },
+    "skipWirelessNetwork": {
+      "label": "Bỏ qua mua Phở Wireless"
+    }
+  },
+  "aboutForm": {
+    "title": "Thông tin Phở",
+    "banner": {
+      "project": "QuickWinstall Phở",
+      "brief": "Một công cụ bán phở autounattend miễn phí\\ndành cho Quán phở Anh Hai."
+    },
+    "originalAuthor": {
+      "label": "Tác giả gốc:",
+      "name": "AnhHai (1172005thinh)"
+    },
+    "followMe": {
+      "label": "Theo dõi anh ở đây!"
+    },
+    "contributors": {
+      "label": "Contributors:",
+      "contributor1": "AnhHai (1172005thinh) - Chủ quán Phở",
+      "submitRequest": "Chào mừng những người đóng góp! Hãy thoải mái gửi yêu cầu trên"
+    },
+    "references": {
+      "label": "Liên kết:",
+      "reference1": "Schneegans Unattend Generator",
+      "reference2": "Phở Anh Hai - Download Quán Phở",
+      "reference3": "Microsoft Windows Deployment",
+      "reference4": "GitHub Repository"
+    },
+    "license": {
+      "label": "Giấy phép:",
+      "name": "Mã nguồn mở, miễn phí theo giấy phép kinh doanh, VSATTP"
+    },
+    "version": {
+      "label": "Phiên bản:"
+    },
+    "buttons": {
+      "close": "Dẹp!"
+    },
+    "tooltips": {
+      "youtube": "Truy cập kênh YouTube của mình",
+      "github": "Truy cập trang GitHub của mình",
+      "facebook": "Truy cập trang Facebook của mình",
+      "close": "Đóng Giới thiệu QuickWinstall"
+    }
+  },
+  "settingsForm": {
+    "autoSave": {
+      "label": "Tự động lưu hóa đơn khi Bán Phở:"
+    },
+    "banner": {
+      "title": "Sửa Quán Phở"
+    },
+    "buttons": {
+      "about": "WTF?",
+      "cancel": "Hủy sửa",
+      "help": "Trợ giúp",
+      "save": "Sửa!"
+    },
+    "expandAll": {
+      "label": "Mở rộng mọi bảng Phở cấu hình khi mở bán:"
+    },
+    "folderDialog": {
+      "description": "Giao Phở ở địa chỉ:"
+    },
+    "language": {
+      "label": "Anh Hai nói:"
+    },
+    "loadLast": {
+      "label": "Tự động mở hóa đơn đã lưu lần cuối khi mở bán:"
+    },
+    "lockSections": {
+      "label": "Không cho khách phá menu khi vừa vào quán:"
+    },
+    "savePath": {
+      "label": "Địa chỉ ở đâu? Ở đây:"
+    },
+    "theme": {
+      "label": "Giao diện quán:",
+      "options": {
+        "dark": "Tối mù mắt",
+        "light": "Sáng bảnh mắt"
+      }
+    },
+    "title": "Sửa Quán Phở",
+    "toggle": {
+      "off": "Tắt",
+      "on": "Bật"
+    },
+    "tooltips": {
+      "about": "Về QuickWinstall",
+      "autoSave": "Tự động lưu cấu hình hiện tại khi thoát ứng dụng vào Presets/lastConfig.json",
+      "browse": "Duyệt để chọn thư mục làm đường dẫn lưu XML",
+      "cancel": "Hủy thay đổi và đóng Cài đặt",
+      "expandAll": "Mở rộng tất cả các mục cấu hình khi khởi động ứng dụng",
+      "help": "Mở tài liệu trợ giúp",
+      "language": "Cài đặt ngôn ngữ ứng dụng KHÔNG ẢNH HƯỞNG ngôn ngữ giao diện Windows",
+      "loadLast": "Tự động tải cấu hình đã lưu cuối cùng từ Presets/lastConfig.json khi mở ứng dụng",
+      "lockSections": "Khóa tất cả các phần cấu hình để ngăn việc mở rộng/thu gọn khi ứng dụng khởi động",
+      "reset": "Đặt lại tất cả cài đặt về mặc định",
+      "save": "Lưu tất cả cài đặt và đóng Cài đặt",
+      "savePath": "Đặt đường dẫn lưu mặc định cho tệp autounattend.xml được tạo",
+      "theme": "Chọn giao diện ứng dụng"
+    }
+  },
+  "tooltips": {
+    "appConfig": {
+      "header": "Phần Cấu hình Ứng dụng"
+    },
+    "bypassConfig": {
+      "bypassAll": "Bật/Tắt tất cả các tùy chọn bỏ qua kiểm tra phần cứng cùng lúc",
+      "bypassCPU": "Bỏ qua kiểm tra tương thích CPU",
+      "bypassDisk": "Bỏ qua các kiểm tra phần cứng liên quan đến đĩa",
+      "bypassRAM": "Bỏ qua yêu cầu RAM tối thiểu 4GB",
+      "bypassSecureBoot": "Bỏ qua yêu cầu Secure Boot",
+      "bypassStorage": "Bỏ qua yêu cầu dung lượng tối thiểu 64GB",
+      "bypassTPM": "Bỏ qua yêu cầu Trusted Platform Module (TPM) 2.0",
+      "enableBypass": "Khóa hoặc mở khóa tất cả các tùy chọn bỏ qua kiểm tra phần cứng",
+      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
+    },
+    "diskPartConfig": {
+      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa và Phân vùng",
+      "header": "Phần Cấu hình Đĩa và Phân vùng"
+    },
+    "generalConfig": {
+      "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
+      "enableGeneral": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Chung",
+      "header": "Phần Cấu hình Chung",
+      "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
+      "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
+    },
+    "langRegConfig": {
+      "enableLangReg": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Ngôn ngữ và Khu vực",
+      "header": "Phần Cấu hình Ngôn ngữ và Khu vực",
+      "keyboardLayout": "Chọn bố cục bàn phím.",
+      "sameAsSystemLocale": "Đặt Ngôn ngữ Người dùng giống như Ngôn ngữ Hệ thống.\\n Cài đặt Windows có thể bị lỗi nếu Ngôn ngữ Người dùng khác với Ngôn ngữ Hệ thống.",
+      "systemLocale": "Chọn ngôn ngữ hệ thống cho Windows.",
+      "timeZone": "Chọn múi giờ.",
+      "userLocale": "Chọn ngôn ngữ người dùng cho Windows.",
+      "windowsUILanguage": "Chọn ngôn ngữ giao diện Windows."
+    },
+    "mainForm": {
+      "cancel": "Thoát QuickWinstall",
+      "clear": "Xóa tất cả cấu hình",
+      "collapseAll": "Thu gọn bảng cấu hình",
+      "expandAll": "Mở rộng bảng cấu hình",
+      "generate": "Tạo tệp autounattend.xml",
+      "lockAll": "Khóa tất cả phần",
+      "logoClick": "Quay lại đầu trang",
+      "preset": "Tải/Lưu cấu hình có sẵn",
+      "settings": "Mở cài đặt ứng dụng",
+      "unlockAll": "Mở khóa tất cả phần"
+    },
+    "oobeConfig": {
+      "enableOobe": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình OOBE",
+      "header": "Phần Cấu hình OOBE",
+      "networkLocation": "Đặt hồ sơ vị trí mạng ban đầu.\\nGia đình/Công việc: Hồ sơ tường lửa riêng tư (cho phép khám phá mạng).\\nCông cộng: Hồ sơ tường lửa công cộng (chặn khám phá mạng).",
+      "protectYourPC": "Chọn cài đặt riêng tư cho telemetry và tính năng đám mây.\\nCài đặt Nhanh: Bật các tính năng đám mây và telemetry.\\nCài đặt Riêng tư: Tắt hầu hết telemetry và tính năng đám mây.",
+      "skipAll": "Bỏ qua tất cả các bước Trải nghiệm Hộp (OOBE) trong quá trình cài đặt Windows",
+      "skipEULA": "Bỏ qua trang chấp nhận Thỏa thuận Giấy phép Người dùng Cuối",
+      "skipLocalAccountCreation": "Bỏ qua màn hình tạo tài khoản cục bộ",
+      "skipMachineOOBE": "Bỏ qua cấu hình OOBE cấp máy",
+      "skipOnlineAccountCreation": "Bỏ qua màn hình đăng nhập tài khoản Microsoft",
+      "skipUserOOBE": "Bỏ qua cấu hình OOBE cấp người dùng",
+      "skipWirelessNetwork": "Bỏ qua thiết lập mạng không dây trong OOBE"
+    },
+    "personalConfig": {
+      "enablePersonal": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Cá nhân hóa",
+      "header": "Phần Cấu hình Cá nhân hóa"
+    },
+    "section": {
+      "collapse": "Thu gọn phần {0}",
+      "expand": "Mở rộng phần {0}"
+    },
+    "userAccConfig": {
+      "enableUserAcc": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Tài khoản Người dùng",
+      "header": "Phần Cấu hình Tài khoản Người dùng"
+    }
+  },
+  "validation": {
+    "invalid": "{0} không hợp lệ.",
+    "invalidProductKey": "Passcode phải để trống hoặc là key hợp lệ với 25 ký tự theo định dạng XXXXX-XXXXX-XXXXX-XXXXX-XXXXX.",
+    "required": "{0} không thể để trống."
+  }
+}

@@ -14,7 +14,7 @@ namespace QuickWinstall
         private readonly UIValues _uiValues;
 
         // Version
-        public string appVersion = "0.5.4";
+        public string appVersion = "0.5.4 - Phở Anh Hai Edition";
 
         public AboutForm()
         {
@@ -164,7 +164,17 @@ namespace QuickWinstall
 
         private void LinkReference2_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)
         {
-            OpenUrl("https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11");
+            // Open a different reference depending on the current language.
+            // If the current language is the custom "pho-AnhHai" language, open the local "Brother Hai's Phở" reference,
+            // otherwise open the Microsoft documentation reference.
+            if (_langManager.CurrentLanguage == "pho-AnhHai")
+            {
+                OpenUrl("https://marisa0704.itch.io/brother-hais-pho-restaurant");
+            }
+            else
+            {
+                OpenUrl("https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/update-windows-settings-and-scripts-create-your-own-answer-file-sxs?view=windows-11");
+            }
         }
 
         private void LinkReference3_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)

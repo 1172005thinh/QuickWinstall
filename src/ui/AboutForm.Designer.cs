@@ -116,7 +116,7 @@ namespace QuickWinstall
             this.lblBrief.Font = theme.GetFont("normal");
             this.lblBrief.AutoSize = false;
             this.lblBrief.BackColor = Color.Transparent;
-            this.lblBrief.Size = new Size(ui.GlobalLabelWidth * 2 - 80, ui.GlobalLabelHeight * 2 - extraHeight);
+            this.lblBrief.Size = new Size(ui.GlobalLabelWidth * 2 - 60, ui.GlobalLabelHeight * 2 - extraHeight);
             this.lblBrief.Location = new Point(picAppIcon.Right + ui.GlobalSpacingX, (pnlBanner.Height / 2));
             this.lblBrief.ForeColor = theme.GetFontColor("normal");
             this.lblBrief.TextAlign = ContentAlignment.MiddleLeft;
@@ -129,10 +129,24 @@ namespace QuickWinstall
             this.picBannerImage.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             try
             {
-                string imagePath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "res", "images", "bg_Windows11.png");
+                string imagePath;
+                if (lang.CurrentLanguage == "pho-AnhHai")
+                {
+                    imagePath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "res", "images", "bg_CauVang.png");
+                }
+                else
+                {
+                    imagePath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "res", "images", "bg_Windows11.png");
+                }
+
                 if (System.IO.File.Exists(imagePath))
                 {
                     this.picBannerImage.Image = Image.FromFile(imagePath);
+                    this.picBannerImage.Visible = true;
+                }
+                else
+                {
+                    this.picBannerImage.Visible = false;
                 }
             }
             catch { }
@@ -445,9 +459,9 @@ namespace QuickWinstall
             pnlControls.Controls.Add(btnClose);
 
             pnlBanner.Controls.Add(picAppIcon);
+            pnlBanner.Controls.Add(picBannerImage);
             pnlBanner.Controls.Add(lblProject);
             pnlBanner.Controls.Add(lblBrief);
-            pnlBanner.Controls.Add(picBannerImage);
 
             // Add all panels to form
             this.Controls.Add(pnlBanner);

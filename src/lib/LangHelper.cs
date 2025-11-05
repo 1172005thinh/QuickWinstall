@@ -141,6 +141,8 @@ namespace QuickWinstall.Lib
                     return "English";
                 case "vi-VN":
                     return "Tiếng Việt";
+                case "pho-AnhHai":
+                    return "Tiếng Phở Anh Hai";
                 default:
                     return langCode; // Return the code itself as fallback
             }
