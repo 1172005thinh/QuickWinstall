@@ -1,18 +1,83 @@
 {
-    "Color":
-    {
-
+  "name": "Light",
+  "colors": {
+    "background": "#e1e1e1",
+    "foreground": "#000000",
+    "buttonBackground": "#ffffff",
+    "mutedButtonBackground": "#404045",
+    "buttonBackgroundHover": "#f0f4ff",
+    "buttonBorder": "#000000",
+    "mutedButtonBorder": "#666666",
+    "buttonBorderHover": "#4472c4",
+    "inputBackground": "#ffffff",
+    "inputForeground": "#000000",
+    "mutedInputBackground": "#444444",
+    "mutedInputForeground": "#a0a0a0",
+    "toggleOnBackground": "#4472c4",
+    "toggleOffBackground": "#cccccc",
+    "toggleMutedOnBackground": "#c5d3ed",
+    "toggleMutedOffBackground": "#dadada",
+    "toggleThumb": "#ffffff",
+    "toggleMutedThumb": "#f1f1f1",
+    "separator": "#000000",
+    "link": "#0969da",
+    "linkActive": "#0550ae",
+    "linkVisited": "#8250df"
+  },
+  "fonts": {
+    "normal": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#000000"
     },
-    "Font":
-    {
-
+    "header": {
+      "family": "Segoe UI",
+      "size": 16,
+      "style": "Bold",
+      "color": "#000000"
     },
-    "Size":
-    {
-
+    "subheader": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Bold",
+      "color": "#000000"
     },
-    "Style":
-    {
-
+    "placeholder": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#e1e1e1"
+    },
+    "error": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#ff0000"
+    },
+    "warning": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#ffa500"
+    },
+    "success": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#008000"
+    },
+    "muted": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Italic",
+      "color": "#bbbbbb"
+    },
+    "tooltip": {
+      "family": "Segoe UI",
+      "size": 10,
+      "style": "Italic",
+      "color": "#bbbbbb"
     }
+  }
 }

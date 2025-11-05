@@ -1,185 +1,449 @@
 {
-    "DefaultsFileNotFound": "Defaults file not found.",
-    "FailedToParseDefaults": "Failed to parse defaults.",
-    "GeneralConfig_CPUARM64": "Windows ARM64",
-    "GeneralConfig_CPUArchitectureLabel": "CPU Architecture:",
-    "GeneralConfig_CPUArchitecture_Tooltip": "Select the CPU architecture for installation.\n Windows 11 unfortunately does not support x86.",
-    "GeneralConfig_CPUIntelAMD": "Intel/AMD (x64)",
-    "GeneralConfig_Error_CPUArchitecture": "Please select a valid CPU architecture.",
-    "GeneralConfig_Error_ProductKey": "Please enter a complete product key or leave all fields blank.",
-    "GeneralConfig_Error_WindowsEdition": "Please select a valid Windows edition.",
-    "GeneralConfig_ExpandCollapse_Tooltip": "Expand/Collapse this section.",
-    "GeneralConfig_Header": "General Configuration",
-    "GeneralConfig_Header_Tooltip": "Configure general Windows installation settings.",
-    "GeneralConfig_ProductKeyLabel": "Product Key:",
-    "GeneralConfig_ProductKey_Part_Tooltip": "Enter 5 characters.",
-    "GeneralConfig_ProductKey_Placeholder": "XXXXX",
-    "GeneralConfig_ProductKey_Separator": "-",
-    "GeneralConfig_ProductKey_Tooltip": "Enter the product key for Windows installation.",
-    "GeneralConfig_WindowsEditionLabel": "Windows Edition:",
-    "GeneralConfig_WindowsEdition_Tooltip": "Select the Windows edition to install.",
-    "GeneralConfig_WindowsEducation": "Windows 11 Education",
-    "GeneralConfig_WindowsEnterprise": "Windows 11 Enterprise",
-    "GeneralConfig_WindowsHome": "Windows 11 Home",
-    "GeneralConfig_WindowsPro": "Windows 11 Pro",
-    "MainForm_CancelButton": "Cancel",
-    "MainForm_CancelButton_Tooltip": "Exit the application without saving.",
-    "MainForm_ClearButton": "Clear",
-    "MainForm_ClearButton_Tooltip": "Clear all configurations.",
-    "MainForm_Error_FailedToApplyPreset": "Failed to apply preset {0}: {1}",
-    "MainForm_Error_FailedToClearConfigs": "Failed to clear configurations: {0}",
-    "MainForm_Error_FailedToClearSettings": "Failed to clear settings: {0}",
-    "MainForm_Error_FailedToLoadLastConfigs": "Failed to load last configurations: {0}",
-    "MainForm_Error_FailedToLoadLastSettings": "Failed to load last settings: {0}",
-    "MainForm_Error_FailedToOpenPreset": "Failed to open preset: {0}",
-    "MainForm_Error_FailedToOpenSettings": "Failed to open settings: {0}",
-    "MainForm_Error_FailedToRefreshLanguage": "Failed to refresh language: {0}",
-    "MainForm_Error_FailedToSaveConfigs": "Failed to save configurations: {0}",
-    "MainForm_Error_FailedToSaveSettings": "Failed to save settings: {0}",
-    "MainForm_Error_GenerationFailed": "Generation failed: {0}",
-    "MainForm_Error_NoSavePath": "No save path specified in settings: {0}",
-    "MainForm_Error_SavePathNotExist": "The specified save path does not exist: {0}",
-    "MainForm_Error_Title": "Error",
-    "MainForm_FormTitle": "QuickWinstall",
-    "MainForm_GenerateButton": "Generate",
-    "MainForm_GenerateButton_Tooltip": "Generate the autounattend.xml file.",
-    "MainForm_Info_FileSaved": "File saved to: {0}",
-    "MainForm_Info_Title": "Success",
-    "MainForm_PresetsButton": "Preset",
-    "MainForm_PresetsButton_Tooltip": "Load recommended settings.",
-    "MainForm_SettingsButton": "Settings",
-    "MainForm_SettingsButton_Tooltip": "Open application settings.",
-    "MainForm_StatusLabel_Ready": "Language packages are missing or corrupted.",
-    "MainForm_StatusPrefixLabel": "Status:",
-    "MainForm_Status_AllConfigsCleared": "All configurations cleared.",
-    "MainForm_Status_AllSettingsCleared": "All settings cleared.",
-    "MainForm_Status_Applied": "Applied",
-    "MainForm_Status_Cleared": "Cleared",
-    "MainForm_Status_Completed": "Completed",
-    "MainForm_Status_Critical": "Critical",
-    "MainForm_Status_Empty": "Empty",
-    "MainForm_Status_Error": "Error",
-    "MainForm_Status_Failed": "Failed",
-    "MainForm_Status_FailedToApplyPreset": "Failed to apply preset: {0}",
-    "MainForm_Status_FailedToClearConfigs": "Failed to clear configurations.",
-    "MainForm_Status_FailedToClearSettings": "Failed to clear settings.",
-    "MainForm_Status_FailedToLoadLastConfigs": "Failed to load last configurations.",
-    "MainForm_Status_FailedToLoadLastSettings": "Failed to load last settings.",
-    "MainForm_Status_FailedToOpenPreset": "Failed to open preset.",
-    "MainForm_Status_FailedToOpenSettings": "Failed to open settings.",
-    "MainForm_Status_FailedToRefreshLanguage": "Failed to refresh language.",
-    "MainForm_Status_FailedToSaveConfigs": "Failed to save configurations.",
-    "MainForm_Status_FailedToSaveSettings": "Failed to save settings.",
-    "MainForm_Status_GenerationCancelled": "Generation cancelled.",
-    "MainForm_Status_GenerationCompleted": "Generation completed successfully.",
-    "MainForm_Status_GenerationFailed": "Generation failed.",
-    "MainForm_Status_InitializedSuccessfully": "Initialized successfully.",
-    "MainForm_Status_Invalid": "Invalid",
-    "MainForm_Status_NoSavePath": "No save path specified in settings.",
-    "MainForm_Status_PresetApplied": "Preset applied.",
-    "MainForm_Status_Ready": "Ready",
-    "MainForm_Status_SavePathNotExist": "The specified save path does not exist.",
-    "MainForm_Status_Saved": "Saved",
-    "MainForm_Status_SettingsSaved": "Settings saved.",
-    "MainForm_Status_Success": "Success",
-    "MainForm_Status_Unexpected": "Unexpected",
-    "MainForm_Status_Unsaved": "Unsaved",
-    "MainForm_Status_UnsavedChanges": "Has unsaved changes.",
-    "MainForm_Status_Warning": "Warning",
-    "MainForm_Status_applied": "applied",
-    "MainForm_Status_cleared": "cleared",
-    "MainForm_Status_completed": "completed",
-    "MainForm_Status_critical": "critical",
-    "MainForm_Status_empty": "empty",
-    "MainForm_Status_error": "error",
-    "MainForm_Status_failed": "failed",
-    "MainForm_Status_invalid": "invalid",
-    "MainForm_Status_ready": "ready",
-    "MainForm_Status_saved": "saved",
-    "MainForm_Status_success": "success",
-    "MainForm_Status_unexpected": "unexpected",
-    "MainForm_Status_unsaved": "unsaved",
-    "MainForm_Status_warning": "warning",
-    "MainForm_Title": "QuickWinstall",
-    "MainForm_Warning_ClearAllConfigs": "Clear all configurations?",
-    "MainForm_Warning_ClearAllSettings": "Clear all settings?",
-    "MainForm_Warning_OverwriteFile": "The file autounattend.xml already exists. Overwrite?",
-    "MainForm_Warning_PleaseFixError": "Please fix error: {0}",
-    "MainForm_Warning_Title": "Warning",
-    "MainForm_Warning_UnsavedChanges": "Leave without saving?",
-    "PresetForm_Info_NoData": "",
-    "PresetsForm_AddButton": "Add",
-    "PresetsForm_AddButton_Tooltip": "Add a new preset.",
-    "PresetsForm_ApplyButton": "Apply",
-    "PresetsForm_ApplyButton_Tooltip": "Apply the selected preset.",
-    "PresetsForm_Button_Add": "Add",
-    "PresetsForm_Button_Cancel": "Cancel",
-    "PresetsForm_Button_OK": "OK",
-    "PresetsForm_CancelButton": "Cancel",
-    "PresetsForm_CancelButton_Tooltip": "Cancel any changes and close this window.",
-    "PresetsForm_Dialog_ExportPreset": "Export Preset",
-    "PresetsForm_Dialog_ImportPreset": "Import Preset",
-    "PresetsForm_Error_CannotRemoveDefault": "Cannot remove default preset.",
-    "PresetsForm_Error_FailedToApply": "Failed to apply preset '{0}'.",
-    "PresetsForm_Error_FailedToExport": "Failed to export preset.",
-    "PresetsForm_Error_FailedToImport": "Failed to import preset.",
-    "PresetsForm_Error_FailedToRemove": "Failed to remove preset.",
-    "PresetsForm_Error_InvalidPresetName": "Please enter a valid preset name.",
-    "PresetsForm_Error_LoadingPresets": "Error loading presets: {0}",
-    "PresetsForm_Error_Title": "Error",
-    "PresetsForm_ExportButton": "Export",
-    "PresetsForm_ExportButton_Tooltip": "Export the selected preset.",
-    "PresetsForm_ImportButton": "Import",
-    "PresetsForm_ImportButton_Tooltip": "Import a preset from file.",
-    "PresetsForm_InfoLabel": "Info:",
-    "PresetsForm_Info_Author": "Author",
-    "PresetsForm_Info_Description": "Description",
-    "PresetsForm_Info_Name": "Name",
-    "PresetsForm_Info_NoData": "",
-    "PresetsForm_Info_NotImplemented": "Save preset functionality requires integration with MainForm to collect current configuration.",
-    "PresetsForm_Info_Title": "Not Implemented",
-    "PresetsForm_Info_Tooltip": "Preset information and description.",
-    "PresetsForm_Info_Version": "Version",
-    "PresetsForm_Label_PresetInfo": "Preset Information:",
-    "PresetsForm_Label_PresetName": "Preset Name:",
-    "PresetsForm_Label_PresetsList": "Available Presets:",
-    "PresetsForm_ListBox_Tooltip": "Select a preset to apply.",
-    "PresetsForm_PresetsListLabel": "Select a preset:",
-    "PresetsForm_PresetsListLabel_Tooltip": "Presets is a collection of predefined settings\n that can be applied to quickly\\n configure the application.",
-    "PresetsForm_RemoveButton": "Remove",
-    "PresetsForm_RemoveButton_Tooltip": "Remove the selected preset.",
-    "PresetsForm_Success_ExportedPreset": "Preset exported successfully.",
-    "PresetsForm_Success_ImportedPreset": "Preset imported successfully.",
-    "PresetsForm_Success_Title": "Success",
-    "PresetsForm_Title": "Presets",
-    "PresetsForm_Title_AddPreset": "Add Preset",
-    "PresetsForm_Warning_Overwrite": "Preset already exists. Overwrite?",
-    "PresetsForm_Warning_RemovePreset": "Remove preset '{0}'?",
-    "PresetsForm_Warning_Title": "Warning",
-    "Select": "Select",
-    "SettingsForm_AboutButton": "About",
-    "SettingsForm_AboutButton_Tooltip": "About QuickWinstall",
-    "SettingsForm_BrowseButton": "Browse",
-    "SettingsForm_BrowseButton_Tooltip": "Browse for folder",
-    "SettingsForm_BrowseDialog_Description": "Select Folder to Save XML Files",
-    "SettingsForm_CancelButton": "Cancel",
-    "SettingsForm_CancelButton_Tooltip": "Cancel changes",
-    "SettingsForm_English": "English",
-    "SettingsForm_HelpButton": "Help",
-    "SettingsForm_HelpButton_Tooltip": "Open help documentation",
-    "SettingsForm_LanguageLabel": "Language:",
-    "SettingsForm_LanguageLabel_Tooltip": "Application language DOES NOT affect Windows UI Language.",
-    "SettingsForm_SaveButton": "Save",
-    "SettingsForm_SaveButton_Tooltip": "Save settings",
-    "SettingsForm_SavePathLabel": "XML Save Path:",
-    "SettingsForm_SavePathLabel_Tooltip": "Select save path for autounattend.xml file.",
-    "SettingsForm_SavePathTextBox_Tooltip": "Enter the XML save path.",
-    "SettingsForm_ThemeDark": "Dark",
-    "SettingsForm_ThemeLabel": "Theme:",
-    "SettingsForm_ThemeLabel_Tooltip": "Select application theme.",
-    "SettingsForm_ThemeLight": "Light",
-    "SettingsForm_Theme_Dark": "Dark",
-    "SettingsForm_Theme_Light": "Light",
-    "SettingsForm_Title": "Settings",
-    "SettingsForm_Vietnamese": "Tiếng Việt"
+  "app": {
+    "name": "QuickWinstall",
+    "title": "Automated Windows 11 Installation"
+  },
+  "bypassConfig": {
+    "bypassAll": {
+      "label": "Bypass All Hardware Checks"
+    },
+    "bypassCPU": {
+      "label": "Bypass CPU Check"
+    },
+    "bypassDisk": {
+      "label": "Bypass Disk Check"
+    },
+    "bypassRAM": {
+      "label": "Bypass RAM Check"
+    },
+    "bypassSecureBoot": {
+      "label": "Bypass Secure Boot Check"
+    },
+    "bypassStorage": {
+      "label": "Bypass Storage Check"
+    },
+    "bypassTPM": {
+      "label": "Bypass TPM Check"
+    },
+    "enableBypass": {
+      "label": "Unlock Hardware Check Bypass"
+    }
+  },
+  "dialogs": {
+    "buttons": {
+      "cancel": "Cancel",
+      "ok": "OK"
+    },
+    "clear": {
+      "message": "Clear all configurations?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "emptySavePath": {
+      "message": "The save path is empty or inaccessible.\\nPlease set a valid save path in Settings.",
+      "title": "Error"
+    },
+    "failed": {
+      "message": "Failed to generate autounattend.xml file.",
+      "title": "Error"
+    },
+    "invalidSavePath": {
+      "message": "The save path is invalid or does not exist.\\nPlease enter a valid directory path.",
+      "title": "Error"
+    },
+    "overwrite": {
+      "message": "Overwrite existing autounattend.xml?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "resetSettings": {
+      "message": "Reset all settings to default values?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "success": {
+      "message": "Done! File saved at:\\n{0}autounattend.xml",
+      "title": "Information"
+    },
+    "unsaved": {
+      "message": "Leave without saving?\\nThis action cannot be undone.",
+      "title": "Warning"
+    },
+    "validation": {
+      "message": "Please fix this validation errors:\\n{0}",
+      "title": "Error"
+    }
+  },
+  "generalConfig": {
+    "cpuArch": {
+      "label": "CPU Architecture:",
+      "options": {
+        "arm64": "Windows ARM64",
+        "selectOne": "-- Select one --",
+        "x64": "Intel/AMD x64"
+      }
+    },
+    "enableGeneral": {
+      "label": "Unlock General Configurations"
+    },
+    "productKey": {
+      "label": "Product Key:",
+      "placeholder": "XXXXX"
+    },
+    "windowsEdition": {
+      "label": "Windows Edition:",
+      "options": {
+        "education": "Windows 11 Education",
+        "enterprise": "Windows 11 Enterprise",
+        "home": "Windows 11 Home",
+        "pro": "Windows 11 Pro",
+        "selectOne": "-- Select one --"
+      }
+    }
+  },
+  "langRegConfig": {
+    "enableLangReg": {
+      "label": "Unlock Language && Region Configurations"
+    },
+    "keyboardLayout": {
+      "label": "Keyboard Layout:",
+      "options": {
+        "de-DE": "German (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)"
+      }
+    },
+    "sameAsSystemLocale": {
+      "label": "Same as System Locale"
+    },
+    "systemLocale": {
+      "label": "System Locale:",
+      "options": {
+        "de-DE": "German (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)"
+      }
+    },
+    "timeZone": {
+      "label": "Time Zone:",
+      "options": {
+        "UTC": "UTC Coordinated Universal Time",
+        "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
+        "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+        "UTC+07:00": "UTC+07:00 Bangkok, Hanoi, Jakarta",
+        "UTC+08:00": "UTC+08:00 Beijing, Chongqing, Hong Kong, Urumqi",
+        "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney",
+        "UTC-05:00": "UTC-05:00 Eastern Time (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Central Time (US & Canada)",
+        "UTC-07:00": "UTC-07:00 Mountain Time (US & Canada)",
+        "UTC-08:00": "UTC-08:00 Pacific Time (US & Canada)",
+        "selectOne": "-- Select one --"
+      }
+    },
+    "userLocale": {
+      "label": "User Locale:",
+      "options": {
+        "de-DE": "German (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)"
+      }
+    },
+    "windowsUILanguage": {
+      "label": "Windows UI Language:",
+      "options": {
+        "de-DE": "German (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Spanish (Español)",
+        "fr-FR": "French (Français)",
+        "ja-JP": "Japanese (日本語)",
+        "ko-KR": "Korean (한국어)",
+        "pt-BR": "Portuguese (Português)",
+        "selectOne": "-- Select one --",
+        "vi-VN": "Vietnamese (Tiếng Việt)",
+        "zh-CN": "Simplified Chinese (简体中文)",
+        "zh-TW": "Traditional Chinese (繁體中文)"
+      }
+    }
+  },
+  "mainForm": {
+    "banner": {
+      "title": "Automated Windows 11 Installation"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "clear": "Clear",
+      "generate": "Generate",
+      "preset": "Preset",
+      "settings": "Settings"
+    },
+    "sections": {
+      "app": "App Configurations",
+      "bypass": "Bypass Windows 11 Hardware Checks",
+      "diskPart": "Disk & Partition Configurations",
+      "general": "General Configurations",
+      "langReg": "Language & Region Configurations",
+      "oobe": "OOBE Configurations",
+      "personal": "Personalize Configurations",
+      "userAcc": "User Account Configurations"
+    },
+    "status": {
+      "configurationCleared": "Configuration cleared",
+      "error": "An error occurred",
+      "failedToGenerateFile": "Failed to generate autounattend.xml file.",
+      "generating": "Generating autounattend.xml...",
+      "invalidSavePath": "Invalid save path.",
+      "loading": "Loading...",
+      "prefix": "Status:",
+      "ready": "Ready",
+      "settingsUpdated": "Settings updated",
+      "success": "File generated successfully",
+      "unsavedChanges": "Unsaved Configurations"
+    },
+    "title": "QuickWinstall"
+  },
+  "oobeConfig": {
+    "enableOobe": {
+      "label": "Unlock OOBE Configurations"
+    },
+    "networkLocation": {
+      "label": "Network Location:",
+      "option": {
+        "home": "Home Network (Private)",
+        "public": "Public Network",
+        "selectOne": "-- Select one --",
+        "work": "Work Network (Private)"
+      }
+    },
+    "protectYourPC": {
+      "label": "Privacy Settings:",
+      "option": {
+        "cloudTelemetry": "Express Settings (Cloud & Telemetry Enabled)",
+        "privacyFocused": "Privacy Settings (Telemetry Disabled)",
+        "selectOne": "-- Select one --"
+      }
+    },
+    "skipAll": {
+      "label": "Skip All OOBE Steps"
+    },
+    "skipEULA": {
+      "label": "Skip EULA Page"
+    },
+    "skipLocalAccountCreation": {
+      "label": "Skip Local Account Screen"
+    },
+    "skipMachineOOBE": {
+      "label": "Skip machine-level OOBE tasks"
+    },
+    "skipOnlineAccountCreation": {
+      "label": "Skip Online Account Screen"
+    },
+    "skipUserOOBE": {
+      "label": "Skip user-level OOBE tasks"
+    },
+    "skipWirelessNetwork": {
+      "label": "Skip Wireless Setup"
+    }
+  },
+  "aboutForm": {
+    "title": "About QuickWinstall",
+    "banner": {
+      "project": "QuickWinstall Project",
+      "brief": "A free, open-source autounattend generator\\nfor Windows 11 Installation."
+    },
+    "originalAuthor": {
+      "label": "Original Author:",
+      "name": "1172005thinh (QuickComp.)"
+    },
+    "followMe": {
+      "label": "Follow me now!"
+    },
+    "contributors": {
+      "label": "Contributors:",
+      "contributor1": "1172005thinh (QuickComp.)",
+      "submitRequest": "Contributors are welcome! Feel free to submit requests on"
+    },
+    "references": {
+      "label": "References:",
+      "reference1": "Schneegans Unattend Generator",
+      "reference2": "Microsoft Documentation",
+      "reference3": "Microsoft Windows Deployment",
+      "reference4": "GitHub Repository"
+    },
+    "license": {
+      "label": "License:",
+      "name": "Free, open-source following MIT License."
+    },
+    "version": {
+      "label": "Version:"
+    },
+    "buttons": {
+      "close": "Close"
+    },
+    "tooltips": {
+      "youtube": "Visit my YouTube channel",
+      "github": "Visit my GitHub profile",
+      "facebook": "Visit my Facebook page",
+      "close": "Close About QuickWinstall"
+    }
+  },
+  "settingsForm": {
+    "autoSave": {
+      "label": "Auto save config after a successful Generate:"
+    },
+    "banner": {
+      "title": "Application Settings"
+    },
+    "buttons": {
+      "about": "About",
+      "cancel": "Cancel",
+      "help": "Help",
+      "save": "Save"
+    },
+    "expandAll": {
+      "label": "Expand all config sections on Startup:"
+    },
+    "folderDialog": {
+      "description": "XML saved at:"
+    },
+    "language": {
+      "label": "Language:"
+    },
+    "loadLast": {
+      "label": "Auto load last saved config on Startup:"
+    },
+    "lockSections": {
+      "label": "Lock all config sections on Startup:"
+    },
+    "savePath": {
+      "label": "XML save path:"
+    },
+    "theme": {
+      "label": "Theme:",
+      "options": {
+        "dark": "Dark",
+        "light": "Light"
+      }
+    },
+    "title": "Settings",
+    "toggle": {
+      "off": "Disabled",
+      "on": "Enabled"
+    },
+    "tooltips": {
+      "about": "About QuickWinstall",
+      "autoSave": "Automatically save the current configuration when exiting the application to Presets/lastConfig.json",
+      "browse": "Browse for a folder to set as XML Save Path",
+      "cancel": "Discard changes and close Settings",
+      "expandAll": "Expand all configuration sections by default when the application starts",
+      "help": "Open Help documentation",
+      "language": "Application's Language settings DOES NOT AFFECT Windows UI Language",
+      "loadLast": "Automatically load the last saved configuration from Presets/lastConfig.json when opening the application",
+      "lockSections": "Lock all configuration sections to prevent expanding/collapsing when the application starts",
+      "reset": "Reset all settings to default values",
+      "save": "Save all settings and close Settings",
+      "savePath": "Set the default save path for generated autounattend.xml file",
+      "theme": "Select application theme"
+    }
+  },
+  "tooltips": {
+    "appConfig": {
+      "header": "App Configurations Section"
+    },
+    "bypassConfig": {
+      "bypassAll": "Enable/Disable all hardware requirement bypasses at once",
+      "bypassCPU": "Bypass the CPU compatibility check",
+      "bypassDisk": "Bypass disk-related hardware checks",
+      "bypassRAM": "Bypass the 4GB RAM minimum requirement",
+      "bypassSecureBoot": "Bypass the Secure Boot requirement",
+      "bypassStorage": "Bypass the 64GB storage minimum requirement",
+      "bypassTPM": "Bypass the Trusted Platform Module (TPM) 2.0 requirement",
+      "enableBypass": "Unlock or lock all hardware requirement checks bypass",
+      "header": "Bypass Windows 11 Hardware Checks Section"
+    },
+    "diskPartConfig": {
+      "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
+      "header": "Disk && Partition Configurations Section"
+    },
+    "generalConfig": {
+      "cpuArch": "Select the CPU architecture for installation.",
+      "enableGeneral": "Unlock or lock all options in the General Configurations section",
+      "header": "General Configurations Section",
+      "productKey": "Enter Product Key to activate Windows.\\nLeave it blank to skip activation, or to activate with embedded key.",
+      "windowsEdition": "Select the Windows edition to install"
+    },
+    "langRegConfig": {
+      "enableLangReg": "Unlock or lock all options in the Language & Region Configurations section",
+      "header": "Language && Region Configurations Section",
+      "keyboardLayout": "Select the keyboard layout.",
+      "sameAsSystemLocale": "Set the User Locale same as the System Locale.\\n Difference between System Locale and User Locale may break Windows Installation.",
+      "systemLocale": "Select the system locale for the Windows.",
+      "timeZone": "Select the time zone.",
+      "userLocale": "Select the user locale for the Windows.",
+      "windowsUILanguage": "Select the Windows UI language."
+    },
+    "mainForm": {
+      "cancel": "Exit QuickWinstall",
+      "clear": "Clear all configurations",
+      "collapseAll": "Collapse the Configuration Panel",
+      "expandAll": "Expand the Configuration Panel",
+      "generate": "Generate autounattend.xml file",
+      "lockAll": "Lock all sections",
+      "logoClick": "Scroll to top",
+      "preset": "Load/Save a preset of current configurations",
+      "settings": "Open Application's settings",
+      "unlockAll": "Unlock all sections"
+    },
+    "oobeConfig": {
+      "enableOobe": "Unlock or lock all options in the OOBE Configurations section",
+      "header": "OOBE Configurations Section",
+      "networkLocation": "Set the initial network location profile.\\nHome/Work: Private firewall profile (allows network discovery).\\nPublic: Public firewall profile (blocks network discovery).",
+      "protectYourPC": "Choose privacy settings for telemetry and cloud features.\\nExpress Settings: Enables cloud features and telemetry.\\nPrivacy Settings: Disables most telemetry and cloud features.",
+      "skipAll": "Skip all Out-Of-Box Experience (OOBE) steps during Windows installation",
+      "skipEULA": "Skip the End User License Agreement acceptance page",
+      "skipLocalAccountCreation": "Skip the local account creation screen",
+      "skipMachineOOBE": "Skip machine-level OOBE configuration",
+      "skipOnlineAccountCreation": "Skip the Microsoft account sign-in screen",
+      "skipUserOOBE": "Skip user-level OOBE configuration",
+      "skipWirelessNetwork": "Skip wireless network setup during OOBE"
+    },
+    "personalConfig": {
+      "enablePersonal": "Unlock or lock all options in the Personalize Configurations section",
+      "header": "Personalize Configurations Section"
+    },
+    "section": {
+      "collapse": "Collapse {0} Section",
+      "expand": "Expand {0} Section"
+    },
+    "userAccConfig": {
+      "enableUserAcc": "Unlock or lock all options in the User Account Configurations section",
+      "header": "User Account Configurations Section"
+    }
+  },
+  "validation": {
+    "invalid": "{0} is invalid.",
+    "invalidProductKey": "Product Key must be either empty or a valid 25-character key in the format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX.",
+    "required": "{0} is required."
+  }
 }

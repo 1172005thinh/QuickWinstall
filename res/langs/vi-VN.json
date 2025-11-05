@@ -1,185 +1,449 @@
 {
-    "DefaultsFileNotFound": "Không tìm thấy tệp mặc định.",
-    "FailedToParseDefaults": "Không thể phân tích tệp mặc định.",
-    "GeneralConfig_CPUARM64": "Windows ARM64",
-    "GeneralConfig_CPUArchitectureLabel": "Kiến trúc CPU:",
-    "GeneralConfig_CPUArchitecture_Tooltip": "Chọn kiến trúc CPU cho việc cài đặt.\\n Windows 11 không hỗ trợ x86.",
-    "GeneralConfig_CPUIntelAMD": "Intel/AMD (x64)",
-    "GeneralConfig_Error_CPUArchitecture": "Chọn kiến trúc CPU hợp lệ.",
-    "GeneralConfig_Error_ProductKey": "Vui lòng nhập đầy đủ Product Key hoặc để tất cả các trường trống.",
-    "GeneralConfig_Error_WindowsEdition": "Vui lòng chọn phiên bản Windows hợp lệ.",
-    "GeneralConfig_ExpandCollapse_Tooltip": "Mở rộng/Thu gọn phần này.",
-    "GeneralConfig_Header": "Cấu hình chung",
-    "GeneralConfig_Header_Tooltip": "Cấu hình các thiết lập cài đặt Windows chung.",
-    "GeneralConfig_ProductKeyLabel": "Product Key:",
-    "GeneralConfig_ProductKey_Part_Tooltip": "Nhập 5 ký tự.",
-    "GeneralConfig_ProductKey_Placeholder": "XXXXX",
-    "GeneralConfig_ProductKey_Separator": "-",
-    "GeneralConfig_ProductKey_Tooltip": "Nhập Product Key cho việc cài đặt Windows.",
-    "GeneralConfig_WindowsEditionLabel": "Windows Edition:",
-    "GeneralConfig_WindowsEdition_Tooltip": "Chọn phiên bản Windows để cài đặt.",
-    "GeneralConfig_WindowsEducation": "Windows 11 Education",
-    "GeneralConfig_WindowsEnterprise": "Windows 11 Enterprise",
-    "GeneralConfig_WindowsHome": "Windows 11 Home",
-    "GeneralConfig_WindowsPro": "Windows 11 Pro",
-    "MainForm_CancelButton": "Cancel",
-    "MainForm_CancelButton_Tooltip": "Exit the application without saving.",
-    "MainForm_ClearButton": "Clear",
-    "MainForm_ClearButton_Tooltip": "Clear all configurations.",
-    "MainForm_Error_FailedToApplyPreset": "Failed to apply preset {0}: {1}",
-    "MainForm_Error_FailedToClearConfigs": "Failed to clear configurations: {0}",
-    "MainForm_Error_FailedToClearSettings": "Failed to clear settings: {0}",
-    "MainForm_Error_FailedToLoadLastConfigs": "Failed to load last configurations: {0}",
-    "MainForm_Error_FailedToLoadLastSettings": "Failed to load last settings: {0}",
-    "MainForm_Error_FailedToOpenPreset": "Failed to open preset: {0}",
-    "MainForm_Error_FailedToOpenSettings": "Failed to open settings: {0}",
-    "MainForm_Error_FailedToRefreshLanguage": "Failed to refresh language: {0}",
-    "MainForm_Error_FailedToSaveConfigs": "Failed to save configurations: {0}",
-    "MainForm_Error_FailedToSaveSettings": "Failed to save settings: {0}",
-    "MainForm_Error_GenerationFailed": "Generation failed: {0}",
-    "MainForm_Error_NoSavePath": "No save path specified in settings: {0}",
-    "MainForm_Error_SavePathNotExist": "The specified save path does not exist: {0}",
-    "MainForm_Error_Title": "Error",
-    "MainForm_FormTitle": "QuickWinstall",
-    "MainForm_GenerateButton": "Generate",
-    "MainForm_GenerateButton_Tooltip": "Generate the autounattend.xml file.",
-    "MainForm_Info_FileSaved": "File saved to: {0}",
-    "MainForm_Info_Title": "Success",
-    "MainForm_PresetsButton": "Preset",
-    "MainForm_PresetsButton_Tooltip": "Load recommended settings.",
-    "MainForm_SettingsButton": "Settings",
-    "MainForm_SettingsButton_Tooltip": "Open application settings.",
-    "MainForm_StatusLabel_Ready": "Language packages are missing or corrupted.",
-    "MainForm_StatusPrefixLabel": "Status:",
-    "MainForm_Status_AllConfigsCleared": "All configurations cleared.",
-    "MainForm_Status_AllSettingsCleared": "All settings cleared.",
-    "MainForm_Status_Applied": "Applied",
-    "MainForm_Status_Cleared": "Cleared",
-    "MainForm_Status_Completed": "Completed",
-    "MainForm_Status_Critical": "Critical",
-    "MainForm_Status_Empty": "Empty",
-    "MainForm_Status_Error": "Error",
-    "MainForm_Status_Failed": "Failed",
-    "MainForm_Status_FailedToApplyPreset": "Failed to apply preset: {0}",
-    "MainForm_Status_FailedToClearConfigs": "Failed to clear configurations.",
-    "MainForm_Status_FailedToClearSettings": "Failed to clear settings.",
-    "MainForm_Status_FailedToLoadLastConfigs": "Failed to load last configurations.",
-    "MainForm_Status_FailedToLoadLastSettings": "Failed to load last settings.",
-    "MainForm_Status_FailedToOpenPreset": "Failed to open preset.",
-    "MainForm_Status_FailedToOpenSettings": "Failed to open settings.",
-    "MainForm_Status_FailedToRefreshLanguage": "Failed to refresh language.",
-    "MainForm_Status_FailedToSaveConfigs": "Failed to save configurations.",
-    "MainForm_Status_FailedToSaveSettings": "Failed to save settings.",
-    "MainForm_Status_GenerationCancelled": "Generation cancelled.",
-    "MainForm_Status_GenerationCompleted": "Generation completed successfully.",
-    "MainForm_Status_GenerationFailed": "Generation failed.",
-    "MainForm_Status_InitializedSuccessfully": "Initialized successfully.",
-    "MainForm_Status_Invalid": "Invalid",
-    "MainForm_Status_NoSavePath": "No save path specified in settings.",
-    "MainForm_Status_PresetApplied": "Preset applied.",
-    "MainForm_Status_Ready": "Ready",
-    "MainForm_Status_SavePathNotExist": "The specified save path does not exist.",
-    "MainForm_Status_Saved": "Saved",
-    "MainForm_Status_SettingsSaved": "Settings saved.",
-    "MainForm_Status_Success": "Success",
-    "MainForm_Status_Unexpected": "Unexpected",
-    "MainForm_Status_Unsaved": "Unsaved",
-    "MainForm_Status_UnsavedChanges": "Has unsaved changes.",
-    "MainForm_Status_Warning": "Warning",
-    "MainForm_Status_applied": "applied",
-    "MainForm_Status_cleared": "cleared",
-    "MainForm_Status_completed": "completed",
-    "MainForm_Status_critical": "critical",
-    "MainForm_Status_empty": "empty",
-    "MainForm_Status_error": "error",
-    "MainForm_Status_failed": "failed",
-    "MainForm_Status_invalid": "invalid",
-    "MainForm_Status_ready": "ready",
-    "MainForm_Status_saved": "saved",
-    "MainForm_Status_success": "success",
-    "MainForm_Status_unexpected": "unexpected",
-    "MainForm_Status_unsaved": "unsaved",
-    "MainForm_Status_warning": "warning",
-    "MainForm_Title": "QuickWinstall",
-    "MainForm_Warning_ClearAllConfigs": "Clear all configurations?",
-    "MainForm_Warning_ClearAllSettings": "Clear all settings?",
-    "MainForm_Warning_OverwriteFile": "The file autounattend.xml already exists. Overwrite?",
-    "MainForm_Warning_PleaseFixError": "Please fix error: {0}",
-    "MainForm_Warning_Title": "Warning",
-    "MainForm_Warning_UnsavedChanges": "Leave without saving?",
-    "PresetForm_Info_NoData": "",
-    "PresetsForm_AddButton": "Add",
-    "PresetsForm_AddButton_Tooltip": "Add a new preset.",
-    "PresetsForm_ApplyButton": "Apply",
-    "PresetsForm_ApplyButton_Tooltip": "Apply the selected preset.",
-    "PresetsForm_Button_Add": "Add",
-    "PresetsForm_Button_Cancel": "Cancel",
-    "PresetsForm_Button_OK": "OK",
-    "PresetsForm_CancelButton": "Cancel",
-    "PresetsForm_CancelButton_Tooltip": "Cancel any changes and close this window.",
-    "PresetsForm_Dialog_ExportPreset": "Export Preset",
-    "PresetsForm_Dialog_ImportPreset": "Import Preset",
-    "PresetsForm_Error_CannotRemoveDefault": "Cannot remove default preset.",
-    "PresetsForm_Error_FailedToApply": "Failed to apply preset '{0}'.",
-    "PresetsForm_Error_FailedToExport": "Failed to export preset.",
-    "PresetsForm_Error_FailedToImport": "Failed to import preset.",
-    "PresetsForm_Error_FailedToRemove": "Failed to remove preset.",
-    "PresetsForm_Error_InvalidPresetName": "Please enter a valid preset name.",
-    "PresetsForm_Error_LoadingPresets": "Error loading presets: {0}",
-    "PresetsForm_Error_Title": "Error",
-    "PresetsForm_ExportButton": "Export",
-    "PresetsForm_ExportButton_Tooltip": "Export the selected preset.",
-    "PresetsForm_ImportButton": "Import",
-    "PresetsForm_ImportButton_Tooltip": "Import a preset from file.",
-    "PresetsForm_InfoLabel": "Info:",
-    "PresetsForm_Info_Author": "Author",
-    "PresetsForm_Info_Description": "Description",
-    "PresetsForm_Info_Name": "Name",
-    "PresetsForm_Info_NoData": "",
-    "PresetsForm_Info_NotImplemented": "Save preset functionality requires integration with MainForm to collect current configuration.",
-    "PresetsForm_Info_Title": "Not Implemented",
-    "PresetsForm_Info_Tooltip": "Preset information and description.",
-    "PresetsForm_Info_Version": "Version",
-    "PresetsForm_Label_PresetInfo": "Preset Information:",
-    "PresetsForm_Label_PresetName": "Preset Name:",
-    "PresetsForm_Label_PresetsList": "Available Presets:",
-    "PresetsForm_ListBox_Tooltip": "Select a preset to apply.",
-    "PresetsForm_PresetsListLabel": "Select a preset:",
-    "PresetsForm_PresetsListLabel_Tooltip": "Presets is a collection of predefined settings\\n that can be applied to quickly\\n configure the application.",
-    "PresetsForm_RemoveButton": "Remove",
-    "PresetsForm_RemoveButton_Tooltip": "Remove the selected preset.",
-    "PresetsForm_Success_ExportedPreset": "Preset exported successfully.",
-    "PresetsForm_Success_ImportedPreset": "Preset imported successfully.",
-    "PresetsForm_Success_Title": "Success",
-    "PresetsForm_Title": "Presets",
-    "PresetsForm_Title_AddPreset": "Add Preset",
-    "PresetsForm_Warning_Overwrite": "Preset already exists. Overwrite?",
-    "PresetsForm_Warning_RemovePreset": "Remove preset '{0}'?",
-    "PresetsForm_Warning_Title": "Warning",
-    "Select": "Select",
-    "SettingsForm_AboutButton": "About",
-    "SettingsForm_AboutButton_Tooltip": "About QuickWinstall",
-    "SettingsForm_BrowseButton": "Browse",
-    "SettingsForm_BrowseButton_Tooltip": "Browse for folder",
-    "SettingsForm_BrowseDialog_Description": "Select Folder to Save XML Files",
-    "SettingsForm_CancelButton": "Cancel",
-    "SettingsForm_CancelButton_Tooltip": "Cancel changes",
-    "SettingsForm_English": "English",
-    "SettingsForm_HelpButton": "Help",
-    "SettingsForm_HelpButton_Tooltip": "Open help documentation",
-    "SettingsForm_LanguageLabel": "Language:",
-    "SettingsForm_LanguageLabel_Tooltip": "Application language DOES NOT affect Windows UI Language.",
-    "SettingsForm_SaveButton": "Save",
-    "SettingsForm_SaveButton_Tooltip": "Save settings",
-    "SettingsForm_SavePathLabel": "XML Save Path:",
-    "SettingsForm_SavePathLabel_Tooltip": "Select save path for autounattend.xml file.",
-    "SettingsForm_SavePathTextBox_Tooltip": "Enter the XML save path.",
-    "SettingsForm_ThemeDark": "Dark",
-    "SettingsForm_ThemeLabel": "Theme:",
-    "SettingsForm_ThemeLabel_Tooltip": "Select application theme.",
-    "SettingsForm_ThemeLight": "Light",
-    "SettingsForm_Theme_Dark": "Dark",
-    "SettingsForm_Theme_Light": "Light",
-    "SettingsForm_Title": "Settings",
-    "SettingsForm_Vietnamese": "Tiếng Việt"
+  "app": {
+    "name": "QuickWinstall",
+    "title": "Tự động hóa Cài đặt Windows 11"
+  },
+  "bypassConfig": {
+    "bypassAll": {
+      "label": "Bỏ qua Tất cả Kiểm tra Phần cứng"
+    },
+    "bypassCPU": {
+      "label": "Bỏ qua CPU Check"
+    },
+    "bypassDisk": {
+      "label": "Bỏ qua Ổ đĩa Check"
+    },
+    "bypassRAM": {
+      "label": "Bỏ qua RAM Check"
+    },
+    "bypassSecureBoot": {
+      "label": "Bỏ qua Secure Boot Check"
+    },
+    "bypassStorage": {
+      "label": "Bỏ qua Dung lượng Check"
+    },
+    "bypassTPM": {
+      "label": "Bỏ qua TPM Check"
+    },
+    "enableBypass": {
+      "label": "Mở khóa Bỏ qua Kiểm tra Phần cứng"
+    }
+  },
+  "dialogs": {
+    "buttons": {
+      "cancel": "Hủy",
+      "ok": "OK"
+    },
+    "clear": {
+      "message": "Xóa tất cả cấu hình?\\nHành động này không thể hoàn tác.",
+      "title": "Cảnh báo"
+    },
+    "emptySavePath": {
+      "message": "Đường dẫn lưu tệp trống hoặc không thể truy cập.\\nVui lòng đặt đường dẫn hợp lệ trong Cài đặt.",
+      "title": "Lỗi"
+    },
+    "failed": {
+      "message": "Không thể tạo tệp autounattend.xml.",
+      "title": "Lỗi"
+    },
+    "invalidSavePath": {
+      "message": "Đường dẫn lưu không hợp lệ hoặc không tồn tại.\\nVui lòng nhập đường dẫn thư mục hợp lệ.",
+      "title": "Lỗi"
+    },
+    "overwrite": {
+      "message": "Ghi đè autounattend.xml hiện có?\\nHành động này không thể hoàn tác.",
+      "title": "Cảnh báo"
+    },
+    "resetSettings": {
+      "message": "Đặt lại tất cả cài đặt về mặc định?\\nHành động này không thể hoàn tác.",
+      "title": "Cảnh báo"
+    },
+    "success": {
+      "message": "Xong! Tệp đã được lưu tại:\\n{0}autounattend.xml",
+      "title": "Thông tin"
+    },
+    "unsaved": {
+      "message": "Thoát mà không lưu?\\nHành động này không thể hoàn tác.",
+      "title": "Cảnh báo"
+    },
+    "validation": {
+      "message": "Vui lòng sửa lại lỗi sau:\\n{0}",
+      "title": "Lỗi"
+    }
+  },
+  "generalConfig": {
+    "cpuArch": {
+      "label": "Kiến trúc CPU:",
+      "options": {
+        "arm64": "Windows ARM64",
+        "selectOne": "-- Chọn một --",
+        "x64": "Intel/AMD x64"
+      }
+    },
+    "enableGeneral": {
+      "label": "Mở khóa Cấu hình Chung"
+    },
+    "productKey": {
+      "label": "Product Key:",
+      "placeholder": "XXXXX"
+    },
+    "windowsEdition": {
+      "label": "Phiên bản Windows:",
+      "options": {
+        "education": "Windows 11 Education",
+        "enterprise": "Windows 11 Enterprise",
+        "home": "Windows 11 Home",
+        "pro": "Windows 11 Pro",
+        "selectOne": "-- Chọn một --"
+      }
+    }
+  },
+  "langRegConfig": {
+    "enableLangReg": {
+      "label": "Mở khóa Cấu hình Ngôn ngữ và Khu vực"
+    },
+    "keyboardLayout": {
+      "label": "Bố cục Bàn phím:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "sameAsSystemLocale": {
+      "label": "Giống Vùng của Hệ thống"
+    },
+    "systemLocale": {
+      "label": "Vùng của Hệ thống:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "timeZone": {
+      "label": "Múi giờ:",
+      "options": {
+        "UTC": "UTC Thời gian Quốc tế",
+        "UTC+00:00": "UTC+00:00 Dublin, Edinburgh, Lisbon, London",
+        "UTC+01:00": "UTC+01:00 Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna",
+        "UTC+07:00": "UTC+07:00 Bangkok, Hà Nội, Jakarta",
+        "UTC+08:00": "UTC+08:00 Bắc Kinh, Trùng Khánh, Hồng Kông, Urumqi",
+        "UTC+09:00": "UTC+09:00 Osaka, Sapporo, Tokyo",
+        "UTC+10:00": "UTC+10:00 Canberra, Melbourne, Sydney",
+        "UTC-05:00": "UTC-05:00 Phía Đông (US & Canada)",
+        "UTC-06:00": "UTC-06:00 Vùng Trung tâm (US & Canada)",
+        "UTC-07:00": "UTC-07:00 Vùng Núi Phía Tây (US & Canada)",
+        "UTC-08:00": "UTC-08:00 Thái Bình Dương (Mỹ & Canada)",
+        "selectOne": "-- Chọn một --"
+      }
+    },
+    "userLocale": {
+      "label": "Vùng của Người dùng:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    },
+    "windowsUILanguage": {
+      "label": "Ngôn ngữ UI của Windows:",
+      "options": {
+        "de-DE": "Tiếng Đức (Deutsch)",
+        "en-US": "English (United States)",
+        "es-ES": "Tiếng Tây Ban Nha (Español)",
+        "fr-FR": "Tiếng Pháp (Français)",
+        "ja-JP": "Tiếng Nhật (日本語)",
+        "ko-KR": "Tiếng Hàn (한국어)",
+        "pt-BR": "Tiếng Bồ Đào Nha (Português)",
+        "selectOne": "-- Chọn một --",
+        "vi-VN": "Tiếng Việt",
+        "zh-CN": "Tiếng Trung Giản thể (简体中文)",
+        "zh-TW": "Tiếng Trung Phồn thể (繁體中文)"
+      }
+    }
+  },
+  "mainForm": {
+    "banner": {
+      "title": "Tự động hóa Cài đặt Windows 11"
+    },
+    "buttons": {
+      "cancel": "Hủy",
+      "clear": "Xóa",
+      "generate": "Tạo file",
+      "preset": "Preset",
+      "settings": "Cài đặt"
+    },
+    "sections": {
+      "app": "Cấu hình Ứng dụng",
+      "bypass": "Bỏ qua Kiểm tra Phần cứng Windows 11",
+      "diskPart": "Cấu hình Đĩa và Phân vùng",
+      "general": "Cấu hình Chung",
+      "langReg": "Cấu hình Ngôn ngữ và Khu vực",
+      "oobe": "Cấu hình OOBE",
+      "personal": "Cấu hình Cá nhân hóa",
+      "userAcc": "Cấu hình Tài khoản Người dùng"
+    },
+    "status": {
+      "configurationCleared": "Đã xóa cấu hình",
+      "error": "Đã xảy ra lỗi",
+      "failedToGenerateFile": "Không thể tạo tệp autounattend.xml.",
+      "generating": "Đang tạo autounattend.xml...",
+      "invalidSavePath": "Đường dẫn lưu tệp không hợp lệ.",
+      "loading": "Đang tải...",
+      "prefix": "Trạng thái:",
+      "ready": "Sẵn sàng",
+      "settingsUpdated": "Đã cập nhật cài đặt",
+      "success": "Tạo tệp thành công",
+      "unsavedChanges": "Cấu hình chưa được lưu"
+    },
+    "title": "QuickWinstall"
+  },
+  "oobeConfig": {
+    "enableOobe": {
+      "label": "Mở khóa Cấu hình OOBE"
+    },
+    "networkLocation": {
+      "label": "Kiểu kết nối mạng:",
+      "option": {
+        "home": "Mạng Gia đình (Riêng tư)",
+        "public": "Mạng Công cộng",
+        "selectOne": "-- Chọn một --",
+        "work": "Mạng Công việc (Riêng tư)"
+      }
+    },
+    "protectYourPC": {
+      "label": "Cài đặt Quyền Riêng tư:",
+      "option": {
+        "cloudTelemetry": "Cài đặt Nhanh (Bật Cloud & Telemetry)",
+        "privacyFocused": "Cài đặt Riêng tư (Tắt Telemetry)",
+        "selectOne": "-- Chọn một --"
+      }
+    },
+    "skipAll": {
+      "label": "Bỏ qua Tất cả các Bước OOBE"
+    },
+    "skipEULA": {
+      "label": "Bỏ qua Trang Điều khoản EULA"
+    },
+    "skipLocalAccountCreation": {
+      "label": "Bỏ qua Bước Tạo Tài khoản Cục bộ"
+    },
+    "skipMachineOOBE": {
+      "label": "Bỏ qua Bước chạy task Cấp độ Hệ thống"
+    },
+    "skipOnlineAccountCreation": {
+      "label": "Bỏ qua Bước Tạo Tài khoản Trực tuyến"
+    },
+    "skipUserOOBE": {
+      "label": "Bỏ qua Bước chạy task Cấp độ Người dùng"
+    },
+    "skipWirelessNetwork": {
+      "label": "Bỏ qua Bước Thiết lập Mạng Không dây"
+    }
+  },
+  "aboutForm": {
+    "title": "Thông tin",
+    "banner": {
+      "project": "QuickWinstall Project",
+      "brief": "Một công cụ tạo file autounattend miễn phí,\\nmã nguồn mở cho Cài đặt Windows 11."
+    },
+    "originalAuthor": {
+      "label": "Tác giả gốc:",
+      "name": "1172005thinh (QuickComp.)"
+    },
+    "followMe": {
+      "label": "Ủng hộ mình ở đây!"
+    },
+    "contributors": {
+      "label": "Contributors:",
+      "contributor1": "1172005thinh (QuickComp.)",
+      "submitRequest": "Chào mừng những người đóng góp! Hãy thoải mái gửi yêu cầu trên"
+    },
+    "references": {
+      "label": "Liên kết:",
+      "reference1": "Schneegans Unattend Generator",
+      "reference2": "Microsoft Documentation",
+      "reference3": "Microsoft Windows Deployment",
+      "reference4": "GitHub Repository"
+    },
+    "license": {
+      "label": "Giấy phép:",
+      "name": "Mã nguồn mở, miễn phí theo giấy phép MIT."
+    },
+    "version": {
+      "label": "Phiên bản:"
+    },
+    "buttons": {
+      "close": "Đóng"
+    },
+    "tooltips": {
+      "youtube": "Truy cập kênh YouTube của mình",
+      "github": "Truy cập trang GitHub của mình",
+      "facebook": "Truy cập trang Facebook của mình",
+      "close": "Đóng Giới thiệu QuickWinstall"
+    }
+  },
+  "settingsForm": {
+    "autoSave": {
+      "label": "Tự động lưu cấu hình khi Tạo file:"
+    },
+    "banner": {
+      "title": "Cài đặt Ứng dụng"
+    },
+    "buttons": {
+      "about": "Thông tin",
+      "cancel": "Hủy",
+      "help": "Trợ giúp",
+      "save": "Lưu"
+    },
+    "expandAll": {
+      "label": "Mở rộng mọi bảng cấu hình khi Khởi động:"
+    },
+    "folderDialog": {
+      "description": "Tệp XML lưu tại:"
+    },
+    "language": {
+      "label": "Ngôn ngữ:"
+    },
+    "loadLast": {
+      "label": "Tự động nạp cấu hình đã lưu lần cuối khi Khởi động:"
+    },
+    "lockSections": {
+      "label": "Khóa tất cả các bảng cấu hình khi Khởi động:"
+    },
+    "savePath": {
+      "label": "Đường dẫn lưu XML:"
+    },
+    "theme": {
+      "label": "Giao diện:",
+      "options": {
+        "dark": "Tối",
+        "light": "Sáng"
+      }
+    },
+    "title": "Cài đặt",
+    "toggle": {
+      "off": "Tắt",
+      "on": "Bật"
+    },
+    "tooltips": {
+      "about": "Về QuickWinstall",
+      "autoSave": "Tự động lưu cấu hình hiện tại khi thoát ứng dụng vào Presets/lastConfig.json",
+      "browse": "Duyệt để chọn thư mục làm đường dẫn lưu XML",
+      "cancel": "Hủy thay đổi và đóng Cài đặt",
+      "expandAll": "Mở rộng tất cả các mục cấu hình khi khởi động ứng dụng",
+      "help": "Mở tài liệu trợ giúp",
+      "language": "Cài đặt ngôn ngữ ứng dụng KHÔNG ẢNH HƯỞNG ngôn ngữ giao diện Windows",
+      "loadLast": "Tự động tải cấu hình đã lưu cuối cùng từ Presets/lastConfig.json khi mở ứng dụng",
+      "lockSections": "Khóa tất cả các phần cấu hình để ngăn việc mở rộng/thu gọn khi ứng dụng khởi động",
+      "reset": "Đặt lại tất cả cài đặt về mặc định",
+      "save": "Lưu tất cả cài đặt và đóng Cài đặt",
+      "savePath": "Đặt đường dẫn lưu mặc định cho tệp autounattend.xml được tạo",
+      "theme": "Chọn giao diện ứng dụng"
+    }
+  },
+  "tooltips": {
+    "appConfig": {
+      "header": "Phần Cấu hình Ứng dụng"
+    },
+    "bypassConfig": {
+      "bypassAll": "Bật/Tắt tất cả các tùy chọn bỏ qua kiểm tra phần cứng cùng lúc",
+      "bypassCPU": "Bỏ qua kiểm tra tương thích CPU",
+      "bypassDisk": "Bỏ qua các kiểm tra phần cứng liên quan đến đĩa",
+      "bypassRAM": "Bỏ qua yêu cầu RAM tối thiểu 4GB",
+      "bypassSecureBoot": "Bỏ qua yêu cầu Secure Boot",
+      "bypassStorage": "Bỏ qua yêu cầu dung lượng tối thiểu 64GB",
+      "bypassTPM": "Bỏ qua yêu cầu Trusted Platform Module (TPM) 2.0",
+      "enableBypass": "Khóa hoặc mở khóa tất cả các tùy chọn bỏ qua kiểm tra phần cứng",
+      "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
+    },
+    "diskPartConfig": {
+      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa và Phân vùng",
+      "header": "Phần Cấu hình Đĩa và Phân vùng"
+    },
+    "generalConfig": {
+      "cpuArch": "Chọn kiến trúc CPU để cài đặt.",
+      "enableGeneral": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Chung",
+      "header": "Phần Cấu hình Chung",
+      "productKey": "Nhập Product Key để kích hoạt Windows.\\nĐể trống để bỏ qua kích hoạt hoặc kích hoạt bằng khóa được nhúng sẵn trong máy.",
+      "windowsEdition": "Chọn phiên bản Windows cần cài đặt"
+    },
+    "langRegConfig": {
+      "enableLangReg": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Ngôn ngữ và Khu vực",
+      "header": "Phần Cấu hình Ngôn ngữ và Khu vực",
+      "keyboardLayout": "Chọn bố cục bàn phím.",
+      "sameAsSystemLocale": "Đặt Ngôn ngữ Người dùng giống như Ngôn ngữ Hệ thống.\\n Cài đặt Windows có thể bị lỗi nếu Ngôn ngữ Người dùng khác với Ngôn ngữ Hệ thống.",
+      "systemLocale": "Chọn ngôn ngữ hệ thống cho Windows.",
+      "timeZone": "Chọn múi giờ.",
+      "userLocale": "Chọn ngôn ngữ người dùng cho Windows.",
+      "windowsUILanguage": "Chọn ngôn ngữ giao diện Windows."
+    },
+    "mainForm": {
+      "cancel": "Thoát QuickWinstall",
+      "clear": "Xóa tất cả cấu hình",
+      "collapseAll": "Thu gọn bảng cấu hình",
+      "expandAll": "Mở rộng bảng cấu hình",
+      "generate": "Tạo tệp autounattend.xml",
+      "lockAll": "Khóa tất cả phần",
+      "logoClick": "Quay lại đầu trang",
+      "preset": "Tải/Lưu cấu hình có sẵn",
+      "settings": "Mở cài đặt ứng dụng",
+      "unlockAll": "Mở khóa tất cả phần"
+    },
+    "oobeConfig": {
+      "enableOobe": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình OOBE",
+      "header": "Phần Cấu hình OOBE",
+      "networkLocation": "Đặt hồ sơ vị trí mạng ban đầu.\\nGia đình/Công việc: Hồ sơ tường lửa riêng tư (cho phép khám phá mạng).\\nCông cộng: Hồ sơ tường lửa công cộng (chặn khám phá mạng).",
+      "protectYourPC": "Chọn cài đặt riêng tư cho telemetry và tính năng đám mây.\\nCài đặt Nhanh: Bật các tính năng đám mây và telemetry.\\nCài đặt Riêng tư: Tắt hầu hết telemetry và tính năng đám mây.",
+      "skipAll": "Bỏ qua tất cả các bước Trải nghiệm Hộp (OOBE) trong quá trình cài đặt Windows",
+      "skipEULA": "Bỏ qua trang chấp nhận Thỏa thuận Giấy phép Người dùng Cuối",
+      "skipLocalAccountCreation": "Bỏ qua màn hình tạo tài khoản cục bộ",
+      "skipMachineOOBE": "Bỏ qua cấu hình OOBE cấp máy",
+      "skipOnlineAccountCreation": "Bỏ qua màn hình đăng nhập tài khoản Microsoft",
+      "skipUserOOBE": "Bỏ qua cấu hình OOBE cấp người dùng",
+      "skipWirelessNetwork": "Bỏ qua thiết lập mạng không dây trong OOBE"
+    },
+    "personalConfig": {
+      "enablePersonal": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Cá nhân hóa",
+      "header": "Phần Cấu hình Cá nhân hóa"
+    },
+    "section": {
+      "collapse": "Thu gọn phần {0}",
+      "expand": "Mở rộng phần {0}"
+    },
+    "userAccConfig": {
+      "enableUserAcc": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Tài khoản Người dùng",
+      "header": "Phần Cấu hình Tài khoản Người dùng"
+    }
+  },
+  "validation": {
+    "invalid": "{0} không hợp lệ.",
+    "invalidProductKey": "Product Key phải để trống hoặc là key hợp lệ với 25 ký tự theo định dạng XXXXX-XXXXX-XXXXX-XXXXX-XXXXX.",
+    "required": "{0} không thể để trống."
+  }
 }

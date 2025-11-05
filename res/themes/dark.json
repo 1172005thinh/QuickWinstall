@@ -1,18 +1,83 @@
 {
-    "Color":
-    {
-
+  "name": "Dark",
+  "colors": {
+    "background": "#1e1e1e",
+    "foreground": "#d4d4d4",
+    "buttonBackground": "#2d2d30",
+    "mutedButtonBackground": "#404045",
+    "buttonBackgroundHover": "#3e3e42",
+    "buttonBorder": "#555555",
+    "mutedButtonBorder": "#666666",
+    "buttonBorderHover": "#007acc",
+    "inputBackground": "#3c3c3c",
+    "inputForeground": "#d4d4d4",
+    "mutedInputBackground": "#444444",
+    "mutedInputForeground": "#a0a0a0",
+    "toggleOnBackground": "#4472c4",
+    "toggleOffBackground": "#333333",
+    "toggleMutedOnBackground": "#2a3d5c",
+    "toggleMutedOffBackground": "#1a1a1a",
+    "toggleThumb": "#ffffff",
+    "toggleMutedThumb": "#666666",
+    "separator": "#d4d4d4",
+    "link": "#3794ff",
+    "linkActive": "#1f6feb",
+    "linkVisited": "#8957e5"
+  },
+  "fonts": {
+    "normal": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#d4d4d4"
     },
-    "Font":
-    {
-
+    "header": {
+      "family": "Segoe UI",
+      "size": 16,
+      "style": "Bold",
+      "color": "#ffffff"
     },
-    "Size":
-    {
-
+    "subheader": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Bold",
+      "color": "#e8e8e8"
     },
-    "Style":
-    {
-
+    "placeholder": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#4d4d4d"
+    },
+    "error": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#f48771"
+    },
+    "warning": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#cca700"
+    },
+    "success": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Regular",
+      "color": "#89d185"
+    },
+    "muted": {
+      "family": "Segoe UI",
+      "size": 12,
+      "style": "Italic",
+      "color": "#444444"
+    },
+    "tooltip": {
+      "family": "Segoe UI",
+      "size": 10,
+      "style": "Italic",
+      "color": "#808080"
     }
+  }
 }
