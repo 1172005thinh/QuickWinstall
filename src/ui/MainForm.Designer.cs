@@ -153,7 +153,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlAppConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlAppConfig);
 
             // Initialize Personal Config Section
             _pnlPersonalConfig = _personalConfig.InitializeUI(
@@ -163,7 +162,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlPersonalConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
             
             // Initialize OOBE Config Section
             _pnlOOBEConfig = _oobeConfig.InitializeUI(
@@ -174,7 +172,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateLockUnlockButton
             );
             _pnlOOBEConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
 
             // Initialize User Account Config Section
             _pnlUserAccConfig = _userAccConfig.InitializeUI(
@@ -184,7 +181,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlUserAccConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
 
             // Initialize Disk & Partition Config Section
             _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
@@ -194,7 +190,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlDiskPartConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
 
             // Initialize Bypass Config Section
             _pnlBypassConfig = _bypassConfig.InitializeUI(
@@ -205,7 +200,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateLockUnlockButton
             );
             _pnlBypassConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
 
             // Initialize Language & Region Config Section
             _pnlLangRegConfig = _langRegConfig.InitializeUI(
@@ -216,7 +210,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateLockUnlockButton
             );
             _pnlLangRegConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
 
             // Initialize General Config Section (add last, appears at top)
             _pnlGeneralConfig = _generalConfig.InitializeUI(
@@ -228,7 +221,6 @@ namespace QuickWinstall.Main
                 this
             );
             _pnlGeneralConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
 
             // Control Panel
             this.pnlControlPanel = new Panel();
@@ -282,13 +274,6 @@ namespace QuickWinstall.Main
             this.btnCancel.Location = new Point(this.ClientSize.Width - ui.GlobalTabX - ui.GlobalBtnWidth, btnY);
             this.btnGenerate.Location = new Point(btnCancel.Left - ui.GlobalSpacingX - ui.GlobalBtnWidth, btnY);
 
-            // Add buttons to Control Panel
-            this.pnlControlPanel.Controls.Add(this.btnSettings);
-            this.pnlControlPanel.Controls.Add(this.btnClear);
-            this.pnlControlPanel.Controls.Add(this.btnPreset);
-            this.pnlControlPanel.Controls.Add(this.btnGenerate);
-            this.pnlControlPanel.Controls.Add(this.btnCancel);
-
             // Status Strip
             this.statusStrip = new StatusStrip();
             this.statusStrip.Dock = DockStyle.Bottom;
@@ -303,17 +288,33 @@ namespace QuickWinstall.Main
             this.lblStatus.Text = lang.GetString("mainForm.status.ready");
             this.lblStatus.Font = theme.GetFont("normal");
             this.lblStatus.ForeColor = theme.GetFontColor("success");
-            this.lblStatus.Spring = true; // Fill remaining width
+            this.lblStatus.Spring = true;
             this.lblStatus.TextAlign = ContentAlignment.MiddleLeft;
+
+            this.pnlConfigSection.Controls.Add(_pnlAppConfig);
+            this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
+            this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
+            this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
+            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
+            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
+            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
+            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+
+            // Add buttons to Control Panel
+            this.pnlControlPanel.Controls.Add(this.btnSettings);
+            this.pnlControlPanel.Controls.Add(this.btnClear);
+            this.pnlControlPanel.Controls.Add(this.btnPreset);
+            this.pnlControlPanel.Controls.Add(this.btnGenerate);
+            this.pnlControlPanel.Controls.Add(this.btnCancel);
 
             this.statusStrip.Items.Add(this.lblStatusPrefix);
             this.statusStrip.Items.Add(this.lblStatus);
 
             // Add all to Form
             this.pnlBanner.Controls.Add(this.picLogo);
-            this.pnlBanner.Controls.Add(this.lblBannerTitle);
             this.pnlBanner.Controls.Add(this.btnToggleAll);
             this.pnlBanner.Controls.Add(this.btnToggleLock);
+            this.pnlBanner.Controls.Add(this.lblBannerTitle);
             
             this.Controls.Add(this.pnlBanner);
             this.Controls.Add(this.pnlConfigSection);

@@ -58,16 +58,9 @@ namespace QuickWinstall.Config
         private StatusRing ringCPUArch = null!;
 
         private bool _isExpanded = true;
-        private bool _isLoading = false;
-        private bool _isFirstInitialization = true;
+        private bool _isLoading = false; // Flag to prevent event handlers during config loading
         private Action? _onSectionToggle = null;
-        private Action? _onEnableToggle = null;
         private EventHandler? _onConfigChanged = null;
-
-        /// <summary>
-        /// Gets whether the section is expanded
-        /// </summary>
-        public bool IsExpanded => _isExpanded;
 
         #endregion
 
@@ -77,7 +70,7 @@ namespace QuickWinstall.Config
         /// Initializes the General Config section UI and returns the main panel
         /// </summary>
         public Panel InitializeUI(Panel parentContainer, EventHandler onConfigChanged, 
-            Func<Button> createRoundedButton, Action? onSectionToggle, Action? onEnableToggle, Control parentForm)
+            Func<Button> createRoundedButton, Action? onSectionToggle, Control parentForm)
         {
             UIValues ui = UIValues.Instance;
             ThemeManager theme = ThemeManager.Instance;
@@ -87,7 +80,6 @@ namespace QuickWinstall.Config
 
             // Store callback
             _onSectionToggle = onSectionToggle;
-            _onEnableToggle = onEnableToggle;
             _onConfigChanged = onConfigChanged;
 
             int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 230);
@@ -105,7 +97,7 @@ namespace QuickWinstall.Config
             btnGeneralConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
             btnGeneralConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnGeneralConfigToggle.Click += (sender, e) => ToggleSection();
-            tooltips.SetToolTip(btnGeneralConfigToggle, _isExpanded ? "tooltips.section.expand" : "tooltips.section.collapse", lang.GetString("mainForm.sections.general"));
+            tooltips.SetToolTip(btnGeneralConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.general"));
 
             // General Config Title
             lblGeneralConfigTitle = new Label();
@@ -123,12 +115,7 @@ namespace QuickWinstall.Config
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
 
             // Enable General Config
-            // Only set EnableGeneral from settings on first initialization
-            if (_isFirstInitialization)
-            {
-                EnableGeneral = !SettingsManager.Instance.LockSectionsAtStartup;
-                _isFirstInitialization = false;
-            }
+            EnableGeneral = !SettingsManager.Instance.LockSectionsAtStartup;
             toggleEnableGeneral = theme.CreateToggleSwitch(new Point(ui.GlobalTabX * 2 + ui.GlobalBtnBox, btnGeneralConfigToggle.Bottom + ui.GlobalSpacingY), toggleWidth, ui.GlobalInputHeight, EnableGeneral);
             toggleEnableGeneral.TabStop = false; // Skip this control in tab order
             toggleEnableGeneral.Click += (s, e) => OnToggleEnableGeneral();
@@ -403,12 +390,10 @@ namespace QuickWinstall.Config
             {
                 int contentHeight = ui.GetSectionValue("generalConfig", "contentHeight", 230);
                 pnlGeneralConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
-                ToolTipManager.Instance.SetToolTip(btnGeneralConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.general"));
             }
             else
             {
                 pnlGeneralConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY * 2;
-                ToolTipManager.Instance.SetToolTip(btnGeneralConfigToggle, "tooltips.section.expand", LangManager.Instance.GetString("mainForm.sections.general"));
             }
 
             // Update button icon
@@ -440,21 +425,6 @@ namespace QuickWinstall.Config
             if (_isExpanded)
                 ToggleSection();
         }
-
-        /// <summary>
-        /// Sets the Enable state for this section
-        /// </summary>
-        public void SetEnableState(bool enabled)
-        {
-            if (_isLoading) return;
-            
-            ThemeManager theme = ThemeManager.Instance;
-            theme.UpdateToggleSwitchState(toggleEnableGeneral, enabled);
-            EnableGeneral = enabled;
-
-            // Update dependent controls muted state
-            UpdateControlsFromModel();
-        }
         
         /// <summary>
         /// Handles the toggle for Enable General Configurations
@@ -471,102 +441,6 @@ namespace QuickWinstall.Config
             theme.UpdateToggleSwitchState(toggleEnableGeneral, newState);
 
             EnableGeneral = newState;
-
-            // Enable or disable all dependent controls
-            bool enableControls = newState;
-            
-            cmbWindowsEdition.Enabled = enableControls;
-            txtProductKey1.Enabled = enableControls;
-            txtProductKey2.Enabled = enableControls;
-            txtProductKey3.Enabled = enableControls;
-            txtProductKey4.Enabled = enableControls;
-            txtProductKey5.Enabled = enableControls;
-            cmbCPUArch.Enabled = enableControls;
-
-            // Update font styles based on enabled state
-            if (enableControls)
-            {
-                // Normal state
-                lblEnableGeneral.Font = theme.GetFont("normal");
-                lblEnableGeneral.ForeColor = theme.GetFontColor("normal");
-                
-                lblWindowsEdition.Font = theme.GetFont("normal");
-                lblWindowsEdition.ForeColor = theme.GetFontColor("normal");
-                cmbWindowsEdition.Font = theme.GetFont("normal");
-                cmbWindowsEdition.ForeColor = theme.GetFontColor("inputForeground");
-                
-                lblProductKey.Font = theme.GetFont("normal");
-                lblProductKey.ForeColor = theme.GetFontColor("normal");
-                
-                // For product key textboxes, keep placeholder color if they have placeholder text
-                txtProductKey1.Font = theme.GetFont("normal");
-                txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                txtProductKey2.Font = theme.GetFont("normal");
-                txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                txtProductKey3.Font = theme.GetFont("normal");
-                txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                txtProductKey4.Font = theme.GetFont("normal");
-                txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                txtProductKey5.Font = theme.GetFont("normal");
-                txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                
-                lblHyphen1.Font = theme.GetFont("normal");
-                lblHyphen1.ForeColor = theme.GetFontColor("normal");
-                lblHyphen2.Font = theme.GetFont("normal");
-                lblHyphen2.ForeColor = theme.GetFontColor("normal");
-                lblHyphen3.Font = theme.GetFont("normal");
-                lblHyphen3.ForeColor = theme.GetFontColor("normal");
-                lblHyphen4.Font = theme.GetFont("normal");
-                lblHyphen4.ForeColor = theme.GetFontColor("normal");
-                
-                lblCPUArch.Font = theme.GetFont("normal");
-                lblCPUArch.ForeColor = theme.GetFontColor("normal");
-                cmbCPUArch.Font = theme.GetFont("normal");
-                cmbCPUArch.ForeColor = theme.GetFontColor("inputForeground");
-            }
-            else
-            {
-                // Muted state
-                lblEnableGeneral.Font = theme.GetFont("muted");
-                lblEnableGeneral.ForeColor = theme.GetFontColor("muted");
-                
-                lblWindowsEdition.Font = theme.GetFont("muted");
-                lblWindowsEdition.ForeColor = theme.GetFontColor("muted");
-                cmbWindowsEdition.Font = theme.GetFont("muted");
-                cmbWindowsEdition.ForeColor = theme.GetFontColor("muted");
-                
-                lblProductKey.Font = theme.GetFont("muted");
-                lblProductKey.ForeColor = theme.GetFontColor("muted");
-                
-                // For product key textboxes, keep placeholder color if they have placeholder text
-                txtProductKey1.Font = theme.GetFont("muted");
-                txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                txtProductKey2.Font = theme.GetFont("muted");
-                txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                txtProductKey3.Font = theme.GetFont("muted");
-                txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                txtProductKey4.Font = theme.GetFont("muted");
-                txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                txtProductKey5.Font = theme.GetFont("muted");
-                txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                
-                lblHyphen1.Font = theme.GetFont("muted");
-                lblHyphen1.ForeColor = theme.GetFontColor("muted");
-                lblHyphen2.Font = theme.GetFont("muted");
-                lblHyphen2.ForeColor = theme.GetFontColor("muted");
-                lblHyphen3.Font = theme.GetFont("muted");
-                lblHyphen3.ForeColor = theme.GetFontColor("muted");
-                lblHyphen4.Font = theme.GetFont("muted");
-                lblHyphen4.ForeColor = theme.GetFontColor("muted");
-                
-                lblCPUArch.Font = theme.GetFont("muted");
-                lblCPUArch.ForeColor = theme.GetFontColor("muted");
-                cmbCPUArch.Font = theme.GetFont("muted");
-                cmbCPUArch.ForeColor = theme.GetFontColor("muted");
-            }
-
-            // Notify MainForm to update lock/unlock button
-            _onEnableToggle?.Invoke();
         }
 
         /// <summary>
@@ -761,96 +635,6 @@ namespace QuickWinstall.Config
 
                 // Update CPU Architecture combo box using mapping
                 cmbCPUArch.SelectedIndex = GetIndexFromCPUArchValue(CPUArchitecture);
-
-                // Enable/disable controls based on EnableGeneral state
-                bool enableControls = EnableGeneral;
-                cmbWindowsEdition.Enabled = enableControls;
-                txtProductKey1.Enabled = enableControls;
-                txtProductKey2.Enabled = enableControls;
-                txtProductKey3.Enabled = enableControls;
-                txtProductKey4.Enabled = enableControls;
-                txtProductKey5.Enabled = enableControls;
-                cmbCPUArch.Enabled = enableControls;
-
-                // Update font styles based on enabled state
-                if (enableControls)
-                {
-                    // Normal state
-                    lblEnableGeneral.Font = theme.GetFont("normal");
-                    lblEnableGeneral.ForeColor = theme.GetFontColor("normal");
-                    lblWindowsEdition.Font = theme.GetFont("normal");
-                    lblWindowsEdition.ForeColor = theme.GetFontColor("normal");
-                    cmbWindowsEdition.Font = theme.GetFont("normal");
-                    cmbWindowsEdition.ForeColor = theme.GetFontColor("inputForeground");
-                    
-                    lblProductKey.Font = theme.GetFont("normal");
-                    lblProductKey.ForeColor = theme.GetFontColor("normal");
-                    
-                    // For product key textboxes, keep placeholder color if they have placeholder text
-                    txtProductKey1.Font = theme.GetFont("normal");
-                    txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                    txtProductKey2.Font = theme.GetFont("normal");
-                    txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                    txtProductKey3.Font = theme.GetFont("normal");
-                    txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                    txtProductKey4.Font = theme.GetFont("normal");
-                    txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                    txtProductKey5.Font = theme.GetFont("normal");
-                    txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
-                    
-                    lblHyphen1.Font = theme.GetFont("normal");
-                    lblHyphen1.ForeColor = theme.GetFontColor("normal");
-                    lblHyphen2.Font = theme.GetFont("normal");
-                    lblHyphen2.ForeColor = theme.GetFontColor("normal");
-                    lblHyphen3.Font = theme.GetFont("normal");
-                    lblHyphen3.ForeColor = theme.GetFontColor("normal");
-                    lblHyphen4.Font = theme.GetFont("normal");
-                    lblHyphen4.ForeColor = theme.GetFontColor("normal");
-                    
-                    lblCPUArch.Font = theme.GetFont("normal");
-                    lblCPUArch.ForeColor = theme.GetFontColor("normal");
-                    cmbCPUArch.Font = theme.GetFont("normal");
-                    cmbCPUArch.ForeColor = theme.GetFontColor("inputForeground");
-                }
-                else
-                {
-                    // Muted state
-                    lblEnableGeneral.Font = theme.GetFont("muted");
-                    lblEnableGeneral.ForeColor = theme.GetFontColor("muted");
-                    lblWindowsEdition.Font = theme.GetFont("muted");
-                    lblWindowsEdition.ForeColor = theme.GetFontColor("muted");
-                    cmbWindowsEdition.Font = theme.GetFont("muted");
-                    cmbWindowsEdition.ForeColor = theme.GetFontColor("muted");
-                    
-                    lblProductKey.Font = theme.GetFont("muted");
-                    lblProductKey.ForeColor = theme.GetFontColor("muted");
-                    
-                    // For product key textboxes, keep placeholder color if they have placeholder text
-                    txtProductKey1.Font = theme.GetFont("muted");
-                    txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                    txtProductKey2.Font = theme.GetFont("muted");
-                    txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                    txtProductKey3.Font = theme.GetFont("muted");
-                    txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                    txtProductKey4.Font = theme.GetFont("muted");
-                    txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                    txtProductKey5.Font = theme.GetFont("muted");
-                    txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
-                    
-                    lblHyphen1.Font = theme.GetFont("muted");
-                    lblHyphen1.ForeColor = theme.GetFontColor("muted");
-                    lblHyphen2.Font = theme.GetFont("muted");
-                    lblHyphen2.ForeColor = theme.GetFontColor("muted");
-                    lblHyphen3.Font = theme.GetFont("muted");
-                    lblHyphen3.ForeColor = theme.GetFontColor("muted");
-                    lblHyphen4.Font = theme.GetFont("muted");
-                    lblHyphen4.ForeColor = theme.GetFontColor("muted");
-                    
-                    lblCPUArch.Font = theme.GetFont("muted");
-                    lblCPUArch.ForeColor = theme.GetFontColor("muted");
-                    cmbCPUArch.Font = theme.GetFont("muted");
-                    cmbCPUArch.ForeColor = theme.GetFontColor("muted");
-                }
             }
             finally
             {

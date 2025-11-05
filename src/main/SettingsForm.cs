@@ -73,6 +73,7 @@ namespace QuickWinstall
                 // Fallback to hardcoded languages if folder doesn't exist
                 cmbLanguage.Items.Add("English");
                 cmbLanguage.Items.Add("Tiếng Việt");
+                cmbLanguage.Items.Add("Tiếng Phở Anh Hai");
                 cmbLanguage.SelectedIndex = _settingsManager.Language == "vi-VN" ? 1 : 0;
             }
 
