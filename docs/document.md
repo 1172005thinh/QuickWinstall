@@ -471,7 +471,7 @@ Properties:
   - Product Key: Must be either empty or a valid 25-character key in the format XXXXX-XXXXX-XXXXX-XXXXX-XXXXX.
   - CPU Architecture: Must not be empty.
 
-### LangRegConfig
+#### LangRegConfig
 
 - Content:
   - Labels and Input Fields for each configuration parameter:
@@ -635,7 +635,7 @@ Properties:
         - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
         - Position: same as the dropdown, the dropdown is on top of the status ring
 
-### BypassConfig
+#### BypassConfig
 
 - Content:
   - Label and Input Field for each configuration parameter:
@@ -709,15 +709,273 @@ Properties:
       - Bypass All checks = False -> Set all individual bypass values to 0 in XML
       - Look for {{BypassTPMCheck}}, {{BypassRAMCheck}}, {{BypassSecureBootCheck}}, {{BypassCPUCheck}}, {{BypassStorageCheck}}, {{BypassDiskCheck}} keys in the XML template for individual bypass values mapping.
 
-### DiskPartConfig
+#### DiskPartConfig
+
+- Content:
+  - Label and Input Field for each configuration parameter:
+    - Enable DiskPartConfig:
+      - Label:
+        - Text: Enable Disk & Partition Configuration
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, lineSeparator.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable to make disk & partition configuration options available
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, lineSeparator.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) Disk & Partition Configuration
+        - On update: If disabled, disable all depenedent controls (Disk ID, Wipe Disk, Partition Layout,...) (muted state). If enabled, enable all dependents.
+        - Default Value: True
+    - Disk ID:
+      - Label:
+        - Text: Disk ID
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, toggleEnableDiskPartConfig.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Specify the Disk ID to apply the Disk & Partition Configuration
+      - Numeric Input: (NumericUpDown control)
+        - Position (x, y): (label.Right + globalSpacingX, toggleEnableDiskPartConfig.Bottom + globalSpacingY)
+        - Width: globalInputWidth * 0.3
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Min Value: 0
+        - Max Value: 255
+        - Default Value: 0
+        - Increment: 1
+      - Status Ring:
+        - Width: globalInputWidth * 0.3
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the Numeric Input, the Numeric Input is on top of the status ring
+      - Validation Rules:
+        - Disk ID: Must be an integer between 0 and 255.
+      - Value mapping to XML:
+        - Look for {{DiskID}} key in the XML template for Disk ID value mapping.
+    - Wipe Disk:
+      - Label:
+        - Text: Wipe Disk
+        - Font: Normal Font with Warning Color
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, nudDiskID.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable to wipe the entire disk before partitioning. This will delete all data.
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, nudDiskID.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) Wipe Disk option
+        - Default Value: True
+      - Value mapping to XML:
+        - Look for {{WipeDisk}} key in the XML template for Wipe Disk value mapping.
+    - Partition Layout:
+      - Label:
+        - Text: Partition Layout
+        - Font: Normal Font
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, toggleWipeDisk.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Select the partition layout to create on the disk
+      - Dropdown:
+        - Options: Select one, GPT with UEFI, MBR with BIOS/CSM
+        - Value mapping:
+          - Select one -> no need to map
+          - GPT with UEFI -> no need to map
+          - MBR with BIOS/CSM -> no need to map
+        - Position (x, y): (label.Right + globalSpacingX, toggleWipeDisk.Bottom + globalSpacingY)
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Font: Normal Font
+        - Text Align: Middle Left
+      - Status Ring:
+        - Width: globalInputWidth
+        - Height: globalInputHeight
+        - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+        - Position: same as the dropdown, the dropdown is on top of the status ring
+      - Validation Rules:
+        - Partition Layout: Must not be empty.
+      - Value mapping to XML:
+        - No need to map directly. Use the value to determine which partition layout section to include in the XML template.
+    - Parition Table:
+      - Partition Table Name:
+        - Label:
+          - Text: Partition Table
+          - Font: Normal Font
+          - Width: globalLabelWidth
+          - Height: globalLabelHeight
+          - Position (x, y): (globalTabX * 2 + globalBtnBox, partitionLayoutDropdown.Bottom + globalSpacingY)
+          - Text Align: Middle Left
+          - Tooltip: Select the partition table to configure partitions
+        - Button:
+          - Text: Quick Create
+          - Font: Normal Font
+          - Text Align: Middle Center
+          - Size: globalBtnWidth x globalBtnHeight
+          - Position (x, y): (label.Right + globalSpacingX, partitionLayoutDropdown.Bottom + globalSpacingY)
+          - On click: Create a default partition table based on selected Partition Layout
+          - Tooltip: Quick create a default partition table
+          - If Partition Layout is not selected, disable this button.
+          - If Partition Layout is selected, enable this button.
+        - Button:
+          - Text: no text (icon only)
+          - Icon: res/icons/reset.ico / res/icons/reset_dark.ico
+          - Size: globalBtnBox x globalBtnBox
+          - Image align: Middle Center
+          - Position (x, y): (quickCreateBtn.Right + globalSpacingX, partitionLayoutDropdown.Bottom + globalSpacingY)
+          - On click: Reset the partition table (clear all partitions) anyway (no need for confirmation)
+          - Tooltip: Reset the partition table (clear all partitions)
+      - Partition Table:
+        - Header Row:
+          - Labels for each column:
+            - Texts: ID, Type, Name, Size (MB), Lt, Format, Act
+            - Font: SubHeader Font
+            - Widths: auto (fit to text)
+            - Height: globalLabelHeight
+            - Positions (x, y): (calculated based on previous columns)
+            - Text Align: Middle Center
+            - Space between columns: globalSpacingX / 2
+          - Each column space:
+            - ID: 20
+            - Type: 120
+            - Name: 180
+            - Size (MB): 100
+            - Letter: 60
+            - Format: 80
+            - Active: 30
+          - Tooltip for each column:
+            - ID: Unique identifier for the partition (auto-incremented)
+            - Type: Type of the partition (Primary, Extended, Logical, Recovery, EFI, MSR)
+            - Name: Name of the partition
+            - Size (MB): Size of the partition in megabytes
+            - Letter: Drive letter assigned to the partition
+            - Format: File system format of the partition (NTFS, FAT32, etc.)
+            - Active: Whether the partition is marked as active (Yes/No)
+        - Data Rows:
+          - Maximum Rows: 8
+          - ID:
+            - Label
+            - Auto-incremented integer starting from 1
+            - Font: Normal Font
+            - Width: auto (fit to text)
+            - Height: globalLabelHeight
+            - Position (x, y): (calculated based on previous columns)
+            - Text Align: Middle Center
+            - Update: Auto-increment when a row has one of its values set. Auto-decrement when a row is cleared.
+          - Type:
+            - Dropdown:
+              - Options: Primary, Extended, Logical, Recovery, EFI, MSR
+              - Value mapping:
+                - Primary -> Primary
+                - Extended -> Extended
+                - Logical -> Logical
+                - Recovery -> Recovery
+                - EFI -> EFI
+                - MSR -> MSR
+              - Position (x, y): (calculated based on previous columns)
+              - Width: 120
+              - Height: globalInputHeight
+              - Font: Normal Font
+              - Text Align: Middle Left
+          - Name:
+            - TextBox:
+              - Position (x, y): (calculated based on previous columns)
+              - Width: 180
+              - Height: globalInputHeight
+              - Font: Normal Font
+              - Placeholder Text: NewPartition
+              - Placeholder Font: Placeholder Font
+          - Size (MB):
+            - Numeric Input: (NumericUpDown control)
+              - Position (x, y): (calculated based on previous columns)
+              - Width: 100
+              - Height: globalInputHeight
+              - Font: Normal Font
+              - Min Value: 0
+              - Max Value: 1024*1024*100 (100 TB)
+              - Increment: 1
+              - Text Align: Middle Right
+          - Letter:
+            - Dropdown:
+              - Position (x, y): (calculated based on previous columns)
+              - Width: 60
+              - Height: globalInputHeight
+              - Font: Normal Font
+              - Options: (List of available drive letters)
+              - Value mapping: (Drive letter -> Drive letter)
+              - Text Align: Middle Center
+          - Format:
+            - Dropdown:
+              - Options: Select one, NTFS, FAT32
+              - Value mapping:
+                - Select one -> (empty string)
+                - NTFS -> NTFS
+                - FAT32 -> FAT32
+              - Position (x, y): (calculated based on previous columns)
+              - Width: 80
+              - Height: globalInputHeight
+              - Font: Normal Font
+              - Text Align: Middle Left
+          - Active:
+            - Toggle switch:
+              - Position (x, y): (calculated based on previous columns)
+              - Height: globalInputHeight
+              - Width: 30
+              - On toggle: Enable (true) or Disable (false) Active status
+              - Default Value: True
+        - Toggle: Use Remaining Space for Last Partition
+          - Label:
+            - Text: Use Remaining Space for Last Partition
+            - Font: Normal Font
+            - Width: globalLabelWidth
+            - Height: globalLabelHeight
+            - Position (x, y): (globalTabX * 2 + globalBtnBox, partitionTable.Bottom + globalSpacingY)
+            - Text Align: Middle Left
+            - Tooltip: Enable to use all remaining disk space for the last partition in the table
+          - Toggle switch:
+            - Position (x, y): (label.Right + globalSpacingX, partitionTable.Bottom + globalSpacingY)
+            - Height: globalInputHeight
+            - Width: globalInputWidth * 0.15
+            - On toggle: Enable (true) or Disable (false) using remaining space for last partition
+            - Default Value: True
+        - Validation Rules:
+          - If a row is active (has any value set), all fields in that row must be filled (apart from the Size (MB) in the last set row (toggleEnableLastPartitionAllSpace is True), which can be zero for remaining space).
+          - StatusRing for all individual inputs in the partition table:
+            - Width: same as the input
+            - Height: globalInputHeight
+            - Color: Glowing effect -> parse from ThemeManager (No Color, Error Color, Warning Color)
+            - Position: same as the input, the input is on top of the status ring
+      - Value mapping to XML:
+        - Look for {{PartitionTable}} key in the XML template for Partition Table value mapping.
+        - Generate DiskPart commands based on the partition table and insert into the XML template.
+    - Disable BitLocker:
+      - Label:
+        - Text: Disable BitLocker
+        - Font: Normal Font with Warning Color
+        - Width: globalLabelWidth
+        - Height: globalLabelHeight
+        - Position (x, y): (globalTabX * 2 + globalBtnBox, partitionTable.Bottom + globalSpacingY)
+        - Text Align: Middle Left
+        - Tooltip: Enable to disable BitLocker during installation. Recommended when changing disk partitions.
+      - Toggle switch:
+        - Position (x, y): (label.Right + globalSpacingX, partitionTable.Bottom + globalSpacingY)
+        - Height: globalInputHeight
+        - Width: globalInputWidth * 0.15
+        - On toggle: Enable (true) or Disable (false) Disable BitLocker option
+        - Default Value: True
+      - Value mapping to XML:
+        - Look for {{DisableBitLocker}} key in the XML template for Disable BitLocker value mapping.
+
+#### UserAccConfig
 
 Later...
 
-### UserAccConfig
-
-Later...
-
-### OOBEConfig
+#### OOBEConfig
 
 - Content:
   - Label and Input Field for each configuration parameter:

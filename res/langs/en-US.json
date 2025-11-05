@@ -26,7 +26,58 @@
       "label": "Bypass TPM Check"
     },
     "enableBypass": {
-      "label": "Unlock Hardware Check Bypass"
+      "label": "Unlock {0}"
+    }
+  },
+  "diskPartConfig": {
+    "disableBitLocker": {
+      "label": "Disable BitLocker"
+    },
+    "diskID": {
+      "label": "Disk ID:"
+    },
+    "enableDiskPart": {
+      "label": "Unlock {0}"
+    },
+    "partitionLayout": {
+      "label": "Partition Layout:",
+      "options": {
+        "gptUEFI": "GPT with UEFI",
+        "mbrBIOS": "MBR with BIOS/CSM",
+        "selectOne": "-- Select one --"
+      }
+    },
+    "partitionTable": {
+      "active": "Act",
+      "format": "Format",
+      "id": "ID",
+      "letter": "Lt",
+      "name": "Name",
+      "quickCreate": "Quick Create",
+      "reset": "Reset",
+      "size": "Size (MB)",
+      "title": "Partition Table:",
+      "type": "Type",
+      "typeOptions": {
+        "efi": "EFI",
+        "extended": "Extended",
+        "logical": "Logical",
+        "msr": "MSR",
+        "primary": "Primary",
+        "recovery": "Recovery"
+      },
+      "formatOptions": {
+        "fat32": "FAT32",
+        "ntfs": "NTFS",
+        "selectOne": "-- Select one --"
+      },
+      "namePlaceholder": "NewPartition"
+    },
+    "useRemainingSpace": {
+      "label": "Use Remaining Space for Last Partition"
+    },
+    "wipeDisk": {
+      "label": "Wipe Disk"
     }
   },
   "dialogs": {
@@ -81,7 +132,7 @@
       }
     },
     "enableGeneral": {
-      "label": "Unlock General Configurations"
+      "label": "Unlock {0}"
     },
     "productKey": {
       "label": "Product Key:",
@@ -100,7 +151,7 @@
   },
   "langRegConfig": {
     "enableLangReg": {
-      "label": "Unlock Language && Region Configurations"
+      "label": "Unlock {0}"
     },
     "keyboardLayout": {
       "label": "Keyboard Layout:",
@@ -227,7 +278,7 @@
   },
   "oobeConfig": {
     "enableOobe": {
-      "label": "Unlock OOBE Configurations"
+      "label": "Unlock {0}"
     },
     "networkLocation": {
       "label": "Network Location:",
@@ -385,8 +436,24 @@
       "header": "Bypass Windows 11 Hardware Checks Section"
     },
     "diskPartConfig": {
+      "disableBitLocker": "Enable to disable BitLocker during installation. Recommended when changing disk partitions.",
+      "diskID": "Specify the Disk ID to apply the Disk & Partition Configuration",
       "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
-      "header": "Disk && Partition Configurations Section"
+      "header": "Disk && Partition Configurations Section",
+      "partitionLayout": "Select the partition layout to create on the disk",
+      "partitionTable": {
+        "active": "Whether the partition is marked as active (Yes/No)",
+        "format": "File system format of the partition (NTFS, FAT32, etc.)",
+        "id": "Unique identifier for the partition (auto-incremented)",
+        "letter": "Drive letter assigned to the partition",
+        "name": "Name of the partition",
+        "quickCreate": "Quick create a default partition table",
+        "reset": "Reset the partition table (clear all partitions)",
+        "size": "Size of the partition in megabytes",
+        "type": "Type of the partition (Primary, Extended, Logical, Recovery, EFI, MSR)"
+      },
+      "useRemainingSpace": "Enable to use all remaining disk space for the last partition in the table",
+      "wipeDisk": "Enable to wipe the entire disk before partitioning. This will delete all data."
     },
     "generalConfig": {
       "cpuArch": "Select the CPU architecture for installation.",

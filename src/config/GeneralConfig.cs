@@ -136,7 +136,7 @@ namespace QuickWinstall.Config
             lblEnableGeneral = new Label();
             lblEnableGeneral.Location = new Point(toggleEnableGeneral.Right + ui.GlobalSpacingX, btnGeneralConfigToggle.Bottom + ui.GlobalSpacingY);
             lblEnableGeneral.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
-            lblEnableGeneral.Text = lang.GetString("generalConfig.enableGeneral.label");
+            lblEnableGeneral.Text = string.Format(lang.GetString("generalConfig.enableGeneral.label"), lang.GetString("mainForm.sections.general"));
             lblEnableGeneral.Font = theme.GetFont("normal");
             lblEnableGeneral.TextAlign = ContentAlignment.MiddleLeft;
             lblEnableGeneral.Cursor = Cursors.Hand;

@@ -26,7 +26,7 @@
       "label": "Bỏ qua TPM Check"
     },
     "enableBypass": {
-      "label": "Mở khóa Bỏ qua Kiểm tra Phần cứng"
+      "label": "Mở khóa {0}"
     }
   },
   "dialogs": {
@@ -81,7 +81,7 @@
       }
     },
     "enableGeneral": {
-      "label": "Mở khóa Cấu hình Chung"
+      "label": "Mở khóa {0}"
     },
     "productKey": {
       "label": "Product Key:",
@@ -100,7 +100,7 @@
   },
   "langRegConfig": {
     "enableLangReg": {
-      "label": "Mở khóa Cấu hình Ngôn ngữ và Khu vực"
+      "label": "Mở khóa {0}"
     },
     "keyboardLayout": {
       "label": "Bố cục Bàn phím:",
@@ -227,7 +227,7 @@
   },
   "oobeConfig": {
     "enableOobe": {
-      "label": "Mở khóa Cấu hình OOBE"
+      "label": "Mở khóa {0}"
     },
     "networkLocation": {
       "label": "Kiểu kết nối mạng:",

@@ -135,7 +135,7 @@ namespace QuickWinstall.Config
             lblEnableBypass = new Label();
             lblEnableBypass.Location = new Point(toggleEnableBypass.Right + ui.GlobalSpacingX, btnBypassConfigToggle.Bottom + ui.GlobalSpacingY);
             lblEnableBypass.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
-            lblEnableBypass.Text = lang.GetString("bypassConfig.enableBypass.label");
+            lblEnableBypass.Text = string.Format(lang.GetString("bypassConfig.enableBypass.label"), lang.GetString("mainForm.sections.bypass"));
             lblEnableBypass.Font = theme.GetFont("normal");
             lblEnableBypass.TextAlign = ContentAlignment.MiddleLeft;
             lblEnableBypass.Cursor = Cursors.Hand;

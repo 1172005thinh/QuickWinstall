@@ -29,6 +29,7 @@
 					<WillShowUI>Never</WillShowUI>
 				</OSImage>
 			</ImageInstall>
+			{{PartitionTable}}
 			<UserData>
 				<ProductKey>
 					<Key>{{ProductKey}}</Key>
@@ -167,7 +168,7 @@
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
                     <Order>1</Order>
-                    <CommandLine>reg add "HKLM\SYSTEM\CurrentControlSet\Control\BitLocker" /v "PreventDeviceEncryption" /t REG_DWORD /d 1 /f</CommandLine>
+                    <CommandLine>reg add "HKLM\SYSTEM\CurrentControlSet\Control\BitLocker" /v "PreventDeviceEncryption" /t REG_DWORD /d {{DisableBitLocker}} /f</CommandLine>
                     <Description>Disable BitLocker automatic device encryption</Description>
                 </SynchronousCommand>
             </FirstLogonCommands>

@@ -151,7 +151,7 @@ namespace QuickWinstall.Config
             lblEnableOOBE = new Label();
             lblEnableOOBE.Location = new Point(toggleEnableOOBE.Right + ui.GlobalSpacingX, btnOOBEConfigToggle.Bottom + ui.GlobalSpacingY);
             lblEnableOOBE.Size = new Size(doubleLabelWidth, ui.GlobalLabelHeight);
-            lblEnableOOBE.Text = lang.GetString("oobeConfig.enableOobe.label");
+            lblEnableOOBE.Text = string.Format(lang.GetString("oobeConfig.enableOobe.label"), lang.GetString("mainForm.sections.oobe"));
             lblEnableOOBE.Font = theme.GetFont("normal");
             lblEnableOOBE.TextAlign = ContentAlignment.MiddleLeft;
             lblEnableOOBE.Cursor = Cursors.Hand;

@@ -144,7 +144,7 @@ namespace QuickWinstall.Config
             lblEnableLangReg = new Label();
             lblEnableLangReg.Location = new Point(toggleEnableLangReg.Right + ui.GlobalSpacingX, btnLangRegConfigToggle.Bottom + ui.GlobalSpacingY);
             lblEnableLangReg.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
-            lblEnableLangReg.Text = lang.GetString("langRegConfig.enableLangReg.label");
+            lblEnableLangReg.Text = string.Format(lang.GetString("langRegConfig.enableLangReg.label"), lang.GetString("mainForm.sections.langReg"));
             lblEnableLangReg.Font = theme.GetFont("normal");
             lblEnableLangReg.TextAlign = ContentAlignment.MiddleLeft;
             lblEnableLangReg.Cursor = Cursors.Hand;
