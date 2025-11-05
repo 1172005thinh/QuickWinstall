@@ -195,8 +195,10 @@
       "cancel": "Cancel",
       "clear": "Clear",
       "generate": "Generate",
+      "newInstallation": "New Install",
       "preset": "Preset",
-      "settings": "Settings"
+      "settings": "Settings",
+      "upgradeOnly": "Upgrade Only"
     },
     "sections": {
       "app": "App Configurations",
@@ -411,9 +413,11 @@
       "generate": "Generate autounattend.xml file",
       "lockAll": "Lock all sections",
       "logoClick": "Scroll to top",
+      "newInstallation": "Switch to Upgrade Only mode (shows only Bypass and OOBE sections)",
       "preset": "Load/Save a preset of current configurations",
       "settings": "Open Application's settings",
-      "unlockAll": "Unlock all sections"
+      "unlockAll": "Unlock all sections",
+      "upgradeOnly": "Switch to New Installation mode (shows all configuration sections)"
     },
     "oobeConfig": {
       "enableOobe": "Unlock or lock all options in the OOBE Configurations section",

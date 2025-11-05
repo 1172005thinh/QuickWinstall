@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+	<!--https://schneegans.de/windows/unattend-generator-->
+	<!--https://github.com/1172005thinh/QuickWinstall-->
+	<settings pass="specialize">
+		<component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<DynamicUpdate>
+				<Enable>true</Enable>
+				<WillShowUI>OnError</WillShowUI>
+			</DynamicUpdate>
+			<UseConfigurationSet>false</UseConfigurationSet>
+			<RunSynchronous>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>1</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassTPMCheck" /t REG_DWORD /d {{BypassTPM}} /f</Path>
+					<Description>Add BypassTPMCheck</Description>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>2</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassRAMCheck" /t REG_DWORD /d {{BypassRAM}} /f</Path>
+					<Description>Add BypassRAMCheck</Description>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>3</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassSecureBootCheck" /t REG_DWORD /d {{BypassSecureBoot}} /f</Path>
+					<Description>Add BypassSecureBootCheck</Description>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>4</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassCPUCheck" /t REG_DWORD /d {{BypassCPU}} /f</Path>
+					<Description>Add BypassCPUCheck</Description>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>5</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassStorageCheck" /t REG_DWORD /d {{BypassStorage}} /f</Path>
+					<Description>Add BypassStorageCheck</Description>
+				</RunSynchronousCommand>
+				<RunSynchronousCommand wcm:action="add">
+					<Order>6</Order>
+					<Path>reg.exe add "HKLM\SYSTEM\Setup\LabConfig" /v "BypassDiskCheck" /t REG_DWORD /d {{BypassDisk}} /f</Path>
+					<Description>Add BypassDiskCheck</Description>
+				</RunSynchronousCommand>				
+			</RunSynchronous>
+		</component>
+	</settings>
+	<settings pass="oobeSystem">
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <CommandLine>reg add "HKLM\SYSTEM\CurrentControlSet\Control\BitLocker" /v "PreventDeviceEncryption" /t REG_DWORD /d 1 /f</CommandLine>
+                    <Description>Disable BitLocker automatic device encryption</Description>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+			<OOBE>
+				<HideEULAPage>{{SkipEULA}}</HideEULAPage>
+				<HideLocalAccountScreen>{{SkipLocalAccountCreation}}</HideLocalAccountScreen>
+				<HideOnlineAccountScreens>{{SkipOnlineAccountCreation}}</HideOnlineAccountScreens>
+				<HideWirelessSetupInOOBE>{{SkipWirelessNetwork}}</HideWirelessSetupInOOBE>
+				<NetworkLocation>{{NetworkLocation}}</NetworkLocation>
+				<ProtectYourPC>{{ProtectYourPC}}</ProtectYourPC>
+				<SkipMachineOOBE>{{SkipMachineOOBE}}</SkipMachineOOBE>
+				<SkipUserOOBE>{{SkipUserOOBE}}</SkipUserOOBE>
+			</OOBE>
+		</component>
+	</settings>
+	<Extensions xmlns="https://schneegans.de/windows/unattend-generator/">
+		<ExtractScript>
+param(
+    [xml] $Document
+);
+
+foreach( $file in $Document.unattend.Extensions.File ) {
+    $path = [System.Environment]::ExpandEnvironmentVariables( $file.GetAttribute( 'path' ) );
+    mkdir -Path( $path | Split-Path -Parent ) -ErrorAction 'SilentlyContinue';
+    $encoding = switch( [System.IO.Path]::GetExtension( $path ) ) {
+        { $_ -in '.ps1', '.xml' } { [System.Text.Encoding]::UTF8; }
+        { $_ -in '.reg', '.vbs', '.js' } { [System.Text.UnicodeEncoding]::new( $false, $true ); }
+        default { [System.Text.Encoding]::Default; }
+    };
+    $bytes = $encoding.GetPreamble() + $encoding.GetBytes( $file.InnerText.Trim() );
+    [System.IO.File]::WriteAllBytes( $path, $bytes );
+}
+		</ExtractScript>
+		<File path="C:\Windows\Setup\Scripts\Specialize.ps1">
+$scripts = @(
+	{
+		reg.exe add "HKLM\SYSTEM\Setup\MoSetup" /v AllowUpgradesWithUnsupportedTPMOrCPU /t REG_DWORD /d 1 /f;
+	};
+);
+
+&amp; {
+  [float] $complete = 0;
+  [float] $increment = 100 / $scripts.Count;
+  foreach( $script in $scripts ) {
+    Write-Progress -Activity 'Running scripts to customize your Windows installation. Do not close this window.' -PercentComplete $complete;
+    '*** Will now execute command &#xAB;{0}&#xBB;.' -f $(
+      $str = $script.ToString().Trim() -replace '\s+', ' ';
+      $max = 100;
+      if( $str.Length -le $max ) {
+        $str;
+      } else {
+        $str.Substring( 0, $max - 1 ) + '&#x2026;';
+      }
+    );
+    $start = [datetime]::Now;
+    &amp; $script;
+    '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds;
+    "`r`n" * 3;
+    $complete += $increment;
+  }
+} *&gt;&amp;1 &gt;&gt; "C:\Windows\Setup\Scripts\Specialize.log";
+		</File>
+	</Extensions>
+</unattend>

@@ -19,6 +19,7 @@ namespace QuickWinstall.Main
         private Label lblBannerTitle;
         private Button btnToggleAll;
         private Button btnToggleLock;
+        private Button btnModeToggle;
         
         private Panel pnlConfigSection;
         
@@ -131,9 +132,18 @@ namespace QuickWinstall.Main
             this.btnToggleLock.Click += new EventHandler(this.BtnToggleLock_Click);
             tooltips.SetToolTip(this.btnToggleLock, "tooltips.mainForm.lockAll");
 
+            // Mode Toggle Button (New Installation / Upgrade Only)
+            this.btnModeToggle = _themeManager.CreateRoundedButton();
+            this.btnModeToggle.Size = new Size((int)(ui.GlobalBtnWidth * 1.2), ui.GlobalBtnHeight);
+            this.btnModeToggle.Text = lang.GetString("mainForm.buttons.newInstallation");
+            this.btnModeToggle.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            this.btnModeToggle.Click += new EventHandler(this.BtnModeToggle_Click);
+            tooltips.SetToolTip(this.btnModeToggle, "tooltips.mainForm.newInstallation");
+
             // Position buttons from right
             this.btnToggleAll.Location = new Point(this.ClientSize.Width - ui.GlobalTabX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
             this.btnToggleLock.Location = new Point(btnToggleAll.Left - ui.GlobalSpacingX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);
+            this.btnModeToggle.Location = new Point(btnToggleLock.Left - ui.GlobalSpacingX - (int)(ui.GlobalBtnWidth * 1.2), (ui.BannerHeight - ui.GlobalBtnHeight) / 2);
 
             // Config Section Panel
             this.pnlConfigSection = new Panel();
@@ -319,6 +329,7 @@ namespace QuickWinstall.Main
             this.pnlBanner.Controls.Add(this.picLogo);
             this.pnlBanner.Controls.Add(this.btnToggleAll);
             this.pnlBanner.Controls.Add(this.btnToggleLock);
+            this.pnlBanner.Controls.Add(this.btnModeToggle);
             this.pnlBanner.Controls.Add(this.lblBannerTitle);
 
             // Add root panels to the form

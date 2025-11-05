@@ -29,16 +29,21 @@ namespace QuickWinstall.Lib
 
         public bool GenerateXML(string outputPath, Dictionary<string, string> values)
         {
+            return GenerateXML(outputPath, values, _templatePath);
+        }
+
+        public bool GenerateXML(string outputPath, Dictionary<string, string> values, string templatePath)
+        {
             try
             {
                 // Read template
-                if (!File.Exists(_templatePath))
+                if (!File.Exists(templatePath))
                 {
-                    Console.WriteLine($"Error: Template file not found: {_templatePath}");
+                    Console.WriteLine($"Error: Template file not found: {templatePath}");
                     return false;
                 }
 
-                string template = File.ReadAllText(_templatePath);
+                string template = File.ReadAllText(templatePath);
 
                 // Replace placeholders
                 string result = ReplacePlaceholders(template, values);

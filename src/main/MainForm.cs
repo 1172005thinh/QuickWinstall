@@ -7,6 +7,15 @@ using QuickWinstall.Config;
 
 namespace QuickWinstall.Main
 {
+    /// <summary>
+    /// Installation mode for the application
+    /// </summary>
+    public enum InstallationMode
+    {
+        NewInstallation,
+        UpgradeOnly
+    }
+
     public partial class MainForm : Form
     {
         #region Fields
@@ -43,6 +52,7 @@ namespace QuickWinstall.Main
         private bool _isLoadingConfig = false; // Flag to prevent status updates during config loading
         private bool _allSectionsExpanded = true; // Track expand/collapse all state
         private bool _allSectionsLocked = false; // Track lock/unlock all state
+        private InstallationMode _currentMode = InstallationMode.NewInstallation; // Track current installation mode
 
         #endregion
 
@@ -215,6 +225,18 @@ namespace QuickWinstall.Main
             btnCancel.Text = _langManager.GetString("mainForm.buttons.cancel");
             btnGenerate.Text = _langManager.GetString("mainForm.buttons.generate");
             
+            // Update mode toggle button text and tooltip based on current mode
+            if (_currentMode == InstallationMode.NewInstallation)
+            {
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.newInstallation");
+                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.newInstallation");
+            }
+            else
+            {
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.upgradeOnly");
+                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.upgradeOnly");
+            }
+            
             // Update icon button tooltips based on current state
             string toggleAllTooltip = _allSectionsExpanded ? "tooltips.mainForm.collapseAll" : "tooltips.mainForm.expandAll";
             _toolTipManager.SetToolTip(btnToggleAll, toggleAllTooltip);
@@ -249,6 +271,7 @@ namespace QuickWinstall.Main
                 _themeManager.ApplyButtonTheme(btnGenerate);
                 _themeManager.ApplyButtonTheme(btnToggleAll);
                 _themeManager.ApplyButtonTheme(btnToggleLock);
+                _themeManager.ApplyButtonTheme(btnModeToggle);
                 
                 // Update icon buttons with new theme icons
                 bool isDark = _themeManager.IsDarkTheme;
@@ -391,6 +414,9 @@ namespace QuickWinstall.Main
                     _generalConfig.LoadConfigIntoUI();
                     _generalConfig.ValidateAllUIFields();
                 }
+                
+                // Apply panel visibility based on current installation mode
+                ApplyModeVisibility();
             }
             finally
             {
@@ -521,7 +547,13 @@ namespace QuickWinstall.Main
 
             // Generate XML
             _statusManager.SetGenerating();
-            bool success = _xmlGenerator.GenerateXML(outputPath, _configValues.GetAllValues());
+            
+            // Select template based on installation mode
+            string templatePath = _currentMode == InstallationMode.UpgradeOnly 
+                ? System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "lib", "template_upgrade.xml")
+                : System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "lib", "template.xml");
+            
+            bool success = _xmlGenerator.GenerateXML(outputPath, _configValues.GetAllValues(), templatePath);
 
             if (success)
             {
@@ -542,8 +574,8 @@ namespace QuickWinstall.Main
             {
                 MessageBox.Show(
                     this,
-                    _langManager.GetString("dialog.failed.message", _langManager.GetString("mainForm.status.failedToGenerateFile")),
-                    _langManager.GetString("dialog.failed.title"),
+                    _langManager.GetString("dialogs.failed.message", _langManager.GetString("mainForm.status.failedToGenerateFile")),
+                    _langManager.GetString("dialogs.failed.title"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
@@ -618,6 +650,59 @@ namespace QuickWinstall.Main
                 _allSectionsLocked = true;
                 btnToggleLock.Image = _iconManager.GetIconAsImage("unlock", _themeManager.IsDarkTheme, _uiValues.GlobalIconSize);
                 _toolTipManager.SetToolTip(btnToggleLock, "tooltips.mainForm.unlockAll");
+            }
+        }
+
+        private void BtnModeToggle_Click(object sender, EventArgs e)
+        {
+            // Toggle between NewInstallation and UpgradeOnly modes
+            if (_currentMode == InstallationMode.NewInstallation)
+            {
+                // Switch to Upgrade Only mode
+                _currentMode = InstallationMode.UpgradeOnly;
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.upgradeOnly");
+                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.upgradeOnly");
+            }
+            else
+            {
+                // Switch to New Installation mode
+                _currentMode = InstallationMode.NewInstallation;
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.newInstallation");
+                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.newInstallation");
+            }
+            
+            // Apply the visibility changes
+            ApplyModeVisibility();
+        }
+
+        /// <summary>
+        /// Applies panel visibility based on the current installation mode
+        /// </summary>
+        private void ApplyModeVisibility()
+        {
+            if (_currentMode == InstallationMode.UpgradeOnly)
+            {
+                // Upgrade Only mode - only show Bypass and OOBE panels
+                _pnlGeneralConfig.Visible = false;
+                _pnlLangRegConfig.Visible = false;
+                _pnlUserAccConfig.Visible = false;
+                _pnlPersonalConfig.Visible = false;
+                _pnlDiskPartConfig.Visible = false;
+                _pnlAppConfig.Visible = false;
+                _pnlBypassConfig.Visible = true;
+                _pnlOOBEConfig.Visible = true;
+            }
+            else
+            {
+                // New Installation mode - show all panels
+                _pnlGeneralConfig.Visible = true;
+                _pnlLangRegConfig.Visible = true;
+                _pnlUserAccConfig.Visible = true;
+                _pnlPersonalConfig.Visible = true;
+                _pnlDiskPartConfig.Visible = true;
+                _pnlAppConfig.Visible = true;
+                _pnlBypassConfig.Visible = true;
+                _pnlOOBEConfig.Visible = true;
             }
         }
 

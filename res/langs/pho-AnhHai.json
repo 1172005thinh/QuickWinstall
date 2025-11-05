@@ -195,8 +195,10 @@
       "cancel": "Hủy món",
       "clear": "Xóa menu",
       "generate": "Bán 1 tô",
+      "newInstallation": "Phở Tô Mới",
       "preset": "Preset",
-      "settings": "Chủ quán?"
+      "settings": "Chủ quán?",
+      "upgradeOnly": "Chỉ thêm Phở"
     },
     "sections": {
       "app": "Phở Cấu hình Ứng dụng",
@@ -411,9 +413,11 @@
       "generate": "Tạo tệp autounattend.xml",
       "lockAll": "Khóa tất cả phần",
       "logoClick": "Quay lại đầu trang",
+      "newInstallation": "Đổi sang Thêm Phở (chỉ hiện Bypass và OOBE)",
       "preset": "Tải/Lưu cấu hình có sẵn",
       "settings": "Mở cài đặt ứng dụng",
-      "unlockAll": "Mở khóa tất cả phần"
+      "unlockAll": "Mở khóa tất cả phần",
+      "upgradeOnly": "Đổi sang Phở Tô Mới (hiện tất cả các thành phần phở)"
     },
     "oobeConfig": {
       "enableOobe": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình OOBE",

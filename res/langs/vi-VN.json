@@ -195,8 +195,10 @@
       "cancel": "Hủy",
       "clear": "Xóa",
       "generate": "Tạo file",
+      "newInstallation": "Cài Đặt Mới",
       "preset": "Preset",
-      "settings": "Cài đặt"
+      "settings": "Cài đặt",
+      "upgradeOnly": "Chỉ Nâng Cấp"
     },
     "sections": {
       "app": "Cấu hình Ứng dụng",
@@ -411,9 +413,11 @@
       "generate": "Tạo tệp autounattend.xml",
       "lockAll": "Khóa tất cả phần",
       "logoClick": "Quay lại đầu trang",
+      "newInstallation": "Chuyển sang chế độ Chỉ Nâng Cấp (chỉ hiển thị phần Bypass và OOBE)",
       "preset": "Tải/Lưu cấu hình có sẵn",
       "settings": "Mở cài đặt ứng dụng",
-      "unlockAll": "Mở khóa tất cả phần"
+      "unlockAll": "Mở khóa tất cả phần",
+      "upgradeOnly": "Chuyển sang chế độ Cài Đặt Mới (hiển thị tất cả các phần cấu hình)"
     },
     "oobeConfig": {
       "enableOobe": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình OOBE",
