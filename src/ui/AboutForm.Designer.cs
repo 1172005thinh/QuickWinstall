@@ -415,7 +415,7 @@ namespace QuickWinstall
 
             // Version Label
             this.lblVersion = new Label();
-            this.lblVersion.Text = $"{lang.GetString("aboutForm.version.label")}" + $" v{appVersion}";
+            this.lblVersion.Text = $"{lang.GetString("aboutForm.version.label")}" + $" v{appVersion}" + (_isSEdition ? $" ({sEdition})" : "");
             this.lblVersion.Font = theme.GetFont("muted");
             this.lblVersion.AutoSize = true;
             this.lblVersion.BackColor = Color.Transparent;
@@ -455,8 +455,8 @@ namespace QuickWinstall
             pnlAbout.Controls.Add(lblLicenseName);
             //pnlAbout.Controls.Add(picAboutBg);
 
-            pnlControls.Controls.Add(lblVersion);
             pnlControls.Controls.Add(btnClose);
+            pnlControls.Controls.Add(lblVersion);
 
             pnlBanner.Controls.Add(picAppIcon);
             pnlBanner.Controls.Add(picBannerImage);

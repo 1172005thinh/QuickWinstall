@@ -14,7 +14,9 @@ namespace QuickWinstall
         private readonly UIValues _uiValues;
 
         // Version
-        public string appVersion = "0.5.4 - Phở Anh Hai Edition";
+        public string appVersion = "0.5.4.1";
+        public bool _isSEdition = true;
+        public string sEdition = "Phở Anh Hai Edition";
 
         public AboutForm()
         {
@@ -32,10 +34,10 @@ namespace QuickWinstall
         private void ApplyTheme()
         {
             // Apply theme colors
-            this.BackColor = _themeManager.GetColor("formBackground");
-            pnlBanner.BackColor = _themeManager.GetColor("bannerBackground");
-            pnlAbout.BackColor = _themeManager.GetColor("formBackground");
-            pnlControls.BackColor = _themeManager.GetColor("formBackground");
+            this.BackColor = _themeManager.GetColor("background");
+            pnlBanner.BackColor = _themeManager.GetColor("background");
+            pnlAbout.BackColor = _themeManager.GetColor("background");
+            pnlControls.BackColor = _themeManager.GetColor("background");
             
             // Apply button theme
             _themeManager.ApplyButtonTheme(btnClose);
@@ -126,7 +128,7 @@ namespace QuickWinstall
             lblLicenseName.Text = _langManager.GetString("aboutForm.license.name");
             
             // Control panel
-            lblVersion.Text = $"{_langManager.GetString("aboutForm.version.label")}" + $" v{appVersion}";
+            lblVersion.Text = $"{_langManager.GetString("aboutForm.version.label")}" + $" v{appVersion}" + (_isSEdition ? $" ({sEdition})" : "");
             btnClose.Text = _langManager.GetString("aboutForm.buttons.close");
             
             // Tooltips
@@ -164,10 +166,7 @@ namespace QuickWinstall
 
         private void LinkReference2_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)
         {
-            // Open a different reference depending on the current language.
-            // If the current language is the custom "pho-AnhHai" language, open the local "Brother Hai's Phở" reference,
-            // otherwise open the Microsoft documentation reference.
-            if (_langManager.CurrentLanguage == "pho-AnhHai")
+            if (_isSEdition)
             {
                 OpenUrl("https://marisa0704.itch.io/brother-hais-pho-restaurant");
             }

@@ -192,9 +192,11 @@ namespace QuickWinstall.Main
             statusStrip.BackColor = _themeManager.GetColor("background");
             
             // Update banner label colors
+            lblBannerTitle.Font = _themeManager.GetFont("header");
             lblBannerTitle.ForeColor = _themeManager.GetFontColor("header");
             
             // Update status strip colors
+            lblStatusPrefix.Font = _themeManager.GetFont("normal");
             lblStatusPrefix.ForeColor = _themeManager.GetFontColor("normal");
             // lblStatus color depends on current status state
         }

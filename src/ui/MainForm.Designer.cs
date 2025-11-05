@@ -109,7 +109,7 @@ namespace QuickWinstall.Main
             // Banner Title
             this.lblBannerTitle = new Label();
             this.lblBannerTitle.Location = new Point(picLogo.Right + ui.GlobalSpacingX, (ui.BannerHeight - ui.GlobalLabelHeight) / 2);
-            this.lblBannerTitle.Size = new Size(500, ui.GlobalLabelHeight);
+            this.lblBannerTitle.Size = new Size(ui.GlobalLabelWidth * 3, ui.GlobalLabelHeight);
             this.lblBannerTitle.Text = lang.GetString("mainForm.banner.title");
             this.lblBannerTitle.Font = theme.GetFont("header");
             this.lblBannerTitle.ForeColor = theme.GetFontColor("header");
@@ -153,7 +153,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlAppConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlAppConfig);
 
             // Initialize Personal Config Section
             _pnlPersonalConfig = _personalConfig.InitializeUI(
@@ -163,7 +162,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlPersonalConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
             
             // Initialize OOBE Config Section
             _pnlOOBEConfig = _oobeConfig.InitializeUI(
@@ -174,7 +172,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateLockUnlockButton
             );
             _pnlOOBEConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
 
             // Initialize User Account Config Section
             _pnlUserAccConfig = _userAccConfig.InitializeUI(
@@ -184,7 +181,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlUserAccConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
 
             // Initialize Disk & Partition Config Section
             _pnlDiskPartConfig = _diskPartConfig.InitializeUI(
@@ -194,7 +190,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateExpandCollapseButton
             );
             _pnlDiskPartConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
 
             // Initialize Bypass Config Section
             _pnlBypassConfig = _bypassConfig.InitializeUI(
@@ -205,7 +200,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateLockUnlockButton
             );
             _pnlBypassConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
 
             // Initialize Language & Region Config Section
             _pnlLangRegConfig = _langRegConfig.InitializeUI(
@@ -216,7 +210,6 @@ namespace QuickWinstall.Main
                 this.CheckAndUpdateLockUnlockButton
             );
             _pnlLangRegConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
 
             // Initialize General Config Section (add last, appears at top)
             _pnlGeneralConfig = _generalConfig.InitializeUI(
@@ -228,7 +221,7 @@ namespace QuickWinstall.Main
                 this
             );
             _pnlGeneralConfig.Dock = DockStyle.Top;
-            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+            
 
             // Control Panel
             this.pnlControlPanel = new Panel();
@@ -282,12 +275,7 @@ namespace QuickWinstall.Main
             this.btnCancel.Location = new Point(this.ClientSize.Width - ui.GlobalTabX - ui.GlobalBtnWidth, btnY);
             this.btnGenerate.Location = new Point(btnCancel.Left - ui.GlobalSpacingX - ui.GlobalBtnWidth, btnY);
 
-            // Add buttons to Control Panel
-            this.pnlControlPanel.Controls.Add(this.btnSettings);
-            this.pnlControlPanel.Controls.Add(this.btnClear);
-            this.pnlControlPanel.Controls.Add(this.btnPreset);
-            this.pnlControlPanel.Controls.Add(this.btnGenerate);
-            this.pnlControlPanel.Controls.Add(this.btnCancel);
+            // Add buttons to Control Panel (moved to bottom)
 
             // Status Strip
             this.statusStrip = new StatusStrip();
@@ -309,12 +297,31 @@ namespace QuickWinstall.Main
             this.statusStrip.Items.Add(this.lblStatusPrefix);
             this.statusStrip.Items.Add(this.lblStatus);
 
-            // Add all to Form
+            // Add all child controls (centralized)
+            // Control panel buttons
+            this.pnlControlPanel.Controls.Add(this.btnSettings);
+            this.pnlControlPanel.Controls.Add(this.btnClear);
+            this.pnlControlPanel.Controls.Add(this.btnPreset);
+            this.pnlControlPanel.Controls.Add(this.btnGenerate);
+            this.pnlControlPanel.Controls.Add(this.btnCancel);
+
+            // Config section panels (respect reverse stacking order)
+            this.pnlConfigSection.Controls.Add(_pnlAppConfig);
+            this.pnlConfigSection.Controls.Add(_pnlPersonalConfig);
+            this.pnlConfigSection.Controls.Add(_pnlOOBEConfig);
+            this.pnlConfigSection.Controls.Add(_pnlUserAccConfig);
+            this.pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
+            this.pnlConfigSection.Controls.Add(_pnlBypassConfig);
+            this.pnlConfigSection.Controls.Add(_pnlLangRegConfig);
+            this.pnlConfigSection.Controls.Add(_pnlGeneralConfig);
+
+            // Banner children
             this.pnlBanner.Controls.Add(this.picLogo);
-            this.pnlBanner.Controls.Add(this.lblBannerTitle);
             this.pnlBanner.Controls.Add(this.btnToggleAll);
             this.pnlBanner.Controls.Add(this.btnToggleLock);
-            
+            this.pnlBanner.Controls.Add(this.lblBannerTitle);
+
+            // Add root panels to the form
             this.Controls.Add(this.pnlBanner);
             this.Controls.Add(this.pnlConfigSection);
             this.Controls.Add(this.pnlControlPanel);
