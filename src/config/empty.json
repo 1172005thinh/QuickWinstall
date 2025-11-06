@@ -21,6 +21,13 @@
     "bypassStorage": false,
     "bypassDisk": false
   },
+  "diskPartConfig": {
+    "diskID": "",
+    "wipeDisk": false,
+    "partitionLayout": "",
+    "useRemainingSpace": false,
+    "disableBitLocker": false
+  },
   "oobeConfig": {
     "enableOOBE": false,
     "skipAll": false,

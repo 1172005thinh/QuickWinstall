@@ -75,8 +75,8 @@ namespace QuickWinstall.Main
             _langRegConfig = _configValues.LangReg;
             _bypassConfig = _configValues.Bypass;
             _oobeConfig = _configValues.OOBE;
-            
-            _diskPartConfig = new DiskPartConfig();
+            _diskPartConfig = _configValues.DiskPart;
+
             _userAccConfig = new UserAccConfig();
             _personalConfig = new PersonalConfig();
             _appConfig = new AppConfig();
@@ -160,7 +160,7 @@ namespace QuickWinstall.Main
                 _generalConfig.SetEnableState(false);
                 _langRegConfig.SetEnableState(false);
                 _bypassConfig.SetEnableState(false);
-                //_diskPartConfig.SetEnableState(false);
+                _diskPartConfig.SetEnableState(false);
                 //_userAccConfig.SetEnableState(false);
                 _oobeConfig.SetEnableState(false);
                 //_personalConfig.SetEnableState(false);
@@ -175,7 +175,7 @@ namespace QuickWinstall.Main
                 _generalConfig.SetEnableState(true);
                 _langRegConfig.SetEnableState(true);
                 _bypassConfig.SetEnableState(true);
-                //_diskPartConfig.SetEnableState(true);
+                _diskPartConfig.SetEnableState(true);
                 //_userAccConfig.SetEnableState(true);
                 _oobeConfig.SetEnableState(true);
                 //_personalConfig.SetEnableState(true);
@@ -363,7 +363,8 @@ namespace QuickWinstall.Main
                         pnlConfigSection,
                         (sender, e) => OnConfigChanged(sender!, e),
                         _themeManager.CreateRoundedButton,
-                        null
+                        CheckAndUpdateExpandCollapseButton,
+                        CheckAndUpdateLockUnlockButton
                     );
                     _pnlDiskPartConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlDiskPartConfig);
@@ -633,6 +634,7 @@ namespace QuickWinstall.Main
                 _generalConfig.SetEnableState(true);
                 _langRegConfig.SetEnableState(true);
                 _bypassConfig.SetEnableState(true);
+                _diskPartConfig.SetEnableState(true);
                 _oobeConfig.SetEnableState(true);
                 
                 _allSectionsLocked = false;
@@ -645,6 +647,7 @@ namespace QuickWinstall.Main
                 _generalConfig.SetEnableState(false);
                 _langRegConfig.SetEnableState(false);
                 _bypassConfig.SetEnableState(false);
+                _diskPartConfig.SetEnableState(false);
                 _oobeConfig.SetEnableState(false);
                 
                 _allSectionsLocked = true;
@@ -712,15 +715,23 @@ namespace QuickWinstall.Main
         public void CheckAndUpdateExpandCollapseButton()
         {
             // Check if all sections have the same expanded state
-            bool allExpanded = _generalConfig.IsExpanded && _langRegConfig.IsExpanded && 
-                              _userAccConfig.IsExpanded && _oobeConfig.IsExpanded && 
-                              _personalConfig.IsExpanded && _diskPartConfig.IsExpanded && 
-                              _bypassConfig.IsExpanded && _appConfig.IsExpanded;
+            bool allExpanded = _generalConfig.IsExpanded &&
+                                _langRegConfig.IsExpanded &&
+                                _userAccConfig.IsExpanded &&
+                                _oobeConfig.IsExpanded &&
+                                _personalConfig.IsExpanded &&
+                                _diskPartConfig.IsExpanded &&
+                                _bypassConfig.IsExpanded &&
+                                _appConfig.IsExpanded;
                               
-            bool allCollapsed = !_generalConfig.IsExpanded && !_langRegConfig.IsExpanded && 
-                               !_userAccConfig.IsExpanded && !_oobeConfig.IsExpanded && 
-                               !_personalConfig.IsExpanded && !_diskPartConfig.IsExpanded && 
-                               !_bypassConfig.IsExpanded && !_appConfig.IsExpanded;
+            bool allCollapsed = !_generalConfig.IsExpanded &&
+                                !_langRegConfig.IsExpanded &&
+                                !_userAccConfig.IsExpanded &&
+                                !_oobeConfig.IsExpanded &&
+                                !_personalConfig.IsExpanded &&
+                                !_diskPartConfig.IsExpanded &&
+                                !_bypassConfig.IsExpanded &&
+                                !_appConfig.IsExpanded;
             
             if (allExpanded && !_allSectionsExpanded)
             {
@@ -745,10 +756,12 @@ namespace QuickWinstall.Main
             bool allUnlocked = _generalConfig.EnableGeneral &&
                                 _langRegConfig.EnableLangReg &&
                                 _bypassConfig.EnableBypass &&
+                                _diskPartConfig.EnableDiskPart &&
                                 _oobeConfig.EnableOOBE;
             bool allLocked = !_generalConfig.EnableGeneral &&
                                 !_langRegConfig.EnableLangReg &&
                                 !_bypassConfig.EnableBypass &&
+                                !_diskPartConfig.EnableDiskPart &&
                                 !_oobeConfig.EnableOOBE;
 
             if (allUnlocked && _allSectionsLocked)
@@ -783,9 +796,11 @@ namespace QuickWinstall.Main
             
             if (_oobeConfig.EnableOOBE)
                 _oobeConfig.ClearControls();
-            
+
+            if (_diskPartConfig.EnableDiskPart)
+                _diskPartConfig.ClearControls();
+
             // These sections don't have Enable toggles, so always clear them
-            _diskPartConfig.ClearControls();
             _userAccConfig.ClearControls();
             _personalConfig.ClearControls();
             _appConfig.ClearControls();
@@ -811,6 +826,7 @@ namespace QuickWinstall.Main
             _generalConfig.UpdateFromControls();
             _langRegConfig.UpdateFromControls();
             _bypassConfig.UpdateFromControls();
+            _diskPartConfig.UpdateFromControls();
             _oobeConfig.UpdateFromControls();
         }
 

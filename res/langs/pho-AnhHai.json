@@ -29,6 +29,60 @@
       "label": "Mua Phở Bỏ qua Check Phần cứng"
     }
   },
+  "diskPartConfig": {
+    "disableBitLocker": {
+      "label": "Không cho thêm hành BitLocker"
+    },
+    "diskID": {
+      "label": "Cái đĩa số:"
+    },
+    "enableDiskPart": {
+      "label": "Mua Phở {0}"
+    },
+    "enableAutoDiskPart": {
+      "label": "Mua Phở Tự động Chia đĩa"
+    },
+    "partitionLayout": {
+      "label": "Bài trí Ổ đĩa:",
+      "options": {
+        "gptUEFI": "GPT với UEFI",
+        "mbrBIOS": "MBR với BIOS/CSM",
+        "selectOne": "-- Chọn một --"
+      }
+    },
+    "partitionTable": {
+      "active": "HĐ",
+      "format": "Đ.dạng",
+      "id": "ID",
+      "letter": "Chữ",
+      "name": "Tên",
+      "quickCreate": "Làm Nhanh",
+      "reset": "Đặt Lại",
+      "size": "Kích cỡ (MB)",
+      "title": "Menu Phân vùng:",
+      "type": "Loại",
+      "typeOptions": {
+        "efi": "EFI",
+        "extended": "Extended",
+        "logical": "Logical",
+        "msr": "MSR",
+        "primary": "Primary",
+        "recovery": "Recovery"
+      },
+      "formatOptions": {
+        "fat32": "FAT32",
+        "ntfs": "NTFS",
+        "selectOne": "-- Chọn một --"
+      },
+      "namePlaceholder": "PhanVungMoi"
+    },
+    "useRemainingSpace": {
+      "label": "Sử dụng Toàn bộ Không gian Còn lại cho Phân vùng ID Cuối"
+    },
+    "wipeDisk": {
+      "label": "Xóa sạch Ổ đĩa"
+    }
+  },
   "dialogs": {
     "buttons": {
       "cancel": "Hủy",
@@ -100,7 +154,7 @@
   },
   "langRegConfig": {
     "enableLangReg": {
-      "label": "Mua Phở Cấu hình Ngôn ngữ và Khu vực"
+      "label": "Mua Phở {0}"
     },
     "keyboardLayout": {
       "label": "Bố cục Phở Bàn phím:",
@@ -385,8 +439,25 @@
       "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
     },
     "diskPartConfig": {
-      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa và Phân vùng",
-      "header": "Phần Cấu hình Đĩa và Phân vùng"
+      "disableBitLocker": "Enable to disable BitLocker during installation. Recommended when changing disk partitions.",
+      "diskID": "Specify the Disk ID to apply the Disk & Partition Configuration",
+      "enableAutoDiskPart": "Enable to automatically create/modify disk partitions based on following configurations\\nDisable to manually configure disks and partitions while setting up Windows",
+      "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
+      "header": "Disk && Partition Configurations Section",
+      "partitionLayout": "Select the partition layout to create on the disk",
+      "partitionTable": {
+        "active": "Whether the partition is marked as active (Yes/No)",
+        "format": "File system format of the partition (NTFS, FAT32, etc.)",
+        "id": "Unique identifier for the partition (auto-incremented)",
+        "letter": "Drive letter assigned to the partition",
+        "name": "Name of the partition",
+        "quickCreate": "Quick create a default partition table",
+        "reset": "Reset the partition table (clear all partitions)",
+        "size": "Size of the partition in megabytes",
+        "type": "Type of the partition (Primary, Extended, Logical, Recovery, EFI, MSR)"
+      },
+      "useRemainingSpace": "Enable to use all remaining disk space for the last partition in the table",
+      "wipeDisk": "Enable to wipe the entire disk before partitioning. This will delete all data."
     },
     "generalConfig": {
       "cpuArch": "Chọn kiến trúc CPU để cài đặt.",

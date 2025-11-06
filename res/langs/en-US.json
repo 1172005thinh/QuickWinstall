@@ -39,6 +39,9 @@
     "enableDiskPart": {
       "label": "Unlock {0}"
     },
+    "enableAutoDiskPart": {
+      "label": "Automatic Configs Disk and Partition"
+    },
     "partitionLayout": {
       "label": "Partition Layout:",
       "options": {
@@ -77,7 +80,7 @@
       "label": "Use Remaining Space for Last Partition"
     },
     "wipeDisk": {
-      "label": "Wipe Disk"
+      "label": "Will Wipe Disk"
     }
   },
   "dialogs": {
@@ -254,9 +257,9 @@
     "sections": {
       "app": "App Configurations",
       "bypass": "Bypass Windows 11 Hardware Checks",
-      "diskPart": "Disk & Partition Configurations",
+      "diskPart": "Disk and Partition Configurations",
       "general": "General Configurations",
-      "langReg": "Language & Region Configurations",
+      "langReg": "Language and Region Configurations",
       "oobe": "OOBE Configurations",
       "personal": "Personalize Configurations",
       "userAcc": "User Account Configurations"
@@ -438,6 +441,7 @@
     "diskPartConfig": {
       "disableBitLocker": "Enable to disable BitLocker during installation. Recommended when changing disk partitions.",
       "diskID": "Specify the Disk ID to apply the Disk & Partition Configuration",
+      "enableAutoDiskPart": "Enable to automatically create/modify disk partitions based on following configurations\\nDisable to manually configure disks and partitions while setting up Windows",
       "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
       "header": "Disk && Partition Configurations Section",
       "partitionLayout": "Select the partition layout to create on the disk",

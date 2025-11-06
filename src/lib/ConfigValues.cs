@@ -77,7 +77,7 @@ namespace QuickWinstall.Lib
                     bool generalEnabled = General.EnableGeneral;
                     bool langRegEnabled = LangReg.EnableLangReg;
                     bool bypassEnabled = Bypass.EnableBypass;
-                    //bool diskPartEnabled = DiskPart.EnableDiskPart;
+                    bool diskPartEnabled = DiskPart.EnableDiskPart;
                     //bool userAccEnabled = UserAcc.EnableUserAcc;
                     bool oobeEnabled = OOBE.EnableOOBE;
                     //bool personalEnabled = Personal.EnablePersonal;
@@ -102,10 +102,10 @@ namespace QuickWinstall.Lib
                     }
 
                     // Load empty values for DiskPart section
-                    // if (emptyConfig["diskPart"] is JObject diskPartSection)
-                    // {
-                    //     DiskPart.SetValues(diskPartSection);
-                    // }
+                    if (emptyConfig["diskPart"] is JObject diskPartSection)
+                    {
+                        DiskPart.SetValues(diskPartSection);
+                    }
 
                     // Load empty values for UserAcc section
                     // if (emptyConfig["userAcc"] is JObject userAccSection)
@@ -135,7 +135,7 @@ namespace QuickWinstall.Lib
                     General.EnableGeneral = generalEnabled;
                     LangReg.EnableLangReg = langRegEnabled;
                     Bypass.EnableBypass = bypassEnabled;
-                    //DiskPart.EnableDiskPart = diskPartEnabled;
+                    DiskPart.EnableDiskPart = diskPartEnabled;
                     //UserAcc.EnableUserAcc = userAccEnabled;
                     OOBE.EnableOOBE = oobeEnabled;
                     //Personal.EnablePersonal = personalEnabled;
@@ -162,7 +162,7 @@ namespace QuickWinstall.Lib
             errors.AddRange(General.Validate());
             errors.AddRange(LangReg.Validate());
             //errors.AddRange(Bypass.Validate());
-            //errors.AddRange(DiskPart.Validate());
+            errors.AddRange(DiskPart.Validate());
             //errors.AddRange(UserAcc.Validate());
             errors.AddRange(OOBE.Validate());
             //errors.AddRange(Personal.Validate());
@@ -191,10 +191,10 @@ namespace QuickWinstall.Lib
                 values[kvp.Key] = kvp.Value;
             }
 
-            //foreach (var kvp in DiskPart.GetValues())
-            //{
-            //    values[kvp.Key] = kvp.Value;
-            //}
+            foreach (var kvp in DiskPart.GetValues())
+            {
+                values[kvp.Key] = kvp.Value;
+            }
 
             //foreach (var kvp in UserAcc.GetValues())
             //{
@@ -250,7 +250,7 @@ namespace QuickWinstall.Lib
                     General.UpdateFromControls();
                     LangReg.UpdateFromControls();
                     Bypass.UpdateFromControls();
-                    //DiskPart.UpdateFromControls();
+                    DiskPart.UpdateFromControls();
                     //UserAcc.UpdateFromControls();
                     OOBE.UpdateFromControls();
                     //Personal.UpdateFromControls();
@@ -290,18 +290,27 @@ namespace QuickWinstall.Lib
                         ["bypassStorage"] = Bypass.BypassStorage,
                         ["bypassDisk"] = Bypass.BypassDisk
                     },
-                    ["oobe"] = new JObject
+                    ["diskPart"] = new JObject
                     {
-                        ["skipAll"] = OOBE.SkipAll,
-                        ["skipEULA"] = OOBE.SkipEULA,
-                        ["skipLocalAccountCreation"] = OOBE.SkipLocalAccountCreation,
-                        ["skipOnlineAccountCreation"] = OOBE.SkipOnlineAccountCreation,
-                        ["skipWirelessNetwork"] = OOBE.SkipWirelessNetwork,
-                        ["skipMachineOOBE"] = OOBE.SkipMachineOOBE,
-                        ["skipUserOOBE"] = OOBE.SkipUserOOBE,
-                        ["networkLocation"] = OOBE.NetworkLocation,
-                        ["protectYourPC"] = OOBE.ProtectYourPC
+                        ["enableAutoDiskPart"] = DiskPart.EnableAutoDiskPart,
+                        ["diskID"] = DiskPart.DiskID,
+                        ["wipeDisk"] = DiskPart.WipeDisk,
+                        ["partitionLayout"] = DiskPart.PartitionLayout,
+                        ["useRemainingSpace"] = DiskPart.UseRemainingSpace,
+                        ["disableBitLocker"] = DiskPart.DisableBitLocker
                     },
+                    ["oobe"] = new JObject
+                        {
+                            ["skipAll"] = OOBE.SkipAll,
+                            ["skipEULA"] = OOBE.SkipEULA,
+                            ["skipLocalAccountCreation"] = OOBE.SkipLocalAccountCreation,
+                            ["skipOnlineAccountCreation"] = OOBE.SkipOnlineAccountCreation,
+                            ["skipWirelessNetwork"] = OOBE.SkipWirelessNetwork,
+                            ["skipMachineOOBE"] = OOBE.SkipMachineOOBE,
+                            ["skipUserOOBE"] = OOBE.SkipUserOOBE,
+                            ["networkLocation"] = OOBE.NetworkLocation,
+                            ["protectYourPC"] = OOBE.ProtectYourPC
+                        },
                         // Add other sections when implemented
                     };
 
@@ -376,11 +385,11 @@ namespace QuickWinstall.Lib
                 }
 
                 // Load DiskPart section
-                // if (config["diskPart"] is JObject diskPartSection)
-                // {
-                //     DiskPart.SetValues(diskPartSection);
-                //     Console.WriteLine("DiskPartConfig loaded successfully.");
-                // }
+                if (config["diskPart"] is JObject diskPartSection)
+                {
+                    DiskPart.SetValues(diskPartSection);
+                    Console.WriteLine("DiskPartConfig loaded successfully.");
+                }
 
                 // Load UserAcc section
                 // if (config["userAcc"] is JObject userAccSection)

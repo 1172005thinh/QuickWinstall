@@ -197,7 +197,8 @@ namespace QuickWinstall.Main
                 this.pnlConfigSection,
                 this.OnConfigChanged,
                 _themeManager.CreateRoundedButton,
-                this.CheckAndUpdateExpandCollapseButton
+                this.CheckAndUpdateExpandCollapseButton,
+                this.CheckAndUpdateLockUnlockButton
             );
             _pnlDiskPartConfig.Dock = DockStyle.Top;
 

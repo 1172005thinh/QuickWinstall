@@ -28,6 +28,60 @@
     "enableBypass": {
       "label": "Mở khóa {0}"
     }
+  },  
+  "diskPartConfig": {
+    "disableBitLocker": {
+      "label": "Tăt BitLocker"
+    },
+    "diskID": {
+      "label": "ID Ổ đĩa:"
+    },
+    "enableDiskPart": {
+      "label": "Mở khóa {0}"
+    },
+    "enableAutoDiskPart": {
+      "label": "Tự động Chia Ổ đĩa và Phân vùng"
+    },
+    "partitionLayout": {
+      "label": "Layout Phân vùng:",
+      "options": {
+        "gptUEFI": "GPT với UEFI",
+        "mbrBIOS": "MBR với BIOS/CSM",
+        "selectOne": "-- Chọn một --"
+      }
+    },
+    "partitionTable": {
+      "active": "HĐ",
+      "format": "Đ.dạng",
+      "id": "ID",
+      "letter": "Chữ",
+      "name": "Tên",
+      "quickCreate": "Tạo Nhanh",
+      "reset": "Đặt Lại",
+      "size": "Kích cỡ (MB)",
+      "title": "Bảng Phân vùng:",
+      "type": "Loại",
+      "typeOptions": {
+        "efi": "EFI",
+        "extended": "Extended",
+        "logical": "Logical",
+        "msr": "MSR",
+        "primary": "Primary",
+        "recovery": "Recovery"
+      },
+      "formatOptions": {
+        "fat32": "FAT32",
+        "ntfs": "NTFS",
+        "selectOne": "-- Chọn một --"
+      },
+      "namePlaceholder": "PhanVungMoi"
+    },
+    "useRemainingSpace": {
+      "label": "Sử dụng Toàn bộ Không gian Còn lại cho Phân vùng ID Cuối"
+    },
+    "wipeDisk": {
+      "label": "Xóa sạch Ổ đĩa"
+    }
   },
   "dialogs": {
     "buttons": {
@@ -385,8 +439,25 @@
       "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
     },
     "diskPartConfig": {
-      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa và Phân vùng",
-      "header": "Phần Cấu hình Đĩa và Phân vùng"
+      "disableBitLocker": "Bật để vô hiệu hóa BitLocker trong quá trình cài đặt. Được khuyến nghị khi thay đổi phân vùng đĩa.",
+      "diskID": "Chỉ định ID Đĩa để áp dụng Cấu hình Đĩa & Phân vùng",
+      "enableAutoDiskPart": "Bật để tự động tạo/thay đổi phân vùng đĩa dựa trên các cấu hình sau\\nTắt để cấu hình thủ công các đĩa và phân vùng trong khi thiết lập Windows",
+      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa & Phân vùng",
+      "header": "Phần Cấu hình Đĩa & Phân vùng",
+      "partitionLayout": "Chọn bố cục phân vùng để tạo trên đĩa",
+      "partitionTable": {
+        "active": "Có đánh dấu phân vùng là hoạt động hay không (Có/Không)",
+        "format": "Định dạng hệ thống tệp của phân vùng (NTFS, FAT32, v.v.)",
+        "id": "Định danh duy nhất cho phân vùng (tăng tự động)",
+        "letter": "Chữ cái ổ đĩa được gán cho phân vùng",
+        "name": "Tên của phân vùng",
+        "quickCreate": "Tạo nhanh phân vùng với các giá trị mặc định theo từng Layout đã chọn",
+        "reset": "Đặt lại bảng phân vùng (xóa tất cả các phân vùng)",
+        "size": "Kích thước của phân vùng tính bằng megabyte",
+        "type": "Loại của phân vùng (Primary, Extended, Logical, Recovery, EFI, MSR)"
+      },
+      "useRemainingSpace": "Bật để sử dụng toàn bộ không gian còn lại cho phân vùng cuối cùng trong bảng",
+      "wipeDisk": "Bật để xóa toàn bộ đĩa trước khi phân vùng. Điều này sẽ xóa tất cả dữ liệu."
     },
     "generalConfig": {
       "cpuArch": "Chọn kiến trúc CPU để cài đặt.",

@@ -14,9 +14,9 @@ namespace QuickWinstall
         private readonly UIValues _uiValues;
 
         // Version
-        public string appVersion = "0.6";
-        public bool _isSEdition = false;
-        public string sEdition = "Phở Anh Hai Edition";
+        public string appVersion = "0.7";
+        public bool _isSEdition = true;
+        public string sEdition = "Testing UI";
 
         public AboutForm()
         {
