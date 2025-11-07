@@ -45,8 +45,8 @@
     "partitionLayout": {
       "label": "Layout Phân vùng:",
       "options": {
-        "gptUEFI": "GPT với UEFI",
-        "mbrBIOS": "MBR với BIOS/CSM",
+        "gptUEFI": "GPT",
+        "mbrBIOS": "MBR",
         "selectOne": "-- Chọn một --"
       }
     },

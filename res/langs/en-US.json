@@ -45,8 +45,8 @@
     "partitionLayout": {
       "label": "Partition Layout:",
       "options": {
-        "gptUEFI": "GPT with UEFI",
-        "mbrBIOS": "MBR with BIOS/CSM",
+        "gptUEFI": "GPT",
+        "mbrBIOS": "MBR",
         "selectOne": "-- Select one --"
       }
     },

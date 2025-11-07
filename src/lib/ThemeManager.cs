@@ -212,6 +212,7 @@ namespace QuickWinstall.Lib
             btn.BackColor = GetColor("buttonBackground");
             btn.FlatAppearance.BorderColor = GetColor("buttonBorder");
             btn.ForeColor = GetFontColor("normal");
+            btn.Font = GetFont("normal");
             btn.Invalidate();
         }
 

@@ -253,13 +253,14 @@ namespace QuickWinstall.Config
 
             nudDiskID = new NumericUpDown();
             nudDiskID.Location = new Point(inputX, currentY);
-            nudDiskID.Size = new Size((int)(ui.GlobalInputWidth * 0.5), ui.GlobalInputHeight);
+            nudDiskID.Size = new Size((int)(ui.GlobalInputWidth * 0.2), ui.GlobalInputHeight);
             nudDiskID.Minimum = 0;
             nudDiskID.Maximum = 255;
             nudDiskID.Value = DiskID;
             nudDiskID.Font = theme.GetFont("normal");
             nudDiskID.BackColor = theme.GetColor("inputBackground");
             nudDiskID.ForeColor = theme.GetFontColor("inputForeground");
+            nudDiskID.TextAlign = HorizontalAlignment.Right;
             nudDiskID.ValueChanged += onConfigChanged;
             nudDiskID.ValueChanged += (s, e) => ValidateDiskID();
             tooltips.SetToolTip(nudDiskID, "tooltips.diskPartConfig.diskID");
@@ -349,6 +350,8 @@ namespace QuickWinstall.Config
             btnQuickCreate.Enabled = false; // Will be enabled when partition layout is selected
             btnQuickCreate.Click += (s, e) => QuickCreatePartitionTable();
             tooltips.SetToolTip(btnQuickCreate, "tooltips.diskPartConfig.partitionTable.quickCreate");
+            // Apply full button theme for proper background color
+            theme.ApplyButtonTheme(btnQuickCreate);
 
             btnReset = createRoundedButton();
             btnReset.Location = new Point(btnQuickCreate.Right + ui.GlobalSpacingX, currentY);
@@ -564,9 +567,10 @@ namespace QuickWinstall.Config
             bool isMuted = !newState;
 
             //Update all toggle switches to muted or normal state
-            theme.UpdateToggleSwitchState(toggleEnableAutoDiskPart, isMuted);
-            theme.UpdateToggleSwitchState(toggleWipeDisk, isMuted);
-            theme.UpdateToggleSwitchState(toggleDisableBitLocker, isMuted);
+            theme.UpdateToggleSwitchMutedState(toggleEnableAutoDiskPart, isMuted);
+            theme.UpdateToggleSwitchMutedState(toggleWipeDisk, isMuted);
+            theme.UpdateToggleSwitchMutedState(toggleUseRemainingSpace, isMuted);
+            theme.UpdateToggleSwitchMutedState(toggleDisableBitLocker, isMuted);
 
             // Update all labels to muted or normal state
             if (isMuted)
@@ -642,23 +646,48 @@ namespace QuickWinstall.Config
             nudDiskID.Enabled = newState;
             toggleWipeDisk.Enabled = newState;
             cmbPartitionLayout.Enabled = newState;
+            btnQuickCreate.Enabled = newState && cmbPartitionLayout.SelectedIndex > 0;
+            btnReset.Enabled = newState;
             toggleUseRemainingSpace.Enabled = newState;
-            
+
+            // Update dependent controls muted/normal state
+            bool isMuted = !newState;
+            theme.UpdateToggleSwitchMutedState(toggleWipeDisk, isMuted);
+            theme.UpdateToggleSwitchMutedState(toggleUseRemainingSpace, isMuted);
+
             // Update label colors to muted/normal based on state
             if (newState)
             {
+                lblDiskID.Font = theme.GetFont("normal");
                 lblDiskID.ForeColor = theme.GetFontColor("normal");
+                nudDiskID.Font = theme.GetFont("normal");
+                nudDiskID.ForeColor = theme.GetFontColor("inputForeground");
+                lblWipeDisk.Font = theme.GetFont("normal");
                 lblWipeDisk.ForeColor = theme.GetFontColor("normal");
+                lblPartitionLayout.Font = theme.GetFont("normal");
                 lblPartitionLayout.ForeColor = theme.GetFontColor("normal");
+                cmbPartitionLayout.Font = theme.GetFont("normal");
+                cmbPartitionLayout.ForeColor = theme.GetFontColor("inputForeground");
+                lblPartitionTable.Font = theme.GetFont("normal");
                 lblPartitionTable.ForeColor = theme.GetFontColor("normal");
+                lblUseRemainingSpace.Font = theme.GetFont("normal");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("normal");
             }
             else
             {
+                lblDiskID.Font = theme.GetFont("muted");
                 lblDiskID.ForeColor = theme.GetFontColor("muted");
+                nudDiskID.Font = theme.GetFont("muted");
+                nudDiskID.ForeColor = theme.GetFontColor("muted");
+                lblWipeDisk.Font = theme.GetFont("muted");
                 lblWipeDisk.ForeColor = theme.GetFontColor("muted");
+                lblPartitionLayout.Font = theme.GetFont("muted");
                 lblPartitionLayout.ForeColor = theme.GetFontColor("muted");
+                cmbPartitionLayout.Font = theme.GetFont("muted");
+                cmbPartitionLayout.ForeColor = theme.GetFontColor("muted");
+                lblPartitionTable.Font = theme.GetFont("muted");
                 lblPartitionTable.ForeColor = theme.GetFontColor("muted");
+                lblUseRemainingSpace.Font = theme.GetFont("muted");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("muted");
             }
 
@@ -733,7 +762,7 @@ namespace QuickWinstall.Config
             else
             {
                 btnQuickCreate.Font = theme.GetFont("muted");
-                btnQuickCreate.ForeColor = theme.GetFontColor("muted");
+                btnQuickCreate.ForeColor = theme.GetColor("muted");
             }
         }
 
@@ -913,6 +942,12 @@ namespace QuickWinstall.Config
                 // Update visual appearance based on enabled state
                 bool isMuted = !EnableDiskPart;
 
+                // Update all toggle switches to muted or normal state
+                theme.UpdateToggleSwitchMutedState(toggleEnableAutoDiskPart, isMuted);
+                theme.UpdateToggleSwitchMutedState(toggleWipeDisk, isMuted);
+                theme.UpdateToggleSwitchMutedState(toggleUseRemainingSpace, isMuted);
+                theme.UpdateToggleSwitchMutedState(toggleDisableBitLocker, isMuted);
+
                 // Update all labels to muted or normal state
                 if (isMuted)
                 {
@@ -989,15 +1024,15 @@ namespace QuickWinstall.Config
             try
             {
                 // EnableDiskPart should never be loaded from JSON - always stays true (safety feature)
-                // if (json.EnableDiskPart != null) EnableDiskPart = (bool)json.EnableDiskPart;
+                // if (json.enableDiskPart != null) EnableDiskPart = (bool)json.enableDiskPart;
 
-                if (json.EnableAutoDiskPart != null) EnableAutoDiskPart = (bool)json.EnableAutoDiskPart;
-                if (json.DiskID != null) DiskID = (int)json.DiskID;
-                if (json.WipeDisk != null) WipeDisk = (bool)json.WipeDisk;
-                if (json.PartitionLayout != null) PartitionLayout = (string)json.PartitionLayout;
-                //if (json.PartitionTable != null)
-                if (json.UseRemainingSpace != null) UseRemainingSpace = (bool)json.UseRemainingSpace;
-                if (json.DisableBitLocker != null) DisableBitLocker = (bool)json.DisableBitLocker;
+                if (json.enableAutoDiskPart != null) EnableAutoDiskPart = (bool)json.enableAutoDiskPart;
+                if (json.diskID != null) DiskID = (int)json.diskID;
+                if (json.wipeDisk != null) WipeDisk = (bool)json.wipeDisk;
+                if (json.partitionLayout != null) PartitionLayout = (string)json.partitionLayout;
+                //if (json.partitionTable != null)
+                if (json.useRemainingSpace != null) UseRemainingSpace = (bool)json.useRemainingSpace;
+                if (json.disableBitLocker != null) DisableBitLocker = (bool)json.disableBitLocker;
             }
             catch { }
         }
@@ -1072,14 +1107,11 @@ namespace QuickWinstall.Config
             if (ringDiskID == null || nudDiskID == null)
                 return;
 
-            if (nudDiskID.Value >= 0 && nudDiskID.Value <= 255 && !string.IsNullOrWhiteSpace(nudDiskID.Value.ToString()))
-            {
-                ringDiskID.SetStatus(ValidationStatus.Valid);
-            }
-            else
-            {
-                ringDiskID.SetStatus(ValidationStatus.Invalid);
-            }
+            // NumericUpDown enforces Min (0) and Max (255) automatically
+            // So the value is always valid within the range
+            // We could show a warning if DiskID is 0 (which might be unintended for some users)
+            // But for now, we'll just mark it as valid since it's within the valid range
+            ringDiskID.SetStatus(ValidationStatus.Valid);
 
             // Update the data model
             //DiskID = (int)nudDiskID.Value;
