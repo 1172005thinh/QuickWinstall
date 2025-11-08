@@ -69,7 +69,7 @@ namespace QuickWinstall.Config
             btnUserAccConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
             btnUserAccConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnUserAccConfigToggle.Click += (sender, e) => ToggleSection();
-            tooltips.SetToolTip(btnUserAccConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.userAcc"));
+            tooltips.SetToolTip(btnUserAccConfigToggle, _isExpanded ? "tooltips.section.collapse" : "tooltips.section.expand", lang.GetString("mainForm.sections.userAcc"));
 
             // User Account Config Title
             lblUserAccConfigTitle = new Label();
@@ -144,10 +144,12 @@ namespace QuickWinstall.Config
             {
                 int contentHeight = ui.GetSectionValue("appConfig", "contentHeight", 100);
                 pnlUserAccConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
+                ToolTipManager.Instance.SetToolTip(btnUserAccConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.app"));
             }
             else
             {
                 pnlUserAccConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY * 2;
+                ToolTipManager.Instance.SetToolTip(btnUserAccConfigToggle, "tooltips.section.expand", LangManager.Instance.GetString("mainForm.sections.app"));
             }
 
             // Update button icon

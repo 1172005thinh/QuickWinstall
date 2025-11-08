@@ -63,7 +63,7 @@ namespace QuickWinstall.Config
             btnPersonalConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
             btnPersonalConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnPersonalConfigToggle.Click += (sender, e) => ToggleSection();
-            tooltips.SetToolTip(btnPersonalConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.personal"));
+            tooltips.SetToolTip(btnPersonalConfigToggle, _isExpanded ? "tooltips.section.collapse" : "tooltips.section.expand", lang.GetString("mainForm.sections.personal"));
 
             lblPersonalConfigTitle = new Label();
             lblPersonalConfigTitle.Location = new Point(btnPersonalConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
@@ -127,10 +127,12 @@ namespace QuickWinstall.Config
             {
                 int contentHeight = ui.GetSectionValue("appConfig", "contentHeight", 100);
                 pnlPersonalConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
+                ToolTipManager.Instance.SetToolTip(btnPersonalConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.app"));
             }
             else
             {
                 pnlPersonalConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY * 2;
+                ToolTipManager.Instance.SetToolTip(btnPersonalConfigToggle, "tooltips.section.expand", LangManager.Instance.GetString("mainForm.sections.app"));
             }
 
             ThemeManager theme = ThemeManager.Instance;

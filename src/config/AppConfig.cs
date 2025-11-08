@@ -63,7 +63,7 @@ namespace QuickWinstall.Config
             btnAppConfigToggle.Image = iconMgr.GetIconAsImage(_isExpanded ? "expand" : "collapse", theme.IsDarkTheme, ui.GlobalIconSize);
             btnAppConfigToggle.Tag = _isExpanded ? "expanded" : "collapsed";
             btnAppConfigToggle.Click += (sender, e) => ToggleSection();
-            tooltips.SetToolTip(btnAppConfigToggle, "tooltips.section.expandCollapse", lang.GetString("mainForm.sections.app"));
+            tooltips.SetToolTip(btnAppConfigToggle, _isExpanded ? "tooltips.section.collapse" : "tooltips.section.expand", lang.GetString("mainForm.sections.app"));
 
             lblAppConfigTitle = new Label();
             lblAppConfigTitle.Location = new Point(btnAppConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
@@ -127,10 +127,12 @@ namespace QuickWinstall.Config
             {
                 int contentHeight = ui.GetSectionValue("appConfig", "contentHeight", 100);
                 pnlAppConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
+                ToolTipManager.Instance.SetToolTip(btnAppConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.app"));
             }
             else
             {
                 pnlAppConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY * 2;
+                ToolTipManager.Instance.SetToolTip(btnAppConfigToggle, "tooltips.section.expand", LangManager.Instance.GetString("mainForm.sections.app"));
             }
 
             ThemeManager theme = ThemeManager.Instance;

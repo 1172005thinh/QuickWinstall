@@ -622,6 +622,9 @@ namespace QuickWinstall.Config
                 lblDisableBitLocker.ForeColor = theme.GetFontColor("normal");
             }
 
+            // Update Quick Create button state
+            UpdateQuickCreateButtonState();
+
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
         }
@@ -646,7 +649,7 @@ namespace QuickWinstall.Config
             nudDiskID.Enabled = newState;
             toggleWipeDisk.Enabled = newState;
             cmbPartitionLayout.Enabled = newState;
-            btnQuickCreate.Enabled = newState && cmbPartitionLayout.SelectedIndex > 0;
+            //btnQuickCreate.Enabled = newState && cmbPartitionLayout.SelectedIndex > 0;
             btnReset.Enabled = newState;
             toggleUseRemainingSpace.Enabled = newState;
 
@@ -750,7 +753,7 @@ namespace QuickWinstall.Config
             ThemeManager theme = ThemeManager.Instance;
 
             // Button should be enabled when EnableAutoDiskPart is true AND a valid partition layout is selected
-            bool shouldEnable = EnableAutoDiskPart && !string.IsNullOrEmpty(PartitionLayout);
+            bool shouldEnable = EnableDiskPart && EnableAutoDiskPart && !string.IsNullOrEmpty(PartitionLayout);
             btnQuickCreate.Enabled = shouldEnable;
 
             // Apply muted or normal font style based on enabled state
@@ -762,7 +765,7 @@ namespace QuickWinstall.Config
             else
             {
                 btnQuickCreate.Font = theme.GetFont("muted");
-                btnQuickCreate.ForeColor = theme.GetColor("muted");
+                btnQuickCreate.ForeColor = theme.GetFontColor("muted");
             }
         }
 
