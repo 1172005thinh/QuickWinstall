@@ -589,6 +589,9 @@ namespace QuickWinstall.Config
             // Update UserLocale dropdown state
             cmbUserLocale.Enabled = !newState;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleSameAsSystemLocale.Focus();
+
             // Update font styles based on toggle state
             if (newState)
             {
@@ -637,6 +640,9 @@ namespace QuickWinstall.Config
             theme.UpdateToggleSwitchState(toggleEnableLangReg, newState);
 
             EnableLangReg = newState;
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableLangReg.Focus();
 
             // Enable or disable all dependent controls
             bool enableControls = newState;

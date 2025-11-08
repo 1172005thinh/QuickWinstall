@@ -551,6 +551,9 @@ namespace QuickWinstall.Config
 
             EnableDiskPart = newState;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableDiskPart.Focus();
+
             // Enable or disable all dependent controls
             bool enableControls = newState;
 
@@ -645,6 +648,9 @@ namespace QuickWinstall.Config
 
             EnableAutoDiskPart = newState;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableAutoDiskPart.Focus();
+
             // Update dependent controls enabled/disabled state
             nudDiskID.Enabled = newState;
             toggleWipeDisk.Enabled = newState;
@@ -696,6 +702,9 @@ namespace QuickWinstall.Config
 
             // Update Quick Create button state
             UpdateQuickCreateButtonState();
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableAutoDiskPart.Focus();
 
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
         }

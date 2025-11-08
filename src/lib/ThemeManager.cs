@@ -233,6 +233,7 @@ namespace QuickWinstall.Lib
             toggle.BorderStyle = BorderStyle.None;
             toggle.Cursor = Cursors.Hand;
             toggle.Tag = initialState; // Default state
+            toggle.TabStop = true; // Allow toggle to receive focus
             
             // Make the toggle track rounded
             GraphicsPath trackPath = new GraphicsPath();

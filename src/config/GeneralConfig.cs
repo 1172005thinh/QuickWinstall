@@ -472,6 +472,9 @@ namespace QuickWinstall.Config
 
             EnableGeneral = newState;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableGeneral.Focus();
+
             // Enable or disable all dependent controls
             bool enableControls = newState;
             

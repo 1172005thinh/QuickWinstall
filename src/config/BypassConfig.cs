@@ -424,6 +424,9 @@ namespace QuickWinstall.Config
 
             // Update visual appearance based on enabled state
             bool isMuted = !newState;
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableBypass.Focus();
             
             // Update all toggle switches to muted or normal state
             theme.UpdateToggleSwitchMutedState(toggleBypassAll, isMuted);
