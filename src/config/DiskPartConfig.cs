@@ -362,18 +362,239 @@ namespace QuickWinstall.Config
 
             currentY += ui.GlobalBtnHeight + ui.GlobalSpacingY * 2;
 
-            // TODO: Add partition table rows here in next phase
+            // Partition Table Header
+            int headerY = currentY;
+            int columnSpacing = ui.GlobalSpacingX / 2;
+            
+            // Column widths from spec
+            int colID = 20;
+            int colType = 120;
+            int colName = 180;
+            int colSize = 100;
+            int colLetter = 60;
+            int colFormat = 80;
+            int colActive = 30;
 
-            // Add placeholder for partition table
-            Label lblPartitionTablePlaceholder = new Label();
-            lblPartitionTablePlaceholder.Location = new Point(labelX, currentY);
-            lblPartitionTablePlaceholder.Size = new Size(ui.GlobalInputWidth + ui.GlobalLabelWidth, ui.GlobalLabelHeight * 2);
-            lblPartitionTablePlaceholder.Text = "[Partition Table - Coming in next phase]";
-            lblPartitionTablePlaceholder.Font = theme.GetFont("muted");
-            lblPartitionTablePlaceholder.ForeColor = theme.GetFontColor("muted");
-            lblPartitionTablePlaceholder.TextAlign = ContentAlignment.MiddleCenter;
+            int currentX = labelX;
 
-            currentY += lblPartitionTablePlaceholder.Height + ui.GlobalSpacingY * 2;
+            // ID Header
+            lblHeaderID = new Label();
+            lblHeaderID.Location = new Point(currentX, headerY);
+            lblHeaderID.Size = new Size(colID, ui.GlobalLabelHeight);
+            lblHeaderID.Text = lang.GetString("diskPartConfig.partitionTable.id");
+            lblHeaderID.Font = theme.GetFont("subheader");
+            lblHeaderID.ForeColor = theme.GetFontColor("normal");
+            lblHeaderID.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderID, "tooltips.diskPartConfig.partitionTable.id");
+            currentX += colID + columnSpacing;
+
+            // Type Header
+            lblHeaderType = new Label();
+            lblHeaderType.Location = new Point(currentX, headerY);
+            lblHeaderType.Size = new Size(colType, ui.GlobalLabelHeight);
+            lblHeaderType.Text = lang.GetString("diskPartConfig.partitionTable.type");
+            lblHeaderType.Font = theme.GetFont("subheader");
+            lblHeaderType.ForeColor = theme.GetFontColor("normal");
+            lblHeaderType.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderType, "tooltips.diskPartConfig.partitionTable.type");
+            currentX += colType + columnSpacing;
+
+            // Name Header
+            lblHeaderName = new Label();
+            lblHeaderName.Location = new Point(currentX, headerY);
+            lblHeaderName.Size = new Size(colName, ui.GlobalLabelHeight);
+            lblHeaderName.Text = lang.GetString("diskPartConfig.partitionTable.name");
+            lblHeaderName.Font = theme.GetFont("subheader");
+            lblHeaderName.ForeColor = theme.GetFontColor("normal");
+            lblHeaderName.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderName, "tooltips.diskPartConfig.partitionTable.name");
+            currentX += colName + columnSpacing;
+
+            // Size Header
+            lblHeaderSize = new Label();
+            lblHeaderSize.Location = new Point(currentX, headerY);
+            lblHeaderSize.Size = new Size(colSize, ui.GlobalLabelHeight);
+            lblHeaderSize.Text = lang.GetString("diskPartConfig.partitionTable.size");
+            lblHeaderSize.Font = theme.GetFont("subheader");
+            lblHeaderSize.ForeColor = theme.GetFontColor("normal");
+            lblHeaderSize.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderSize, "tooltips.diskPartConfig.partitionTable.size");
+            currentX += colSize + columnSpacing;
+
+            // Letter Header
+            lblHeaderLetter = new Label();
+            lblHeaderLetter.Location = new Point(currentX, headerY);
+            lblHeaderLetter.Size = new Size(colLetter, ui.GlobalLabelHeight);
+            lblHeaderLetter.Text = lang.GetString("diskPartConfig.partitionTable.letter");
+            lblHeaderLetter.Font = theme.GetFont("subheader");
+            lblHeaderLetter.ForeColor = theme.GetFontColor("normal");
+            lblHeaderLetter.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderLetter, "tooltips.diskPartConfig.partitionTable.letter");
+            currentX += colLetter + columnSpacing;
+
+            // Format Header
+            lblHeaderFormat = new Label();
+            lblHeaderFormat.Location = new Point(currentX, headerY);
+            lblHeaderFormat.Size = new Size(colFormat, ui.GlobalLabelHeight);
+            lblHeaderFormat.Text = lang.GetString("diskPartConfig.partitionTable.format");
+            lblHeaderFormat.Font = theme.GetFont("subheader");
+            lblHeaderFormat.ForeColor = theme.GetFontColor("normal");
+            lblHeaderFormat.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderFormat, "tooltips.diskPartConfig.partitionTable.format");
+            currentX += colFormat + columnSpacing;
+
+            // Active Header
+            lblHeaderActive = new Label();
+            lblHeaderActive.Location = new Point(currentX, headerY);
+            lblHeaderActive.Size = new Size(colActive, ui.GlobalLabelHeight);
+            lblHeaderActive.Text = lang.GetString("diskPartConfig.partitionTable.active");
+            lblHeaderActive.Font = theme.GetFont("subheader");
+            lblHeaderActive.ForeColor = theme.GetFontColor("normal");
+            lblHeaderActive.TextAlign = ContentAlignment.MiddleCenter;
+            tooltips.SetToolTip(lblHeaderActive, "tooltips.diskPartConfig.partitionTable.active");
+
+            currentY += ui.GlobalLabelHeight + ui.GlobalSpacingY;
+
+            // Create 8 partition rows
+            for (int i = 0; i < 8; i++)
+            {
+                currentX = labelX;
+                int rowY = currentY;
+
+                // ID Label (auto-numbered)
+                Label lblID = new Label();
+                lblID.Location = new Point(currentX, rowY + 3); // Slight offset for vertical alignment
+                lblID.Size = new Size(colID, ui.GlobalLabelHeight);
+                lblID.Text = "-";
+                lblID.Font = theme.GetFont("normal");
+                lblID.ForeColor = theme.GetFontColor("normal");
+                lblID.TextAlign = ContentAlignment.MiddleCenter;
+                lblIDs.Add(lblID);
+                currentX += colID + columnSpacing;
+
+                // Type ComboBox
+                ComboBox cmbType = new ComboBox();
+                cmbType.Location = new Point(currentX, rowY);
+                cmbType.Size = new Size(colType, ui.GlobalInputHeight);
+                cmbType.Font = theme.GetFont("normal");
+                cmbType.ForeColor = theme.GetFontColor("inputForeground");
+                cmbType.BackColor = theme.GetColor("inputBackground");
+                cmbType.FlatStyle = FlatStyle.Flat;
+                cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"));
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.primary"));
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.extended"));
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.logical"));
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.recovery"));
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.efi"));
+                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.msr"));
+                cmbType.SelectedIndex = 0;
+                int rowIndex = i;
+                cmbType.SelectedIndexChanged += (s, e) => OnPartitionRowChanged(rowIndex);
+                cmbType.SelectedIndexChanged += onConfigChanged;
+                cmbTypes.Add(cmbType);
+                currentX += colType + columnSpacing;
+
+                // Name TextBox
+                TextBox txtName = new TextBox();
+                txtName.Location = new Point(currentX, rowY);
+                txtName.Size = new Size(colName, ui.GlobalInputHeight);
+                txtName.Font = theme.GetFont("placeholder");
+                txtName.ForeColor = theme.GetFontColor("placeholder");
+                txtName.BackColor = theme.GetColor("inputBackground");
+                txtName.BorderStyle = BorderStyle.FixedSingle;
+                txtName.Text = lang.GetString("diskPartConfig.partitionTable.namePlaceholder");
+                txtName.Enter += (s, e) =>
+                {
+                    if (txtName.Text == lang.GetString("diskPartConfig.partitionTable.namePlaceholder"))
+                    {
+                        txtName.Text = "";
+                        txtName.Font = theme.GetFont("normal");
+                        txtName.ForeColor = theme.GetFontColor("inputForeground");
+                    }
+                };
+                txtName.Leave += (s, e) =>
+                {
+                    if (string.IsNullOrWhiteSpace(txtName.Text))
+                    {
+                        txtName.Text = lang.GetString("diskPartConfig.partitionTable.namePlaceholder");
+                        txtName.Font = theme.GetFont("placeholder");
+                        txtName.ForeColor = theme.GetFontColor("placeholder");
+                    }
+                };
+                txtName.TextChanged += (s, e) => OnPartitionRowChanged(rowIndex);
+                txtName.TextChanged += onConfigChanged;
+                txtNames.Add(txtName);
+                currentX += colName + columnSpacing;
+
+                // Size NumericUpDown
+                NumericUpDown nudSize = new NumericUpDown();
+                nudSize.Location = new Point(currentX, rowY);
+                nudSize.Size = new Size(colSize, ui.GlobalInputHeight);
+                nudSize.Font = theme.GetFont("normal");
+                nudSize.ForeColor = theme.GetFontColor("inputForeground");
+                nudSize.BackColor = theme.GetColor("inputBackground");
+                nudSize.BorderStyle = BorderStyle.FixedSingle;
+                nudSize.Minimum = 0;
+                nudSize.Maximum = 1024 * 1024 * 100; // 100 TB
+                nudSize.Value = 0;
+                nudSize.TextAlign = HorizontalAlignment.Right;
+                nudSize.ValueChanged += (s, e) => OnPartitionRowChanged(rowIndex);
+                nudSize.ValueChanged += onConfigChanged;
+                nudSizes.Add(nudSize);
+                currentX += colSize + columnSpacing;
+
+                // Letter ComboBox
+                ComboBox cmbLetter = new ComboBox();
+                cmbLetter.Location = new Point(currentX, rowY);
+                cmbLetter.Size = new Size(colLetter, ui.GlobalInputHeight);
+                cmbLetter.Font = theme.GetFont("normal");
+                cmbLetter.ForeColor = theme.GetFontColor("inputForeground");
+                cmbLetter.BackColor = theme.GetColor("inputBackground");
+                cmbLetter.FlatStyle = FlatStyle.Flat;
+                cmbLetter.DropDownStyle = ComboBoxStyle.DropDownList;
+                cmbLetter.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"));
+                // Add drive letters C-Z
+                for (char c = 'C'; c <= 'Z'; c++)
+                {
+                    cmbLetter.Items.Add(c.ToString());
+                }
+                cmbLetter.SelectedIndex = 0;
+                cmbLetter.SelectedIndexChanged += (s, e) => OnPartitionRowChanged(rowIndex);
+                cmbLetter.SelectedIndexChanged += onConfigChanged;
+                cmbLetters.Add(cmbLetter);
+                currentX += colLetter + columnSpacing;
+
+                // Format ComboBox
+                ComboBox cmbFormat = new ComboBox();
+                cmbFormat.Location = new Point(currentX, rowY);
+                cmbFormat.Size = new Size(colFormat, ui.GlobalInputHeight);
+                cmbFormat.Font = theme.GetFont("normal");
+                cmbFormat.ForeColor = theme.GetFontColor("inputForeground");
+                cmbFormat.BackColor = theme.GetColor("inputBackground");
+                cmbFormat.FlatStyle = FlatStyle.Flat;
+                cmbFormat.DropDownStyle = ComboBoxStyle.DropDownList;
+                cmbFormat.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"));
+                cmbFormat.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.ntfs"));
+                cmbFormat.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.fat32"));
+                cmbFormat.SelectedIndex = 0;
+                cmbFormat.SelectedIndexChanged += (s, e) => OnPartitionRowChanged(rowIndex);
+                cmbFormat.SelectedIndexChanged += onConfigChanged;
+                cmbFormats.Add(cmbFormat);
+                currentX += colFormat + columnSpacing;
+
+                // Active Toggle
+                Panel toggleActive = theme.CreateToggleSwitch(new Point(currentX, rowY), colActive, ui.GlobalInputHeight, false);
+                toggleActive.TabStop = false;
+                int toggleIndex = i;
+                toggleActive.Click += (s, e) => OnPartitionActiveToggle(toggleIndex);
+                toggleActive.Click += onConfigChanged;
+                toggleActives.Add(toggleActive);
+
+                currentY += ui.GlobalInputHeight + ui.GlobalSpacingY;
+            }
+
+            currentY += ui.GlobalSpacingY;
 
             // Use Remaining Space
             lblUseRemainingSpace = new Label();
@@ -429,7 +650,28 @@ namespace QuickWinstall.Config
             pnlDiskPartConfigContent.Controls.Add(lblPartitionTable);
             pnlDiskPartConfigContent.Controls.Add(btnQuickCreate);
             pnlDiskPartConfigContent.Controls.Add(btnReset);
-            pnlDiskPartConfigContent.Controls.Add(lblPartitionTablePlaceholder);
+            
+            // Add partition table headers
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderID);
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderType);
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderName);
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderSize);
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderLetter);
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderFormat);
+            pnlDiskPartConfigContent.Controls.Add(lblHeaderActive);
+            
+            // Add partition table rows
+            for (int i = 0; i < 8; i++)
+            {
+                pnlDiskPartConfigContent.Controls.Add(lblIDs[i]);
+                pnlDiskPartConfigContent.Controls.Add(cmbTypes[i]);
+                pnlDiskPartConfigContent.Controls.Add(txtNames[i]);
+                pnlDiskPartConfigContent.Controls.Add(nudSizes[i]);
+                pnlDiskPartConfigContent.Controls.Add(cmbLetters[i]);
+                pnlDiskPartConfigContent.Controls.Add(cmbFormats[i]);
+                pnlDiskPartConfigContent.Controls.Add(toggleActives[i]);
+            }
+            
             pnlDiskPartConfigContent.Controls.Add(lblUseRemainingSpace);
             pnlDiskPartConfigContent.Controls.Add(toggleUseRemainingSpace);
             pnlDiskPartConfigContent.Controls.Add(pnlDiskPartConfigAfterAutoDiskPartSeparator);
@@ -752,6 +994,76 @@ namespace QuickWinstall.Config
         }
 
         /// <summary>
+        /// Handles changes to partition table row inputs
+        /// </summary>
+        private void OnPartitionRowChanged(int rowIndex)
+        {
+            if (_isLoading) return;
+            
+            // Update row ID numbering based on which rows have data
+            UpdatePartitionRowIDs();
+            
+            // TODO: Validate partition row
+            // TODO: Update PartitionTable data model
+        }
+
+        /// <summary>
+        /// Handles the active toggle for a partition row
+        /// </summary>
+        private void OnPartitionActiveToggle(int rowIndex)
+        {
+            if (_isLoading) return;
+            
+            ThemeManager theme = ThemeManager.Instance;
+            Panel toggle = toggleActives[rowIndex];
+            bool currentState = theme.GetToggleSwitchState(toggle);
+            bool newState = !currentState;
+            theme.UpdateToggleSwitchState(toggle, newState);
+            
+            // TODO: Update PartitionTable data model
+        }
+
+        /// <summary>
+        /// Updates the ID labels for partition rows based on which rows have data
+        /// </summary>
+        private void UpdatePartitionRowIDs()
+        {
+            int currentID = 1;
+            
+            for (int i = 0; i < 8; i++)
+            {
+                bool rowHasData = HasPartitionRowData(i);
+                
+                if (rowHasData)
+                {
+                    lblIDs[i].Text = currentID.ToString();
+                    currentID++;
+                }
+                else
+                {
+                    lblIDs[i].Text = "-";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks if a partition row has any data entered
+        /// </summary>
+        private bool HasPartitionRowData(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= 8) return false;
+            
+            bool hasType = cmbTypes[rowIndex].SelectedIndex > 0;
+            bool hasName = !string.IsNullOrWhiteSpace(txtNames[rowIndex].Text) && 
+                          txtNames[rowIndex].Text != LangManager.Instance.GetString("diskPartConfig.partitionTable.namePlaceholder");
+            bool hasSize = nudSizes[rowIndex].Value > 0;
+            bool hasLetter = cmbLetters[rowIndex].SelectedIndex > 0;
+            bool hasFormat = cmbFormats[rowIndex].SelectedIndex > 0;
+            
+            return hasType || hasName || hasSize || hasLetter || hasFormat;
+        }
+
+        /// <summary>
         /// Updates the Quick Create button enabled state based on current selections
         /// </summary>
         private void UpdateQuickCreateButtonState()
@@ -787,10 +1099,31 @@ namespace QuickWinstall.Config
 
         private void ResetPartitionTable()
         {
-            // Clear partition table
-            PartitionTable.Clear();
+            _isLoading = true;
+            
+            try
+            {
+                // Clear partition table data model
+                PartitionTable.Clear();
 
-            // TODO: In next phase, also clear all partition row controls
+                // Clear all partition row controls
+                for (int i = 0; i < 8; i++)
+                {
+                    cmbTypes[i].SelectedIndex = 0;
+                    txtNames[i].Text = LangManager.Instance.GetString("diskPartConfig.partitionTable.namePlaceholder");
+                    txtNames[i].Font = ThemeManager.Instance.GetFont("placeholder");
+                    txtNames[i].ForeColor = ThemeManager.Instance.GetFontColor("placeholder");
+                    nudSizes[i].Value = 0;
+                    cmbLetters[i].SelectedIndex = 0;
+                    cmbFormats[i].SelectedIndex = 0;
+                    ThemeManager.Instance.UpdateToggleSwitchState(toggleActives[i], false);
+                    lblIDs[i].Text = "-";
+                }
+            }
+            finally
+            {
+                _isLoading = false;
+            }
 
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
         }
