@@ -180,6 +180,7 @@ namespace QuickWinstall.Config
             cmbSystemLocale = new ComboBox();
             cmbSystemLocale.Location = new Point(inputX, currentY);
             cmbSystemLocale.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbSystemLocale.FlatStyle = FlatStyle.Flat;
             cmbSystemLocale.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSystemLocale.BackColor = theme.GetColor("inputBackground");
             cmbSystemLocale.ForeColor = theme.GetFontColor("inputForeground");
@@ -243,6 +244,7 @@ namespace QuickWinstall.Config
             cmbUserLocale = new ComboBox();
             cmbUserLocale.Location = new Point(inputX, currentY);
             cmbUserLocale.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbUserLocale.FlatStyle = FlatStyle.Flat;
             cmbUserLocale.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbUserLocale.BackColor = theme.GetColor("inputBackground");
             cmbUserLocale.ForeColor = theme.GetFontColor("inputForeground");
@@ -306,6 +308,7 @@ namespace QuickWinstall.Config
             cmbWindowsUILanguage = new ComboBox();
             cmbWindowsUILanguage.Location = new Point(inputX, currentY);
             cmbWindowsUILanguage.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbWindowsUILanguage.FlatStyle = FlatStyle.Flat;
             cmbWindowsUILanguage.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbWindowsUILanguage.BackColor = theme.GetColor("inputBackground");
             cmbWindowsUILanguage.ForeColor = theme.GetFontColor("inputForeground");
@@ -356,6 +359,7 @@ namespace QuickWinstall.Config
             cmbKeyboardLayout = new ComboBox();
             cmbKeyboardLayout.Location = new Point(inputX, currentY);
             cmbKeyboardLayout.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbKeyboardLayout.FlatStyle = FlatStyle.Flat;
             cmbKeyboardLayout.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbKeyboardLayout.BackColor = theme.GetColor("inputBackground");
             cmbKeyboardLayout.ForeColor = theme.GetFontColor("inputForeground");
@@ -406,6 +410,7 @@ namespace QuickWinstall.Config
             cmbTimeZone = new ComboBox();
             cmbTimeZone.Location = new Point(inputX, currentY);
             cmbTimeZone.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbTimeZone.FlatStyle = FlatStyle.Flat;
             cmbTimeZone.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTimeZone.BackColor = theme.GetColor("inputBackground");
             cmbTimeZone.ForeColor = theme.GetFontColor("inputForeground");

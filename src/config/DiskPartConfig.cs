@@ -143,6 +143,9 @@ namespace QuickWinstall.Config
             _onEnableToggle = onEnableToggle;
             _onConfigChanged = onConfigChanged;
 
+            // Clear all lists to prevent disposed control references
+            ResetPartitionTableControls();
+
             // Calculate content height - will be larger once partition table is added
             int contentHeight = ui.GetSectionValue("diskPartConfig", "contentHeight", 800);
 
@@ -302,7 +305,9 @@ namespace QuickWinstall.Config
             cmbPartitionLayout = new ComboBox();
             cmbPartitionLayout.Location = new Point(inputX, currentY);
             cmbPartitionLayout.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbPartitionLayout.FlatStyle = FlatStyle.Flat;
             cmbPartitionLayout.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPartitionLayout.Font = theme.GetFont("normal");
             cmbPartitionLayout.BackColor = theme.GetColor("inputBackground");
             cmbPartitionLayout.ForeColor = theme.GetFontColor("inputForeground");
             cmbPartitionLayout.Items.AddRange(new object[] {
@@ -367,13 +372,13 @@ namespace QuickWinstall.Config
             int columnSpacing = ui.GlobalSpacingX / 2;
             
             // Column widths from spec
-            int colID = 20;
+            int colID = 30;
             int colType = 120;
             int colName = 180;
             int colSize = 100;
             int colLetter = 60;
             int colFormat = 80;
-            int colActive = 30;
+            int colActive = toggleWidth;
 
             int currentX = labelX;
 
@@ -481,13 +486,15 @@ namespace QuickWinstall.Config
                 cmbType.BackColor = theme.GetColor("inputBackground");
                 cmbType.FlatStyle = FlatStyle.Flat;
                 cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"));
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.primary"));
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.extended"));
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.logical"));
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.recovery"));
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.efi"));
-                cmbType.Items.Add(lang.GetString("diskPartConfig.partitionTable.typeOptions.msr"));
+                cmbType.Items.AddRange(new object[] {
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.selectOne"),
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.primary"),
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.extended"),
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.logical"),
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.recovery"),
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.efi"),
+                    lang.GetString("diskPartConfig.partitionTable.typeOptions.msr")
+                });
                 cmbType.SelectedIndex = 0;
                 int rowIndex = i;
                 cmbType.SelectedIndexChanged += (s, e) => OnPartitionRowChanged(rowIndex);
@@ -502,7 +509,7 @@ namespace QuickWinstall.Config
                 txtName.Font = theme.GetFont("placeholder");
                 txtName.ForeColor = theme.GetFontColor("placeholder");
                 txtName.BackColor = theme.GetColor("inputBackground");
-                txtName.BorderStyle = BorderStyle.FixedSingle;
+                txtName.BorderStyle = BorderStyle.Fixed3D;
                 txtName.Text = lang.GetString("diskPartConfig.partitionTable.namePlaceholder");
                 txtName.Enter += (s, e) =>
                 {
@@ -534,7 +541,6 @@ namespace QuickWinstall.Config
                 nudSize.Font = theme.GetFont("normal");
                 nudSize.ForeColor = theme.GetFontColor("inputForeground");
                 nudSize.BackColor = theme.GetColor("inputBackground");
-                nudSize.BorderStyle = BorderStyle.FixedSingle;
                 nudSize.Minimum = 0;
                 nudSize.Maximum = 1024 * 1024 * 100; // 100 TB
                 nudSize.Value = 0;
@@ -554,8 +560,8 @@ namespace QuickWinstall.Config
                 cmbLetter.FlatStyle = FlatStyle.Flat;
                 cmbLetter.DropDownStyle = ComboBoxStyle.DropDownList;
                 cmbLetter.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"));
-                // Add drive letters C-Z
-                for (char c = 'C'; c <= 'Z'; c++)
+                // Add drive letters A-Z
+                for (char c = 'A'; c <= 'Z'; c++)
                 {
                     cmbLetter.Items.Add(c.ToString());
                 }
@@ -574,9 +580,11 @@ namespace QuickWinstall.Config
                 cmbFormat.BackColor = theme.GetColor("inputBackground");
                 cmbFormat.FlatStyle = FlatStyle.Flat;
                 cmbFormat.DropDownStyle = ComboBoxStyle.DropDownList;
-                cmbFormat.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"));
-                cmbFormat.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.ntfs"));
-                cmbFormat.Items.Add(lang.GetString("diskPartConfig.partitionTable.formatOptions.fat32"));
+                cmbFormat.Items.AddRange(new object[] {
+                    lang.GetString("diskPartConfig.partitionTable.formatOptions.selectOne"),
+                    lang.GetString("diskPartConfig.partitionTable.formatOptions.ntfs"),
+                    lang.GetString("diskPartConfig.partitionTable.formatOptions.fat32")
+                });
                 cmbFormat.SelectedIndex = 0;
                 cmbFormat.SelectedIndexChanged += (s, e) => OnPartitionRowChanged(rowIndex);
                 cmbFormat.SelectedIndexChanged += onConfigChanged;
@@ -625,7 +633,7 @@ namespace QuickWinstall.Config
             // Disable BitLocker
             lblDisableBitLocker = new Label();
             lblDisableBitLocker.Location = new Point(labelX, currentY);
-            lblDisableBitLocker.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblDisableBitLocker.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
             lblDisableBitLocker.Text = lang.GetString("diskPartConfig.disableBitLocker.label");
             lblDisableBitLocker.Font = theme.GetFont("normal");
             lblDisableBitLocker.TextAlign = ContentAlignment.MiddleLeft;
@@ -1161,6 +1169,23 @@ namespace QuickWinstall.Config
             DisableBitLocker = theme.GetToggleSwitchState(toggleDisableBitLocker);
         }
 
+        /// <summary>
+        /// Resets all PartitionTable controls to prevent disposed references
+        /// </summary>
+        private void ResetPartitionTableControls()
+        {
+            cmbTypes.Clear();
+            txtNames.Clear();
+            nudSizes.Clear();
+            cmbLetters.Clear();
+            cmbFormats.Clear();
+            toggleActives.Clear();
+            lblIDs.Clear();
+        }
+
+        /// <summary>
+        /// Clears all controls to default states
+        /// </summary>
         public void ClearControls()
         {
             _isLoading = true;

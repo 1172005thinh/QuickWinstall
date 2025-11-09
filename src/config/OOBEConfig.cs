@@ -321,6 +321,7 @@ namespace QuickWinstall.Config
             cmbNetworkLocation = new ComboBox();
             cmbNetworkLocation.Location = new Point(inputX, currentY);
             cmbNetworkLocation.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbNetworkLocation.FlatStyle = FlatStyle.Flat;
             cmbNetworkLocation.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbNetworkLocation.BackColor = theme.GetColor("inputBackground");
             cmbNetworkLocation.ForeColor = theme.GetFontColor("inputForeground");
@@ -366,6 +367,7 @@ namespace QuickWinstall.Config
             cmbProtectYourPC = new ComboBox();
             cmbProtectYourPC.Location = new Point(inputX, currentY);
             cmbProtectYourPC.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbProtectYourPC.FlatStyle = FlatStyle.Flat;
             cmbProtectYourPC.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbProtectYourPC.BackColor = theme.GetColor("inputBackground");
             cmbProtectYourPC.ForeColor = theme.GetFontColor("inputForeground");

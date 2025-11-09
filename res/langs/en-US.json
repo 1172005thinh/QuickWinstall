@@ -31,7 +31,7 @@
   },
   "diskPartConfig": {
     "disableBitLocker": {
-      "label": "Disable BitLocker"
+      "label": "Disable BitLocker (for Online Accounts)"
     },
     "diskID": {
       "label": "Disk ID:"
@@ -45,16 +45,16 @@
     "partitionLayout": {
       "label": "Partition Layout:",
       "options": {
-        "gptUEFI": "GPT",
-        "mbrBIOS": "MBR",
+        "gptUEFI": "GPT for UEFI/Secure Boot",
+        "mbrBIOS": "MBR for BIOS/Legacy Boot",
         "selectOne": "-- Select one --"
       }
     },
     "partitionTable": {
-      "active": "Act",
+      "active": "Active",
       "format": "Format",
       "id": "ID",
-      "letter": "Lt",
+      "letter": "Letter",
       "name": "Name",
       "quickCreate": "Quick Create",
       "reset": "Reset",
@@ -67,12 +67,13 @@
         "logical": "Logical",
         "msr": "MSR",
         "primary": "Primary",
-        "recovery": "Recovery"
+        "recovery": "Recovery",
+        "selectOne": "-- Select --"
       },
       "formatOptions": {
         "fat32": "FAT32",
         "ntfs": "NTFS",
-        "selectOne": "-- Select one --"
+        "selectOne": "--"
       },
       "namePlaceholder": "NewPartition"
     },

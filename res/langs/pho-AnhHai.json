@@ -31,7 +31,7 @@
   },
   "diskPartConfig": {
     "disableBitLocker": {
-      "label": "Không cho thêm hành BitLocker"
+      "label": "Không cho thêm hành BitLocker (với Tài khoản Online)"
     },
     "diskID": {
       "label": "Cái đĩa số:"
@@ -51,14 +51,14 @@
       }
     },
     "partitionTable": {
-      "active": "HĐ",
+      "active": "K.hoạt",
       "format": "Đ.dạng",
       "id": "ID",
       "letter": "Chữ",
       "name": "Tên",
       "quickCreate": "Làm Nhanh",
       "reset": "Đặt Lại",
-      "size": "Kích cỡ (MB)",
+      "size": "Kích cỡ",
       "title": "Menu Phân vùng:",
       "type": "Loại",
       "typeOptions": {
@@ -72,7 +72,7 @@
       "formatOptions": {
         "fat32": "FAT32",
         "ntfs": "NTFS",
-        "selectOne": "-- Chọn một --"
+        "selectOne": "--"
       },
       "namePlaceholder": "PhanVungMoi"
     },

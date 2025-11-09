@@ -172,6 +172,7 @@ namespace QuickWinstall.Config
             cmbWindowsEdition = new ComboBox();
             cmbWindowsEdition.Location = new Point(inputX, currentY);
             cmbWindowsEdition.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbWindowsEdition.FlatStyle = FlatStyle.Flat;
             cmbWindowsEdition.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbWindowsEdition.BackColor = theme.GetColor("inputBackground");
             cmbWindowsEdition.ForeColor = theme.GetFontColor("inputForeground");
@@ -301,6 +302,7 @@ namespace QuickWinstall.Config
             cmbCPUArch = new ComboBox();
             cmbCPUArch.Location = new Point(inputX, currentY);
             cmbCPUArch.Size = new Size(ui.GlobalInputWidth, ui.GlobalInputHeight);
+            cmbCPUArch.FlatStyle = FlatStyle.Flat;
             cmbCPUArch.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCPUArch.BackColor = theme.GetColor("inputBackground");
             cmbCPUArch.ForeColor = theme.GetFontColor("inputForeground");
@@ -503,15 +505,15 @@ namespace QuickWinstall.Config
                 
                 // For product key textboxes, keep placeholder color if they have placeholder text
                 txtProductKey1.Font = theme.GetFont("normal");
-                txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                txtProductKey1.ForeColor = (txtProductKey1.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                 txtProductKey2.Font = theme.GetFont("normal");
-                txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                txtProductKey2.ForeColor = (txtProductKey2.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                 txtProductKey3.Font = theme.GetFont("normal");
-                txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                txtProductKey3.ForeColor = (txtProductKey3.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                 txtProductKey4.Font = theme.GetFont("normal");
-                txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                txtProductKey4.ForeColor = (txtProductKey4.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                 txtProductKey5.Font = theme.GetFont("normal");
-                txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                txtProductKey5.ForeColor = (txtProductKey5.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                 
                 lblHyphen1.Font = theme.GetFont("normal");
                 lblHyphen1.ForeColor = theme.GetFontColor("normal");
@@ -543,15 +545,15 @@ namespace QuickWinstall.Config
                 
                 // For product key textboxes, keep placeholder color if they have placeholder text
                 txtProductKey1.Font = theme.GetFont("muted");
-                txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                txtProductKey1.ForeColor = (txtProductKey1.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                 txtProductKey2.Font = theme.GetFont("muted");
-                txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                txtProductKey2.ForeColor = (txtProductKey2.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                 txtProductKey3.Font = theme.GetFont("muted");
-                txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                txtProductKey3.ForeColor = (txtProductKey3.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                 txtProductKey4.Font = theme.GetFont("muted");
-                txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                txtProductKey4.ForeColor = (txtProductKey4.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                 txtProductKey5.Font = theme.GetFont("muted");
-                txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                txtProductKey5.ForeColor = (txtProductKey5.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                 
                 lblHyphen1.Font = theme.GetFont("muted");
                 lblHyphen1.ForeColor = theme.GetFontColor("muted");
@@ -591,7 +593,7 @@ namespace QuickWinstall.Config
         {
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                textBox.Text = "XXXXX";
+                textBox.Text = LangManager.Instance.GetString("generalConfig.productKey.placeholder");
                 textBox.ForeColor = ThemeManager.Instance.GetFontColor("placeholder");
             }
         }
@@ -631,11 +633,11 @@ namespace QuickWinstall.Config
             string pk5 = txtProductKey5.Text.Trim();
 
             // Check if placeholders
-            if (pk1 == "XXXXX") pk1 = "";
-            if (pk2 == "XXXXX") pk2 = "";
-            if (pk3 == "XXXXX") pk3 = "";
-            if (pk4 == "XXXXX") pk4 = "";
-            if (pk5 == "XXXXX") pk5 = "";
+            if (pk1 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk1 = "";
+            if (pk2 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk2 = "";
+            if (pk3 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk3 = "";
+            if (pk4 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk4 = "";
+            if (pk5 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk5 = "";
 
             if (string.IsNullOrEmpty(pk1) && string.IsNullOrEmpty(pk2) && 
                 string.IsNullOrEmpty(pk3) && string.IsNullOrEmpty(pk4) && string.IsNullOrEmpty(pk5))
@@ -791,15 +793,15 @@ namespace QuickWinstall.Config
                     
                     // For product key textboxes, keep placeholder color if they have placeholder text
                     txtProductKey1.Font = theme.GetFont("normal");
-                    txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                    txtProductKey1.ForeColor = (txtProductKey1.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                     txtProductKey2.Font = theme.GetFont("normal");
-                    txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                    txtProductKey2.ForeColor = (txtProductKey2.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                     txtProductKey3.Font = theme.GetFont("normal");
-                    txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                    txtProductKey3.ForeColor = (txtProductKey3.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                     txtProductKey4.Font = theme.GetFont("normal");
-                    txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                    txtProductKey4.ForeColor = (txtProductKey4.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                     txtProductKey5.Font = theme.GetFont("normal");
-                    txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
+                    txtProductKey5.ForeColor = (txtProductKey5.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("inputForeground");
                     
                     lblHyphen1.Font = theme.GetFont("normal");
                     lblHyphen1.ForeColor = theme.GetFontColor("normal");
@@ -830,15 +832,15 @@ namespace QuickWinstall.Config
                     
                     // For product key textboxes, keep placeholder color if they have placeholder text
                     txtProductKey1.Font = theme.GetFont("muted");
-                    txtProductKey1.ForeColor = (txtProductKey1.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                    txtProductKey1.ForeColor = (txtProductKey1.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                     txtProductKey2.Font = theme.GetFont("muted");
-                    txtProductKey2.ForeColor = (txtProductKey2.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                    txtProductKey2.ForeColor = (txtProductKey2.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                     txtProductKey3.Font = theme.GetFont("muted");
-                    txtProductKey3.ForeColor = (txtProductKey3.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                    txtProductKey3.ForeColor = (txtProductKey3.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                     txtProductKey4.Font = theme.GetFont("muted");
-                    txtProductKey4.ForeColor = (txtProductKey4.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                    txtProductKey4.ForeColor = (txtProductKey4.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                     txtProductKey5.Font = theme.GetFont("muted");
-                    txtProductKey5.ForeColor = (txtProductKey5.Text == "XXXXX") ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
+                    txtProductKey5.ForeColor = (txtProductKey5.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) ? theme.GetFontColor("placeholder") : theme.GetFontColor("muted");
                     
                     lblHyphen1.Font = theme.GetFont("muted");
                     lblHyphen1.ForeColor = theme.GetFontColor("muted");
@@ -872,7 +874,7 @@ namespace QuickWinstall.Config
         /// </summary>
         private void SetProductKeySegment(TextBox textBox, string value, ThemeManager theme)
         {
-            if (!string.IsNullOrWhiteSpace(value) && value != "XXXXX")
+            if (!string.IsNullOrWhiteSpace(value) && value != LangManager.Instance.GetString("generalConfig.productKey.placeholder"))
             {
                 textBox.Text = value;
                 textBox.ForeColor = theme.GetFontColor("normal");
@@ -980,11 +982,11 @@ namespace QuickWinstall.Config
             string pk5 = txtProductKey5?.Text?.Trim() ?? "";
 
             // Remove placeholders
-            if (pk1 == "XXXXX") pk1 = "";
-            if (pk2 == "XXXXX") pk2 = "";
-            if (pk3 == "XXXXX") pk3 = "";
-            if (pk4 == "XXXXX") pk4 = "";
-            if (pk5 == "XXXXX") pk5 = "";
+            if (pk1 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk1 = "";
+            if (pk2 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk2 = "";
+            if (pk3 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk3 = "";
+            if (pk4 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk4 = "";
+            if (pk5 == LangManager.Instance.GetString("generalConfig.productKey.placeholder")) pk5 = "";
 
             // If all empty, it's valid (optional field)
             if (string.IsNullOrEmpty(pk1) && string.IsNullOrEmpty(pk2) &&
@@ -1188,16 +1190,17 @@ namespace QuickWinstall.Config
             txt.MaxLength = ui.GetValue("global.productKey.segmentLength", 5);
             txt.CharacterCasing = CharacterCasing.Upper;
             txt.TextAlign = HorizontalAlignment.Center;
+            txt.BorderStyle = BorderStyle.Fixed3D;
             txt.Font = theme.GetFont("normal");
             txt.Multiline = false;
             
             // Handle placeholder
             txt.ForeColor = theme.GetFontColor("placeholder");
-            txt.Text = "XXXXX";
+            txt.Text = LangManager.Instance.GetString("generalConfig.productKey.placeholder");
             
             txt.Enter += (sender, e) =>
             {
-                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
+                if (txt.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder") && txt.ForeColor == theme.GetFontColor("placeholder"))
                 {
                     txt.Text = "";
                     txt.ForeColor = theme.GetFontColor("normal");
@@ -1209,7 +1212,7 @@ namespace QuickWinstall.Config
                 if (string.IsNullOrWhiteSpace(txt.Text))
                 {
                     txt.ForeColor = theme.GetFontColor("placeholder");
-                    txt.Text = "XXXXX";
+                    txt.Text = LangManager.Instance.GetString("generalConfig.productKey.placeholder");
                 }
             };
             
@@ -1236,7 +1239,7 @@ namespace QuickWinstall.Config
                 {
                     // If textbox is empty or only has placeholder, move to previous
                     if (string.IsNullOrWhiteSpace(txt.Text) || 
-                        (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder")))
+                        (txt.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder") && txt.ForeColor == theme.GetFontColor("placeholder")))
                     {
                         parentForm.SelectNextControl(txt, false, true, true, true);
                         e.Handled = true;
@@ -1249,13 +1252,13 @@ namespace QuickWinstall.Config
             txt.TextChanged += (sender, e) =>
             {
                 // Don't trigger for placeholder text
-                if (txt.Text == "XXXXX" && txt.ForeColor == theme.GetFontColor("placeholder"))
+                if (txt.Text == LangManager.Instance.GetString("generalConfig.productKey.placeholder") && txt.ForeColor == theme.GetFontColor("placeholder"))
                 {
                     return;
                 }
                 
                 // Auto-focus to next textbox when max length reached
-                if (!string.IsNullOrWhiteSpace(txt.Text) && txt.Text != "XXXXX")
+                if (!string.IsNullOrWhiteSpace(txt.Text) && txt.Text != LangManager.Instance.GetString("generalConfig.productKey.placeholder"))
                 {
                     if (txt.Text.Length >= txt.MaxLength)
                     {

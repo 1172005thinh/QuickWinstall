@@ -31,7 +31,7 @@
   },  
   "diskPartConfig": {
     "disableBitLocker": {
-      "label": "Tăt BitLocker"
+      "label": "Tắt BitLocker (cho Tài khoản Online)"
     },
     "diskID": {
       "label": "ID Ổ đĩa:"
@@ -45,20 +45,20 @@
     "partitionLayout": {
       "label": "Layout Phân vùng:",
       "options": {
-        "gptUEFI": "GPT",
-        "mbrBIOS": "MBR",
+        "gptUEFI": "GPT dành cho UEFI/Secure Boot",
+        "mbrBIOS": "MBR dành cho BIOS/Legacy Boot",
         "selectOne": "-- Chọn một --"
       }
     },
     "partitionTable": {
-      "active": "HĐ",
+      "active": "K.hoạt",
       "format": "Đ.dạng",
       "id": "ID",
       "letter": "Chữ",
       "name": "Tên",
       "quickCreate": "Tạo Nhanh",
       "reset": "Đặt Lại",
-      "size": "Kích cỡ (MB)",
+      "size": "Size (MB)",
       "title": "Bảng Phân vùng:",
       "type": "Loại",
       "typeOptions": {
@@ -67,12 +67,13 @@
         "logical": "Logical",
         "msr": "MSR",
         "primary": "Primary",
-        "recovery": "Recovery"
+        "recovery": "Recovery",
+        "selectOne": "-- Chọn --"
       },
       "formatOptions": {
         "fat32": "FAT32",
         "ntfs": "NTFS",
-        "selectOne": "-- Chọn một --"
+        "selectOne": "--"
       },
       "namePlaceholder": "PhanVungMoi"
     },
