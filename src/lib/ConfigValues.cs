@@ -297,6 +297,7 @@ namespace QuickWinstall.Lib
                         ["wipeDisk"] = DiskPart.WipeDisk,
                         ["partitionLayout"] = DiskPart.PartitionLayout,
                         ["useRemainingSpace"] = DiskPart.UseRemainingSpace,
+                        ["installToPartitionID"] = DiskPart.InstallToPartitionID,
                         ["disableBitLocker"] = DiskPart.DisableBitLocker
                     },
                     ["oobe"] = new JObject

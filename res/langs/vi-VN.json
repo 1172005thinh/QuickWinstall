@@ -42,6 +42,9 @@
     "enableAutoDiskPart": {
       "label": "Tự động Chia Ổ đĩa và Phân vùng"
     },
+    "installToPartitionID": {
+      "label": "Cài vào Phân vùng ID:"
+    },
     "partitionLayout": {
       "label": "Layout Phân vùng:",
       "options": {
@@ -446,6 +449,7 @@
       "enableAutoDiskPart": "Bật để tự động tạo/thay đổi phân vùng đĩa dựa trên các cấu hình sau\\nTắt để cấu hình thủ công các đĩa và phân vùng trong khi thiết lập Windows",
       "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa & Phân vùng",
       "header": "Phần Cấu hình Đĩa & Phân vùng",
+      "installToPartitionID": "Chỉ định ID Phân vùng nơi Windows sẽ được cài đặt",
       "partitionLayout": "Chọn bố cục phân vùng để tạo trên đĩa",
       "partitionTable": {
         "active": "Có đánh dấu phân vùng là hoạt động hay không (Có/Không)",

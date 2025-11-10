@@ -42,6 +42,9 @@
     "enableAutoDiskPart": {
       "label": "Mua Phở Tự động Chia đĩa"
     },
+    "installToPartitionID": {
+      "label": "Cài Phở vào Phân vùng ID:"
+    },
     "partitionLayout": {
       "label": "Bài trí Ổ đĩa:",
       "options": {
@@ -440,25 +443,26 @@
       "header": "Phần Cấu hình Bỏ qua Kiểm tra Phần cứng Windows 11"
     },
     "diskPartConfig": {
-      "disableBitLocker": "Enable to disable BitLocker during installation. Recommended when changing disk partitions.",
-      "diskID": "Specify the Disk ID to apply the Disk & Partition Configuration",
-      "enableAutoDiskPart": "Enable to automatically create/modify disk partitions based on following configurations\\nDisable to manually configure disks and partitions while setting up Windows",
-      "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
-      "header": "Disk && Partition Configurations Section",
-      "partitionLayout": "Select the partition layout to create on the disk",
+      "disableBitLocker": "Bật để vô hiệu hóa BitLocker trong quá trình cài đặt. Được khuyến nghị khi thay đổi phân vùng đĩa.",
+      "diskID": "Chỉ định ID Đĩa để áp dụng Cấu hình Đĩa & Phân vùng",
+      "enableAutoDiskPart": "Bật để tự động tạo/thay đổi phân vùng đĩa dựa trên các cấu hình sau\\nTắt để cấu hình thủ công các đĩa và phân vùng trong khi thiết lập Windows",
+      "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa & Phân vùng",
+      "header": "Phần Cấu hình Đĩa & Phân vùng",
+      "installToPartitionID": "Chỉ định ID Phân vùng nơi Windows sẽ được cài đặt",
+      "partitionLayout": "Chọn bố cục phân vùng để tạo trên đĩa",
       "partitionTable": {
-        "active": "Whether the partition is marked as active (Yes/No)",
-        "format": "File system format of the partition (NTFS, FAT32, etc.)",
-        "id": "Unique identifier for the partition (auto-incremented)",
-        "letter": "Drive letter assigned to the partition",
-        "name": "Name of the partition",
-        "quickCreate": "Quick create a default partition table",
-        "reset": "Reset the partition table (clear all partitions)",
-        "size": "Size of the partition in megabytes",
-        "type": "Type of the partition (Primary, Extended, Logical, Recovery, EFI, MSR)"
+        "active": "Có đánh dấu phân vùng là hoạt động hay không (Có/Không)",
+        "format": "Định dạng hệ thống tệp của phân vùng (NTFS, FAT32, v.v.)",
+        "id": "Định danh duy nhất cho phân vùng (tăng tự động)",
+        "letter": "Chữ cái ổ đĩa được gán cho phân vùng",
+        "name": "Tên của phân vùng",
+        "quickCreate": "Tạo nhanh phân vùng với các giá trị mặc định theo từng Layout đã chọn",
+        "reset": "Đặt lại bảng phân vùng (xóa tất cả các phân vùng)",
+        "size": "Kích thước của phân vùng tính bằng megabyte",
+        "type": "Loại của phân vùng (Primary, Extended, Logical, Recovery, EFI, MSR)"
       },
-      "useRemainingSpace": "Enable to use all remaining disk space for the last partition in the table",
-      "wipeDisk": "Enable to wipe the entire disk before partitioning. This will delete all data."
+      "useRemainingSpace": "Bật để sử dụng toàn bộ không gian còn lại cho phân vùng cuối cùng trong bảng",
+      "wipeDisk": "Bật để xóa toàn bộ đĩa trước khi phân vùng. Điều này sẽ xóa tất cả dữ liệu."
     },
     "generalConfig": {
       "cpuArch": "Chọn kiến trúc CPU để cài đặt.",

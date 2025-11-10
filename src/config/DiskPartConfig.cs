@@ -42,6 +42,7 @@ namespace QuickWinstall.Config
         public bool WipeDisk { get; set; } = true;
         public string PartitionLayout { get; set; } = "";
         public bool UseRemainingSpace { get; set; } = true;
+        public int InstallToPartitionID { get; set; } = 0;
         public bool DisableBitLocker { get; set; } = true;
         public List<PartitionEntry> PartitionTable { get; set; } = new List<PartitionEntry>();
 
@@ -107,6 +108,11 @@ namespace QuickWinstall.Config
         // Use Remaining Space
         private Label lblUseRemainingSpace = null!;
         private Panel toggleUseRemainingSpace = null!;
+        
+        // Install Windows to partition ID
+        private Label lblInstallToPartitionID = null!;
+        private NumericUpDown nudInstallToPartitionID = null!;
+        private StatusRing ringInstallToPartitionID = null!;
 
         // Line Separator
         private Panel pnlDiskPartConfigAfterAutoDiskPartSeparator = null!;
@@ -148,7 +154,7 @@ namespace QuickWinstall.Config
             ResetPartitionTableControls();
 
             // Calculate content height - will be larger once partition table is added
-            int contentHeight = ui.GetSectionValue("diskPartConfig", "contentHeight", 800);
+            int contentHeight = ui.GetSectionValue("diskPartConfig", "contentHeight", 910);
 
             pnlDiskPartConfig = new Panel();
             pnlDiskPartConfig.Location = new Point(0, 0);
@@ -273,7 +279,7 @@ namespace QuickWinstall.Config
             int statusRingBorderExtra = 6;
             ringDiskID = new StatusRing();
             ringDiskID.Location = new Point(nudDiskID.Left - ui.GetValue("global.statusRing.borderWidth"), nudDiskID.Top - ui.GetValue("global.statusRing.borderWidth"));
-            ringDiskID.Size = new Size(nudDiskID.Width + 2 * ui.GetValue("global.statusRing.borderWidth"), nudDiskID.Height + 2 * ui.GetValue("global.statusRing.borderWidth") + statusRingBorderExtra);
+            ringDiskID.Size = new Size(nudDiskID.Width + 2 * ui.GetValue("global.statusRing.borderWidth"), nudDiskID.Height + 2 * ui.GetValue("global.statusRing.borderWidth"));
             ringDiskID.Visible = false;
 
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -603,7 +609,7 @@ namespace QuickWinstall.Config
                 currentY += ui.GlobalInputHeight + ui.GlobalSpacingY;
             }
 
-            currentY += ui.GlobalSpacingY;
+            currentY += ui.GlobalSpacingY * 2;
 
             // Use Remaining Space
             lblUseRemainingSpace = new Label();
@@ -618,6 +624,37 @@ namespace QuickWinstall.Config
             toggleUseRemainingSpace = theme.CreateToggleSwitch(new Point(toggleX, currentY), toggleWidth, ui.GlobalInputHeight, UseRemainingSpace);
             toggleUseRemainingSpace.TabStop = false;
             toggleUseRemainingSpace.Click += (s, e) => OnToggleUseRemainingSpace();
+
+            currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
+
+            // Install Windows to Partition ID
+            lblInstallToPartitionID = new Label();
+            lblInstallToPartitionID.Location = new Point(labelX, currentY);
+            lblInstallToPartitionID.Size = new Size(ui.GlobalLabelWidth, ui.GlobalLabelHeight);
+            lblInstallToPartitionID.Text = lang.GetString("diskPartConfig.installToPartitionID.label");
+            lblInstallToPartitionID.Font = theme.GetFont("normal");
+            lblInstallToPartitionID.TextAlign = ContentAlignment.MiddleLeft;
+            tooltips.SetToolTip(lblInstallToPartitionID, "tooltips.diskPartConfig.installToPartitionID");
+
+            nudInstallToPartitionID = new NumericUpDown();
+            nudInstallToPartitionID.Location = new Point(inputX, currentY);
+            nudInstallToPartitionID.Size = new Size((int)(ui.GlobalInputWidth * 0.2), ui.GlobalInputHeight);
+            nudInstallToPartitionID.Minimum = 0;
+            nudInstallToPartitionID.Maximum = partitionRows;
+            nudInstallToPartitionID.Value = InstallToPartitionID;
+            nudInstallToPartitionID.Font = theme.GetFont("normal");
+            nudInstallToPartitionID.BackColor = theme.GetColor("inputBackground");
+            nudInstallToPartitionID.ForeColor = theme.GetFontColor("inputForeground");
+            nudInstallToPartitionID.TextAlign = HorizontalAlignment.Right;
+            nudInstallToPartitionID.ValueChanged += onConfigChanged;
+            nudInstallToPartitionID.ValueChanged += (s, e) => ValidateInstallToPartitionID();
+            tooltips.SetToolTip(nudInstallToPartitionID, "tooltips.diskPartConfig.installToPartitionID");
+
+            // Status ring for Install To Partition ID
+            ringInstallToPartitionID = new StatusRing();
+            ringInstallToPartitionID.Location = new Point(nudInstallToPartitionID.Left - ui.GetValue("global.statusRing.borderWidth"), nudInstallToPartitionID.Top - ui.GetValue("global.statusRing.borderWidth"));
+            ringInstallToPartitionID.Size = new Size(nudInstallToPartitionID.Width + 2 * ui.GetValue("global.statusRing.borderWidth"), nudInstallToPartitionID.Height + 2 * ui.GetValue("global.statusRing.borderWidth"));
+            ringInstallToPartitionID.Visible = false;
 
             currentY += ui.GlobalLabelHeight + ui.GlobalSpacingY * 2;
             labelX = ui.GlobalTabX * 2 + ui.GlobalBtnBox;
@@ -683,6 +720,9 @@ namespace QuickWinstall.Config
             
             pnlDiskPartConfigContent.Controls.Add(lblUseRemainingSpace);
             pnlDiskPartConfigContent.Controls.Add(toggleUseRemainingSpace);
+            pnlDiskPartConfigContent.Controls.Add(lblInstallToPartitionID);
+            pnlDiskPartConfigContent.Controls.Add(nudInstallToPartitionID);
+            pnlDiskPartConfigContent.Controls.Add(ringInstallToPartitionID);
             pnlDiskPartConfigContent.Controls.Add(pnlDiskPartConfigAfterAutoDiskPartSeparator);
             pnlDiskPartConfigContent.Controls.Add(lblDisableBitLocker);
             pnlDiskPartConfigContent.Controls.Add(toggleDisableBitLocker);
@@ -739,7 +779,7 @@ namespace QuickWinstall.Config
 
             if (_isExpanded)
             {
-                int contentHeight = ui.GetSectionValue("diskPartConfig", "contentHeight", 800);
+                int contentHeight = ui.GetSectionValue("diskPartConfig", "contentHeight", 910);
                 pnlDiskPartConfig.Height = ui.GlobalBtnBox + ui.GlobalSpacingY + 2 + contentHeight;
                 ToolTipManager.Instance.SetToolTip(btnDiskPartConfigToggle, "tooltips.section.collapse", LangManager.Instance.GetString("mainForm.sections.diskPart"));
             }
@@ -815,6 +855,7 @@ namespace QuickWinstall.Config
             btnQuickCreate.Enabled = enableControls && cmbPartitionLayout.SelectedIndex > 0;
             btnReset.Enabled = enableControls;
             toggleUseRemainingSpace.Enabled = enableControls;
+            nudInstallToPartitionID.Enabled = enableControls;
             toggleDisableBitLocker.Enabled = enableControls;
             
             // Enable/disable partition table controls (only if EnableAutoDiskPart is also true)
@@ -859,10 +900,14 @@ namespace QuickWinstall.Config
                 lblPartitionTable.Font = theme.GetFont("muted");
                 lblPartitionTable.ForeColor = theme.GetFontColor("muted");
                 lblUseRemainingSpace.Font = theme.GetFont("muted");
+                lblInstallToPartitionID.Font = theme.GetFont("muted");
+                lblInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
+                nudInstallToPartitionID.Font = theme.GetFont("muted");
+                nudInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("muted");
                 lblDisableBitLocker.Font = theme.GetFont("muted");
                 lblDisableBitLocker.ForeColor = theme.GetFontColor("muted");
-                
+
                 // Mute partition table headers
                 lblHeaderID.Font = theme.GetFont("muted");
                 lblHeaderID.ForeColor = theme.GetFontColor("muted");
@@ -878,7 +923,7 @@ namespace QuickWinstall.Config
                 lblHeaderFormat.ForeColor = theme.GetFontColor("muted");
                 lblHeaderActive.Font = theme.GetFont("muted");
                 lblHeaderActive.ForeColor = theme.GetFontColor("muted");
-                
+
                 // Mute partition table rows
                 for (int i = 0; i < partitionRows; i++)
                 {
@@ -918,14 +963,18 @@ namespace QuickWinstall.Config
                 lblPartitionTable.ForeColor = theme.GetFontColor("normal");
                 lblUseRemainingSpace.Font = theme.GetFont("normal");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("normal");
+                lblInstallToPartitionID.Font = theme.GetFont("normal");
+                lblInstallToPartitionID.ForeColor = theme.GetFontColor("normal");
+                nudInstallToPartitionID.Font = theme.GetFont("normal");
+                nudInstallToPartitionID.ForeColor = theme.GetFontColor("inputForeground");
                 lblDisableBitLocker.Font = theme.GetFont("normal");
                 lblDisableBitLocker.ForeColor = theme.GetFontColor("normal");
-                
+
                 // Update partition table headers based on EnableAutoDiskPart state
                 bool autoDiskPartEnabled = EnableAutoDiskPart;
                 string headerFont = autoDiskPartEnabled ? "subheader" : "muted";
                 string headerColor = autoDiskPartEnabled ? "normal" : "muted";
-                
+
                 lblHeaderID.Font = theme.GetFont(headerFont);
                 lblHeaderID.ForeColor = theme.GetFontColor(headerColor);
                 lblHeaderType.Font = theme.GetFont(headerFont);
@@ -940,19 +989,19 @@ namespace QuickWinstall.Config
                 lblHeaderFormat.ForeColor = theme.GetFontColor(headerColor);
                 lblHeaderActive.Font = theme.GetFont(headerFont);
                 lblHeaderActive.ForeColor = theme.GetFontColor(headerColor);
-                
+
                 // Update partition table rows based on EnableAutoDiskPart state
                 string rowFont = autoDiskPartEnabled ? "normal" : "muted";
                 string rowColor = autoDiskPartEnabled ? "normal" : "muted";
                 string inputColor = autoDiskPartEnabled ? "inputForeground" : "muted";
-                
+
                 for (int i = 0; i < partitionRows; i++)
                 {
                     lblIDs[i].Font = theme.GetFont(rowFont);
                     lblIDs[i].ForeColor = theme.GetFontColor(rowColor);
                     cmbTypes[i].Font = theme.GetFont(rowFont);
                     cmbTypes[i].ForeColor = theme.GetFontColor(inputColor);
-                    
+
                     // Handle txtName based on whether it has placeholder text
                     bool isPlaceholder = IsPlaceholderText(txtNames[i]);
                     if (autoDiskPartEnabled)
@@ -965,7 +1014,7 @@ namespace QuickWinstall.Config
                         txtNames[i].Font = theme.GetFont("muted");
                         txtNames[i].ForeColor = theme.GetFontColor("muted");
                     }
-                    
+
                     nudSizes[i].Font = theme.GetFont(rowFont);
                     nudSizes[i].ForeColor = theme.GetFontColor(inputColor);
                     cmbLetters[i].Font = theme.GetFont(rowFont);
@@ -975,6 +1024,9 @@ namespace QuickWinstall.Config
                     theme.UpdateToggleSwitchMutedState(toggleActives[i], !autoDiskPartEnabled);
                 }
             }
+            
+            // Update Quick Create button state
+            UpdateQuickCreateButtonState();
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
@@ -1006,6 +1058,7 @@ namespace QuickWinstall.Config
             //btnQuickCreate.Enabled = newState && cmbPartitionLayout.SelectedIndex > 0;
             btnReset.Enabled = newState;
             toggleUseRemainingSpace.Enabled = newState;
+            nudInstallToPartitionID.Enabled = newState;
             
             // Enable/disable partition table controls
             for (int i = 0; i < partitionRows; i++)
@@ -1040,7 +1093,11 @@ namespace QuickWinstall.Config
                 lblPartitionTable.ForeColor = theme.GetFontColor("normal");
                 lblUseRemainingSpace.Font = theme.GetFont("normal");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("normal");
-                
+                lblInstallToPartitionID.Font = theme.GetFont("normal");
+                lblInstallToPartitionID.ForeColor = theme.GetFontColor("normal");
+                nudInstallToPartitionID.Font = theme.GetFont("normal");
+                nudInstallToPartitionID.ForeColor = theme.GetFontColor("inputForeground");
+
                 // Update partition table headers to normal
                 lblHeaderID.Font = theme.GetFont("subheader");
                 lblHeaderID.ForeColor = theme.GetFontColor("normal");
@@ -1056,7 +1113,7 @@ namespace QuickWinstall.Config
                 lblHeaderFormat.ForeColor = theme.GetFontColor("normal");
                 lblHeaderActive.Font = theme.GetFont("subheader");
                 lblHeaderActive.ForeColor = theme.GetFontColor("normal");
-                
+
                 // Update partition table rows to normal
                 for (int i = 0; i < partitionRows; i++)
                 {
@@ -1064,12 +1121,12 @@ namespace QuickWinstall.Config
                     lblIDs[i].ForeColor = theme.GetFontColor("normal");
                     cmbTypes[i].Font = theme.GetFont("normal");
                     cmbTypes[i].ForeColor = theme.GetFontColor("inputForeground");
-                    
+
                     // Handle txtName based on whether it has placeholder text
                     bool isPlaceholder = IsPlaceholderText(txtNames[i]);
                     txtNames[i].Font = theme.GetFont(isPlaceholder ? "placeholder" : "normal");
                     txtNames[i].ForeColor = theme.GetFontColor(isPlaceholder ? "placeholder" : "inputForeground");
-                    
+
                     nudSizes[i].Font = theme.GetFont("normal");
                     nudSizes[i].ForeColor = theme.GetFontColor("inputForeground");
                     cmbLetters[i].Font = theme.GetFont("normal");
@@ -1095,7 +1152,11 @@ namespace QuickWinstall.Config
                 lblPartitionTable.ForeColor = theme.GetFontColor("muted");
                 lblUseRemainingSpace.Font = theme.GetFont("muted");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("muted");
-                
+                lblInstallToPartitionID.Font = theme.GetFont("muted");
+                lblInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
+                nudInstallToPartitionID.Font = theme.GetFont("muted");
+                nudInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
+
                 // Mute partition table headers
                 lblHeaderID.Font = theme.GetFont("muted");
                 lblHeaderID.ForeColor = theme.GetFontColor("muted");
@@ -1111,7 +1172,7 @@ namespace QuickWinstall.Config
                 lblHeaderFormat.ForeColor = theme.GetFontColor("muted");
                 lblHeaderActive.Font = theme.GetFont("muted");
                 lblHeaderActive.ForeColor = theme.GetFontColor("muted");
-                
+
                 // Mute partition table rows
                 for (int i = 0; i < partitionRows; i++)
                 {
@@ -1130,6 +1191,9 @@ namespace QuickWinstall.Config
                     theme.UpdateToggleSwitchMutedState(toggleActives[i], true);
                 }
             }
+            
+            // Update Quick Create button state
+            UpdateQuickCreateButtonState();
 
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -1197,6 +1261,9 @@ namespace QuickWinstall.Config
 
             // Update row ID numbering based on which rows have data
             UpdatePartitionRowIDs();
+            
+            // Validate InstallToPartitionID since partition count may have changed
+            ValidateInstallToPartitionID();
             
             // TODO: Validate partition row
             // TODO: Update PartitionTable data model
@@ -1296,7 +1363,7 @@ namespace QuickWinstall.Config
         private void ResetPartitionTable()
         {
             _isLoading = true;
-            
+
             try
             {
                 // Clear partition table data model
@@ -1320,8 +1387,11 @@ namespace QuickWinstall.Config
             {
                 _isLoading = false;
             }
-
+            
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
+            
+            // Validate InstallToPartitionID since all partitions were cleared
+            ValidateInstallToPartitionID();
         }
 
         #endregion
@@ -1338,6 +1408,7 @@ namespace QuickWinstall.Config
                 toggleWipeDisk == null ||
                 cmbPartitionLayout == null ||
                 toggleUseRemainingSpace == null ||
+                nudInstallToPartitionID == null ||
                 toggleDisableBitLocker == null)
             {
                 Console.WriteLine("UpdateControlsFromModel: UI controls not initialized yet.");
@@ -1354,6 +1425,7 @@ namespace QuickWinstall.Config
             WipeDisk = theme.GetToggleSwitchState(toggleWipeDisk);
             PartitionLayout = GetPartitionLayoutValueFromIndex(cmbPartitionLayout.SelectedIndex);
             UseRemainingSpace = theme.GetToggleSwitchState(toggleUseRemainingSpace);
+            InstallToPartitionID = (int)nudInstallToPartitionID.Value;
             DisableBitLocker = theme.GetToggleSwitchState(toggleDisableBitLocker);
         }
 
@@ -1398,6 +1470,7 @@ namespace QuickWinstall.Config
                 btnQuickCreate.Enabled = false;
                 btnReset.Enabled = false;
                 toggleUseRemainingSpace.Enabled = false;
+                nudInstallToPartitionID.Enabled = false;
                 toggleDisableBitLocker.Enabled = true; // This stays enabled under EnableDiskPart
 
                 // Apply normal visual state to EnableAutoDiskPart (not muted since EnableDiskPart is true)
@@ -1429,6 +1502,10 @@ namespace QuickWinstall.Config
                 lblPartitionTable.ForeColor = theme.GetFontColor("muted");
                 lblUseRemainingSpace.Font = theme.GetFont("muted");
                 lblUseRemainingSpace.ForeColor = theme.GetFontColor("muted");
+                lblInstallToPartitionID.Font = theme.GetFont("muted");
+                lblInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
+                nudInstallToPartitionID.Font = theme.GetFont("muted");
+                nudInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
                 
                 // Mute partition table headers
                 lblHeaderID.Font = theme.GetFont("muted");
@@ -1488,6 +1565,7 @@ namespace QuickWinstall.Config
 
                 // Reset ComboBoxes and NumericUpDowns to default selections
                 if (nudDiskID != null) nudDiskID.Value = 0;
+                if (nudInstallToPartitionID != null) nudInstallToPartitionID.Value = 0;
                 if (cmbPartitionLayout != null) cmbPartitionLayout.SelectedIndex = 0;
 
                 // Remove duplicate label updates (already done above)
@@ -1498,6 +1576,7 @@ namespace QuickWinstall.Config
                 WipeDisk = false;
                 PartitionLayout = "";
                 UseRemainingSpace = false;
+                InstallToPartitionID = 0;
                 DisableBitLocker = false;
                 ResetPartitionTable();
             }
@@ -1517,13 +1596,14 @@ namespace QuickWinstall.Config
                 toggleWipeDisk == null ||
                 cmbPartitionLayout == null ||
                 toggleUseRemainingSpace == null ||
+                nudInstallToPartitionID == null ||
                 toggleDisableBitLocker == null)
             {
                 Console.WriteLine("UpdateControlsFromModel: UI controls not initialized yet.");
                 return;
             }
 
-            Console.WriteLine($"UpdateControlsFromModel: EnableAutoDiskPart={EnableAutoDiskPart}, DiskID={DiskID}, WipeDisk={WipeDisk}, PartitionLayout={PartitionLayout}, UseRemainingSpace={UseRemainingSpace}, DisableBitLocker={DisableBitLocker}");
+            Console.WriteLine($"UpdateControlsFromModel: EnableAutoDiskPart={EnableAutoDiskPart}, DiskID={DiskID}, WipeDisk={WipeDisk}, PartitionLayout={PartitionLayout}, UseRemainingSpace={UseRemainingSpace}, InstallToPartitionID={InstallToPartitionID}, DisableBitLocker={DisableBitLocker}");
 
             try
             {
@@ -1546,6 +1626,7 @@ namespace QuickWinstall.Config
                 btnQuickCreate.Enabled = enableControls && EnableAutoDiskPart && !string.IsNullOrEmpty(PartitionLayout);
                 btnReset.Enabled = enableControls && EnableAutoDiskPart;
                 toggleUseRemainingSpace.Enabled = enableControls && EnableAutoDiskPart;
+                nudInstallToPartitionID.Enabled = enableControls && EnableAutoDiskPart;
                 toggleDisableBitLocker.Enabled = enableControls;
                 
                 // Enable/disable partition table controls
@@ -1591,6 +1672,10 @@ namespace QuickWinstall.Config
                     lblPartitionTable.ForeColor = theme.GetFontColor("muted");
                     lblUseRemainingSpace.Font = theme.GetFont("muted");
                     lblUseRemainingSpace.ForeColor = theme.GetFontColor("muted");
+                    lblInstallToPartitionID.Font = theme.GetFont("muted");
+                    lblInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
+                    nudInstallToPartitionID.Font = theme.GetFont("muted");
+                    nudInstallToPartitionID.ForeColor = theme.GetFontColor("muted");
                     lblDisableBitLocker.Font = theme.GetFont("muted");
                     lblDisableBitLocker.ForeColor = theme.GetFontColor("muted");
 
@@ -1657,6 +1742,10 @@ namespace QuickWinstall.Config
                     lblPartitionTable.ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "normal" : "muted");
                     lblUseRemainingSpace.Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
                     lblUseRemainingSpace.ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "normal" : "muted");
+                    lblInstallToPartitionID.Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
+                    lblInstallToPartitionID.ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "normal" : "muted");
+                    nudInstallToPartitionID.Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
+                    nudInstallToPartitionID.ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "inputForeground" : "muted");
                     lblDisableBitLocker.Font = theme.GetFont("normal");
                     lblDisableBitLocker.ForeColor = theme.GetFontColor("normal");
 
@@ -1722,6 +1811,9 @@ namespace QuickWinstall.Config
                 nudDiskID.Value = DiskID;
                 cmbPartitionLayout.SelectedIndex = GetIndexFromPartitionLayoutValue(PartitionLayout);
 
+                // Update Quick Create button state
+                UpdateQuickCreateButtonState();
+
                 // Validate after loading
                 ValidateAllUIFields();
             }
@@ -1746,6 +1838,7 @@ namespace QuickWinstall.Config
                 if (json.partitionLayout != null) PartitionLayout = (string)json.partitionLayout;
                 //if (json.partitionTable != null)
                 if (json.useRemainingSpace != null) UseRemainingSpace = (bool)json.useRemainingSpace;
+                if (json.installToPartitionID != null) InstallToPartitionID = (int)json.installToPartitionID;
                 if (json.disableBitLocker != null) DisableBitLocker = (bool)json.disableBitLocker;
             }
             catch { }
@@ -1811,6 +1904,7 @@ namespace QuickWinstall.Config
         {
             ValidateDiskID();
             ValidatePartitionLayout();
+            ValidateInstallToPartitionID();
         }
 
         /// <summary>
@@ -1850,6 +1944,32 @@ namespace QuickWinstall.Config
 
             // Update Quick Create button state after validation
             UpdateQuickCreateButtonState();
+        }
+
+        /// <summary>
+        /// Validates InstallToPartitionID NumericUpDown and updates status ring
+        /// </summary>
+        private void ValidateInstallToPartitionID()
+        {
+            if (ringInstallToPartitionID == null || nudInstallToPartitionID == null)
+                return;
+
+            // Count the actual number of non-empty partitions
+            int actualPartitionCount = 0;
+            for (int i = 0; i < partitionRows; i++)
+            {
+                if (HasPartitionRowData(i))
+                    actualPartitionCount++;
+            }
+
+            // Value must be greater than 0 and not exceed the actual partition count
+            if (nudInstallToPartitionID.Value == 0 || nudInstallToPartitionID.Value > actualPartitionCount)
+            {
+                ringInstallToPartitionID.SetStatus(ValidationStatus.Invalid);
+                return;
+            }
+            
+            ringInstallToPartitionID.SetStatus(ValidationStatus.Valid);
         }
 
         /// <summary>

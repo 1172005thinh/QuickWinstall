@@ -42,6 +42,9 @@
     "enableAutoDiskPart": {
       "label": "Automatic Configs Disk and Partition"
     },
+    "installToPartitionID": {
+      "label": "Install to Partition ID:"
+    },
     "partitionLayout": {
       "label": "Partition Layout:",
       "options": {
@@ -446,6 +449,7 @@
       "enableAutoDiskPart": "Enable to automatically create/modify disk partitions based on following configurations\\nDisable to manually configure disks and partitions while setting up Windows",
       "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
       "header": "Disk && Partition Configurations Section",
+      "installToPartitionID": "Specify the Partition ID where Windows will be installed",
       "partitionLayout": "Select the partition layout to create on the disk",
       "partitionTable": {
         "active": "Whether the partition is marked as active (Yes/No)",
