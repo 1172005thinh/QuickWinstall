@@ -1990,11 +1990,23 @@ namespace QuickWinstall.Config
             {
                 errors.Add(lang.GetString("validation.required", lang.GetString("diskPartConfig.diskID.label")));
             }
-            
+
             // Validate Partition Layout
             if (string.IsNullOrWhiteSpace(PartitionLayout))
             {
                 errors.Add(lang.GetString("validation.required", lang.GetString("diskPartConfig.partitionLayout.label")));
+            }
+            
+            // Validate InstallToPartitionID
+            int actualPartitionCount = 0;
+            for (int i = 0; i < partitionRows; i++)
+            {
+                if (HasPartitionRowData(i))
+                    actualPartitionCount++;
+            }
+            if (InstallToPartitionID == 0 || InstallToPartitionID > actualPartitionCount)
+            {
+                errors.Add(lang.GetString("validation.required", lang.GetString("diskPartConfig.installToPartitionID.label")));
             }
             
             return errors;
