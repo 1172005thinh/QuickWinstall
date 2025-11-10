@@ -511,6 +511,9 @@ namespace QuickWinstall.Config
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleBypassAll, newState);
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleBypassAll.Focus();
+
             BypassAll = newState;
 
             // If enabling, turn on all individual bypasses
@@ -572,6 +575,9 @@ namespace QuickWinstall.Config
             bool currentState = theme.GetToggleSwitchState(sender);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(sender, newState);
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            sender.Focus();
 
             // Update data model
             if (ReferenceEquals(sender, toggleBypassTPM)) BypassTPM = newState;

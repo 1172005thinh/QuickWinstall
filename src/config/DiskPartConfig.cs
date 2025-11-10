@@ -471,7 +471,7 @@ namespace QuickWinstall.Config
                 Label lblID = new Label();
                 lblID.Location = new Point(currentX, rowY);
                 lblID.Size = new Size(colID, ui.GlobalLabelHeight);
-                lblID.Text = "-";
+                lblID.Text = LangManager.Instance.GetString("diskPartConfig.partitionTable.noID");
                 lblID.Font = theme.GetFont("normal");
                 lblID.ForeColor = theme.GetFontColor("normal");
                 lblID.TextAlign = ContentAlignment.MiddleCenter;
@@ -819,7 +819,7 @@ namespace QuickWinstall.Config
             
             // Enable/disable partition table controls (only if EnableAutoDiskPart is also true)
             bool enablePartitionTable = enableControls && EnableAutoDiskPart;
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < partitionRows; i++)
             {
                 cmbTypes[i].Enabled = enablePartitionTable;
                 txtNames[i].Enabled = enablePartitionTable;
@@ -880,7 +880,7 @@ namespace QuickWinstall.Config
                 lblHeaderActive.ForeColor = theme.GetFontColor("muted");
                 
                 // Mute partition table rows
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < partitionRows; i++)
                 {
                     lblIDs[i].Font = theme.GetFont("muted");
                     lblIDs[i].ForeColor = theme.GetFontColor("muted");
@@ -946,7 +946,7 @@ namespace QuickWinstall.Config
                 string rowColor = autoDiskPartEnabled ? "normal" : "muted";
                 string inputColor = autoDiskPartEnabled ? "inputForeground" : "muted";
                 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < partitionRows; i++)
                 {
                     lblIDs[i].Font = theme.GetFont(rowFont);
                     lblIDs[i].ForeColor = theme.GetFontColor(rowColor);
@@ -975,9 +975,6 @@ namespace QuickWinstall.Config
                     theme.UpdateToggleSwitchMutedState(toggleActives[i], !autoDiskPartEnabled);
                 }
             }
-
-            // Update Quick Create button state
-            UpdateQuickCreateButtonState();
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
@@ -1011,7 +1008,7 @@ namespace QuickWinstall.Config
             toggleUseRemainingSpace.Enabled = newState;
             
             // Enable/disable partition table controls
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < partitionRows; i++)
             {
                 cmbTypes[i].Enabled = newState;
                 txtNames[i].Enabled = newState;
@@ -1061,7 +1058,7 @@ namespace QuickWinstall.Config
                 lblHeaderActive.ForeColor = theme.GetFontColor("normal");
                 
                 // Update partition table rows to normal
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < partitionRows; i++)
                 {
                     lblIDs[i].Font = theme.GetFont("normal");
                     lblIDs[i].ForeColor = theme.GetFontColor("normal");
@@ -1116,7 +1113,7 @@ namespace QuickWinstall.Config
                 lblHeaderActive.ForeColor = theme.GetFontColor("muted");
                 
                 // Mute partition table rows
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < partitionRows; i++)
                 {
                     lblIDs[i].Font = theme.GetFont("muted");
                     lblIDs[i].ForeColor = theme.GetFontColor("muted");
@@ -1133,12 +1130,6 @@ namespace QuickWinstall.Config
                     theme.UpdateToggleSwitchMutedState(toggleActives[i], true);
                 }
             }
-
-            // Update Quick Create button state
-            UpdateQuickCreateButtonState();
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleEnableAutoDiskPart.Focus();
 
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -1159,6 +1150,7 @@ namespace QuickWinstall.Config
         {
             if (_isLoading || !EnableDiskPart) return;
             ThemeManager theme = ThemeManager.Instance;
+            toggleWipeDisk.Focus();
             bool currentState = theme.GetToggleSwitchState(toggleWipeDisk);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleWipeDisk, newState);
@@ -1173,6 +1165,7 @@ namespace QuickWinstall.Config
         {
             if (_isLoading || !EnableDiskPart) return;
             ThemeManager theme = ThemeManager.Instance;
+            toggleUseRemainingSpace.Focus();
             bool currentState = theme.GetToggleSwitchState(toggleUseRemainingSpace);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleUseRemainingSpace, newState);
@@ -1187,6 +1180,7 @@ namespace QuickWinstall.Config
         {
             if (_isLoading || !EnableDiskPart) return;
             ThemeManager theme = ThemeManager.Instance;
+            toggleDisableBitLocker.Focus();
             bool currentState = theme.GetToggleSwitchState(toggleDisableBitLocker);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleDisableBitLocker, newState);
@@ -1200,7 +1194,7 @@ namespace QuickWinstall.Config
         private void OnPartitionRowChanged(int rowIndex)
         {
             if (_isLoading) return;
-            
+
             // Update row ID numbering based on which rows have data
             UpdatePartitionRowIDs();
             
@@ -1214,8 +1208,9 @@ namespace QuickWinstall.Config
         private void OnPartitionActiveToggle(int rowIndex)
         {
             if (_isLoading) return;
-            
+
             ThemeManager theme = ThemeManager.Instance;
+            toggleActives[rowIndex].Focus();
             Panel toggle = toggleActives[rowIndex];
             bool currentState = theme.GetToggleSwitchState(toggle);
             bool newState = !currentState;
@@ -1230,11 +1225,11 @@ namespace QuickWinstall.Config
         private void UpdatePartitionRowIDs()
         {
             int currentID = 1;
-            
+
             for (int i = 0; i < partitionRows; i++)
             {
                 bool rowHasData = HasPartitionRowData(i);
-                
+
                 if (rowHasData)
                 {
                     lblIDs[i].Text = currentID.ToString();
@@ -1242,7 +1237,7 @@ namespace QuickWinstall.Config
                 }
                 else
                 {
-                    lblIDs[i].Text = "-";
+                    lblIDs[i].Text = LangManager.Instance.GetString("diskPartConfig.partitionTable.noID");
                 }
             }
         }
@@ -1318,7 +1313,7 @@ namespace QuickWinstall.Config
                     cmbLetters[i].SelectedIndex = 0;
                     cmbFormats[i].SelectedIndex = 0;
                     ThemeManager.Instance.UpdateToggleSwitchState(toggleActives[i], false);
-                    lblIDs[i].Text = "-";
+                    lblIDs[i].Text = LangManager.Instance.GetString("diskPartConfig.partitionTable.noID");
                 }
             }
             finally
@@ -1453,7 +1448,7 @@ namespace QuickWinstall.Config
                 
                 // Disable and mute partition table row controls
                 bool autoDiskPartEnabled = EnableAutoDiskPart;
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < partitionRows; i++)
                 {
                     lblIDs[i].Font = theme.GetFont("muted");
                     lblIDs[i].ForeColor = theme.GetFontColor("muted");
@@ -1468,13 +1463,11 @@ namespace QuickWinstall.Config
                     {
                         txtNames[i].Font = theme.GetFont(isPlaceholder ? "placeholder" : "normal");
                         txtNames[i].ForeColor = theme.GetFontColor(isPlaceholder ? "placeholder" : "inputForeground");
-                        txtNames[i].BackColor = theme.GetColor("inputBackground");
                     }
                     else
                     {
                         txtNames[i].Font = theme.GetFont("muted");
                         txtNames[i].ForeColor = theme.GetFontColor("muted");
-                        txtNames[i].BackColor = theme.GetColor("inputBackgroundMuted");
                     }
                     
                     nudSizes[i].Enabled = false;
@@ -1557,7 +1550,7 @@ namespace QuickWinstall.Config
                 
                 // Enable/disable partition table controls
                 bool enablePartitionTable = enableControls && EnableAutoDiskPart;
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < partitionRows; i++)
                 {
                     cmbTypes[i].Enabled = enablePartitionTable;
                     txtNames[i].Enabled = enablePartitionTable;
@@ -1618,30 +1611,25 @@ namespace QuickWinstall.Config
                     lblHeaderActive.ForeColor = theme.GetFontColor("muted");
 
                     // Mute partition table row controls
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < partitionRows; i++)
                     {
                         lblIDs[i].Font = theme.GetFont("muted");
                         lblIDs[i].ForeColor = theme.GetFontColor("muted");
                         
                         cmbTypes[i].Font = theme.GetFont("muted");
                         cmbTypes[i].ForeColor = theme.GetFontColor("muted");
-                        cmbTypes[i].BackColor = theme.GetColor("inputBackgroundMuted");
                         
                         txtNames[i].Font = theme.GetFont("muted");
                         txtNames[i].ForeColor = theme.GetFontColor("muted");
-                        txtNames[i].BackColor = theme.GetColor("inputBackgroundMuted");
                         
                         nudSizes[i].Font = theme.GetFont("muted");
                         nudSizes[i].ForeColor = theme.GetFontColor("muted");
-                        nudSizes[i].BackColor = theme.GetColor("inputBackgroundMuted");
                         
                         cmbLetters[i].Font = theme.GetFont("muted");
                         cmbLetters[i].ForeColor = theme.GetFontColor("muted");
-                        cmbLetters[i].BackColor = theme.GetColor("inputBackgroundMuted");
                         
                         cmbFormats[i].Font = theme.GetFont("muted");
                         cmbFormats[i].ForeColor = theme.GetFontColor("muted");
-                        cmbFormats[i].BackColor = theme.GetColor("inputBackgroundMuted");
                     }
                 }
                 else
@@ -1691,7 +1679,7 @@ namespace QuickWinstall.Config
                     lblHeaderActive.ForeColor = theme.GetFontColor(headerColor);
 
                     // Update partition table row controls
-                    for (int i = 0; i < 8; i++)
+                    for (int i = 0; i < partitionRows; i++)
                     {
                         // Update ID label
                         lblIDs[i].Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
@@ -1700,7 +1688,6 @@ namespace QuickWinstall.Config
                         // Update Type ComboBox
                         cmbTypes[i].Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
                         cmbTypes[i].ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "inputForeground" : "muted");
-                        cmbTypes[i].BackColor = theme.GetColor(autoDiskPartEnabled ? "inputBackground" : "inputBackgroundMuted");
                         
                         // Update Name TextBox with placeholder handling
                         bool isPlaceholder = IsPlaceholderText(txtNames[i]);
@@ -1708,29 +1695,24 @@ namespace QuickWinstall.Config
                         {
                             txtNames[i].Font = theme.GetFont(isPlaceholder ? "placeholder" : "normal");
                             txtNames[i].ForeColor = theme.GetFontColor(isPlaceholder ? "placeholder" : "inputForeground");
-                            txtNames[i].BackColor = theme.GetColor("inputBackground");
                         }
                         else
                         {
                             txtNames[i].Font = theme.GetFont("muted");
                             txtNames[i].ForeColor = theme.GetFontColor("muted");
-                            txtNames[i].BackColor = theme.GetColor("inputBackgroundMuted");
                         }
                         
                         // Update Size NumericUpDown
                         nudSizes[i].Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
                         nudSizes[i].ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "inputForeground" : "muted");
-                        nudSizes[i].BackColor = theme.GetColor(autoDiskPartEnabled ? "inputBackground" : "inputBackgroundMuted");
                         
                         // Update Letter ComboBox
                         cmbLetters[i].Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
                         cmbLetters[i].ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "inputForeground" : "muted");
-                        cmbLetters[i].BackColor = theme.GetColor(autoDiskPartEnabled ? "inputBackground" : "inputBackgroundMuted");
                         
                         // Update Format ComboBox
                         cmbFormats[i].Font = theme.GetFont(autoDiskPartEnabled ? "normal" : "muted");
                         cmbFormats[i].ForeColor = theme.GetFontColor(autoDiskPartEnabled ? "inputForeground" : "muted");
-                        cmbFormats[i].BackColor = theme.GetColor(autoDiskPartEnabled ? "inputBackground" : "inputBackgroundMuted");
                     }
                 }
 

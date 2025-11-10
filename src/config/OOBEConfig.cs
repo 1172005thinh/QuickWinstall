@@ -648,6 +648,9 @@ namespace QuickWinstall.Config
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleSkipAll, newState);
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleSkipAll.Focus();
+
             SkipAll = newState;
 
             // If enabling, turn on all individual oobees
@@ -709,6 +712,9 @@ namespace QuickWinstall.Config
             bool currentState = theme.GetToggleSwitchState(sender);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(sender, newState);
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            sender.Focus();
 
             // Update data model
             if (ReferenceEquals(sender, toggleSkipEULA)) SkipEULA = newState;

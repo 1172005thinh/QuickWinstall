@@ -135,10 +135,10 @@ namespace QuickWinstall.Main
             // Mode Toggle Button (New Installation / Upgrade Only)
             this.btnModeToggle = _themeManager.CreateRoundedButton();
             this.btnModeToggle.Size = new Size((int)(ui.GlobalBtnWidth * 1.2), ui.GlobalBtnHeight);
-            this.btnModeToggle.Text = lang.GetString("mainForm.buttons.newInstallation");
+            this.btnModeToggle.Text = lang.GetString("mainForm.buttons.upgradeOnly");
             this.btnModeToggle.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             this.btnModeToggle.Click += new EventHandler(this.BtnModeToggle_Click);
-            tooltips.SetToolTip(this.btnModeToggle, "tooltips.mainForm.newInstallation");
+            tooltips.SetToolTip(this.btnModeToggle, "tooltips.mainForm.upgradeOnly");
 
             // Position buttons from right
             this.btnToggleAll.Location = new Point(this.ClientSize.Width - ui.GlobalTabX - ui.GlobalBtnBox, (ui.BannerHeight - ui.GlobalBtnBox) / 2);

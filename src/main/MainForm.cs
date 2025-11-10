@@ -228,12 +228,12 @@ namespace QuickWinstall.Main
             // Update mode toggle button text and tooltip based on current mode
             if (_currentMode == InstallationMode.NewInstallation)
             {
-                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.newInstallation");
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.upgradeOnly");
                 _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.newInstallation");
             }
             else
             {
-                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.upgradeOnly");
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.newInstallation");
                 _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.upgradeOnly");
             }
             
@@ -663,15 +663,15 @@ namespace QuickWinstall.Main
             {
                 // Switch to Upgrade Only mode
                 _currentMode = InstallationMode.UpgradeOnly;
-                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.upgradeOnly");
-                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.upgradeOnly");
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.newInstallation");
+                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.newInstallation");
             }
             else
             {
                 // Switch to New Installation mode
                 _currentMode = InstallationMode.NewInstallation;
-                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.newInstallation");
-                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.newInstallation");
+                btnModeToggle.Text = _langManager.GetString("mainForm.buttons.upgradeOnly");
+                _toolTipManager.SetToolTip(btnModeToggle, "tooltips.mainForm.upgradeOnly");
             }
             
             // Apply the visibility changes

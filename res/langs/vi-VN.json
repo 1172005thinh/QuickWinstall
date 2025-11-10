@@ -75,7 +75,8 @@
         "ntfs": "NTFS",
         "selectOne": "--"
       },
-      "namePlaceholder": "PhanVungMoi"
+      "namePlaceholder": "Phân Vùng Mới",
+      "noID": "--"
     },
     "useRemainingSpace": {
       "label": "Sử dụng Toàn bộ Không gian Còn lại cho Phân vùng ID Cuối"

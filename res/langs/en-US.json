@@ -75,7 +75,8 @@
         "ntfs": "NTFS",
         "selectOne": "--"
       },
-      "namePlaceholder": "NewPartition"
+      "namePlaceholder": "New Partition",
+      "noID": "--"
     },
     "useRemainingSpace": {
       "label": "Use Remaining Space for Last Partition"
