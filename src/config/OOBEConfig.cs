@@ -346,6 +346,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbNetworkLocation.Focus();
                     // Update property immediately
                     NetworkLocation = GetNetworkLocationValueFromIndex(cmbNetworkLocation.SelectedIndex);
                 }
@@ -390,6 +391,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbProtectYourPC.Focus();
                     // Update property immediately
                     ProtectYourPC = GetProtectYourPCValueFromIndex(cmbProtectYourPC.SelectedIndex);
                 }
@@ -520,6 +522,9 @@ namespace QuickWinstall.Config
             if (_isLoading) return;
 
             ThemeManager theme = ThemeManager.Instance;
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableOOBE.Focus();
             
             // Toggle the state
             bool currentState = theme.GetToggleSwitchState(toggleEnableOOBE);
@@ -543,9 +548,6 @@ namespace QuickWinstall.Config
 
             // Update visual appearance based on enabled state
             bool isMuted = !newState;
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleEnableOOBE.Focus();
             
             // Update all toggle switches to muted or normal state
             theme.UpdateToggleSwitchMutedState(toggleSkipAll, isMuted);
@@ -632,6 +634,9 @@ namespace QuickWinstall.Config
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableOOBE.Focus();
         }
 
         /// <summary>
@@ -643,13 +648,13 @@ namespace QuickWinstall.Config
 
             ThemeManager theme = ThemeManager.Instance;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleSkipAll.Focus();
+
             // Toggle the state
             bool currentState = theme.GetToggleSwitchState(toggleSkipAll);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleSkipAll, newState);
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleSkipAll.Focus();
 
             SkipAll = newState;
 
@@ -687,8 +692,11 @@ namespace QuickWinstall.Config
                 SkipMachineOOBE = false;
                 SkipUserOOBE = false;
             }
-            
+
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
+            
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleSkipAll.Focus();
         }
 
         /// <summary>

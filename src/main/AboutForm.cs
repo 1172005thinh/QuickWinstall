@@ -16,7 +16,7 @@ namespace QuickWinstall
         // Version
         public string appVersion = "0.7";
         public bool _isSEdition = true;
-        public string sEdition = "Finalize UI";
+        public string sEdition = "Demo UI DiskPartConfig";
 
         public AboutForm()
         {

@@ -193,7 +193,16 @@ namespace QuickWinstall.Config
             
             cmbWindowsEdition.SelectedIndex = 0;
             cmbWindowsEdition.SelectedIndexChanged += onConfigChanged;
-            cmbWindowsEdition.SelectedIndexChanged += (s, e) => ValidateWindowsEdition();
+            cmbWindowsEdition.SelectedIndexChanged += (s, e) =>
+            {
+                if (!_isLoading)
+                {
+                    cmbWindowsEdition.Focus();
+                    // Update property immediately
+                    WindowsEdition = GetWindowsEditionValueFromIndex(cmbWindowsEdition.SelectedIndex);
+                }
+                ValidateWindowsEdition();
+            };
             tooltips.SetToolTip(cmbWindowsEdition, "tooltips.generalConfig.windowsEdition");
 
             currentY += ui.GlobalInputHeight + ui.GlobalSpacingY * 2;
@@ -320,7 +329,16 @@ namespace QuickWinstall.Config
             
             cmbCPUArch.SelectedIndex = 0;
             cmbCPUArch.SelectedIndexChanged += onConfigChanged;
-            cmbCPUArch.SelectedIndexChanged += (s, e) => ValidateCPUArch();
+            cmbCPUArch.SelectedIndexChanged += (s, e) =>
+            {
+                if (!_isLoading)
+                {
+                    cmbCPUArch.Focus();
+                    // Update property immediately
+                    CPUArchitecture = GetCPUArchValueFromIndex(cmbCPUArch.SelectedIndex);
+                }
+                ValidateCPUArch();
+            };
             tooltips.SetToolTip(cmbCPUArch, "tooltips.generalConfig.cpuArch");
 
             // Add controls to General Config Content
@@ -467,15 +485,15 @@ namespace QuickWinstall.Config
 
             ThemeManager theme = ThemeManager.Instance;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableGeneral.Focus();
+
             // Toggle state
             bool currentState = theme.GetToggleSwitchState(toggleEnableGeneral);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleEnableGeneral, newState);
 
             EnableGeneral = newState;
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleEnableGeneral.Focus();
 
             // Enable or disable all dependent controls
             bool enableControls = newState;
@@ -572,6 +590,9 @@ namespace QuickWinstall.Config
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
+
+            // Restore focus to parent form to prevent scroll jumping
+            toggleEnableGeneral.Focus();
         }
 
         /// <summary>

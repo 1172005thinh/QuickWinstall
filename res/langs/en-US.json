@@ -450,7 +450,7 @@
       "enableDiskPart": "Unlock or lock all options in the Disk & Partition Configurations section",
       "header": "Disk && Partition Configurations Section",
       "installToPartitionID": "Specify the Partition ID where Windows will be installed",
-      "partitionLayout": "Select the partition layout to create on the disk",
+      "partitionLayout": "Select the partition layout to create on the disk.\\nSelect a layout to enable Quick Create option in the Partition Table.",
       "partitionTable": {
         "active": "Whether the partition is marked as active (Yes/No)",
         "format": "File system format of the partition (NTFS, FAT32, etc.)",

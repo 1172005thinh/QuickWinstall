@@ -449,7 +449,7 @@
       "enableDiskPart": "Khóa hoặc mở khóa tất cả các tùy chọn trong phần Cấu hình Đĩa & Phân vùng",
       "header": "Phần Cấu hình Đĩa & Phân vùng",
       "installToPartitionID": "Chỉ định ID Phân vùng nơi Windows sẽ được cài đặt",
-      "partitionLayout": "Chọn bố cục phân vùng để tạo trên đĩa",
+      "partitionLayout": "Chọn bố cục phân vùng để tạo trên đĩa.\\nChọn một bố cục để bật tùy chọn Làm Nhanh trong Bảng Phân vùng.",
       "partitionTable": {
         "active": "Có đánh dấu phân vùng là hoạt động hay không (Có/Không)",
         "format": "Định dạng hệ thống tệp của phân vùng (NTFS, FAT32, v.v.)",

@@ -403,6 +403,9 @@ namespace QuickWinstall.Config
             if (_isLoading) return;
 
             ThemeManager theme = ThemeManager.Instance;
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableBypass.Focus();
             
             // Toggle the state
             bool currentState = theme.GetToggleSwitchState(toggleEnableBypass);
@@ -424,9 +427,6 @@ namespace QuickWinstall.Config
 
             // Update visual appearance based on enabled state
             bool isMuted = !newState;
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleEnableBypass.Focus();
             
             // Update all toggle switches to muted or normal state
             theme.UpdateToggleSwitchMutedState(toggleBypassAll, isMuted);
@@ -495,6 +495,9 @@ namespace QuickWinstall.Config
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableBypass.Focus();
         }
 
         /// <summary>
@@ -506,13 +509,13 @@ namespace QuickWinstall.Config
 
             ThemeManager theme = ThemeManager.Instance;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleBypassAll.Focus();
+
             // Toggle the state
             bool currentState = theme.GetToggleSwitchState(toggleBypassAll);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleBypassAll, newState);
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleBypassAll.Focus();
 
             BypassAll = newState;
 
@@ -550,8 +553,11 @@ namespace QuickWinstall.Config
                 BypassStorage = false;
                 BypassDisk = false;
             }
-            
+
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
+            
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleBypassAll.Focus();
         }
 
         /// <summary>

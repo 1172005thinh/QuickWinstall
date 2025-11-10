@@ -216,6 +216,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbSystemLocale.Focus();
                     // Update property immediately
                     SystemLocale = GetLocaleValueFromIndex(cmbSystemLocale.SelectedIndex);
                     
@@ -268,6 +269,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbUserLocale.Focus();
                     // Update property immediately
                     UserLocale = GetLocaleValueFromIndex(cmbUserLocale.SelectedIndex);
                 }
@@ -338,6 +340,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbWindowsUILanguage.Focus();
                     // Update property immediately
                     WindowsUILanguage = GetLocaleValueFromIndex(cmbWindowsUILanguage.SelectedIndex);
                 }
@@ -389,6 +392,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbKeyboardLayout.Focus();
                     // Update property immediately
                     KeyboardLayout = GetKeyboardValueFromIndex(cmbKeyboardLayout.SelectedIndex);
                 }
@@ -441,6 +445,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbTimeZone.Focus();
                     // Update property immediately
                     TimeZone = GetTimeZoneValueFromIndex(cmbTimeZone.SelectedIndex);
                 }
@@ -639,15 +644,15 @@ namespace QuickWinstall.Config
 
             ThemeManager theme = ThemeManager.Instance;
 
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableLangReg.Focus();
+
             // Toggle state
             bool currentState = theme.GetToggleSwitchState(toggleEnableLangReg);
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleEnableLangReg, newState);
 
             EnableLangReg = newState;
-
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleEnableLangReg.Focus();
 
             // Enable or disable all dependent controls
             bool enableControls = newState;
@@ -739,6 +744,9 @@ namespace QuickWinstall.Config
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableLangReg.Focus();
         }
 
         #endregion

@@ -272,7 +272,16 @@ namespace QuickWinstall.Config
             nudDiskID.ForeColor = theme.GetFontColor("inputForeground");
             nudDiskID.TextAlign = HorizontalAlignment.Right;
             nudDiskID.ValueChanged += onConfigChanged;
-            nudDiskID.ValueChanged += (s, e) => ValidateDiskID();
+            nudDiskID.ValueChanged += (s, e) =>
+            {
+                if (!_isLoading)
+                {
+                    nudDiskID.Focus();
+                    // Update property immediately
+                    DiskID = (int)nudDiskID.Value;
+                }
+                ValidateDiskID();
+            };
             tooltips.SetToolTip(nudDiskID, "tooltips.diskPartConfig.diskID");
 
             // Status ring for Disk ID
@@ -335,6 +344,7 @@ namespace QuickWinstall.Config
             {
                 if (!_isLoading)
                 {
+                    cmbPartitionLayout.Focus();
                     // Update property immediately
                     PartitionLayout = GetPartitionLayoutValueFromIndex(cmbPartitionLayout.SelectedIndex);
                 }
@@ -1033,6 +1043,9 @@ namespace QuickWinstall.Config
 
             // Notify MainForm to update lock/unlock button
             _onEnableToggle?.Invoke();
+
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableDiskPart.Focus();
         }
 
         /// <summary>
@@ -1043,6 +1056,9 @@ namespace QuickWinstall.Config
             if (_isLoading || !EnableDiskPart) return;
 
             ThemeManager theme = ThemeManager.Instance;
+            
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableAutoDiskPart.Focus();
 
             // Toggle the state
             bool currentState = theme.GetToggleSwitchState(toggleEnableAutoDiskPart);
@@ -1051,14 +1067,10 @@ namespace QuickWinstall.Config
 
             EnableAutoDiskPart = newState;
 
-            // Restore focus to the toggle switch to prevent scroll jumping
-            toggleEnableAutoDiskPart.Focus();
-
             // Update dependent controls enabled/disabled state
             nudDiskID.Enabled = newState;
             toggleWipeDisk.Enabled = newState;
             cmbPartitionLayout.Enabled = newState;
-            //btnQuickCreate.Enabled = newState && cmbPartitionLayout.SelectedIndex > 0;
             btnReset.Enabled = newState;
             toggleUseRemainingSpace.Enabled = newState;
             nudInstallToPartitionID.Enabled = newState;
@@ -1202,6 +1214,9 @@ namespace QuickWinstall.Config
             UpdateQuickCreateButtonState();
 
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
+            
+            // Restore focus to the toggle switch to prevent scroll jumping
+            toggleEnableAutoDiskPart.Focus();
         }
 
         /// <summary>
@@ -1352,6 +1367,8 @@ namespace QuickWinstall.Config
             bool rowHasData = HasPartitionRowData(rowIndex);
             bool isDiskPartEnabled = EnableDiskPart;
             bool isAutoDiskPartEnabled = EnableAutoDiskPart;
+
+            toggleActives[rowIndex].Focus();
 
             // Determine if the toggle should be enabled
             bool shouldBeEnabled = rowHasData && isDiskPartEnabled && isAutoDiskPartEnabled;
@@ -1885,6 +1902,7 @@ namespace QuickWinstall.Config
                 // which will call validation methods automatically.
                 nudDiskID.Value = DiskID;
                 cmbPartitionLayout.SelectedIndex = GetIndexFromPartitionLayoutValue(PartitionLayout);
+                nudInstallToPartitionID.Value = InstallToPartitionID;
 
                 // Update toggle active states for all partition rows
                 UpdateAllPartitionRowToggleStates();
@@ -1966,6 +1984,7 @@ namespace QuickWinstall.Config
             // Return diskPart configuration values as strings for XML generation
             values["DiskID"] = DiskID.ToString();
             values["WipeDisk"] = WipeDisk ? "true" : "false";
+            values["InstallToPartitionID"] = InstallToPartitionID.ToString();
             values["DisableBitLocker"] = DisableBitLocker ? "1" : "0";
 
             return values;
