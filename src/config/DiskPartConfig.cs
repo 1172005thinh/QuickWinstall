@@ -1025,6 +1025,9 @@ namespace QuickWinstall.Config
                 }
             }
             
+            // Update toggle active states for all partition rows
+            UpdateAllPartitionRowToggleStates();
+            
             // Update Quick Create button state
             UpdateQuickCreateButtonState();
 
@@ -1192,6 +1195,9 @@ namespace QuickWinstall.Config
                 }
             }
             
+            // Update toggle active states for all partition rows
+            UpdateAllPartitionRowToggleStates();
+            
             // Update Quick Create button state
             UpdateQuickCreateButtonState();
 
@@ -1262,6 +1268,9 @@ namespace QuickWinstall.Config
             // Update row ID numbering based on which rows have data
             UpdatePartitionRowIDs();
             
+            // Update toggle active state for this row
+            UpdatePartitionRowToggleState(rowIndex);
+            
             // Validate InstallToPartitionID since partition count may have changed
             ValidateInstallToPartitionID();
             
@@ -1275,6 +1284,9 @@ namespace QuickWinstall.Config
         private void OnPartitionActiveToggle(int rowIndex)
         {
             if (_isLoading) return;
+            
+            // Only allow toggling if the row has data
+            if (!HasPartitionRowData(rowIndex)) return;
 
             ThemeManager theme = ThemeManager.Instance;
             toggleActives[rowIndex].Focus();
@@ -1324,6 +1336,66 @@ namespace QuickWinstall.Config
             bool hasFormat = cmbFormats[rowIndex].SelectedIndex > 0;
             
             return hasType || hasName || hasSize || hasLetter || hasFormat;
+        }
+
+        /// <summary>
+        /// Updates the active toggle switch state and appearance for a specific partition row
+        /// Enables and sets to true if row has data, disables and sets to false if row is empty
+        /// Also applies muted state based on parent enable states (EnableDiskPart, EnableAutoDiskPart)
+        /// </summary>
+        private void UpdatePartitionRowToggleState(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= partitionRows) return;
+            if (toggleActives[rowIndex] == null) return;
+
+            ThemeManager theme = ThemeManager.Instance;
+            bool rowHasData = HasPartitionRowData(rowIndex);
+            bool isDiskPartEnabled = EnableDiskPart;
+            bool isAutoDiskPartEnabled = EnableAutoDiskPart;
+
+            // Determine if the toggle should be enabled
+            bool shouldBeEnabled = rowHasData && isDiskPartEnabled && isAutoDiskPartEnabled;
+
+            // Determine if the toggle should be muted
+            bool shouldBeMuted = !isDiskPartEnabled || !isAutoDiskPartEnabled;
+
+            if (rowHasData)
+            {
+                // Row has data - enable toggle and set to true
+                toggleActives[rowIndex].Enabled = shouldBeEnabled;
+                
+                if (!_isLoading)
+                {
+                    theme.UpdateToggleSwitchState(toggleActives[rowIndex], true);
+                }
+                
+                // Apply muted state
+                theme.UpdateToggleSwitchMutedState(toggleActives[rowIndex], shouldBeMuted);
+            }
+            else
+            {
+                // Row is empty - disable toggle and set to false
+                toggleActives[rowIndex].Enabled = false;
+                
+                if (!_isLoading)
+                {
+                    theme.UpdateToggleSwitchState(toggleActives[rowIndex], false);
+                }
+                
+                // Apply muted state (always muted when disabled)
+                theme.UpdateToggleSwitchMutedState(toggleActives[rowIndex], true);
+            }
+        }
+
+        /// <summary>
+        /// Updates all partition row toggle states
+        /// </summary>
+        private void UpdateAllPartitionRowToggleStates()
+        {
+            for (int i = 0; i < partitionRows; i++)
+            {
+                UpdatePartitionRowToggleState(i);
+            }
         }
 
         /// <summary>
@@ -1389,6 +1461,9 @@ namespace QuickWinstall.Config
             }
             
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
+            
+            // Update toggle active states for all partition rows (all should be disabled after reset)
+            UpdateAllPartitionRowToggleStates();
             
             // Validate InstallToPartitionID since all partitions were cleared
             ValidateInstallToPartitionID();
@@ -1810,6 +1885,9 @@ namespace QuickWinstall.Config
                 // which will call validation methods automatically.
                 nudDiskID.Value = DiskID;
                 cmbPartitionLayout.SelectedIndex = GetIndexFromPartitionLayoutValue(PartitionLayout);
+
+                // Update toggle active states for all partition rows
+                UpdateAllPartitionRowToggleStates();
 
                 // Update Quick Create button state
                 UpdateQuickCreateButtonState();
