@@ -14,6 +14,7 @@
             </SetupUILanguage>
 		</component>
 		<component name="Microsoft-Windows-Setup" processorArchitecture="{{CPUArchitecture}}" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			{{PartitionTable}}
 			<ImageInstall>
 				<OSImage>
 					<InstallFrom>
@@ -22,14 +23,11 @@
 							<Value>{{WindowsEdition}}</Value>
 						</MetaData>
 					</InstallFrom>
-					<InstallTo>
-						<DiskID>{{DiskID}}</DiskID>
-						<PartitionID>{{InstallToPartitionID}}</PartitionID>
-					</InstallTo>
+					{{InstallTo}}
 					<WillShowUI>Never</WillShowUI>
 				</OSImage>
 			</ImageInstall>
-			{{PartitionTable}}			<UserData>
+			<UserData>
 				<ProductKey>
 					<Key>{{ProductKey}}</Key>
 					<WillShowUI>Never</WillShowUI>

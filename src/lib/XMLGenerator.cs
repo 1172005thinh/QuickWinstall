@@ -82,6 +82,21 @@ namespace QuickWinstall.Lib
                     // Replace {{ProductKey}} with empty string, leaving <Key></Key>
                     result = result.Replace(placeholder, "");
                 }
+                // Handle PartitionTable - needs special formatting to fit XML structure
+                else if (kvp.Key == "PartitionTable")
+                {
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        // The DiskConfiguration XML is already properly formatted
+                        // Just replace the placeholder with the value
+                        result = result.Replace(placeholder, value);
+                    }
+                    else
+                    {
+                        // If no partition table, remove the placeholder completely
+                        result = result.Replace(placeholder, "");
+                    }
+                }
                 else
                 {
                     result = result.Replace(placeholder, value);

@@ -1563,13 +1563,20 @@ namespace QuickWinstall.Config
                         name = "";
                     }
 
+                    // Only save letter if a valid letter is selected (not the default "selectOne" option)
+                    string letter = "";
+                    if (cmbLetters[i].SelectedIndex > 0)
+                    {
+                        letter = cmbLetters[i].SelectedItem?.ToString() ?? "";
+                    }
+
                     PartitionEntry entry = new PartitionEntry
                     {
                         ID = int.Parse(lblIDs[i].Text),
                         Type = cmbTypes[i].SelectedItem?.ToString() ?? "",
                         Name = name,
                         SizeMB = (int)nudSizes[i].Value,
-                        Letter = cmbLetters[i].SelectedItem?.ToString() ?? "",
+                        Letter = letter,
                         Format = cmbFormats[i].SelectedItem?.ToString() ?? "",
                         Active = theme.GetToggleSwitchState(toggleActives[i])
                     };
@@ -2149,9 +2156,24 @@ namespace QuickWinstall.Config
             Dictionary<string, string> values = new Dictionary<string, string>();
 
             // Return diskPart configuration values as strings for XML generation
-            values["DiskID"] = DiskID.ToString();
-            values["InstallToPartitionID"] = InstallToPartitionID.ToString();
             values["DisableBitLocker"] = DisableBitLocker ? "1" : "0";
+
+            // Only set DiskID and InstallToPartitionID if EnableAutoDiskPart is true
+            if (EnableAutoDiskPart)
+            {
+                values["DiskID"] = DiskID.ToString();
+                values["InstallToPartitionID"] = InstallToPartitionID.ToString();
+                values["InstallToBlock"] = $@"<InstallTo>
+						<DiskID>{DiskID}</DiskID>
+						<PartitionID>{InstallToPartitionID}</PartitionID>
+					</InstallTo>";
+            }
+            else
+            {
+                values["DiskID"] = "";
+                values["InstallToPartitionID"] = "";
+                values["InstallTo"] = "";
+            }
 
             // Generate PartitionTable XML if EnableAutoDiskPart is true
             if (EnableAutoDiskPart && PartitionTable.Count > 0)
@@ -2226,8 +2248,8 @@ namespace QuickWinstall.Config
                 xml.AppendLine($"\t\t\t\t\t\t\t<Order>{i + 1}</Order>");
                 xml.AppendLine($"\t\t\t\t\t\t\t<PartitionID>{partition.ID}</PartitionID>");
 
-                // Add Label (Name) if not empty
-                if (!string.IsNullOrEmpty(partition.Name))
+                // Add Label (Name) if not empty and not MSR partition
+                if (!string.IsNullOrEmpty(partition.Name) && partition.Type != "MSR")
                 {
                     xml.AppendLine($"\t\t\t\t\t\t\t<Label>{System.Security.SecurityElement.Escape(partition.Name)}</Label>");
                 }
@@ -2238,17 +2260,23 @@ namespace QuickWinstall.Config
                     xml.AppendLine($"\t\t\t\t\t\t\t<Letter>{partition.Letter}</Letter>");
                 }
 
-                // Add Format if not empty
-                if (!string.IsNullOrEmpty(partition.Format))
+                // Add Format if not empty and not MSR partition
+                if (!string.IsNullOrEmpty(partition.Format) && partition.Type != "MSR")
                 {
                     xml.AppendLine($"\t\t\t\t\t\t\t<Format>{partition.Format}</Format>");
                 }
 
-                // Add Active flag if true
-                if (partition.Active)
+                // Add TypeID for Recovery partition (converts Recovery to Primary with WinRE GUID)
+                if (partition.Type == "Recovery")
                 {
-                    xml.AppendLine("\t\t\t\t\t\t\t<Active>true</Active>");
+                    xml.AppendLine("\t\t\t\t\t\t\t<TypeID>de94bba4-06d1-4d40-a16a-bfd50179d6ac</TypeID>");
                 }
+
+                // Temporarily ignore Active flag (Fix #3)
+                // if (partition.Active)
+                // {
+                //     xml.AppendLine("\t\t\t\t\t\t\t<Active>true</Active>");
+                // }
 
                 xml.AppendLine("\t\t\t\t\t\t</ModifyPartition>");
             }
@@ -2356,7 +2384,6 @@ namespace QuickWinstall.Config
             }
 
             bool isValid = true;
-            ThemeManager theme = ThemeManager.Instance;
 
             // Validate Type: must have value from list (not "-- Select --")
             if (cmbTypes[rowIndex].SelectedIndex <= 0)
@@ -2368,7 +2395,7 @@ namespace QuickWinstall.Config
             if (isValid)
             {
                 string name = txtNames[rowIndex].Text;
-                if (string.IsNullOrWhiteSpace(name) || IsPlaceholderText(txtNames[rowIndex]))
+                if (string.IsNullOrWhiteSpace(name) || IsPlaceholderText(txtNames[rowIndex]) && cmbTypes[rowIndex].SelectedItem?.ToString() != "MSR")
                 {
                     isValid = false;
                 }
@@ -2436,7 +2463,7 @@ namespace QuickWinstall.Config
             }
 
             // Validate Format: must have value from list (not "-- Select --")
-            if (isValid && cmbFormats[rowIndex].SelectedIndex <= 0)
+            if (isValid && (cmbFormats[rowIndex].SelectedIndex <= 0 && cmbTypes[rowIndex].SelectedItem?.ToString() != "MSR" || (cmbTypes[rowIndex].SelectedItem?.ToString() == "Recovery" && cmbFormats[rowIndex].SelectedItem?.ToString() != "NTFS")))
             {
                 isValid = false;
             }
