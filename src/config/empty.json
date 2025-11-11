@@ -53,7 +53,7 @@
         "type": "Primary",
         "name": "Windows",
         "sizeMB": 102400,
-        "letter": "",
+        "letter": "C",
         "format": "NTFS",
         "active": true
       },
@@ -62,7 +62,7 @@
         "type": "Primary",
         "name": "Data",
         "sizeMB": 0,
-        "letter": "",
+        "letter": "D",
         "format": "NTFS",
         "active": true
       }
