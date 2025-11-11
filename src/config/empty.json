@@ -22,12 +22,80 @@
     "bypassDisk": false
   },
   "diskPartConfig": {
-    "diskID": "",
+    "diskID": 0,
     "wipeDisk": false,
     "partitionLayout": "",
+    "partitionTable": [],
     "useRemainingSpace": false,
     "installToPartitionID": 0,
-    "disableBitLocker": false
+    "disableBitLocker": false,
+    "defaultGPT": [
+      {
+        "id": 1,
+        "type": "EFI",
+        "name": "System",
+        "sizeMB": 100,
+        "letter": "",
+        "format": "FAT32",
+        "active": true
+      },
+      {
+        "id": 2,
+        "type": "MSR",
+        "name": "",
+        "sizeMB": 16,
+        "letter": "",
+        "format": "",
+        "active": true
+      },
+      {
+        "id": 3,
+        "type": "Primary",
+        "name": "Windows",
+        "sizeMB": 102400,
+        "letter": "",
+        "format": "NTFS",
+        "active": true
+      },
+      {
+        "id": 4,
+        "type": "Primary",
+        "name": "Data",
+        "sizeMB": 0,
+        "letter": "",
+        "format": "NTFS",
+        "active": true
+      }
+    ],
+    "defaultMBR": [
+      {
+        "id": 1,
+        "type": "Primary",
+        "name": "System",
+        "sizeMB": 500,
+        "letter": "",
+        "format": "NTFS",
+        "active": true
+      },
+      {
+        "id": 2,
+        "type": "Primary",
+        "name": "Windows",
+        "sizeMB": 102400,
+        "letter": "C",
+        "format": "NTFS",
+        "active": true
+      },
+      {
+        "id": 3,
+        "type": "Primary",
+        "name": "Data",
+        "sizeMB": 0,
+        "letter": "D",
+        "format": "NTFS",
+        "active": true
+      }
+    ]
   },
   "oobeConfig": {
     "enableOOBE": false,

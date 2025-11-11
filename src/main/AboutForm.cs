@@ -15,7 +15,7 @@ namespace QuickWinstall
 
         // Version
         public string appVersion = "0.7";
-        public bool _isSEdition = true;
+        public bool _isSEdition = false;
         public string sEdition = "Test XML DiskPartConfig";
 
         public AboutForm()

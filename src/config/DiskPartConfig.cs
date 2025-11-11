@@ -1048,7 +1048,8 @@ namespace QuickWinstall.Config
             }
             
             // Update toggle active states for all partition rows
-            UpdateAllPartitionRowToggleStates();
+            // Pass false to preserve user's manual toggle state (don't reset to ON)
+            UpdateAllPartitionRowToggleStates(resetStatesToOn: false);
             
             // Update Quick Create button state
             UpdateQuickCreateButtonState();
@@ -1220,7 +1221,8 @@ namespace QuickWinstall.Config
             }
             
             // Update toggle active states for all partition rows
-            UpdateAllPartitionRowToggleStates();
+            // Pass false to preserve user's manual toggle state (don't reset to ON)
+            UpdateAllPartitionRowToggleStates(resetStatesToOn: false);
             
             // Update Quick Create button state
             UpdateQuickCreateButtonState();
@@ -1386,7 +1388,9 @@ namespace QuickWinstall.Config
         /// Enables and sets to true if row has data, disables and sets to false if row is empty
         /// Also applies muted state based on parent enable states (EnableDiskPart, EnableAutoDiskPart)
         /// </summary>
-        private void UpdatePartitionRowToggleState(int rowIndex)
+        /// <param name="rowIndex">The row index to update</param>
+        /// <param name="resetStateToOn">If true, sets toggle to ON when row has data. If false, preserves current state.</param>
+        private void UpdatePartitionRowToggleState(int rowIndex, bool resetStateToOn = true)
         {
             if (rowIndex < 0 || rowIndex >= partitionRows) return;
             if (toggleActives[rowIndex] == null) return;
@@ -1406,10 +1410,10 @@ namespace QuickWinstall.Config
 
             if (rowHasData)
             {
-                // Row has data - enable toggle and set to true
+                // Row has data - enable toggle and optionally set to true
                 toggleActives[rowIndex].Enabled = shouldBeEnabled;
                 
-                if (!_isLoading)
+                if (!_isLoading && resetStateToOn)
                 {
                     theme.UpdateToggleSwitchState(toggleActives[rowIndex], true);
                 }
@@ -1435,11 +1439,12 @@ namespace QuickWinstall.Config
         /// <summary>
         /// Updates all partition row toggle states
         /// </summary>
-        private void UpdateAllPartitionRowToggleStates()
+        /// <param name="resetStatesToOn">If true, sets all toggles with data to ON. If false, preserves current states.</param>
+        private void UpdateAllPartitionRowToggleStates(bool resetStatesToOn = true)
         {
             for (int i = 0; i < partitionRows; i++)
             {
-                UpdatePartitionRowToggleState(i);
+                UpdatePartitionRowToggleState(i, resetStatesToOn);
             }
         }
 
@@ -1472,10 +1477,136 @@ namespace QuickWinstall.Config
 
         private void QuickCreatePartitionTable()
         {
-            // TODO: Implement in next phase
-            // This will auto-generate partition table based on selected layout
-            MessageBox.Show("Quick Create - Coming in next phase!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (cmbPartitionLayout == null || cmbPartitionLayout.SelectedIndex <= 0)
+            {
+                MessageBox.Show("Please select a partition layout first.", "Quick Create", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _isLoading = true;
+
+            try
+            {
+                // Get the selected partition layout
+                string layoutValue = GetPartitionLayoutValueFromIndex(cmbPartitionLayout.SelectedIndex);
+                
+                // Load empty.json to get default partition templates
+                string emptyJsonPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "src", "config", "empty.json");
+                
+                if (!System.IO.File.Exists(emptyJsonPath))
+                {
+                    MessageBox.Show("Configuration file not found: empty.json", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoading = false;
+                    return;
+                }
+
+                string jsonContent = System.IO.File.ReadAllText(emptyJsonPath);
+                dynamic? config = Newtonsoft.Json.JsonConvert.DeserializeObject(jsonContent);
+                
+                if (config?.diskPartConfig == null)
+                {
+                    MessageBox.Show("Invalid configuration file format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoading = false;
+                    return;
+                }
+
+                // Get the appropriate default partition table based on layout
+                dynamic? defaultPartitions = null;
+                int installToID = 0;
+                
+                if (layoutValue == "GPT")
+                {
+                    defaultPartitions = config.diskPartConfig.defaultGPT;
+                    installToID = 3; // Windows partition
+                }
+                else if (layoutValue == "MBR")
+                {
+                    defaultPartitions = config.diskPartConfig.defaultMBR;
+                    installToID = 2; // Windows partition
+                }
+                else
+                {
+                    MessageBox.Show("Invalid partition layout selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoading = false;
+                    return;
+                }
+
+                if (defaultPartitions == null)
+                {
+                    MessageBox.Show("Default partition template not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _isLoading = false;
+                    return;
+                }
+
+                // Clear the partition table data model
+                PartitionTable.Clear();
+                
+                // Clear all partition row controls manually (don't call ResetPartitionTable to avoid _isLoading conflicts)
+                ThemeManager theme = ThemeManager.Instance;
+                LangManager lang = LangManager.Instance;
+                
+                for (int i = 0; i < partitionRows; i++)
+                {
+                    cmbTypes[i].SelectedIndex = 0;
+                    txtNames[i].Text = lang.GetString("diskPartConfig.partitionTable.namePlaceholder");
+                    txtNames[i].Font = theme.GetFont("placeholder");
+                    txtNames[i].ForeColor = theme.GetFontColor("placeholder");
+                    nudSizes[i].Value = 0;
+                    cmbLetters[i].SelectedIndex = 0;
+                    cmbFormats[i].SelectedIndex = 0;
+                    theme.UpdateToggleSwitchState(toggleActives[i], false);
+                    lblIDs[i].Text = lang.GetString("diskPartConfig.partitionTable.noID");
+                }
+
+                // Load the default partitions into the PartitionTable data model
+                foreach (var partition in defaultPartitions)
+                {
+                    PartitionEntry entry = new PartitionEntry
+                    {
+                        ID = (int)partition.id,
+                        Type = (string)partition.type ?? "",
+                        Name = (string)partition.name ?? "",
+                        SizeMB = (int)partition.sizeMB,
+                        Letter = (string)partition.letter ?? "",
+                        Format = (string)partition.format ?? "",
+                        Active = (bool)partition.active
+                    };
+                    PartitionTable.Add(entry);
+                }
+
+                // Load the partition table data into UI
+                LoadPartitionTableFromModel();
+
+                // Set UseRemainingSpace to ON
+                theme.UpdateToggleSwitchState(toggleUseRemainingSpace, true);
+                UseRemainingSpace = true;
+
+                // Set InstallToPartitionID
+                nudInstallToPartitionID.Value = installToID;
+                InstallToPartitionID = installToID;
+
+                // Update row IDs and validate
+                UpdatePartitionRowIDs();
+                ValidateAllPartitionRows();
+                ValidateInstallToPartitionID();
+                
+                // Update all partition row toggle states to enable and unmute them
+                // This is important if Reset was called before QuickCreate
+                UpdateAllPartitionRowToggleStates(resetStatesToOn: true);
+
+                // Trigger config changed event
+                _onConfigChanged?.Invoke(this, EventArgs.Empty);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error creating default partition table: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _isLoading = false;
+            }
         }
+
 
         private void ResetPartitionTable()
         {
@@ -2286,6 +2417,7 @@ namespace QuickWinstall.Config
 
             xml.AppendLine("\t\t\t\t\t</ModifyPartitions>");
             xml.AppendLine("\t\t\t\t</Disk>");
+            xml.AppendLine("\t\t\t\t<WillShowUI>OnError</WillShowUI>");
             xml.AppendLine("\t\t\t</DiskConfiguration>");
 
             return xml.ToString();
@@ -2502,6 +2634,11 @@ namespace QuickWinstall.Config
 
             // Only validate if DiskPart config is enabled
             if (!EnableDiskPart)
+                return errors;
+            
+            // If AutoDiskPart is disabled, user wants manual configuration
+            // Skip validation of automatic partition configuration fields
+            if (!EnableAutoDiskPart)
                 return errors;
             
             LangManager lang = LangManager.Instance;

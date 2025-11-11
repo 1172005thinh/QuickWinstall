@@ -17,7 +17,7 @@ QuickWinstall provides a friendly UI around common unattended-install tasks such
   - General: edition, product key, architecture
   - Language & Region: system locale, keyboard, locale settings
   - Bypass / compatibility toggles
-  - Disk & Partition: partition presets and quick formatting (not fully implemented)
+  - Disk & Partition: partition presets and quick formatting
   - User Account: local account / admin options (not fully implemented)
   - OOBE: out-of-box experience options
   - Personalization: simple UI placeholders (not fully implemented)
