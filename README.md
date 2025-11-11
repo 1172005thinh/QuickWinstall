@@ -1,6 +1,6 @@
 # QuickWinstall
 
-![Version](https://img.shields.io/badge/version-0.7.0.1-blue)
+![Version](https://img.shields.io/badge/version-0.7.1-blue)
 ![License](https://img.shields.io/badge/license-Free%20Open%20Source-green)
 ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
 ![DEV](https://img.shields.io/badge/status-in_development-orange)

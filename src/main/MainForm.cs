@@ -350,7 +350,8 @@ namespace QuickWinstall.Main
                         pnlConfigSection,
                         (sender, e) => OnConfigChanged(sender!, e),
                         _themeManager.CreateRoundedButton,
-                        null
+                        CheckAndUpdateExpandCollapseButton,
+                        CheckAndUpdateLockUnlockButton
                     );
                     _pnlUserAccConfig.Dock = DockStyle.Top;
                     pnlConfigSection.Controls.Add(_pnlUserAccConfig);
