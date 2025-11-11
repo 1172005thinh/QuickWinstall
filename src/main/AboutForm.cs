@@ -14,7 +14,7 @@ namespace QuickWinstall
         private readonly UIValues _uiValues;
 
         // Version
-        public string appVersion = "0.7";
+        public string appVersion = "0.7.0.1";
         public bool _isSEdition = false;
         public string sEdition = "Test XML DiskPartConfig";
 
