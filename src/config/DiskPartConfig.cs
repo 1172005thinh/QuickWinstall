@@ -1799,7 +1799,7 @@ namespace QuickWinstall.Config
                 }
 
                 // Update visual appearance based on enabled state
-                bool isMuted = !EnableDiskPart;
+                bool isMuted = !EnableDiskPart || !EnableAutoDiskPart;
 
                 // Update all toggle switches to muted or normal state
                 theme.UpdateToggleSwitchMutedState(toggleEnableAutoDiskPart, isMuted);
@@ -2163,7 +2163,7 @@ namespace QuickWinstall.Config
             {
                 values["DiskID"] = DiskID.ToString();
                 values["InstallToPartitionID"] = InstallToPartitionID.ToString();
-                values["InstallToBlock"] = $@"<InstallTo>
+                values["InstallTo"] = $@"<InstallTo>
 						<DiskID>{DiskID}</DiskID>
 						<PartitionID>{InstallToPartitionID}</PartitionID>
 					</InstallTo>";
