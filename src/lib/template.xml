@@ -29,8 +29,7 @@
 					<WillShowUI>Never</WillShowUI>
 				</OSImage>
 			</ImageInstall>
-			{{PartitionTable}}
-			<UserData>
+			{{PartitionTable}}			<UserData>
 				<ProductKey>
 					<Key>{{ProductKey}}</Key>
 					<WillShowUI>Never</WillShowUI>

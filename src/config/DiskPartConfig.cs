@@ -1536,6 +1536,7 @@ namespace QuickWinstall.Config
             }
 
             ThemeManager theme = ThemeManager.Instance;
+            LangManager lang = LangManager.Instance;
 
             // EnableDiskPart should never be saved - it's a safety lock that always resets to true
             // EnableDiskPart = theme.GetToggleSwitchState(toggleEnableDiskPart);
@@ -1547,6 +1548,34 @@ namespace QuickWinstall.Config
             UseRemainingSpace = theme.GetToggleSwitchState(toggleUseRemainingSpace);
             InstallToPartitionID = (int)nudInstallToPartitionID.Value;
             DisableBitLocker = theme.GetToggleSwitchState(toggleDisableBitLocker);
+
+            // Update PartitionTable from UI controls
+            PartitionTable.Clear();
+            for (int i = 0; i < partitionRows; i++)
+            {
+                // Only save rows that have data
+                if (HasPartitionRowData(i))
+                {
+                    string name = txtNames[i].Text;
+                    // Don't save placeholder text
+                    if (IsPlaceholderText(txtNames[i]))
+                    {
+                        name = "";
+                    }
+
+                    PartitionEntry entry = new PartitionEntry
+                    {
+                        ID = int.Parse(lblIDs[i].Text),
+                        Type = cmbTypes[i].SelectedItem?.ToString() ?? "",
+                        Name = name,
+                        SizeMB = (int)nudSizes[i].Value,
+                        Letter = cmbLetters[i].SelectedItem?.ToString() ?? "",
+                        Format = cmbFormats[i].SelectedItem?.ToString() ?? "",
+                        Active = theme.GetToggleSwitchState(toggleActives[i])
+                    };
+                    PartitionTable.Add(entry);
+                }
+            }
         }
 
         /// <summary>
@@ -1933,6 +1962,9 @@ namespace QuickWinstall.Config
                 cmbPartitionLayout.SelectedIndex = GetIndexFromPartitionLayoutValue(PartitionLayout);
                 nudInstallToPartitionID.Value = InstallToPartitionID;
 
+                // Load partition table data from model
+                LoadPartitionTableFromModel();
+
                 // Update toggle active states for all partition rows
                 UpdateAllPartitionRowToggleStates();
 
@@ -1948,6 +1980,93 @@ namespace QuickWinstall.Config
             }
         }
 
+        /// <summary>
+        /// Loads partition table data from PartitionTable model into UI controls
+        /// </summary>
+        private void LoadPartitionTableFromModel()
+        {
+            if (PartitionTable == null || PartitionTable.Count == 0)
+            {
+                // No partition data to load
+                return;
+            }
+
+            ThemeManager theme = ThemeManager.Instance;
+            LangManager lang = LangManager.Instance;
+
+            // Load each partition entry into corresponding row
+            for (int i = 0; i < Math.Min(PartitionTable.Count, partitionRows); i++)
+            {
+                PartitionEntry entry = PartitionTable[i];
+
+                // Set Type
+                if (!string.IsNullOrEmpty(entry.Type))
+                {
+                    for (int j = 0; j < cmbTypes[i].Items.Count; j++)
+                    {
+                        string? itemText = cmbTypes[i].Items[j]?.ToString();
+                        if (itemText == entry.Type)
+                        {
+                            cmbTypes[i].SelectedIndex = j;
+                            break;
+                        }
+                    }
+                }
+
+                // Set Name
+                if (!string.IsNullOrEmpty(entry.Name))
+                {
+                    txtNames[i].Text = entry.Name;
+                    txtNames[i].Font = theme.GetFont("normal");
+                    txtNames[i].ForeColor = theme.GetFontColor("inputForeground");
+                }
+                else
+                {
+                    // Set placeholder
+                    txtNames[i].Text = lang.GetString("diskPartConfig.partitionTable.namePlaceholder");
+                    txtNames[i].Font = theme.GetFont("placeholder");
+                    txtNames[i].ForeColor = theme.GetFontColor("placeholder");
+                }
+
+                // Set Size
+                nudSizes[i].Value = entry.SizeMB;
+
+                // Set Letter
+                if (!string.IsNullOrEmpty(entry.Letter))
+                {
+                    for (int j = 0; j < cmbLetters[i].Items.Count; j++)
+                    {
+                        string? itemText = cmbLetters[i].Items[j]?.ToString();
+                        if (itemText == entry.Letter)
+                        {
+                            cmbLetters[i].SelectedIndex = j;
+                            break;
+                        }
+                    }
+                }
+
+                // Set Format
+                if (!string.IsNullOrEmpty(entry.Format))
+                {
+                    for (int j = 0; j < cmbFormats[i].Items.Count; j++)
+                    {
+                        string? itemText = cmbFormats[i].Items[j]?.ToString();
+                        if (itemText == entry.Format)
+                        {
+                            cmbFormats[i].SelectedIndex = j;
+                            break;
+                        }
+                    }
+                }
+
+                // Set Active toggle
+                theme.UpdateToggleSwitchState(toggleActives[i], entry.Active);
+            }
+
+            // Update IDs after loading data
+            UpdatePartitionRowIDs();
+        }
+
         public void SetValues(dynamic json)
         {
             if (json == null) return;
@@ -1961,10 +2080,29 @@ namespace QuickWinstall.Config
                 if (json.diskID != null) DiskID = (int)json.diskID;
                 if (json.wipeDisk != null) WipeDisk = (bool)json.wipeDisk;
                 if (json.partitionLayout != null) PartitionLayout = (string)json.partitionLayout;
-                //if (json.partitionTable != null)
                 if (json.useRemainingSpace != null) UseRemainingSpace = (bool)json.useRemainingSpace;
                 if (json.installToPartitionID != null) InstallToPartitionID = (int)json.installToPartitionID;
                 if (json.disableBitLocker != null) DisableBitLocker = (bool)json.disableBitLocker;
+
+                // Load partition table
+                if (json.partitionTable != null)
+                {
+                    PartitionTable.Clear();
+                    foreach (var partitionJson in json.partitionTable)
+                    {
+                        PartitionEntry entry = new PartitionEntry
+                        {
+                            ID = partitionJson.id != null ? (int)partitionJson.id : 0,
+                            Type = partitionJson.type != null ? (string)partitionJson.type : "",
+                            Name = partitionJson.name != null ? (string)partitionJson.name : "",
+                            SizeMB = partitionJson.sizeMB != null ? (int)partitionJson.sizeMB : 0,
+                            Letter = partitionJson.letter != null ? (string)partitionJson.letter : "",
+                            Format = partitionJson.format != null ? (string)partitionJson.format : "",
+                            Active = partitionJson.active != null ? (bool)partitionJson.active : false
+                        };
+                        PartitionTable.Add(entry);
+                    }
+                }
             }
             catch { }
         }
@@ -2012,11 +2150,114 @@ namespace QuickWinstall.Config
 
             // Return diskPart configuration values as strings for XML generation
             values["DiskID"] = DiskID.ToString();
-            values["WipeDisk"] = WipeDisk ? "true" : "false";
             values["InstallToPartitionID"] = InstallToPartitionID.ToString();
             values["DisableBitLocker"] = DisableBitLocker ? "1" : "0";
 
+            // Generate PartitionTable XML if EnableAutoDiskPart is true
+            if (EnableAutoDiskPart && PartitionTable.Count > 0)
+            {
+                values["PartitionTable"] = GeneratePartitionTableXML();
+            }
+            else
+            {
+                values["PartitionTable"] = "";
+            }
+
             return values;
+        }
+
+        /// <summary>
+        /// Generates the XML for DiskConfiguration section based on PartitionTable data.
+        /// Uses XML elements approach as per Microsoft documentation for better structure and readability.
+        /// </summary>
+        private string GeneratePartitionTableXML()
+        {
+            if (PartitionTable == null || PartitionTable.Count == 0)
+            {
+                return "";
+            }
+
+            System.Text.StringBuilder xml = new System.Text.StringBuilder();
+
+            // Start DiskConfiguration
+            xml.AppendLine("<DiskConfiguration>");
+            xml.AppendLine("\t\t\t\t<Disk wcm:action=\"add\">");
+            xml.AppendLine($"\t\t\t\t\t<DiskID>{DiskID}</DiskID>");
+
+            // Add WillWipeDisk if enabled
+            if (WipeDisk)
+            {
+                xml.AppendLine("\t\t\t\t\t<WillWipeDisk>true</WillWipeDisk>");
+            }
+
+            // Start CreatePartitions
+            xml.AppendLine("\t\t\t\t\t<CreatePartitions>");
+
+            int order = 1;
+            foreach (var partition in PartitionTable)
+            {
+                xml.AppendLine("\t\t\t\t\t\t<CreatePartition wcm:action=\"add\">");
+                xml.AppendLine($"\t\t\t\t\t\t\t<Order>{order}</Order>");
+                xml.AppendLine($"\t\t\t\t\t\t\t<Type>{partition.Type}</Type>");
+
+                // Add Size only if not using remaining space or not the last partition
+                if (!UseRemainingSpace || order < PartitionTable.Count)
+                {
+                    xml.AppendLine($"\t\t\t\t\t\t\t<Size>{partition.SizeMB}</Size>");
+                }
+                else
+                {
+                    // Last partition with UseRemainingSpace enabled - use Extend
+                    xml.AppendLine("\t\t\t\t\t\t\t<Extend>true</Extend>");
+                }
+
+                xml.AppendLine("\t\t\t\t\t\t</CreatePartition>");
+                order++;
+            }
+
+            xml.AppendLine("\t\t\t\t\t</CreatePartitions>");
+            // Start ModifyPartitions
+            xml.AppendLine("\t\t\t\t\t<ModifyPartitions>");
+
+            for (int i = 0; i < PartitionTable.Count; i++)
+            {
+                var partition = PartitionTable[i];
+                xml.AppendLine("\t\t\t\t\t\t<ModifyPartition wcm:action=\"add\">");
+                xml.AppendLine($"\t\t\t\t\t\t\t<Order>{i + 1}</Order>");
+                xml.AppendLine($"\t\t\t\t\t\t\t<PartitionID>{partition.ID}</PartitionID>");
+
+                // Add Label (Name) if not empty
+                if (!string.IsNullOrEmpty(partition.Name))
+                {
+                    xml.AppendLine($"\t\t\t\t\t\t\t<Label>{System.Security.SecurityElement.Escape(partition.Name)}</Label>");
+                }
+
+                // Add Letter if not empty
+                if (!string.IsNullOrEmpty(partition.Letter))
+                {
+                    xml.AppendLine($"\t\t\t\t\t\t\t<Letter>{partition.Letter}</Letter>");
+                }
+
+                // Add Format if not empty
+                if (!string.IsNullOrEmpty(partition.Format))
+                {
+                    xml.AppendLine($"\t\t\t\t\t\t\t<Format>{partition.Format}</Format>");
+                }
+
+                // Add Active flag if true
+                if (partition.Active)
+                {
+                    xml.AppendLine("\t\t\t\t\t\t\t<Active>true</Active>");
+                }
+
+                xml.AppendLine("\t\t\t\t\t\t</ModifyPartition>");
+            }
+
+            xml.AppendLine("\t\t\t\t\t</ModifyPartitions>");
+            xml.AppendLine("\t\t\t\t</Disk>");
+            xml.AppendLine("\t\t\t</DiskConfiguration>");
+
+            return xml.ToString();
         }
 
         #endregion

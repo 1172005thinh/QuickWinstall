@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using QuickWinstall.Config;
 
@@ -298,7 +299,19 @@ namespace QuickWinstall.Lib
                         ["partitionLayout"] = DiskPart.PartitionLayout,
                         ["useRemainingSpace"] = DiskPart.UseRemainingSpace,
                         ["installToPartitionID"] = DiskPart.InstallToPartitionID,
-                        ["disableBitLocker"] = DiskPart.DisableBitLocker
+                        ["disableBitLocker"] = DiskPart.DisableBitLocker,
+                        ["partitionTable"] = new JArray(
+                            DiskPart.PartitionTable.Select(p => new JObject
+                            {
+                                ["id"] = p.ID,
+                                ["type"] = p.Type,
+                                ["name"] = p.Name,
+                                ["sizeMB"] = p.SizeMB,
+                                ["letter"] = p.Letter,
+                                ["format"] = p.Format,
+                                ["active"] = p.Active
+                            })
+                        )
                     },
                     ["oobe"] = new JObject
                         {
