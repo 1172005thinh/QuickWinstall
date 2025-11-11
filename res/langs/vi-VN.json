@@ -462,7 +462,7 @@
         "size": "Kích thước của phân vùng tính bằng megabyte",
         "type": "Loại của phân vùng (Primary, Extended, Logical, Recovery, EFI, MSR)"
       },
-      "useRemainingSpace": "Bật để sử dụng toàn bộ không gian còn lại cho phân vùng cuối cùng trong bảng",
+      "useRemainingSpace": "Bật để sử dụng toàn bộ không gian còn lại cho phân vùng cuối cùng trong bảng.\\nTắt để chỉ định kích thước phân vùng cuối cùng theo cách thủ công.\\nĐặt kích thước phân vùng cuối cùng thành 0 MB để sử dụng toàn bộ không gian còn lại.",
       "wipeDisk": "Bật để xóa toàn bộ đĩa trước khi phân vùng. Điều này sẽ xóa tất cả dữ liệu."
     },
     "generalConfig": {

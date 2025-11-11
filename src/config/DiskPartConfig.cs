@@ -104,6 +104,7 @@ namespace QuickWinstall.Config
         private List<ComboBox> cmbLetters = new List<ComboBox>();
         private List<ComboBox> cmbFormats = new List<ComboBox>();
         private List<Panel> toggleActives = new List<Panel>();
+        private List<StatusRing> ringPartitionRows = new List<StatusRing>();
 
         // Use Remaining Space
         private Label lblUseRemainingSpace = null!;
@@ -545,8 +546,9 @@ namespace QuickWinstall.Config
                         txtName.Font = theme.GetFont("placeholder");
                         txtName.ForeColor = theme.GetFontColor("placeholder");
                     }
+                    // Validate when losing focus
+                    OnPartitionRowChanged(rowIndex);
                 };
-                txtName.TextChanged += (s, e) => OnPartitionRowChanged(rowIndex);
                 txtName.TextChanged += onConfigChanged;
                 txtNames.Add(txtName);
                 currentX += colName + columnSpacing;
@@ -615,6 +617,15 @@ namespace QuickWinstall.Config
                 toggleActive.Click += (s, e) => OnPartitionActiveToggle(toggleIndex);
                 toggleActive.Click += onConfigChanged;
                 toggleActives.Add(toggleActive);
+
+                // Status Ring for the entire row (covers Type to Format)
+                StatusRing ringRow = new StatusRing();
+                int ringStartX = cmbType.Left - ui.GetValue("global.statusRing.borderWidth");
+                int ringEndX = cmbFormat.Right + ui.GetValue("global.statusRing.borderWidth");
+                ringRow.Location = new Point(ringStartX, rowY - ui.GetValue("global.statusRing.borderWidth"));
+                ringRow.Size = new Size(ringEndX - ringStartX, ui.GlobalInputHeight + 2 * ui.GetValue("global.statusRing.borderWidth"));
+                ringRow.Visible = false;
+                ringPartitionRows.Add(ringRow);
 
                 currentY += ui.GlobalInputHeight + ui.GlobalSpacingY;
             }
@@ -726,6 +737,7 @@ namespace QuickWinstall.Config
                 pnlDiskPartConfigContent.Controls.Add(cmbLetters[i]);
                 pnlDiskPartConfigContent.Controls.Add(cmbFormats[i]);
                 pnlDiskPartConfigContent.Controls.Add(toggleActives[i]);
+                pnlDiskPartConfigContent.Controls.Add(ringPartitionRows[i]);
             }
             
             pnlDiskPartConfigContent.Controls.Add(lblUseRemainingSpace);
@@ -1255,6 +1267,10 @@ namespace QuickWinstall.Config
             bool newState = !currentState;
             theme.UpdateToggleSwitchState(toggleUseRemainingSpace, newState);
             UseRemainingSpace = newState;
+            
+            // Re-validate all partition rows since size validation depends on UseRemainingSpace
+            ValidateAllPartitionRows();
+            
             _onConfigChanged?.Invoke(this, EventArgs.Empty);
         }
 
@@ -1285,6 +1301,18 @@ namespace QuickWinstall.Config
             
             // Update toggle active state for this row
             UpdatePartitionRowToggleState(rowIndex);
+            
+            // Validate this partition row
+            ValidatePartitionRow(rowIndex);
+            
+            // Validate all other rows too (in case of duplicate names/letters)
+            for (int i = 0; i < partitionRows; i++)
+            {
+                if (i != rowIndex && HasPartitionRowData(i))
+                {
+                    ValidatePartitionRow(i);
+                }
+            }
             
             // Validate InstallToPartitionID since partition count may have changed
             ValidateInstallToPartitionID();
@@ -1532,6 +1560,7 @@ namespace QuickWinstall.Config
             cmbLetters.Clear();
             cmbFormats.Clear();
             toggleActives.Clear();
+            ringPartitionRows.Clear();
             lblIDs.Clear();
         }
 
@@ -2002,6 +2031,7 @@ namespace QuickWinstall.Config
             ValidateDiskID();
             ValidatePartitionLayout();
             ValidateInstallToPartitionID();
+            ValidateAllPartitionRows();
         }
 
         /// <summary>
@@ -2067,6 +2097,129 @@ namespace QuickWinstall.Config
             }
             
             ringInstallToPartitionID.SetStatus(ValidationStatus.Valid);
+        }
+
+        /// <summary>
+        /// Validates a specific partition table row and updates its status ring
+        /// </summary>
+        private void ValidatePartitionRow(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= partitionRows) return;
+            if (ringPartitionRows[rowIndex] == null) return;
+
+            // Only validate rows that have data
+            if (!HasPartitionRowData(rowIndex))
+            {
+                ringPartitionRows[rowIndex].Visible = false;
+                return;
+            }
+
+            bool isValid = true;
+            ThemeManager theme = ThemeManager.Instance;
+
+            // Validate Type: must have value from list (not "-- Select --")
+            if (cmbTypes[rowIndex].SelectedIndex <= 0)
+            {
+                isValid = false;
+            }
+
+            // Validate Name: must have value and be unique
+            if (isValid)
+            {
+                string name = txtNames[rowIndex].Text;
+                if (string.IsNullOrWhiteSpace(name) || IsPlaceholderText(txtNames[rowIndex]))
+                {
+                    isValid = false;
+                }
+                else
+                {
+                    // Check for duplicates
+                    for (int i = 0; i < partitionRows; i++)
+                    {
+                        if (i != rowIndex && HasPartitionRowData(i))
+                        {
+                            string otherName = txtNames[i].Text;
+                            if (!IsPlaceholderText(txtNames[i]) && 
+                                name.Equals(otherName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                isValid = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Validate Size: only check if UseRemainingSpace is On
+            if (isValid && UseRemainingSpace)
+            {
+                // Find the last partition with data
+                int lastPartitionIndex = -1;
+                for (int i = partitionRows - 1; i >= 0; i--)
+                {
+                    if (HasPartitionRowData(i))
+                    {
+                        lastPartitionIndex = i;
+                        break;
+                    }
+                }
+
+                // If this is the last partition, size must be 0
+                if (rowIndex == lastPartitionIndex && nudSizes[rowIndex].Value != 0)
+                {
+                    isValid = false;
+                }
+            }
+
+            // Validate Letter: if has value, must be unique; empty is acceptable
+            if (isValid)
+            {
+                // Only validate if a letter is selected (not empty/default)
+                if (cmbLetters[rowIndex].SelectedIndex > 0)
+                {
+                    // Check for duplicate letters
+                    string letter = cmbLetters[rowIndex].SelectedItem?.ToString() ?? "";
+                    for (int i = 0; i < partitionRows; i++)
+                    {
+                        if (i != rowIndex && HasPartitionRowData(i))
+                        {
+                            string otherLetter = cmbLetters[i].SelectedItem?.ToString() ?? "";
+                            if (cmbLetters[i].SelectedIndex > 0 && letter == otherLetter)
+                            {
+                                isValid = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Validate Format: must have value from list (not "-- Select --")
+            if (isValid && cmbFormats[rowIndex].SelectedIndex <= 0)
+            {
+                isValid = false;
+            }
+
+            // Update status ring
+            if (isValid)
+            {
+                ringPartitionRows[rowIndex].SetStatus(ValidationStatus.Valid);
+            }
+            else
+            {
+                ringPartitionRows[rowIndex].SetStatus(ValidationStatus.Invalid);
+            }
+        }
+
+        /// <summary>
+        /// Validates all partition table rows
+        /// </summary>
+        private void ValidateAllPartitionRows()
+        {
+            for (int i = 0; i < partitionRows; i++)
+            {
+                ValidatePartitionRow(i);
+            }
         }
 
         /// <summary>

@@ -462,7 +462,7 @@
         "size": "Size of the partition in megabytes",
         "type": "Type of the partition (Primary, Extended, Logical, Recovery, EFI, MSR)"
       },
-      "useRemainingSpace": "Enable to use all remaining disk space for the last partition in the table",
+      "useRemainingSpace": "Enable to use all remaining disk space for the last partition in the table.\\nDisable to manually specify the size of the last partition.\\nSet the last partition's size to 0 MB to use all remaining space.",
       "wipeDisk": "Enable to wipe the entire disk before partitioning. This will delete all data."
     },
     "generalConfig": {
