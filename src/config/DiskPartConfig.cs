@@ -1799,13 +1799,16 @@ namespace QuickWinstall.Config
                 }
 
                 // Update visual appearance based on enabled state
-                bool isMuted = !EnableDiskPart || !EnableAutoDiskPart;
+                bool isMuted = !EnableDiskPart;
 
                 // Update all toggle switches to muted or normal state
                 theme.UpdateToggleSwitchMutedState(toggleEnableAutoDiskPart, isMuted);
-                theme.UpdateToggleSwitchMutedState(toggleWipeDisk, isMuted);
-                theme.UpdateToggleSwitchMutedState(toggleUseRemainingSpace, isMuted);
                 theme.UpdateToggleSwitchMutedState(toggleDisableBitLocker, isMuted);
+                
+                // WipeDisk and UseRemainingSpace depend on both EnableDiskPart AND EnableAutoDiskPart
+                bool mutedForAutoDiskPartToggles = isMuted || !EnableAutoDiskPart;
+                theme.UpdateToggleSwitchMutedState(toggleWipeDisk, mutedForAutoDiskPartToggles);
+                theme.UpdateToggleSwitchMutedState(toggleUseRemainingSpace, mutedForAutoDiskPartToggles);
 
                 // Update all labels to muted or normal state
                 if (isMuted)
