@@ -1701,9 +1701,16 @@ namespace QuickWinstall.Config
                         letter = cmbLetters[i].SelectedItem?.ToString() ?? "";
                     }
 
+                    // Parse ID from label text - skip this partition if ID is not a valid number
+                    string idText = lblIDs[i].Text;
+                    if (string.IsNullOrEmpty(idText) || !int.TryParse(idText, out int partitionId))
+                    {
+                        continue;
+                    }
+
                     PartitionEntry entry = new PartitionEntry
                     {
-                        ID = int.Parse(lblIDs[i].Text),
+                        ID = partitionId,
                         Type = cmbTypes[i].SelectedItem?.ToString() ?? "",
                         Name = name,
                         SizeMB = (int)nudSizes[i].Value,
