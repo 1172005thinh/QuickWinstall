@@ -1234,12 +1234,34 @@ namespace QuickWinstall.Config
         }
 
         /// <summary>
-        /// Checks if a partition name textbox contains placeholder text
+        /// Checks if a partition name textbox contains placeholder text from any language
         /// </summary>
         private bool IsPlaceholderText(TextBox txtName)
         {
-            string placeholderText = LangManager.Instance.GetString("diskPartConfig.partitionTable.namePlaceholder");
-            return txtName.Text == placeholderText;
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+                return false;
+
+            // Get the current language's placeholder text
+            string currentPlaceholder = LangManager.Instance.GetString("diskPartConfig.partitionTable.namePlaceholder");
+            if (txtName.Text == currentPlaceholder)
+                return true;
+
+            // Check against all available language placeholders to handle language switches
+            LangManager langMgr = LangManager.Instance;
+            var availableLanguages = langMgr.GetAvailableLanguages();
+            string currentLang = langMgr.CurrentLanguage;
+
+            foreach (var lang in availableLanguages)
+            {
+                if (lang == currentLang) continue; // Already checked above
+
+                // Get placeholder text from specific language without switching
+                string? placeholder = langMgr.GetStringFromLanguage("diskPartConfig.partitionTable.namePlaceholder", lang);
+                if (!string.IsNullOrEmpty(placeholder) && txtName.Text == placeholder)
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>

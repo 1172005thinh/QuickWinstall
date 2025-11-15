@@ -175,14 +175,14 @@ namespace QuickWinstall.Config
             lblUserAccConfigTitle = new Label();
             lblUserAccConfigTitle.Location = new Point(btnUserAccConfigToggle.Right + ui.GlobalSpacingX, ui.GlobalSpacingY + (ui.GlobalBtnBox - ui.GlobalLabelHeight) / 2);
             lblUserAccConfigTitle.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
-            lblUserAccConfigTitle.Text = lang.GetString("mainForm.sections.UserAcc");
+            lblUserAccConfigTitle.Text = lang.GetString("mainForm.sections.userAcc");
             lblUserAccConfigTitle.Font = theme.GetFont("subheader");
             lblUserAccConfigTitle.UseMnemonic = false;
             lblUserAccConfigTitle.ForeColor = theme.GetFontColor("subheader");
             lblUserAccConfigTitle.TextAlign = ContentAlignment.MiddleLeft;
             lblUserAccConfigTitle.Cursor = Cursors.Hand;
             lblUserAccConfigTitle.Click += (sender, e) => ToggleSection();
-            tooltips.SetToolTip(lblUserAccConfigTitle, "tooltips.UserAccConfig.header", lang.GetString("tooltips.UserAccConfig.header"));
+            tooltips.SetToolTip(lblUserAccConfigTitle, "tooltips.userAccConfig.header", lang.GetString("tooltips.UserAccConfig.header"));
 
 
             int toggleWidth = (int)(ui.GlobalInputWidth * 0.15);
@@ -201,12 +201,12 @@ namespace QuickWinstall.Config
             lblEnableUserAcc = new Label();
             lblEnableUserAcc.Location = new Point(toggleEnableUserAcc.Right + ui.GlobalSpacingX, btnUserAccConfigToggle.Bottom + ui.GlobalSpacingY);
             lblEnableUserAcc.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
-            lblEnableUserAcc.Text = string.Format(lang.GetString("UserAccConfig.enableUserAcc.label", lang.GetString("mainForm.sections.UserAcc")));
+            lblEnableUserAcc.Text = string.Format(lang.GetString("userAccConfig.enableUserAcc.label", lang.GetString("mainForm.sections.userAcc")));
             lblEnableUserAcc.Font = theme.GetFont("normal");
             lblEnableUserAcc.TextAlign = ContentAlignment.MiddleLeft;
             lblEnableUserAcc.Cursor = Cursors.Hand;
             lblEnableUserAcc.Click += (s, e) => OnToggleEnableUserAcc();
-            tooltips.SetToolTip(lblEnableUserAcc, "tooltips.UserAccConfig.enableUserAcc");
+            tooltips.SetToolTip(lblEnableUserAcc, "tooltips.userAccConfig.enableUserAcc");
 
             // Line Separator
             pnlUserAccConfigSeparator = new Panel();
@@ -230,12 +230,11 @@ namespace QuickWinstall.Config
             lblEnableAutoUserAcc = new Label();
             lblEnableAutoUserAcc.Location = new Point(labelX, currentY);
             lblEnableAutoUserAcc.Size = new Size(ui.GlobalLabelWidth * 2, ui.GlobalLabelHeight);
-            lblEnableAutoUserAcc.Text = lang.GetString("UserAccConfig.enableAutoUserAcc.label");
+            lblEnableAutoUserAcc.Text = lang.GetString("userAccConfig.enableAutoUserAcc.label");
             lblEnableAutoUserAcc.Font = theme.GetFont("normal");
             lblEnableAutoUserAcc.TextAlign = ContentAlignment.MiddleLeft;
             lblEnableAutoUserAcc.Cursor = Cursors.Hand;
-            tooltips.SetToolTip(lblEnableAutoUserAcc, "tooltips.UserAccConfig.enableAutoUserAcc");
-
+            tooltips.SetToolTip(lblEnableAutoUserAcc, "tooltips.userAccConfig.enableAutoUserAcc");
             toggleEnableAutoUserAcc = theme.CreateToggleSwitch(new Point(toggleX, currentY), toggleWidth, ui.GlobalInputHeight, true);
             toggleEnableAutoUserAcc.Click += (s, e) => OnToggleEnableAutoUserAcc();
 

@@ -194,5 +194,30 @@ namespace QuickWinstall.Lib
 
             return languages;
         }
+
+        /// <summary>
+        /// Gets a translated string from a specific language without switching the current language
+        /// </summary>
+        /// <param name="key">The translation key</param>
+        /// <param name="langCode">The language code (e.g., "en-US", "vi-VN")</param>
+        /// <returns>The translated string or null if not found</returns>
+        public string? GetStringFromLanguage(string key, string langCode)
+        {
+            try
+            {
+                string langFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "res", "langs", $"{langCode}.json");
+                if (!File.Exists(langFilePath))
+                    return null;
+
+                string jsonContent = File.ReadAllText(langFilePath);
+                JObject? langJson = JObject.Parse(jsonContent);
+                return GetValueFromJson(langJson, key);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Failed to get string '{key}' from language '{langCode}': {ex.Message}");
+                return null;
+            }
+        }
     }
 }
